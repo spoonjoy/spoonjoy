@@ -4,6 +4,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { SlotProvider, createSlot } from 'react-view-slot'
 
+import { useAuth } from '@redwoodjs/auth'
 import { routes, useMatch } from '@redwoodjs/router'
 
 import LogoBlack from './sj_black.svg'
@@ -26,18 +27,23 @@ interface IUserNavigation {
 export const HeaderSlot = createSlot('header')
 
 const SiteLayout = ({ children }: SiteLayoutProps) => {
+  const { isAuthenticated } = useAuth()
+
   const navigation: INavigation[] = [
     {
       name: 'Home',
       href: routes.home(),
       current: useMatch(routes.home()).match,
     },
-    {
+  ]
+  const isLoginCurrent = useMatch(routes.login()).match
+  if (!isAuthenticated)
+    navigation.push({
       name: 'Login',
       href: routes.login(),
-      current: useMatch(routes.login()).match,
-    },
-  ]
+      current: isLoginCurrent,
+    })
+
   const userNavigation: IUserNavigation[] = [
     { name: 'Your Profile', href: '#' },
     { name: 'Settings', href: '#' },
