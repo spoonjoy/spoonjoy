@@ -7,18 +7,23 @@ import { routes, useMatch } from '@redwoodjs/router'
 
 import LogoBlack from './sj_black.svg'
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
+type SiteLayoutProps = {
+  children?: React.ReactNode
 }
 
-const Header = () => {
-  const user = {
-    name: 'Tom Cook',
-    email: 'tom@example.com',
-    imageUrl:
-      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  }
-  const navigation = [
+interface INavigation {
+  name: string
+  href: string
+  current: boolean
+}
+
+interface IUserNavigation {
+  name: string
+  href: string
+}
+
+const SiteLayout = ({ children }: SiteLayoutProps) => {
+  const navigation: INavigation[] = [
     {
       name: 'Home',
       href: routes.home(),
@@ -30,11 +35,53 @@ const Header = () => {
       current: useMatch(routes.login()).match,
     },
   ]
-  const userNavigation = [
+  const userNavigation: IUserNavigation[] = [
     { name: 'Your Profile', href: '#' },
     { name: 'Settings', href: '#' },
     { name: 'Sign out', href: '#' },
   ]
+
+  return (
+    <>
+      <div className="min-h-full">
+        <Header navigation={navigation} userNavigation={userNavigation} />
+
+        <div className="py-10">
+          <header>
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <h1 className="text-3xl font-bold leading-tight tracking-tight text-gray-900">
+                Page Name Goes Here
+              </h1>
+            </div>
+          </header>
+          <main>
+            <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+              {/* Replace with your content */}
+              <div className="px-4 py-8 sm:px-0">{children}</div>
+              {/* /End replace */}
+            </div>
+          </main>
+        </div>
+      </div>
+    </>
+  )
+}
+
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(' ')
+}
+
+interface IHeaderProps {
+  navigation: INavigation[]
+  userNavigation: IUserNavigation[]
+}
+const Header: React.FC<IHeaderProps> = ({ navigation, userNavigation }) => {
+  const user = {
+    name: 'Tom Cook',
+    email: 'tom@example.com',
+    imageUrl:
+      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+  }
 
   return (
     <Disclosure as="nav" className="border-b border-gray-200 bg-white">
@@ -190,37 +237,6 @@ const Header = () => {
         </>
       )}
     </Disclosure>
-  )
-}
-
-type SiteLayoutProps = {
-  children?: React.ReactNode
-}
-
-const SiteLayout = ({ children }: SiteLayoutProps) => {
-  return (
-    <>
-      <div className="min-h-full">
-        <Header />
-
-        <div className="py-10">
-          <header>
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <h1 className="text-3xl font-bold leading-tight tracking-tight text-gray-900">
-                Page Name Goes Here
-              </h1>
-            </div>
-          </header>
-          <main>
-            <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-              {/* Replace with your content */}
-              <div className="px-4 py-8 sm:px-0">{children}</div>
-              {/* /End replace */}
-            </div>
-          </main>
-        </div>
-      </div>
-    </>
   )
 }
 
