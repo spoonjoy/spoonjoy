@@ -75,7 +75,7 @@ interface IHeaderProps {
   navigation: INavigation[]
   userNavigation: IUserNavigation[]
 }
-const Header: React.FC<IHeaderProps> = ({ navigation, userNavigation }) => {
+const Header = ({ navigation, userNavigation }: IHeaderProps) => {
   const user = {
     name: 'Tom Cook',
     email: 'tom@example.com',
