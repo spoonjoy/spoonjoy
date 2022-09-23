@@ -2,6 +2,7 @@ import { Fragment } from 'react'
 
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { SlotProvider, createSlot } from 'react-view-slot'
 
 import { routes, useMatch } from '@redwoodjs/router'
 
@@ -21,6 +22,8 @@ interface IUserNavigation {
   name: string
   href: string
 }
+
+export const HeaderSlot = createSlot('header')
 
 const SiteLayout = ({ children }: SiteLayoutProps) => {
   const navigation: INavigation[] = [
@@ -42,7 +45,7 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
   ]
 
   return (
-    <>
+    <SlotProvider>
       <div className="min-h-full">
         <Header navigation={navigation} userNavigation={userNavigation} />
 
@@ -50,7 +53,7 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
           <header>
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <h1 className="text-3xl font-bold leading-tight tracking-tight text-gray-900">
-                Page Name Goes Here
+                <HeaderSlot />
               </h1>
             </div>
           </header>
@@ -63,7 +66,7 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
           </main>
         </div>
       </div>
-    </>
+    </SlotProvider>
   )
 }
 

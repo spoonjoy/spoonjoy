@@ -22,7 +22,8 @@
     "@simplewebauthn/browser": "^6.0.0",
     "prop-types": "15.8.1",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-view-slot": "^1.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.12",
