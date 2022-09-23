@@ -233,10 +233,10 @@ const Header = ({
                   </div>
                   <div className="ml-3">
                     <div className="text-base font-medium text-gray-800">
-                      {user.name}
+                      {currentUser.username}
                     </div>
                     <div className="text-sm font-medium text-gray-500">
-                      {user.email}
+                      {currentUser.email}
                     </div>
                   </div>
                   <button
