@@ -4,8 +4,10 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { SlotProvider, createSlot } from 'react-view-slot'
 
-import { CurrentUser, useAuth } from '@redwoodjs/auth'
+import { useAuth } from '@redwoodjs/auth'
 import { routes, useMatch } from '@redwoodjs/router'
+
+import { ICurrentUser } from 'src/lib/auth'
 
 import LogoBlack from './sj_black.svg'
 
@@ -58,7 +60,7 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
           navigation={navigation}
           userNavigation={userNavigation}
           isAuthenticated={isAuthenticated}
-          currentUser={currentUser}
+          currentUser={currentUser as ICurrentUser | null}
         />
 
         <div className="py-10">
@@ -90,7 +92,7 @@ interface IHeaderProps {
   navigation: INavigation[]
   userNavigation: IUserNavigation[]
   isAuthenticated: boolean
-  currentUser: CurrentUser | null
+  currentUser: ICurrentUser | null
 }
 const Header = ({
   navigation,
