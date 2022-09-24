@@ -1,0 +1,169 @@
+import {
+  Form,
+  FormError,
+  FieldError,
+  Label,
+  TextField,
+  NumberField,
+  DatetimeLocalField,
+  Submit,
+} from '@redwoodjs/forms'
+
+import type { EditRecipeById, UpdateRecipeInput } from 'types/graphql'
+import type { RWGqlError } from '@redwoodjs/forms'
+
+
+
+const formatDatetime = (value) => {
+  if (value) {
+    return value.replace(/:\d{2}\.\d{3}\w/, '')
+  }
+}
+
+
+type FormRecipe = NonNullable<EditRecipeById['recipe']>
+
+interface RecipeFormProps {
+  recipe?: EditRecipeById['recipe']
+  onSave: (data: UpdateRecipeInput, id?: FormRecipe['id']) => void
+  error: RWGqlError
+  loading: boolean
+}
+
+const RecipeForm = (props: RecipeFormProps) => {
+  const onSubmit = (data: FormRecipe) => {
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    props.onSave(data, props?.recipe?.id)
+  }
+
+  return (
+    <div className="rw-form-wrapper">
+      <Form<FormRecipe> onSubmit={onSubmit} error={props.error}>
+        <FormError
+          error={props.error}
+          wrapperClassName="rw-form-error-wrapper"
+          titleClassName="rw-form-error-title"
+          listClassName="rw-form-error-list"
+        />
+      
+        <Label
+          name="title"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Title
+        </Label>
+        
+          <TextField
+            name="title"
+            defaultValue={props.recipe?.title}
+            className="rw-input"
+            errorClassName="rw-input rw-input-error"
+            validation={{ required: true }}
+          />
+        
+
+        <FieldError name="title" className="rw-field-error" />
+
+        <Label
+          name="description"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Description
+        </Label>
+        
+          <TextField
+            name="description"
+            defaultValue={props.recipe?.description}
+            className="rw-input"
+            errorClassName="rw-input rw-input-error"
+          />
+        
+
+        <FieldError name="description" className="rw-field-error" />
+
+        <Label
+          name="servings"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Servings
+        </Label>
+        
+          <NumberField
+            name="servings"
+            defaultValue={props.recipe?.servings}
+            className="rw-input"
+            errorClassName="rw-input rw-input-error"
+          />
+        
+
+        <FieldError name="servings" className="rw-field-error" />
+
+        <Label
+          name="chefId"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Chef id
+        </Label>
+        
+          <TextField
+            name="chefId"
+            defaultValue={props.recipe?.chefId}
+            className="rw-input"
+            errorClassName="rw-input rw-input-error"
+            validation={{ required: true }}
+          />
+        
+
+        <FieldError name="chefId" className="rw-field-error" />
+
+        <Label
+          name="deletedAt"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Deleted at
+        </Label>
+        
+          <DatetimeLocalField
+            name="deletedAt"
+            defaultValue={formatDatetime(props.recipe?.deletedAt)}
+            className="rw-input"
+            errorClassName="rw-input rw-input-error"
+          />
+        
+
+        <FieldError name="deletedAt" className="rw-field-error" />
+
+        <div className="rw-button-group">
+          <Submit
+            disabled={props.loading}
+            className="rw-button rw-button-blue"
+          >
+            Save
+          </Submit>
+        </div>
+      </Form>
+    </div>
+  )
+}
+
+export default RecipeForm
