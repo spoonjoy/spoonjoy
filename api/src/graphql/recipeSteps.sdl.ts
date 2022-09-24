@@ -24,6 +24,7 @@ export const schema = gql`
     recipeId: String
     stepNum: Int
     description: String
+    ingredients: [CreateIngredientInput]!
   }
 
   # type Mutation {

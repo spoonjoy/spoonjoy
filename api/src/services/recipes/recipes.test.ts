@@ -29,12 +29,17 @@ describe('recipes', () => {
   })
 
   scenario('creates a recipe', async (scenario: StandardScenario) => {
+    mockCurrentUser({
+      id: 'testid',
+      username: 'ari',
+      email: 'ari@spoonjoy.app',
+    })
     const result = await createRecipe({
-      input: { title: 'String', chefId: scenario.recipe.two.chefId },
+      input: scenario.recipe.pizza,
     })
 
     expect(result.title).toEqual('String')
-    expect(result.chefId).toEqual(scenario.recipe.two.chefId)
+    expect(result.chef.username).toEqual('ari')
   })
 
   scenario('updates a recipe', async (scenario: StandardScenario) => {

@@ -1,9 +1,11 @@
+import type { Prisma } from '@prisma/client'
 import type {
   QueryResolvers,
   MutationResolvers,
   RecipeRelationResolvers,
 } from 'types/graphql'
 
+import { requireAuth } from 'src/lib/auth'
 import { db } from 'src/lib/db'
 
 export const recipes: QueryResolvers['recipes'] = () => {
@@ -16,9 +18,12 @@ export const recipe: QueryResolvers['recipe'] = ({ id }) => {
   })
 }
 
-export const createRecipe: MutationResolvers['createRecipe'] = ({ input }) => {
+export const createRecipe: MutationResolvers['createRecipe'] = ({
+  input,
+}: Prisma.RecipeCreateWithoutChefInput) => {
+  requireAuth()
   return db.recipe.create({
-    data: input,
+    data: { ...input, chefId: context.currentUser!.id },
   })
 }
 
