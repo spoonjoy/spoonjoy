@@ -66,8 +66,8 @@ model Ingredient {
   quantity          Float
   unitId            String
   unit              Unit          @relation(fields: [unitId], references: [id])
-  ingredeientRefId  String
-  ingredientRef     IngredientRef @relation(fields: [ingredeientRefId], references: [id])
+  ingredientRefId  String
+  ingredientRef     IngredientRef @relation(fields: [ingredientRefId], references: [id])
 }
 
 model IngredientRef {

@@ -18,9 +18,9 @@ export const schema = gql`
     name: String
   }
 
-  type Mutation {
-    createUnit(input: CreateUnitInput!): Unit! @requireAuth
-    updateUnit(id: String!, input: UpdateUnitInput!): Unit! @requireAuth
-    deleteUnit(id: String!): Unit! @requireAuth
-  }
+  # type Mutation {
+  #   createUnit(input: CreateUnitInput!): Unit! @requireAuth
+  #   updateUnit(id: String!, input: UpdateUnitInput!): Unit! @requireAuth
+  #   deleteUnit(id: String!): Unit! @requireAuth
+  # }
 `

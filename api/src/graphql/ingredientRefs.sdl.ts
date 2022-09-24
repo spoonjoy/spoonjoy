@@ -18,13 +18,13 @@ export const schema = gql`
     name: String
   }
 
-  type Mutation {
-    createIngredientRef(input: CreateIngredientRefInput!): IngredientRef!
-      @requireAuth
-    updateIngredientRef(
-      id: String!
-      input: UpdateIngredientRefInput!
-    ): IngredientRef! @requireAuth
-    deleteIngredientRef(id: String!): IngredientRef! @requireAuth
-  }
+  # type Mutation {
+  #   createIngredientRef(input: CreateIngredientRefInput!): IngredientRef!
+  #     @requireAuth
+  #   updateIngredientRef(
+  #     id: String!
+  #     input: UpdateIngredientRefInput!
+  #   ): IngredientRef! @requireAuth
+  #   deleteIngredientRef(id: String!): IngredientRef! @requireAuth
+  # }
 `

@@ -20,7 +20,7 @@ export const schema = gql`
     description: String
     servings: Int
     chefId: String!
-    deletedAt: DateTime
+    steps: [CreateRecipeStepInput]!
   }
 
   input UpdateRecipeInput {
@@ -33,7 +33,7 @@ export const schema = gql`
 
   type Mutation {
     createRecipe(input: CreateRecipeInput!): Recipe! @requireAuth
-    updateRecipe(id: String!, input: UpdateRecipeInput!): Recipe! @requireAuth
-    deleteRecipe(id: String!): Recipe! @requireAuth
+    # updateRecipe(id: String!, input: UpdateRecipeInput!): Recipe! @requireAuth
+    # deleteRecipe(id: String!): Recipe! @requireAuth
   }
 `

@@ -17,6 +17,7 @@ export const schema = gql`
     recipeId: String!
     stepNum: Int!
     description: String
+    ingredients: [CreateIngredientInput]!
   }
 
   input UpdateRecipeStepInput {
@@ -25,10 +26,10 @@ export const schema = gql`
     description: String
   }
 
-  type Mutation {
-    createRecipeStep(input: CreateRecipeStepInput!): RecipeStep! @requireAuth
-    updateRecipeStep(id: String!, input: UpdateRecipeStepInput!): RecipeStep!
-      @requireAuth
-    deleteRecipeStep(id: String!): RecipeStep! @requireAuth
-  }
+  # type Mutation {
+  #   createRecipeStep(input: CreateRecipeStepInput!): RecipeStep! @requireAuth
+  #   updateRecipeStep(id: String!, input: UpdateRecipeStepInput!): RecipeStep!
+  #     @requireAuth
+  #   deleteRecipeStep(id: String!): RecipeStep! @requireAuth
+  # }
 `

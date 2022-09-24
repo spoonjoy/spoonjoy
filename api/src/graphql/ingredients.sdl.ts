@@ -6,7 +6,7 @@ export const schema = gql`
     quantity: Float!
     unitId: String!
     unit: Unit!
-    ingredeientRefId: String!
+    ingredientRefId: String!
     ingredientRef: IngredientRef!
   }
 
@@ -18,21 +18,21 @@ export const schema = gql`
   input CreateIngredientInput {
     recipeStepId: String!
     quantity: Float!
-    unitId: String!
-    ingredeientRefId: String!
+    unitName: String!
+    ingredientName: String!
   }
 
   input UpdateIngredientInput {
     recipeStepId: String
     quantity: Float
     unitId: String
-    ingredeientRefId: String
+    ingredientRefId: String
   }
 
-  type Mutation {
-    createIngredient(input: CreateIngredientInput!): Ingredient! @requireAuth
-    updateIngredient(id: String!, input: UpdateIngredientInput!): Ingredient!
-      @requireAuth
-    deleteIngredient(id: String!): Ingredient! @requireAuth
-  }
+  # type Mutation {
+  #   createIngredient(input: CreateIngredientInput!): Ingredient! @requireAuth
+  #   updateIngredient(id: String!, input: UpdateIngredientInput!): Ingredient!
+  #     @requireAuth
+  #   deleteIngredient(id: String!): Ingredient! @requireAuth
+  # }
 `
