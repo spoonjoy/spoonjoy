@@ -21,6 +21,8 @@ model User {
   resetTokenExpiresAt DateTime?
   webAuthnChallenge   String? @unique
   credentials         UserCredential[]
+  createdAt           DateTime  @default(now())
+  recipes             Recipe[]
 }
 
 model UserCredential {
@@ -30,4 +32,52 @@ model UserCredential {
   publicKey  Bytes
   transports String?
   counter    BigInt
+}
+
+model Recipe {
+  id                  String  @id @default(cuid())
+  title               String
+  description         String?
+  servings            Int?
+  chefId              String
+  chef                User      @relation(fields: [chefId], references: [id])
+  createdAt           DateTime  @default(now())
+  deletedAt           DateTime?
+  steps               RecipeStep[]
+
+  @@unique([chefId, title])
+}
+
+model RecipeStep {
+  id                String  @id @default(cuid())
+  recipeId          String
+  recipe            Recipe  @relation(fields: [recipeId], references: [id])
+  stepNum           Int
+  description       String?
+  ingredients       Ingredient[]
+
+  @@unique([recipeId, stepNum])
+}
+
+model Ingredient {
+  id                String        @id @default(cuid())
+  recipeStepId      String
+  recipeStep        RecipeStep    @relation(fields: [recipeStepId], references: [id])
+  quantity          Float
+  unitId            String
+  unit              Unit          @relation(fields: [unitId], references: [id])
+  ingredeientRefId  String
+  ingredientRef     IngredientRef @relation(fields: [ingredeientRefId], references: [id])
+}
+
+model IngredientRef {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  ingredients Ingredient[]
+}
+
+model Unit {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  ingredients Ingredient[]
 }
