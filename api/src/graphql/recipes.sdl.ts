@@ -19,7 +19,6 @@ export const schema = gql`
     title: String!
     description: String
     servings: Int
-    chefId: String!
     steps: [CreateRecipeStepInput]!
   }
 
@@ -27,7 +26,6 @@ export const schema = gql`
     title: String!
     description: String
     servings: Int
-    chefId: String!
     steps: [CreateRecipeStepInput]!
   }
 

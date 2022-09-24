@@ -1,17 +1,22 @@
-import type { Prisma, Recipe } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
+import { Recipe } from 'types/graphql'
 
 import type { ScenarioData } from '@redwoodjs/testing/api'
 
-interface RecipeCreateNoChefArgs {
-  data: Prisma.RecipeCreateWithoutChefInput
-}
-
-export const standard = defineScenario<RecipeCreateNoChefArgs>({
+export const standard = defineScenario<Prisma.RecipeCreateArgs>({
   recipe: {
     pizza: {
       data: {
         title: 'Yummy pizza',
         description: "The yummiest pizza you've ever had.",
+        chef: {
+          create: {
+            email: 'String9852331',
+            username: 'String1071938',
+            hashedPassword: 'String',
+            salt: 'String',
+          },
+        },
         servings: 2,
         steps: {
           create: [
@@ -77,6 +82,19 @@ export const standard = defineScenario<RecipeCreateNoChefArgs>({
               },
             },
           ],
+        },
+      },
+      include: {
+        chef: true,
+        steps: {
+          include: {
+            ingredients: {
+              include: {
+                ingredientRef: true,
+                unit: true,
+              },
+            },
+          },
         },
       },
     },

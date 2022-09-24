@@ -14,7 +14,6 @@ export const schema = gql`
   }
 
   input CreateRecipeStepInput {
-    recipeId: String!
     stepNum: Int!
     description: String
     ingredients: [CreateIngredientInput]!

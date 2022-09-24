@@ -3,6 +3,9 @@ import type {
   QueryResolvers,
   MutationResolvers,
   RecipeRelationResolvers,
+  CreateRecipeStepInput,
+  InputMaybe,
+  CreateIngredientInput,
 } from 'types/graphql'
 
 import { requireAuth } from 'src/lib/auth'
@@ -18,12 +21,65 @@ export const recipe: QueryResolvers['recipe'] = ({ id }) => {
   })
 }
 
-export const createRecipe: MutationResolvers['createRecipe'] = ({
-  input,
-}: Prisma.RecipeCreateWithoutChefInput) => {
+const mapIngredientsMutationInputToDbInput = (
+  ingredients: InputMaybe<CreateIngredientInput>[]
+): Prisma.IngredientCreateNestedManyWithoutRecipeStepInput => {
+  return {
+    create: ingredients.map((ingredient) => {
+      const { quantity, unitName, ingredientName } = ingredient!
+      return {
+        quantity,
+        unit: {
+          connectOrCreate: {
+            where: { name: unitName.toLowerCase() },
+            create: { name: unitName.toLowerCase() },
+          },
+        },
+        ingredientRef: {
+          connectOrCreate: {
+            where: { name: ingredientName.toLowerCase() },
+            create: { name: ingredientName.toLowerCase() },
+          },
+        },
+      }
+    }),
+  }
+}
+
+const mapStepsMutationInputToDbInput = (
+  steps: InputMaybe<CreateRecipeStepInput>[]
+): Prisma.RecipeStepCreateNestedManyWithoutRecipeInput | undefined => {
+  return {
+    create: steps.map((step) => {
+      const { stepNum, description, ingredients } = step!
+      return {
+        stepNum,
+        description,
+        ingredients: mapIngredientsMutationInputToDbInput(ingredients),
+      }
+    }),
+  }
+}
+
+export const createRecipe: MutationResolvers['createRecipe'] = ({ input }) => {
   requireAuth()
+
+  const { title, description, servings, steps } = input
+
+  const dbInput: Prisma.RecipeCreateInput = {
+    title,
+    description,
+    servings,
+    chef: {
+      connect: {
+        id: context.currentUser!.id,
+      },
+    },
+    steps: mapStepsMutationInputToDbInput(steps),
+  }
+
   return db.recipe.create({
-    data: { ...input, chefId: context.currentUser!.id },
+    data: dbInput,
   })
 }
 
