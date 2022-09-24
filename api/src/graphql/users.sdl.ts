@@ -3,11 +3,6 @@ export const schema = gql`
     id: String!
     email: String!
     username: String!
-    hashedPassword: String!
-    salt: String!
-    resetToken: String
-    resetTokenExpiresAt: DateTime
-    webAuthnChallenge: String
     createdAt: DateTime!
     recipes: [Recipe]!
   }

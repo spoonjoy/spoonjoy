@@ -4,7 +4,6 @@ export const schema = gql`
     title: String!
     description: String
     servings: Int
-    chefId: String!
     chef: User!
     createdAt: DateTime!
     deletedAt: DateTime
