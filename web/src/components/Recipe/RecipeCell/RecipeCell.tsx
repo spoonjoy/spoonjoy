@@ -11,7 +11,10 @@ export const QUERY = gql`
       title
       description
       servings
-      chefId
+      chef {
+        id
+        username
+      }
       createdAt
       deletedAt
     }

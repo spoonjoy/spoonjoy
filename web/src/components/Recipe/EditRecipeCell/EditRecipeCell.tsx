@@ -14,7 +14,10 @@ export const QUERY = gql`
       title
       description
       servings
-      chefId
+      chef {
+        id
+        username
+      }
       createdAt
       deletedAt
     }
@@ -27,7 +30,10 @@ const UPDATE_RECIPE_MUTATION = gql`
       title
       description
       servings
-      chefId
+      chef {
+        id
+        username
+      }
       createdAt
       deletedAt
     }
@@ -64,10 +70,17 @@ export const Success = ({ recipe }: CellSuccessProps<EditRecipeById>) => {
   return (
     <div className="rw-segment">
       <header className="rw-segment-header">
-        <h2 className="rw-heading rw-heading-secondary">Edit Recipe {recipe?.id}</h2>
+        <h2 className="rw-heading rw-heading-secondary">
+          Edit Recipe {recipe?.id}
+        </h2>
       </header>
       <div className="rw-segment-main">
-        <RecipeForm recipe={recipe} onSave={onSave} error={error} loading={loading} />
+        <RecipeForm
+          recipe={recipe}
+          onSave={onSave}
+          error={error}
+          loading={loading}
+        />
       </div>
     </div>
   )

@@ -24,16 +24,16 @@ export const schema = gql`
   }
 
   input UpdateRecipeInput {
-    title: String
+    title: String!
     description: String
     servings: Int
-    chefId: String
-    deletedAt: DateTime
+    chefId: String!
+    steps: [CreateRecipeStepInput]!
   }
 
   type Mutation {
     createRecipe(input: CreateRecipeInput!): Recipe! @requireAuth
-    # updateRecipe(id: String!, input: UpdateRecipeInput!): Recipe! @requireAuth
-    # deleteRecipe(id: String!): Recipe! @requireAuth
+    updateRecipe(id: String!, input: UpdateRecipeInput!): Recipe! @requireAuth
+    deleteRecipe(id: String!): Recipe! @requireAuth
   }
 `

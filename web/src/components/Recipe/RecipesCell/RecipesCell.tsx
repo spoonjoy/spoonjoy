@@ -12,7 +12,10 @@ export const QUERY = gql`
       title
       description
       servings
-      chefId
+      chef {
+        id
+        username
+      }
       createdAt
       deletedAt
     }
@@ -25,10 +28,7 @@ export const Empty = () => {
   return (
     <div className="rw-text-center">
       {'No recipes yet. '}
-      <Link
-        to={routes.newRecipe()}
-        className="rw-link"
-      >
+      <Link to={routes.newRecipe()} className="rw-link">
         {'Create one?'}
       </Link>
     </div>
