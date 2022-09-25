@@ -3,13 +3,15 @@ import type {
   QueryResolvers,
   MutationResolvers,
   RecipeRelationResolvers,
-  CreateRecipeStepInput,
-  InputMaybe,
-  CreateIngredientInput,
 } from 'types/graphql'
 
-import { requireAuth } from 'src/lib/auth'
+import { useAuth } from '@redwoodjs/auth'
+import { AuthenticationError } from '@redwoodjs/graphql-server'
+
+import { getCurrentUser, requireAuth } from 'src/lib/auth'
 import { db } from 'src/lib/db'
+
+import { mapStepsMutationInputToDbInput } from './recipeUtilities'
 
 export const recipes: QueryResolvers['recipes'] = () => {
   return db.recipe.findMany()
@@ -21,48 +23,9 @@ export const recipe: QueryResolvers['recipe'] = ({ id }) => {
   })
 }
 
-const mapIngredientsMutationInputToDbInput = (
-  ingredients: InputMaybe<CreateIngredientInput>[]
-): Prisma.IngredientCreateNestedManyWithoutRecipeStepInput => {
-  return {
-    create: ingredients.map((ingredient) => {
-      const { quantity, unitName, ingredientName } = ingredient!
-      return {
-        quantity,
-        unit: {
-          connectOrCreate: {
-            where: { name: unitName.toLowerCase() },
-            create: { name: unitName.toLowerCase() },
-          },
-        },
-        ingredientRef: {
-          connectOrCreate: {
-            where: { name: ingredientName.toLowerCase() },
-            create: { name: ingredientName.toLowerCase() },
-          },
-        },
-      }
-    }),
-  }
-}
-
-const mapStepsMutationInputToDbInput = (
-  steps: InputMaybe<CreateRecipeStepInput>[]
-): Prisma.RecipeStepCreateNestedManyWithoutRecipeInput | undefined => {
-  return {
-    create: steps.map((step) => {
-      const { stepNum, description, ingredients } = step!
-      return {
-        stepNum,
-        description,
-        ingredients: mapIngredientsMutationInputToDbInput(ingredients),
-      }
-    }),
-  }
-}
-
 export const createRecipe: MutationResolvers['createRecipe'] = ({ input }) => {
-  requireAuth()
+  const currentUser = context.currentUser
+  if (!currentUser) throw new AuthenticationError('You are not logged in!')
 
   const { title, description, servings, steps } = input
 
@@ -72,7 +35,7 @@ export const createRecipe: MutationResolvers['createRecipe'] = ({ input }) => {
     servings,
     chef: {
       connect: {
-        id: context.currentUser!.id,
+        id: currentUser.id,
       },
     },
     steps: mapStepsMutationInputToDbInput(steps),

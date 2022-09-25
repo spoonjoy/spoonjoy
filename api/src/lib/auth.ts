@@ -23,20 +23,15 @@ import { db } from './db'
 export interface ICurrentUser {
   id: string
   username: string
-  email: string
 }
-export const getCurrentUser = async (
-  session: ICurrentUser // or Decoded, but wanted to be more explicit
-): Promise<ICurrentUser | null> => {
-  if (!session || typeof session.id !== 'string') {
-    return null
-  } else {
-    const user = await db.user.findUnique({
-      where: { id: session.id },
-      select: { id: true, username: true, email: true },
-    })
-    return user
-  }
+
+export const getCurrentUser = async (session: ICurrentUser) => {
+  const user = await db.user.findUnique({
+    where: { id: session.id },
+    select: { id: true, username: true },
+  })
+  if (!user) throw new AuthenticationError('You are not logged in.')
+  else return user
 }
 
 /**

@@ -1,5 +1,5 @@
-import type { Prisma } from '@prisma/client'
-import { Recipe } from 'types/graphql'
+import { Prisma } from '@prisma/client'
+import { Recipe, User } from 'types/graphql'
 
 import type { ScenarioData } from '@redwoodjs/testing/api'
 
@@ -101,4 +101,18 @@ export const standard = defineScenario<Prisma.RecipeCreateArgs>({
   },
 })
 
+export const createdUser = defineScenario<Prisma.UserCreateArgs>({
+  user: {
+    bob: {
+      data: {
+        email: 'bob@spoonjoy.app',
+        username: 'bob',
+        hashedPassword: 'string',
+        salt: 'string',
+      },
+    },
+  },
+})
+
 export type StandardScenario = ScenarioData<Recipe, 'recipe'>
+export type UserScenario = ScenarioData<User, 'user'>
