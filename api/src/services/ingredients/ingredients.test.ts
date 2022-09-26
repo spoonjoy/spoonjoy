@@ -37,15 +37,15 @@ describe('ingredients', () => {
         recipeStepId: scenario.ingredient.two.recipeStepId,
         quantity: 7071778.975578646,
         unitId: scenario.ingredient.two.unitId,
-        ingredeientRefId: scenario.ingredient.two.ingredeientRefId,
+        ingredientRefId: scenario.ingredient.two.ingredientRefId,
       },
     })
 
     expect(result.recipeStepId).toEqual(scenario.ingredient.two.recipeStepId)
     expect(result.quantity).toEqual(7071778.975578646)
     expect(result.unitId).toEqual(scenario.ingredient.two.unitId)
-    expect(result.ingredeientRefId).toEqual(
-      scenario.ingredient.two.ingredeientRefId
+    expect(result.ingredientRefId).toEqual(
+      scenario.ingredient.two.ingredientRefId
     )
   })
 
@@ -55,10 +55,10 @@ describe('ingredients', () => {
     })) as Ingredient
     const result = await updateIngredient({
       id: original.id,
-      input: { quantity: 1584794.7929764474 },
+      input: { quantity: 1584794.792976447 },
     })
 
-    expect(result.quantity).toEqual(1584794.7929764474)
+    expect(result.quantity).toEqual(1584794.792976447)
   })
 
   scenario('deletes a ingredient', async (scenario: StandardScenario) => {
