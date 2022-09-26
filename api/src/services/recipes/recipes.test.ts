@@ -33,6 +33,7 @@ describe('recipes', () => {
   scenario('returns a single recipe', async (scenario: RecipeScenario) => {
     const result = await recipe({ id: scenario.recipe.pizza.id })
 
+    // !! This will fail when comparing createdAt due to a known error: https://github.com/redwoodjs/redwood/issues/6429
     expect(result).toEqual(scenario.recipe.pizza)
   })
 
