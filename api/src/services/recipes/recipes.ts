@@ -5,10 +5,8 @@ import type {
   RecipeRelationResolvers,
 } from 'types/graphql'
 
-import { useAuth } from '@redwoodjs/auth'
 import { AuthenticationError } from '@redwoodjs/graphql-server'
 
-import { getCurrentUser, requireAuth } from 'src/lib/auth'
 import { db } from 'src/lib/db'
 
 import { mapStepsMutationInputToDbInput } from './recipeUtilities'

@@ -3,6 +3,20 @@ import { Recipe, User } from 'types/graphql'
 
 import type { ScenarioData } from '@redwoodjs/testing/api'
 
+export const recipeIncludeAllRelations = {
+  chef: true,
+  steps: {
+    include: {
+      ingredients: {
+        include: {
+          ingredientRef: true,
+          unit: true,
+        },
+      },
+    },
+  },
+}
+
 export const standard = defineScenario<Prisma.RecipeCreateArgs>({
   recipe: {
     pizza: {
@@ -84,19 +98,7 @@ export const standard = defineScenario<Prisma.RecipeCreateArgs>({
           ],
         },
       },
-      include: {
-        chef: true,
-        steps: {
-          include: {
-            ingredients: {
-              include: {
-                ingredientRef: true,
-                unit: true,
-              },
-            },
-          },
-        },
-      },
+      include: recipeIncludeAllRelations,
     },
   },
 })

@@ -1,6 +1,10 @@
 import type { Recipe } from '@prisma/client'
 import { CreateRecipeInput } from 'types/graphql'
 
+import { removeNulls } from '@redwoodjs/api'
+
+import { db } from 'src/lib/db'
+
 import {
   recipes,
   recipe,
@@ -8,11 +12,11 @@ import {
   updateRecipe,
   deleteRecipe,
 } from './recipes'
-import type {
+import {
+  recipeIncludeAllRelations,
   StandardScenario as RecipeScenario,
   UserScenario,
 } from './recipes.scenarios'
-
 // Generated boilerplate tests do not account for all circumstances
 // and can fail without adjustments, e.g. Float and DateTime types.
 //           Please refer to the RedwoodJS Testing Docs:
@@ -65,6 +69,7 @@ describe('recipes', () => {
             },
             {
               stepNum: 2,
+              description: null,
               ingredients: [
                 {
                   quantity: 1.0,
@@ -83,9 +88,33 @@ describe('recipes', () => {
       }
 
       const result = await createRecipe(mutationInput)
+      const resultWithRelations = await db.recipe.findUnique({
+        where: { id: result.id },
+        include: recipeIncludeAllRelations,
+      })
 
-      expect(result.title).toEqual('String')
-      expect(result.chef.username).toEqual('ari')
+      const { input } = mutationInput
+      const { bob } = scenario.user
+
+      expect(resultWithRelations).toBeTruthy()
+      if (resultWithRelations) {
+        const { chef, title, steps, description } = resultWithRelations
+        expect(chef.username).toEqual(bob.username)
+        expect(title).toEqual(input.title)
+        expect(description).toEqual(input.description)
+        expect(steps.length).toEqual(input.steps.length)
+
+        steps.forEach((step, idx) => {
+          expect(step.stepNum).toBe(input.steps[idx]?.stepNum)
+          expect(step.description).toBe(input.steps[idx]?.description)
+
+          expect(step.ingredients.length).toBe(
+            input.steps[idx]?.ingredients.length
+          )
+        })
+      } else {
+        fail('No recipe got returned!')
+      }
     }
   )
 
