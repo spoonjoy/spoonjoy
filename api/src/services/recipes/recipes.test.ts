@@ -1,8 +1,6 @@
 import type { Recipe } from '@prisma/client'
 import { CreateRecipeInput } from 'types/graphql'
 
-import { removeNulls } from '@redwoodjs/api'
-
 import { db } from 'src/lib/db'
 
 import {
