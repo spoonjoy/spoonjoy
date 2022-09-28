@@ -47,13 +47,23 @@ export const createRecipe: MutationResolvers['createRecipe'] = ({ input }) => {
   })
 }
 
-export const updateRecipe: MutationResolvers['updateRecipe'] = ({
+export const updateRecipe: MutationResolvers['updateRecipe'] = async ({
   id,
   input,
 }) => {
   const currentUser = context.currentUser
   if (!currentUser) throw new AuthenticationError('You are not logged in!')
 
+  const recipeBasicInfo = await db.recipe.findUnique({
+    where: { id },
+    include: {
+      chef: true,
+    },
+  })
+
+  if (currentUser.id !== recipeBasicInfo!.chefId) {
+    throw new AuthenticationError('You can only update your own recipes!')
+  }
   const { title, description, servings, steps } = input
   const dbInput: Prisma.RecipeUpdateInput = {
     title,

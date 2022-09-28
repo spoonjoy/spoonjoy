@@ -1,6 +1,8 @@
 import type { Recipe } from '@prisma/client'
 import { CreateRecipeInput } from 'types/graphql'
 
+import { RedwoodGraphQLError } from '@redwoodjs/graphql-server'
+
 import { db } from 'src/lib/db'
 
 import {
@@ -26,6 +28,9 @@ import {
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
 describe('recipes', () => {
+  beforeEach(() => {
+    mockCurrentUser(null) // TODO this is actually allowed but redwood types need to be updated
+  })
   scenario('returns all recipes', async (scenario: RecipeScenario) => {
     const result = await recipes()
 
@@ -39,64 +44,74 @@ describe('recipes', () => {
     expect(result).toEqual(scenario.recipe.pizza)
   })
 
+  const recipeMutationInput: { input: CreateRecipeInput } = {
+    input: {
+      title: 'Pizza!',
+      description: "The yummiest pizza you've ever had.",
+      servings: 2,
+      steps: [
+        {
+          stepNum: 1,
+          description: 'first step!',
+          ingredients: [
+            {
+              quantity: 1.5,
+              unitName: 'pounds',
+              ingredientName: 'cheese',
+            },
+            {
+              quantity: 2,
+              unitName: 'gallons',
+              ingredientName: 'tomato sauce',
+            },
+          ],
+        },
+        {
+          stepNum: 2,
+          description: null,
+          ingredients: [
+            {
+              quantity: 1.0,
+              unitName: 'stick',
+              ingredientName: 'butter',
+            },
+            {
+              quantity: 19,
+              unitName: 'loaf',
+              ingredientName: 'toast',
+            },
+          ],
+        },
+      ],
+    },
+  }
+
   scenario(
     'createdUser',
-    'creates a recipe',
+    'fails to create a recipe while not logged in',
+    async () => {
+      expect(() => {
+        createRecipe(recipeMutationInput)
+      }).toThrow()
+    }
+  )
+
+  scenario(
+    'createdUser',
+    'creates a recipe while logged in',
     async (scenario: UserScenario) => {
       mockCurrentUser({
         id: scenario.user.bob.id,
         username: scenario.user.bob.username,
       })
 
-      const mutationInput: { input: CreateRecipeInput } = {
-        input: {
-          title: 'Pizza!',
-          description: "The yummiest pizza you've ever had.",
-          servings: 2,
-          steps: [
-            {
-              stepNum: 1,
-              description: 'first step!',
-              ingredients: [
-                {
-                  quantity: 1.5,
-                  unitName: 'pounds',
-                  ingredientName: 'cheese',
-                },
-                {
-                  quantity: 2,
-                  unitName: 'gallons',
-                  ingredientName: 'tomato sauce',
-                },
-              ],
-            },
-            {
-              stepNum: 2,
-              description: null,
-              ingredients: [
-                {
-                  quantity: 1.0,
-                  unitName: 'stick',
-                  ingredientName: 'butter',
-                },
-                {
-                  quantity: 19,
-                  unitName: 'loaf',
-                  ingredientName: 'toast',
-                },
-              ],
-            },
-          ],
-        },
-      }
-
-      const result = await createRecipe(mutationInput)
+      const result = await createRecipe(recipeMutationInput)
       const resultWithRelations = await db.recipe.findUnique({
         where: { id: result.id },
         include: recipeIncludeAllRelations,
       })
 
-      const { input } = mutationInput
+      const { input } = recipeMutationInput
       const { bob } = scenario.user
 
       expect(resultWithRelations).toBeTruthy()
@@ -121,11 +136,37 @@ describe('recipes', () => {
     }
   )
 
+  scenario(
+    'fails to update a recipe when not logged in',
+    async (scenario: RecipeScenario) => {
+      const original = await db.recipe.findUnique({
+        where: { id: scenario.recipe.pizza.id },
+        include: recipeIncludeAllRelations,
+      })
+      const updated = mapRecipeDbResponseToMutationInput(
+        original as unknown as IRecipeResponse
+      )
+
+      expect(async () => {
+        await updateRecipe({
+          id: original!.id,
+          input: updated.input,
+        })
+      }).toThrow()
+    }
+  )
+
   scenario('updates a recipe', async (scenario: RecipeScenario) => {
-    mockCurrentUser({
-      id: scenario.user.bob.id,
-      username: scenario.user.bob.username,
-    })
+    await db.user
+      .findUnique({
+        where: { id: scenario.recipe.pizza.chefId },
+      })
+      .then((user) => {
+        mockCurrentUser({
+          id: user!.id,
+          username: user!.username,
+        })
+      })
 
     const original = await db.recipe.findUnique({
       where: { id: scenario.recipe.pizza.id },

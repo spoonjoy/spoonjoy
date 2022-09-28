@@ -27,25 +27,30 @@ const userInput = {
         salt: 'string',
       },
     },
+    linda: {
+      data: {
+        email: 'linda@spoonjoy.app',
+        username: 'linda',
+        hashedPassword: 'string',
+        salt: 'string',
+      },
+    },
   },
 }
 
+export type StandardScenario = ScenarioData<Recipe, 'recipe', 'user'>
 export const standard = defineScenario<
-  Prisma.RecipeCreateArgs | Prisma.UserCreateArgs
+  Prisma.RecipeCreateArgs | Prisma.UserCreateArgs,
+  'recipe' | 'user'
 >({
+  user: userInput.user,
   recipe: {
-    pizza: {
+    // this is actually fine, but the type system probably needs to be updated
+    pizza: (scenario) => ({
       data: {
+        chefId: scenario.user.bob.id,
         title: 'Yummy pizza',
         description: "The yummiest pizza you've ever had.",
-        chef: {
-          create: {
-            email: 'String9852331',
-            username: 'String1071938',
-            hashedPassword: 'String',
-            salt: 'String',
-          },
-        },
         servings: 2,
         steps: {
           create: [
@@ -114,12 +119,10 @@ export const standard = defineScenario<
         },
       },
       include: recipeIncludeAllRelations,
-    },
+    }),
   },
-  user: userInput.user,
 })
 
 export const createdUser = defineScenario<Prisma.UserCreateArgs>(userInput)
 
-export type StandardScenario = ScenarioData<Recipe, 'recipe', 'user'>
 export type UserScenario = ScenarioData<User, 'user'>
