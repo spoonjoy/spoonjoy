@@ -17,7 +17,22 @@ export const recipeIncludeAllRelations = {
   },
 }
 
-export const standard = defineScenario<Prisma.RecipeCreateArgs>({
+const userInput = {
+  user: {
+    bob: {
+      data: {
+        email: 'bob@spoonjoy.app',
+        username: 'bob',
+        hashedPassword: 'string',
+        salt: 'string',
+      },
+    },
+  },
+}
+
+export const standard = defineScenario<
+  Prisma.RecipeCreateArgs | Prisma.UserCreateArgs
+>({
   recipe: {
     pizza: {
       data: {
@@ -101,20 +116,10 @@ export const standard = defineScenario<Prisma.RecipeCreateArgs>({
       include: recipeIncludeAllRelations,
     },
   },
+  user: userInput.user,
 })
 
-export const createdUser = defineScenario<Prisma.UserCreateArgs>({
-  user: {
-    bob: {
-      data: {
-        email: 'bob@spoonjoy.app',
-        username: 'bob',
-        hashedPassword: 'string',
-        salt: 'string',
-      },
-    },
-  },
-})
+export const createdUser = defineScenario<Prisma.UserCreateArgs>(userInput)
 
-export type StandardScenario = ScenarioData<Recipe, 'recipe'>
+export type StandardScenario = ScenarioData<Recipe, 'recipe', 'user'>
 export type UserScenario = ScenarioData<User, 'user'>

@@ -15,6 +15,10 @@ import {
   StandardScenario as RecipeScenario,
   UserScenario,
 } from './recipes.scenarios'
+import {
+  IRecipeResponse,
+  mapRecipeDbResponseToMutationInput,
+} from './recipeUtilities'
 // Generated boilerplate tests do not account for all circumstances
 // and can fail without adjustments, e.g. Float and DateTime types.
 //           Please refer to the RedwoodJS Testing Docs:
@@ -117,22 +121,45 @@ describe('recipes', () => {
     }
   )
 
-  //   scenario('updates a recipe', async (scenario: RecipeScenario) => {
-  //     const original = (await recipe({ id: scenario.recipe.one.id })) as Recipe
-  //     const result = await updateRecipe({
-  //       id: original.id,
-  //       input: { title: 'String2' },
-  //     })
+  scenario('updates a recipe', async (scenario: RecipeScenario) => {
+    mockCurrentUser({
+      id: scenario.user.bob.id,
+      username: scenario.user.bob.username,
+    })
 
-  //     expect(result.title).toEqual('String2')
-  //   })
+    const original = await db.recipe.findUnique({
+      where: { id: scenario.recipe.pizza.id },
+      include: recipeIncludeAllRelations,
+    })
+    const updated = mapRecipeDbResponseToMutationInput(
+      original as unknown as IRecipeResponse
+    )
 
-  //   scenario('deletes a recipe', async (scenario: RecipeScenario) => {
-  //     const original = (await deleteRecipe({
-  //       id: scenario.recipe.one.id,
-  //     })) as Recipe
-  //     const result = await recipe({ id: original.id })
+    const result = await updateRecipe({
+      id: original!.id,
+      input: updated.input,
+    })
+    const resultWithRelations = await db.recipe.findUnique({
+      where: { id: result.id },
+      include: recipeIncludeAllRelations,
+    })
 
-  //     expect(result).toEqual(null)
-  //   })
+    expect(resultWithRelations).toBeTruthy()
+    if (resultWithRelations) {
+      const { chef, title, steps, description } = resultWithRelations
+
+      steps.forEach((step, idx) => {})
+    } else {
+      fail('No recipe got returned!')
+    }
+  })
+
+  // scenario('deletes a recipe', async (scenario: RecipeScenario) => {
+  //   const original = (await deleteRecipe({
+  //     id: scenario.recipe.pizza.id,
+  //   })) as Recipe
+  //   const result = await recipe({ id: original.id })
+
+  //   expect(result).toEqual(null)
+  // })
 })

@@ -5,9 +5,12 @@ import {
   UpdateRecipeStepInput,
   UpdateIngredientInput,
   InputMaybe,
+  Recipe,
+  User,
+  CreateRecipeInput,
+  IngredientRef,
+  Unit,
 } from 'types/graphql'
-
-import type { ScenarioData } from '@redwoodjs/testing/api'
 
 // The below types are created based on the recipe scenarios. Trying to use the generated Prisma types was too...nonsensical
 export interface IConnectOrCreate {
@@ -22,6 +25,9 @@ export interface IIngredientsDbInput {
   create: Array<{
     quantity: number
     unit: {
+      connectOrCreate: IConnectOrCreate
+    }
+    ingredientRef: {
       connectOrCreate: IConnectOrCreate
     }
   }>
@@ -47,22 +53,30 @@ export interface IIngredientDbOutput {
   unit: IUnitDbOutput
   ingredientRef: IIngredientRefDbOutput
 }
+// export type IIngredientDbOutput = Ingredient & {
+//   ingredientRef: IngredientRef
+//   unit: Unit
+// }
 
 export interface IRecipeStepDbOutput {
   stepNum: number
   description?: string
   ingredients: IIngredientDbOutput[]
 }
+// export type IRecipeStepDbOutput = Maybe<RecipeStep>[] &
+//   (RecipeStep & {
+//     ingredients: IIngredientDbOutput[]
+//   })[]
 
 export const mapIngredientsDbInputToMutationInput = (
   ingredients: IIngredientsDbInput
 ): InputMaybe<CreateIngredientInput>[] => {
   return ingredients.create.map((ingredient) => {
-    const { quantity, unit, ingredientName } = ingredient
+    const { quantity, unit, ingredientRef } = ingredient
     return {
       quantity,
       unitName: unit.connectOrCreate.where.name,
-      ingredientName,
+      ingredientName: ingredientRef.connectOrCreate.where.name,
     }
   })
 }
@@ -104,6 +118,31 @@ export const mapStepsDbResponseToMutationInput = (
       ingredients: mapIngredientsDbResponseToMutationInput(ingredients),
     }
   })
+}
+
+// this was copied from the generated return type of db.recipe.findUnique with the included relations. It does remove some unneeded inputs, eg user
+export type IRecipeResponse = Recipe & {
+  chef: User
+  steps: (RecipeStep & {
+    ingredients: (Ingredient & {
+      ingredientRef: IngredientRef
+      unit: Unit
+    })[]
+  })[]
+}
+
+export const mapRecipeDbResponseToMutationInput = (
+  recipe: IRecipeResponse
+): { input: CreateRecipeInput } => {
+  const { title, description, servings, steps } = recipe
+  return {
+    input: {
+      title: title!,
+      description,
+      servings,
+      steps: mapStepsDbResponseToMutationInput(steps as IRecipeStepDbOutput[]),
+    },
+  }
 }
 
 export const mapIngredientsMutationInputToDbCreateInput = (
@@ -152,8 +191,9 @@ export const mapIngredientsMutationInputToDbUpdateInput = (
   return {
     upsert: ingredients.map((ingredient) => {
       const { quantity, unitName, ingredientName, id } = ingredient!
+      const ingredientId = id || 'noid'
       return {
-        where: { id: id || undefined },
+        where: { id: ingredientId },
         update: {
           quantity,
           unit: {

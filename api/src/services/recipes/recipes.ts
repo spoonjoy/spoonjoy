@@ -63,8 +63,8 @@ export const updateRecipe: MutationResolvers['updateRecipe'] = ({
   }
 
   return db.recipe.update({
-    data: dbInput,
     where: { id },
+    data: dbInput,
   })
 }
 
