@@ -9,7 +9,10 @@ import { AuthenticationError } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
 
-import { mapStepsMutationInputToDbInput } from './recipeUtilities'
+import {
+  mapStepsMutationInputToDbCreateInput,
+  mapStepsMutationInputToDbUpdateInput,
+} from './recipeUtilities'
 
 export const recipes: QueryResolvers['recipes'] = () => {
   return db.recipe.findMany()
@@ -36,7 +39,7 @@ export const createRecipe: MutationResolvers['createRecipe'] = ({ input }) => {
         id: currentUser.id,
       },
     },
-    steps: mapStepsMutationInputToDbInput(steps),
+    steps: mapStepsMutationInputToDbCreateInput(steps),
   }
 
   return db.recipe.create({
@@ -48,8 +51,19 @@ export const updateRecipe: MutationResolvers['updateRecipe'] = ({
   id,
   input,
 }) => {
+  const currentUser = context.currentUser
+  if (!currentUser) throw new AuthenticationError('You are not logged in!')
+
+  const { title, description, servings, steps } = input
+  const dbInput: Prisma.RecipeUpdateInput = {
+    title,
+    description,
+    servings,
+    steps: mapStepsMutationInputToDbUpdateInput(steps, id),
+  }
+
   return db.recipe.update({
-    data: input,
+    data: dbInput,
     where: { id },
   })
 }

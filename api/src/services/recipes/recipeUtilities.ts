@@ -2,6 +2,8 @@ import type { Prisma, RecipeStep, Ingredient } from '@prisma/client'
 import {
   CreateRecipeStepInput,
   CreateIngredientInput,
+  UpdateRecipeStepInput,
+  UpdateIngredientInput,
   InputMaybe,
 } from 'types/graphql'
 
@@ -104,7 +106,7 @@ export const mapStepsDbResponseToMutationInput = (
   })
 }
 
-export const mapIngredientsMutationInputToDbInput = (
+export const mapIngredientsMutationInputToDbCreateInput = (
   ingredients: InputMaybe<CreateIngredientInput>[]
 ): Prisma.IngredientCreateNestedManyWithoutRecipeStepInput => {
   return {
@@ -129,7 +131,7 @@ export const mapIngredientsMutationInputToDbInput = (
   }
 }
 
-export const mapStepsMutationInputToDbInput = (
+export const mapStepsMutationInputToDbCreateInput = (
   steps: InputMaybe<CreateRecipeStepInput>[]
 ): Prisma.RecipeStepCreateNestedManyWithoutRecipeInput | undefined => {
   return {
@@ -138,7 +140,79 @@ export const mapStepsMutationInputToDbInput = (
       return {
         stepNum,
         description,
-        ingredients: mapIngredientsMutationInputToDbInput(ingredients),
+        ingredients: mapIngredientsMutationInputToDbCreateInput(ingredients),
+      }
+    }),
+  }
+}
+
+export const mapIngredientsMutationInputToDbUpdateInput = (
+  ingredients: InputMaybe<UpdateIngredientInput>[]
+): Prisma.IngredientUpdateManyWithoutRecipeStepNestedInput => {
+  return {
+    upsert: ingredients.map((ingredient) => {
+      const { quantity, unitName, ingredientName, id } = ingredient!
+      return {
+        where: { id: id || undefined },
+        update: {
+          quantity,
+          unit: {
+            connectOrCreate: {
+              where: { name: unitName.toLowerCase() },
+              create: { name: unitName.toLowerCase() },
+            },
+          },
+          ingredientRef: {
+            connectOrCreate: {
+              where: { name: ingredientName.toLowerCase() },
+              create: { name: ingredientName.toLowerCase() },
+            },
+          },
+        },
+        create: {
+          quantity,
+          unit: {
+            connectOrCreate: {
+              where: { name: unitName.toLowerCase() },
+              create: { name: unitName.toLowerCase() },
+            },
+          },
+          ingredientRef: {
+            connectOrCreate: {
+              where: { name: ingredientName.toLowerCase() },
+              create: { name: ingredientName.toLowerCase() },
+            },
+          },
+        },
+      }
+    }),
+  }
+}
+
+export const mapStepsMutationInputToDbUpdateInput = (
+  steps: InputMaybe<UpdateRecipeStepInput>[],
+  recipeId: string
+): Prisma.RecipeStepUpdateManyWithoutRecipeNestedInput | undefined => {
+  return {
+    upsert: steps.map((step) => {
+      const { stepNum, description, ingredients } = step!
+      return {
+        where: {
+          recipeId_stepNum: {
+            recipeId: recipeId,
+            stepNum: stepNum,
+          },
+        },
+        update: {
+          stepNum,
+          description,
+          ingredients: mapIngredientsMutationInputToDbUpdateInput(ingredients),
+        },
+        create: {
+          stepNum,
+          description,
+          ingredients: mapIngredientsMutationInputToDbCreateInput(ingredients),
+        },
       }
     }),
   }

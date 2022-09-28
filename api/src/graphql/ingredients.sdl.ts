@@ -22,10 +22,12 @@ export const schema = gql`
   }
 
   input UpdateIngredientInput {
-    recipeStepId: String
-    quantity: Float
-    unitId: String
-    ingredientRefId: String
+    # needed when updating the recipe step's ingredients as it's the only unique input (see Prisma.IngredientWhereUniqueInput)
+    # however it's not required as updating a step sometimes involves adding new ingredients
+    id: String
+    quantity: Float!
+    unitName: String!
+    ingredientName: String!
   }
 
   # type Mutation {
