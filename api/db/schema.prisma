@@ -23,6 +23,7 @@ model User {
   credentials         UserCredential[]
   createdAt           DateTime  @default(now())
   recipes             Recipe[]
+  shoppingList        ShoppingList?
 }
 
 model UserCredential {
@@ -80,4 +81,10 @@ model Unit {
   id          String  @id @default(cuid())
   name        String  @unique
   ingredients Ingredient[]
+}
+
+model ShoppingList {
+  id          String  @id @default(cuid())
+  authorId    String  @unique
+  author      User    @relation(fields: [authorId], references: [id])
 }
