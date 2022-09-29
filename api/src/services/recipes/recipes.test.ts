@@ -266,24 +266,53 @@ describe('recipes', () => {
     }
   )
 
-  scenario('deletes a recipe', async (scenario: RecipeScenario) => {
-    await db.user
-      .findUnique({
-        where: { id: scenario.recipe.pizza.chefId },
-      })
-      .then((user) => {
-        mockCurrentUser({
-          id: user!.id,
-          username: user!.username,
+  scenario(
+    'deletes a recipe while logged in',
+    async (scenario: RecipeScenario) => {
+      await db.user
+        .findUnique({
+          where: { id: scenario.recipe.pizza.chefId },
         })
+        .then((user) => {
+          mockCurrentUser({
+            id: user!.id,
+            username: user!.username,
+          })
+        })
+      const original = await recipe({ id: scenario.recipe.pizza.id })
+
+      const result = await deleteRecipe({
+        id: scenario.recipe.pizza.id,
       })
-    const original = await recipe({ id: scenario.recipe.pizza.id })
 
-    const result = await deleteRecipe({
-      id: scenario.recipe.pizza.id,
-    })
+      expect(original?.deletedAt).toBe(null)
+      expect(result?.deletedAt).not.toBe(null)
+    }
+  )
 
-    expect(original?.deletedAt).toBe(null)
-    expect(result?.deletedAt).not.toBe(null)
-  })
+  scenario(
+    "can't delete another user's recipe",
+    async (scenario: RecipeScenario) => {
+      mockCurrentUser({
+        id: scenario.user.linda.id,
+        username: scenario.user.linda.username,
+      })
+      expect(async () => {
+        await deleteRecipe({
+          id: scenario.recipe.pizza.id,
+        })
+      }).toThrow()
+    }
+  )
+
+  scenario(
+    "can't delete a recipe while not logged in",
+    async (scenario: RecipeScenario) => {
+      expect(async () => {
+        await deleteRecipe({
+          id: scenario.recipe.pizza.id,
+        })
+      }).toThrow()
+    }
+  )
 })
