@@ -62,7 +62,7 @@ model RecipeStep {
 model Ingredient {
   id                String        @id @default(cuid())
   recipeStepId      String
-  recipeStep        RecipeStep    @relation(fields: [recipeStepId], references: [id])
+  recipeStep        RecipeStep    @relation(fields: [recipeStepId], references: [id], onDelete: Cascade)
   quantity          Float
   unitId            String
   unit              Unit          @relation(fields: [unitId], references: [id])

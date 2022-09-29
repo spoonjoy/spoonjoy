@@ -188,10 +188,14 @@ export const mapStepsMutationInputToDbCreateInput = (
 export const mapIngredientsMutationInputToDbUpdateInput = (
   ingredients: InputMaybe<UpdateIngredientInput>[]
 ): Prisma.IngredientUpdateManyWithoutRecipeStepNestedInput => {
+  // const allIngIds = ingredients.map((ingredient) => {
+  //   return ingredient!.id!
+  // })
   return {
+    deleteMany: {}, // delete them all! TODO: delete only the ones *not* being updated
     upsert: ingredients.map((ingredient) => {
       const { quantity, unitName, ingredientName, id } = ingredient!
-      const ingredientId = id || 'noid'
+      const ingredientId = id || 'noid' // TODO there won't be an ID here as what's passing it in is really the update thing
       return {
         where: { id: ingredientId },
         update: {
@@ -255,5 +259,12 @@ export const mapStepsMutationInputToDbUpdateInput = (
         },
       }
     }),
+    deleteMany: {
+      stepNum: {
+        // because stepNum is 1 indexed, the length is the stepNum
+        // so, for example, if there are 3 steps, we want to delete any steps with a stepNum > 3
+        gt: steps.length,
+      },
+    },
   }
 }

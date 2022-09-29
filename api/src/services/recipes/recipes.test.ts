@@ -193,6 +193,32 @@ describe('recipes', () => {
             },
           ],
         },
+        {
+          stepNum: 2,
+          description: 'new second step!',
+          ingredients: [
+            {
+              quantity: 500.2348,
+              unitName: 'grams',
+              ingredientName: 'yumminess',
+            },
+            {
+              quantity: 2000.234,
+              unitName: 'mlems',
+              ingredientName: 'toast',
+            },
+            {
+              quantity: 2384.29,
+              unitName: 'grams',
+              ingredientName: 'yumminess',
+            },
+            {
+              quantity: 2384892.23938,
+              unitName: 'fruits',
+              ingredientName: 'labor',
+            },
+          ],
+        },
       ]
 
       const result = await updateRecipe({
