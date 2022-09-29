@@ -1,10 +1,12 @@
 import humanize from 'humanize-string'
+import type {
+  DeleteRecipeMutationVariables,
+  FindRecipeById,
+} from 'types/graphql'
 
 import { Link, routes, navigate } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
-
-import type { DeleteRecipeMutationVariables, FindRecipeById } from 'types/graphql'
 
 const DELETE_RECIPE_MUTATION = gql`
   mutation DeleteRecipeMutation($id: String!) {
@@ -73,7 +75,7 @@ const Recipe = ({ recipe }: Props) => {
       <div className="rw-segment">
         <header className="rw-segment-header">
           <h2 className="rw-heading rw-heading-secondary">
-            Recipe {recipe.id} Detail
+            Recipe {recipe.title} Detail
           </h2>
         </header>
         <table className="rw-table">
@@ -81,22 +83,28 @@ const Recipe = ({ recipe }: Props) => {
             <tr>
               <th>Id</th>
               <td>{recipe.id}</td>
-            </tr><tr>
+            </tr>
+            <tr>
               <th>Title</th>
               <td>{recipe.title}</td>
-            </tr><tr>
+            </tr>
+            <tr>
               <th>Description</th>
               <td>{recipe.description}</td>
-            </tr><tr>
+            </tr>
+            <tr>
               <th>Servings</th>
               <td>{recipe.servings}</td>
-            </tr><tr>
+            </tr>
+            <tr>
               <th>Chef id</th>
               <td>{recipe.chefId}</td>
-            </tr><tr>
+            </tr>
+            <tr>
               <th>Created at</th>
               <td>{timeTag(recipe.createdAt)}</td>
-            </tr><tr>
+            </tr>
+            <tr>
               <th>Deleted at</th>
               <td>{timeTag(recipe.deletedAt)}</td>
             </tr>
