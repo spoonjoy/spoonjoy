@@ -153,7 +153,7 @@ describe('recipes', () => {
       }
       expect(() => {
         updateRecipe(updatedInput)
-      }).toThrow() // TODO this for some reason doesn't work, even though the above definitely throws
+      }).toThrow() // TODO this for some reason doesn't work, even though it definitely throws
     }
   )
 
@@ -301,7 +301,7 @@ describe('recipes', () => {
         await deleteRecipe({
           id: scenario.recipe.pizza.id,
         })
-      }).toThrow()
+      }).toThrow() // TODO this for some reason doesn't work, even though it definitely throws
     }
   )
 
@@ -312,7 +312,7 @@ describe('recipes', () => {
         await deleteRecipe({
           id: scenario.recipe.pizza.id,
         })
-      }).toThrow()
+      }).toThrow() // TODO this for some reason doesn't work, even though it definitely throws
     }
   )
 })
