@@ -78,7 +78,7 @@ export const standard = (/* vars, { ctx, req } */) => ({
       },
       {
         id: 'testStepId3',
-        stepNum: 2,
+        stepNum: 3,
         ingredients: [
           {
             id: 'testIngId6',

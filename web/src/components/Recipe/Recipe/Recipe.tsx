@@ -1,4 +1,3 @@
-import humanize from 'humanize-string'
 import type {
   DeleteRecipeMutationVariables,
   FindRecipeById,
@@ -16,37 +15,13 @@ const DELETE_RECIPE_MUTATION = gql`
   }
 `
 
-const formatEnum = (values: string | string[] | null | undefined) => {
-  if (values) {
-    if (Array.isArray(values)) {
-      const humanizedValues = values.map((value) => humanize(value))
-      return humanizedValues.join(', ')
-    } else {
-      return humanize(values as string)
-    }
-  }
-}
-
-const jsonDisplay = (obj: unknown) => {
+const TimeTag = ({ datetime }: { datetime: string }) => {
+  console.log(datetime)
   return (
-    <pre>
-      <code>{JSON.stringify(obj, null, 2)}</code>
-    </pre>
+    <time dateTime={datetime} title={datetime}>
+      {new Date(datetime).toUTCString()}
+    </time>
   )
-}
-
-const timeTag = (datetime?: string) => {
-  return (
-    datetime && (
-      <time dateTime={datetime} title={datetime}>
-        {new Date(datetime).toUTCString()}
-      </time>
-    )
-  )
-}
-
-const checkboxInputTag = (checked: boolean) => {
-  return <input type="checkbox" checked={checked} disabled />
 }
 
 interface Props {
@@ -72,60 +47,42 @@ const Recipe = ({ recipe }: Props) => {
 
   return (
     <>
-      <div className="rw-segment">
-        <header className="rw-segment-header">
-          <h2 className="rw-heading rw-heading-secondary">
-            Recipe {recipe.title} Detail
-          </h2>
-        </header>
-        <table className="rw-table">
-          <tbody>
-            <tr>
-              <th>Id</th>
-              <td>{recipe.id}</td>
-            </tr>
-            <tr>
-              <th>Title</th>
-              <td>{recipe.title}</td>
-            </tr>
-            <tr>
-              <th>Description</th>
-              <td>{recipe.description}</td>
-            </tr>
-            <tr>
-              <th>Servings</th>
-              <td>{recipe.servings}</td>
-            </tr>
-            <tr>
-              <th>Chef id</th>
-              <td>{recipe.chefId}</td>
-            </tr>
-            <tr>
-              <th>Created at</th>
-              <td>{timeTag(recipe.createdAt)}</td>
-            </tr>
-            <tr>
-              <th>Deleted at</th>
-              <td>{timeTag(recipe.deletedAt)}</td>
-            </tr>
-          </tbody>
-        </table>
+      <h2 className="text-center">
+        <span className="font-serif text-3xl">{recipe.title}</span>
+        <br />
+        <span>
+          by <span className="font-bold">{recipe.chef.username}</span>
+        </span>
+        <br />
+        <span className="text-xs">
+          created <TimeTag datetime={recipe.createdAt} />
+        </span>
+      </h2>
+      <p className="mt-2 text-center">{recipe.description}</p>
+      <div>
+        {recipe.steps.map((step) => {
+          const { stepNum, description, ingredients } = step!
+          return (
+            <div key={stepNum} className="mt-2">
+              <h3>step {stepNum}</h3>
+              <ul>
+                {ingredients.map((ingredient) => {
+                  const { quantity, unit, ingredientRef } = ingredient!
+                  return (
+                    <li
+                      key={`${quantity}-${unit.name}-${ingredientRef.name}`}
+                      className="ml-5 list-item"
+                    >
+                      - {quantity} {unit.name} {ingredientRef.name}
+                    </li>
+                  )
+                })}
+              </ul>
+              <p>{step?.description}</p>
+            </div>
+          )
+        })}
       </div>
-      <nav className="rw-button-group">
-        <Link
-          to={routes.editRecipe({ id: recipe.id })}
-          className="rw-button rw-button-blue"
-        >
-          Edit
-        </Link>
-        <button
-          type="button"
-          className="rw-button rw-button-red"
-          onClick={() => onDeleteClick(recipe.id)}
-        >
-          Delete
-        </button>
-      </nav>
     </>
   )
 }
