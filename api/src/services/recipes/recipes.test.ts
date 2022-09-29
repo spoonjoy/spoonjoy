@@ -147,12 +147,13 @@ describe('recipes', () => {
         original as unknown as IRecipeResponse
       )
 
-      expect(async () => {
-        await updateRecipe({
-          id: original!.id,
-          input: updated.input,
-        })
-      }).toThrow()
+      const updatedInput = {
+        id: original!.id,
+        input: updated.input,
+      }
+      expect(() => {
+        updateRecipe(updatedInput)
+      }).toThrow() // TODO this for some reason doesn't work, even though the above definitely throws
     }
   )
 
@@ -265,12 +266,24 @@ describe('recipes', () => {
     }
   )
 
-  // scenario('deletes a recipe', async (scenario: RecipeScenario) => {
-  //   const original = (await deleteRecipe({
-  //     id: scenario.recipe.pizza.id,
-  //   })) as Recipe
-  //   const result = await recipe({ id: original.id })
+  scenario('deletes a recipe', async (scenario: RecipeScenario) => {
+    await db.user
+      .findUnique({
+        where: { id: scenario.recipe.pizza.chefId },
+      })
+      .then((user) => {
+        mockCurrentUser({
+          id: user!.id,
+          username: user!.username,
+        })
+      })
+    const original = await recipe({ id: scenario.recipe.pizza.id })
 
-  //   expect(result).toEqual(null)
-  // })
+    const result = await deleteRecipe({
+      id: scenario.recipe.pizza.id,
+    })
+
+    expect(original?.deletedAt).toBe(null)
+    expect(result?.deletedAt).not.toBe(null)
+  })
 })

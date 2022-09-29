@@ -32,6 +32,6 @@ export const schema = gql`
   type Mutation {
     createRecipe(input: CreateRecipeInput!): Recipe! @requireAuth
     updateRecipe(id: String!, input: UpdateRecipeInput!): Recipe! @requireAuth
-    deleteRecipe(id: String!, input: UpdateRecipeInput!): Recipe! @requireAuth
+    deleteRecipe(id: String!): Recipe! @requireAuth
   }
 `
