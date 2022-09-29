@@ -78,10 +78,42 @@ export const updateRecipe: MutationResolvers['updateRecipe'] = async ({
   })
 }
 
-export const deleteRecipe: MutationResolvers['deleteRecipe'] = ({ id }) => {
-  return db.recipe.delete({
+/** instead of deleting a recipe, this method marks it as deleted */
+export const deleteRecipe: MutationResolvers['deleteRecipe'] = async ({
+  id,
+  input,
+}) => {
+  const currentUser = context.currentUser
+  if (!currentUser) throw new AuthenticationError('You are not logged in!')
+
+  const recipeBasicInfo = await db.recipe.findUnique({
     where: { id },
+    include: {
+      chef: true,
+    },
   })
+
+  if (currentUser.id !== recipeBasicInfo!.chefId) {
+    throw new AuthenticationError('You can only update your own recipes!')
+  }
+
+  const { title, description, servings, steps } = input
+  const dbInput: Prisma.RecipeUpdateInput = {
+    title,
+    description,
+    servings,
+    deletedAt: new Date(),
+    steps: mapStepsMutationInputToDbUpdateInput(steps, id),
+  }
+
+  return db.recipe.update({
+    where: { id },
+    data: dbInput,
+  })
+
+  // return db.recipe.delete({
+  //   where: { id },
+  // })
 }
 
 export const Recipe: RecipeRelationResolvers = {

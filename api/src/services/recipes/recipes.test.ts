@@ -156,44 +156,88 @@ describe('recipes', () => {
     }
   )
 
-  scenario('updates a recipe', async (scenario: RecipeScenario) => {
-    await db.user
-      .findUnique({
-        where: { id: scenario.recipe.pizza.chefId },
-      })
-      .then((user) => {
-        mockCurrentUser({
-          id: user!.id,
-          username: user!.username,
+  scenario(
+    'updates a recipe while logged in',
+    async (scenario: RecipeScenario) => {
+      await db.user
+        .findUnique({
+          where: { id: scenario.recipe.pizza.chefId },
         })
+        .then((user) => {
+          mockCurrentUser({
+            id: user!.id,
+            username: user!.username,
+          })
+        })
+
+      const original = await db.recipe.findUnique({
+        where: { id: scenario.recipe.pizza.id },
+        include: recipeIncludeAllRelations,
+      })
+      const updated = mapRecipeDbResponseToMutationInput(
+        original as unknown as IRecipeResponse
+      )
+
+      updated.input.title = 'New title!'
+      updated.input.description = 'New description!'
+      updated.input.servings = 10000
+      updated.input.steps = [
+        {
+          stepNum: 1,
+          description: 'new first step!',
+          ingredients: [
+            {
+              quantity: 500,
+              unitName: 'grams',
+              ingredientName: 'yumminess',
+            },
+          ],
+        },
+      ]
+
+      const result = await updateRecipe({
+        id: original!.id,
+        input: updated.input,
+      })
+      const resultWithRelations = await db.recipe.findUnique({
+        where: { id: result.id },
+        include: recipeIncludeAllRelations,
       })
 
-    const original = await db.recipe.findUnique({
-      where: { id: scenario.recipe.pizza.id },
-      include: recipeIncludeAllRelations,
-    })
-    const updated = mapRecipeDbResponseToMutationInput(
-      original as unknown as IRecipeResponse
-    )
+      expect(resultWithRelations).toBeTruthy()
+      if (resultWithRelations) {
+        const { chef, title, steps, description, servings } =
+          resultWithRelations
+        expect(chef!.id).toBe(scenario.recipe.pizza.chefId)
+        expect(title).toBe(updated.input.title)
+        expect(description).toBe(updated.input.description)
+        expect(servings).toBe(updated.input.servings)
 
-    const result = await updateRecipe({
-      id: original!.id,
-      input: updated.input,
-    })
-    const resultWithRelations = await db.recipe.findUnique({
-      where: { id: result.id },
-      include: recipeIncludeAllRelations,
-    })
-
-    expect(resultWithRelations).toBeTruthy()
-    if (resultWithRelations) {
-      const { chef, title, steps, description } = resultWithRelations
-
-      steps.forEach((step, idx) => {})
-    } else {
-      fail('No recipe got returned!')
+        expect(steps.length).toBe(updated.input.steps.length)
+        steps.forEach((step, sIdx) => {
+          expect(step.description).toBe(updated.input.steps[sIdx]?.description)
+          expect(step.stepNum).toBe(updated.input.steps[sIdx]?.stepNum)
+          expect(step.stepNum).toBe(updated.input.steps[sIdx]?.stepNum)
+          expect(step.ingredients.length).toBe(
+            updated.input.steps[sIdx]?.ingredients.length
+          )
+          step.ingredients.forEach((ingredient, iIdx) => {
+            expect(ingredient.quantity).toBe(
+              updated.input.steps[sIdx]?.ingredients[iIdx]?.quantity
+            )
+            expect(ingredient.ingredientRef.name).toBe(
+              updated.input.steps[sIdx]?.ingredients[iIdx]?.ingredientName
+            )
+            expect(ingredient.unit.name).toBe(
+              updated.input.steps[sIdx]?.ingredients[iIdx]?.unitName
+            )
+          })
+        })
+      } else {
+        fail('No recipe got returned!')
+      }
     }
-  })
+  )
 
   // scenario('deletes a recipe', async (scenario: RecipeScenario) => {
   //   const original = (await deleteRecipe({
