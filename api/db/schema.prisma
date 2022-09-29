@@ -72,19 +72,33 @@ model Ingredient {
 }
 
 model IngredientRef {
-  id          String  @id @default(cuid())
-  name        String  @unique
-  ingredients Ingredient[]
+  id                String  @id @default(cuid())
+  name              String  @unique
+  ingredients       Ingredient[]
+  shoppingListIems  ShoppingListItem[]
 }
 
 model Unit {
-  id          String  @id @default(cuid())
-  name        String  @unique
-  ingredients Ingredient[]
+  id                String  @id @default(cuid())
+  name              String  @unique
+  ingredients       Ingredient[]
+  shoppingListIems  ShoppingListItem[]
 }
 
 model ShoppingList {
   id          String  @id @default(cuid())
   authorId    String  @unique
   author      User    @relation(fields: [authorId], references: [id])
+  items       ShoppingListItem[]
+}
+
+model ShoppingListItem {
+  id                String        @id @default(cuid())
+  shoppingListId    String
+  shoppingList      ShoppingList  @relation(fields: [shoppingListId], references: [id], onDelete: Cascade)
+  quantity          Float
+  unitId            String
+  unit              Unit          @relation(fields: [unitId], references: [id])
+  ingredientRefId   String
+  ingredientRef     IngredientRef @relation(fields: [ingredientRefId], references: [id])
 }
