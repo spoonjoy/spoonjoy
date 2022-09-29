@@ -78,7 +78,7 @@ const Recipe = ({ recipe }: Props) => {
                   )
                 })}
               </ul>
-              <p>{step?.description}</p>
+              <p>{description}</p>
             </div>
           )
         })}
