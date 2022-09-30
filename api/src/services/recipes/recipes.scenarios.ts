@@ -3,6 +3,8 @@ import { Recipe, User } from 'types/graphql'
 
 import type { ScenarioData } from '@redwoodjs/testing/api'
 
+import { userScenarioData } from '../users/users.scenarios'
+
 export const recipeIncludeAllRelations = {
   chef: true,
   steps: {
@@ -17,33 +19,12 @@ export const recipeIncludeAllRelations = {
   },
 }
 
-const userInput = {
-  user: {
-    bob: {
-      data: {
-        email: 'bob@spoonjoy.app',
-        username: 'bob',
-        hashedPassword: 'string',
-        salt: 'string',
-      },
-    },
-    linda: {
-      data: {
-        email: 'linda@spoonjoy.app',
-        username: 'linda',
-        hashedPassword: 'string',
-        salt: 'string',
-      },
-    },
-  },
-}
-
 export type StandardScenario = ScenarioData<Recipe, 'recipe', 'user'>
 export const standard = defineScenario<
   Prisma.RecipeCreateArgs | Prisma.UserCreateArgs,
   'recipe' | 'user'
 >({
-  user: userInput.user,
+  user: userScenarioData.user,
   recipe: {
     // this is actually fine, but the type system probably needs to be updated
     pizza: (scenario) => ({
@@ -123,6 +104,7 @@ export const standard = defineScenario<
   },
 })
 
-export const createdUser = defineScenario<Prisma.UserCreateArgs>(userInput)
+export const createdUser =
+  defineScenario<Prisma.UserCreateArgs>(userScenarioData)
 
 export type UserScenario = ScenarioData<User, 'user'>

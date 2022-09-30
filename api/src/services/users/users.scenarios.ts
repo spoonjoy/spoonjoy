@@ -1,25 +1,28 @@
 import type { Prisma, User } from '@prisma/client'
+
 import type { ScenarioData } from '@redwoodjs/testing/api'
 
-export const standard = defineScenario<Prisma.UserCreateArgs>({
+export const userScenarioData = {
   user: {
-    one: {
+    bob: {
       data: {
-        email: 'String3571653',
-        username: 'String7915967',
-        hashedPassword: 'String',
-        salt: 'String',
+        email: 'bob@spoonjoy.app',
+        username: 'bob',
+        hashedPassword: 'string',
+        salt: 'string',
       },
     },
-    two: {
+    linda: {
       data: {
-        email: 'String8871720',
-        username: 'String9838518',
-        hashedPassword: 'String',
-        salt: 'String',
+        email: 'linda@spoonjoy.app',
+        username: 'linda',
+        hashedPassword: 'string',
+        salt: 'string',
       },
     },
   },
-})
+}
+
+export const standard = defineScenario<Prisma.UserCreateArgs>(userScenarioData)
 
 export type StandardScenario = ScenarioData<User, 'user'>
