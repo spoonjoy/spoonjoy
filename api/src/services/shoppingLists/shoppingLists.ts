@@ -11,9 +11,10 @@ export const shoppingLists: QueryResolvers['shoppingLists'] = () => {
 }
 
 export const shoppingList: QueryResolvers['shoppingList'] = ({ id }) => {
-  return db.shoppingList.findUnique({
+  const list = db.shoppingList.findUnique({
     where: { id },
   })
+  return list
 }
 
 export const createShoppingList: MutationResolvers['createShoppingList'] = ({
