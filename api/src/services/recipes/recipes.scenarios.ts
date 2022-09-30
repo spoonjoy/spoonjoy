@@ -26,7 +26,7 @@ export const standard = defineScenario<
 >({
   user: userScenarioData.user,
   recipe: {
-    // this is actually fine, but the type system probably needs to be updated
+    // TODO: this is actually fine, but the type system probably needs to be updated
     pizza: (scenario) => ({
       data: {
         chefId: scenario.user.bob.id,
