@@ -201,7 +201,7 @@ export type StandardScenario = ScenarioData<
 >
 export const standard = defineScenario<
   Prisma.ShoppingListCreateArgs | Prisma.UserCreateArgs,
-  'recipe' | 'user'
+  'shoppingList' | 'user'
 >({
   user: userScenarioData.user,
   shoppingList: {
