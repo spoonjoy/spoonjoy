@@ -1,7 +1,29 @@
 import type { Prisma, ShoppingList } from '@prisma/client'
+
 import type { ScenarioData } from '@redwoodjs/testing/api'
 
-export const standard = defineScenario<Prisma.ShoppingListCreateArgs>({
+import { userScenarioData } from '../users/users.scenarios'
+
+export const shoppingListIncludeAllRelations: Prisma.ShoppingListInclude = {
+  author: true,
+  items: {
+    include: {
+      ingredientRef: true,
+      unit: true,
+    },
+  },
+}
+
+export type StandardScenario = ScenarioData<
+  ShoppingList,
+  'shoppingList',
+  'user'
+>
+export const standard = defineScenario<
+  Prisma.ShoppingListCreateArgs | Prisma.UserCreateArgs,
+  'recipe' | 'user'
+>({
+  user: userScenarioData.user,
   shoppingList: {
     one: {
       data: {
@@ -29,5 +51,3 @@ export const standard = defineScenario<Prisma.ShoppingListCreateArgs>({
     },
   },
 })
-
-export type StandardScenario = ScenarioData<ShoppingList, 'shoppingList'>

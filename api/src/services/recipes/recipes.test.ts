@@ -1,4 +1,3 @@
-import type { Recipe } from '@prisma/client'
 import { CreateRecipeInput } from 'types/graphql'
 
 import { RedwoodGraphQLError } from '@redwoodjs/graphql-server'
@@ -90,6 +89,7 @@ describe('recipes', () => {
     'createdUser',
     'fails to create a recipe while not logged in',
     async () => {
+      expect.assertions(1)
       expect(() => {
         createRecipe(recipeMutationInput)
       }).toThrow()
@@ -151,9 +151,15 @@ describe('recipes', () => {
         id: original!.id,
         input: updated.input,
       }
-      expect(() => {
-        updateRecipe(updatedInput)
-      }).toThrow() // TODO this for some reason doesn't work, even though it definitely throws
+
+      expect.assertions(1)
+      try {
+        await updateRecipe(updatedInput)
+      } catch (e) {
+        expect(e).toMatchObject(
+          new RedwoodGraphQLError('You are not logged in!')
+        )
+      }
     }
   )
 
@@ -297,22 +303,33 @@ describe('recipes', () => {
         id: scenario.user.linda.id,
         username: scenario.user.linda.username,
       })
-      expect(async () => {
+
+      expect.assertions(1)
+      try {
         await deleteRecipe({
           id: scenario.recipe.pizza.id,
         })
-      }).toThrow() // TODO this for some reason doesn't work, even though it definitely throws
+      } catch (e) {
+        expect(e).toMatchObject(
+          new RedwoodGraphQLError('You can only delete your own recipes!')
+        )
+      }
     }
   )
 
   scenario(
     "can't delete a recipe while not logged in",
     async (scenario: RecipeScenario) => {
-      expect(async () => {
+      expect.assertions(1)
+      try {
         await deleteRecipe({
           id: scenario.recipe.pizza.id,
         })
-      }).toThrow() // TODO this for some reason doesn't work, even though it definitely throws
+      } catch (e) {
+        expect(e).toMatchObject(
+          new RedwoodGraphQLError('You are not logged in!')
+        )
+      }
     }
   )
 })

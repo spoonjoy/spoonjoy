@@ -2,6 +2,7 @@ import type { Prisma, User } from '@prisma/client'
 
 import type { ScenarioData } from '@redwoodjs/testing/api'
 
+// TODO: figure out how to type this. My current attempts just end up in "possibly infinite" type errors
 export const userScenarioData = {
   user: {
     bob: {
