@@ -19,6 +19,7 @@ export const recipeIncludeAllRelations: Prisma.RecipeInclude = {
   },
 }
 
+// TODO this is really the type of Prisma.RecipeCreateArgs but adding it in pisses off the typechecker
 const getFirstRecipeData = (chefId: string) => {
   return {
     data: {
