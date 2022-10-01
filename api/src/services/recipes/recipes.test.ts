@@ -1,4 +1,4 @@
-import { CreateRecipeInput } from 'types/graphql'
+import { CreateRecipeInput, User } from 'types/graphql'
 
 import { RedwoodGraphQLError } from '@redwoodjs/graphql-server'
 
@@ -6,6 +6,7 @@ import { db } from 'src/lib/db'
 
 import { ingredient, Ingredient } from '../ingredients/ingredients'
 import { RecipeStep } from '../recipeSteps/recipeSteps'
+import { StandardScenario as UserScenario } from '../users/users.scenarios'
 
 import {
   recipes,
@@ -18,7 +19,6 @@ import {
 import {
   recipeIncludeAllRelations,
   StandardScenario as RecipeScenario,
-  UserScenario,
 } from './recipes.scenarios'
 import {
   IRecipeResponse,
@@ -74,34 +74,6 @@ describe('recipes', () => {
         expect(returnedIng!.unitId).toEqual(scenarioIng.unitId)
       })
     })
-    // Recipe.steps!({}, { root: result }).then((steps: typeof RecipeStep[]) => {
-    //   // steps comparisons
-    //   steps.forEach(async (returnedStep, stepIdx) => {
-    //     const scenarioStep = scenario.recipe.pizza.steps[
-    //       stepIdx
-    //     ] as typeof RecipeStep
-
-    //     expect(returnedStep.stepNum).toEqual(scenarioStep.stepNum)
-    //     expect(returnedStep.description).toEqual(scenarioStep.description)
-
-    //     // ingredients comparisons
-    //     RecipeStep.ingredients({}, { root: returnedStep }).then(
-    //       (ingredients: typeof Ingredient[] | null) => {
-    //         if (ingredients && ingredients.length) {
-    //           ingredients.forEach((returnedIng, ingIdx) => {
-    //             const scenarioIng = scenarioStep.ingredients[ingIdx]
-
-    //             expect(returnedIng.quantity).toEqual(scenarioIng.quantity)
-    //             expect(returnedIng.ingredientRefId).toEqual(
-    //               scenarioIng.ingredientRefId
-    //             )
-    //             expect(returnedIng.unitId).toEqual(scenarioIng.unitId)
-    //           })
-    //         }
-    //       }
-    //     )
-    //   })
-    // })
   })
 
   const recipeMutationInput: { input: CreateRecipeInput } = {
@@ -147,7 +119,7 @@ describe('recipes', () => {
   }
 
   scenario(
-    'createdUser',
+    'userOnlyScenario',
     'fails to create a recipe while not logged in',
     async () => {
       expect.assertions(1)
@@ -158,7 +130,7 @@ describe('recipes', () => {
   )
 
   scenario(
-    'createdUser',
+    'userOnlyScenario',
     'creates a recipe while logged in',
     async (scenario: UserScenario) => {
       mockCurrentUser({
@@ -229,7 +201,7 @@ describe('recipes', () => {
     async (scenario: RecipeScenario) => {
       await db.user
         .findUnique({
-          where: { id: scenario.recipe.pizza.chefId },
+          where: { id: scenario.recipe.pizza.chef.id },
         })
         .then((user) => {
           mockCurrentUser({
