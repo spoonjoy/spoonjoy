@@ -4,7 +4,6 @@ import { RedwoodGraphQLError } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
 
-import { ingredient, Ingredient } from '../ingredients/ingredients'
 import { RecipeStep } from '../recipeSteps/recipeSteps'
 import { StandardScenario as UserScenario } from '../users/users.scenarios'
 
