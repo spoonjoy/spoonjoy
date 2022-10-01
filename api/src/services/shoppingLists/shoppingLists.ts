@@ -47,4 +47,8 @@ export const ShoppingList: ShoppingListRelationResolvers = {
   author: (_obj, { root }) => {
     return db.shoppingList.findUnique({ where: { id: root?.id } }).author()
   },
+
+  items: (_obj, { root }) => {
+    return db.shoppingList.findUnique({ where: { id: root?.id } }).items()
+  },
 }

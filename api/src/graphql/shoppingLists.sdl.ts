@@ -3,6 +3,7 @@ export const schema = gql`
     id: String!
     authorId: String!
     author: User!
+    items: [ShoppingListItem]!
   }
 
   type Query {
