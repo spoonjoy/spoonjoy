@@ -14,7 +14,7 @@ import {
 } from './shoppingLists'
 import {
   shoppingListIncludeAllRelations,
-  StandardScenario,
+  StandardScenario as ShoppingListScenario,
 } from './shoppingLists.scenarios'
 
 // Generated boilerplate tests do not account for all circumstances
@@ -27,13 +27,16 @@ describe('shoppingLists', () => {
   beforeEach(() => {
     mockCurrentUser(null) // TODO this is actually allowed but redwood types need to be updated
   })
-  scenario('returns all shoppingLists', async (scenario: StandardScenario) => {
-    const result = await shoppingLists()
-    expect(result.length).toEqual(Object.keys(scenario.shoppingList).length)
-  })
+  scenario(
+    'returns all shoppingLists',
+    async (scenario: ShoppingListScenario) => {
+      const result = await shoppingLists()
+      expect(result.length).toEqual(Object.keys(scenario.shoppingList).length)
+    }
+  )
   scenario(
     'returns a single shoppingList',
-    async (scenario: StandardScenario) => {
+    async (scenario: ShoppingListScenario) => {
       const { bobsList } = scenario.shoppingList
 
       const numOfSingleAssertions = 1 // Author check
@@ -151,7 +154,35 @@ describe('shoppingLists', () => {
       }
     }
   )
-  // scenario('updates a shoppingList', async (scenario: StandardScenario) => {
+
+  scenario(
+    'fails to update a shopping list when not logged in',
+    async (scenario: ShoppingListScenario) => {
+      const original = await db.recipe.findUnique({
+        where: { id: scenario.recipe.pizza.id },
+        include: recipeIncludeAllRelations,
+      })
+      const updated = mapRecipeDbResponseToMutationInput(
+        original as unknown as IRecipeResponse
+      )
+
+      const updatedInput = {
+        id: original!.id,
+        input: updated.input,
+      }
+
+      expect.assertions(1)
+      try {
+        await updateRecipe(updatedInput)
+      } catch (e) {
+        expect(e).toMatchObject(
+          new RedwoodGraphQLError('You are not logged in!')
+        )
+      }
+    }
+  )
+
+  // scenario('updates a shoppingList', async (scenario: ShoppingListScenario) => {
   //   const original = (await shoppingList({
   //     id: scenario.shoppingList.bobsList.id,
   //   })) as ShoppingList
@@ -161,7 +192,7 @@ describe('shoppingLists', () => {
   //   })
   //   expect(result.authorId).toEqual(scenario.shoppingList.two.authorId)
   // })
-  // scenario('deletes a shoppingList', async (scenario: StandardScenario) => {
+  // scenario('deletes a shoppingList', async (scenario: ShoppingListScenario) => {
   //   const original = (await deleteShoppingList({
   //     id: scenario.shoppingList.bobsList.id,
   //   })) as ShoppingList
