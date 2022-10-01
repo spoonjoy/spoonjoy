@@ -120,7 +120,7 @@ export const mapStepsDbResponseToMutationInput = (
   })
 }
 
-// this was copied from the generated return type of db.recipe.findUnique with the included relations. It does remove some unneeded inputs, eg user
+// this was copied from the generated return type of db.recipe.findUnique with the included relations.
 export type IRecipeResponse = Recipe & {
   chef: User
   steps: (RecipeStep & {

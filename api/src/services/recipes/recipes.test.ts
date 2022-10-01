@@ -190,7 +190,7 @@ describe('recipes', () => {
         include: recipeIncludeAllRelations,
       })
       const updated = mapRecipeDbResponseToMutationInput(
-        original as unknown as IRecipeResponse
+        original as unknown as IRecipeResponse // this type is actually derived from the generated type of 'original'
       )
 
       const updatedInput = {
