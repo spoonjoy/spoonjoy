@@ -4,12 +4,16 @@ import { RedwoodGraphQLError } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
 
+import { ingredient, Ingredient } from '../ingredients/ingredients'
+import { RecipeStep } from '../recipeSteps/recipeSteps'
+
 import {
   recipes,
   recipe,
   createRecipe,
   updateRecipe,
   deleteRecipe,
+  Recipe,
 } from './recipes'
 import {
   recipeIncludeAllRelations,
@@ -39,8 +43,62 @@ describe('recipes', () => {
   scenario('returns a single recipe', async (scenario: RecipeScenario) => {
     const result = await recipe({ id: scenario.recipe.pizza.id })
 
-    // !! This will fail when comparing createdAt due to a known error: https://github.com/redwoodjs/redwood/issues/6429
-    expect(result).toEqual(scenario.recipe.pizza)
+    Recipe.chef!({}, { root: result }).then((chef) => {
+      expect(chef).toEqual(scenario.recipe.pizza.chef)
+    })
+
+    const steps = await Recipe.steps({}, { root: result })
+    const ingredientsByStep = await Promise.all(
+      steps.map((step) => {
+        return RecipeStep.ingredients({}, { root: step })
+      })
+    )
+    steps.forEach((returnedStep, stepIdx) => {
+      const scenarioStep = scenario.recipe.pizza.steps[
+        stepIdx
+      ] as typeof RecipeStep
+
+      expect(returnedStep!.stepNum).toEqual(scenarioStep.stepNum)
+      expect(returnedStep!.description).toEqual(scenarioStep.description)
+
+      ingredientsByStep[stepIdx].forEach((returnedIng, ingIdx) => {
+        const scenarioIng = scenarioStep.ingredients[ingIdx]
+
+        expect(returnedIng!.quantity).toEqual(scenarioIng.quantity)
+        expect(returnedIng!.ingredientRefId).toEqual(
+          scenarioIng.ingredientRefId
+        )
+        expect(returnedIng!.unitId).toEqual(scenarioIng.unitId)
+      })
+    })
+    // Recipe.steps!({}, { root: result }).then((steps: typeof RecipeStep[]) => {
+    //   // steps comparisons
+    //   steps.forEach(async (returnedStep, stepIdx) => {
+    //     const scenarioStep = scenario.recipe.pizza.steps[
+    //       stepIdx
+    //     ] as typeof RecipeStep
+
+    //     expect(returnedStep.stepNum).toEqual(scenarioStep.stepNum)
+    //     expect(returnedStep.description).toEqual(scenarioStep.description)
+
+    //     // ingredients comparisons
+    //     RecipeStep.ingredients({}, { root: returnedStep }).then(
+    //       (ingredients: typeof Ingredient[] | null) => {
+    //         if (ingredients && ingredients.length) {
+    //           ingredients.forEach((returnedIng, ingIdx) => {
+    //             const scenarioIng = scenarioStep.ingredients[ingIdx]
+
+    //             expect(returnedIng.quantity).toEqual(scenarioIng.quantity)
+    //             expect(returnedIng.ingredientRefId).toEqual(
+    //               scenarioIng.ingredientRefId
+    //             )
+    //             expect(returnedIng.unitId).toEqual(scenarioIng.unitId)
+    //           })
+    //         }
+    //       }
+    //     )
+    //   })
+    // })
   })
 
   const recipeMutationInput: { input: CreateRecipeInput } = {
