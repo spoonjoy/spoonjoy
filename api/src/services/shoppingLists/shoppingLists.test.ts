@@ -1,5 +1,7 @@
 import { CreateShoppingListInput, ShoppingListItem, User } from 'types/graphql'
 
+import { RedwoodGraphQLError } from '@redwoodjs/graphql-server'
+
 import { db } from 'src/lib/db'
 
 import { StandardScenario as UserScenario } from '../users/users.scenarios'
@@ -16,6 +18,10 @@ import {
   shoppingListIncludeAllRelations,
   StandardScenario as ShoppingListScenario,
 } from './shoppingLists.scenarios'
+import {
+  IShoppingListResponse,
+  mapShoppingListDbResponseToUpdateMutationInput,
+} from './shoppingListUtilities'
 
 // Generated boilerplate tests do not account for all circumstances
 // and can fail without adjustments, e.g. Float and DateTime types.
@@ -158,12 +164,12 @@ describe('shoppingLists', () => {
   scenario(
     'fails to update a shopping list when not logged in',
     async (scenario: ShoppingListScenario) => {
-      const original = await db.recipe.findUnique({
-        where: { id: scenario.recipe.pizza.id },
-        include: recipeIncludeAllRelations,
+      const original = await db.shoppingList.findUnique({
+        where: { id: scenario.shoppingList.bobsList.id },
+        include: shoppingListIncludeAllRelations,
       })
-      const updated = mapRecipeDbResponseToMutationInput(
-        original as unknown as IRecipeResponse
+      const updated = mapShoppingListDbResponseToUpdateMutationInput(
+        original as unknown as IShoppingListResponse
       )
 
       const updatedInput = {
@@ -173,7 +179,7 @@ describe('shoppingLists', () => {
 
       expect.assertions(1)
       try {
-        await updateRecipe(updatedInput)
+        await updateShoppingList(updatedInput)
       } catch (e) {
         expect(e).toMatchObject(
           new RedwoodGraphQLError('You are not logged in!')

@@ -48,6 +48,9 @@ export const updateShoppingList: MutationResolvers['updateShoppingList'] = ({
   id,
   input,
 }) => {
+  const currentUser = context.currentUser
+  if (!currentUser) throw new AuthenticationError('You are not logged in!')
+
   return db.shoppingList.update({
     data: input,
     where: { id },

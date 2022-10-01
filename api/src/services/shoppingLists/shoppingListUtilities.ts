@@ -1,5 +1,20 @@
 import type { Prisma } from '@prisma/client'
-import { CreateShoppingListItemInput, InputMaybe } from 'types/graphql'
+import {
+  CreateShoppingListItemInput,
+  IngredientRef,
+  InputMaybe,
+  ShoppingList,
+  ShoppingListItem,
+  Unit,
+  UpdateShoppingListInput,
+  UpdateShoppingListItemInput,
+  User,
+} from 'types/graphql'
+
+import {
+  IIngredientRefDbOutput,
+  IUnitDbOutput,
+} from '../recipes/recipeUtilities'
 
 export const mapItemsMutationInputToDbCreateInput = (
   items: InputMaybe<CreateShoppingListItemInput>[]
@@ -25,5 +40,44 @@ export const mapItemsMutationInputToDbCreateInput = (
         },
       }
     }),
+  }
+}
+
+export interface IShoppingListItemsOutput {
+  quantity: number
+  unit: IUnitDbOutput
+  ingredientRef: IIngredientRefDbOutput
+}
+
+export const mapShoppingListItemsDbResponseToUpdateMutationInput = (
+  items: IShoppingListItemsOutput[]
+): InputMaybe<UpdateShoppingListItemInput>[] => {
+  return items.map((item) => {
+    const { quantity, unit, ingredientRef } = item
+    return {
+      quantity,
+      unitName: unit.name,
+      ingredientName: ingredientRef.name,
+    }
+  })
+}
+
+// this was copied from the generated return type of db.shoppingList.findUnique with the included relations.
+export type IShoppingListResponse = ShoppingList & {
+  author: User
+  items: (ShoppingListItem & {
+    ingredientRef: IngredientRef
+    unit: Unit
+  })[]
+}
+
+export const mapShoppingListDbResponseToUpdateMutationInput = (
+  shoppingList: IShoppingListResponse
+): { input: UpdateShoppingListInput } => {
+  const { items } = shoppingList
+  return {
+    input: {
+      items: mapShoppingListItemsDbResponseToUpdateMutationInput(items),
+    },
   }
 }
