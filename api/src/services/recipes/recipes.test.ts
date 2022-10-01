@@ -36,7 +36,6 @@ describe('recipes', () => {
   })
   scenario('returns all recipes', async (scenario: RecipeScenario) => {
     const result = await recipes()
-
     expect(result.length).toEqual(Object.keys(scenario.recipe).length)
   })
 
