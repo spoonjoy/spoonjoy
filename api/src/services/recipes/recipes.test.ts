@@ -60,6 +60,7 @@ describe('recipes', () => {
         stepIdx
       ] as typeof RecipeStep
 
+      // TODO fix all these weird type issues
       expect(returnedStep!.stepNum).toEqual(scenarioStep.stepNum)
       expect(returnedStep!.description).toEqual(scenarioStep.description)
 
