@@ -6,7 +6,8 @@ import {
   standard as userScenario,
 } from '../users/users.scenarios'
 
-export const recipeIncludeAllRelations: Prisma.RecipeInclude = {
+// This is type Prisma.RecipeInclude, but if you include it here, it'll throw off the generated type for any returned objects (ie from findUnique)
+export const recipeIncludeAllRelations = {
   chef: true,
   steps: {
     include: {

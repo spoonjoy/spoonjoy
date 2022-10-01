@@ -1,10 +1,15 @@
+import type { Prisma } from '@prisma/client'
 import type {
   QueryResolvers,
   MutationResolvers,
   ShoppingListRelationResolvers,
 } from 'types/graphql'
 
+import { AuthenticationError } from '@redwoodjs/graphql-server'
+
 import { db } from 'src/lib/db'
+
+import { mapItemsMutationInputToDbCreateInput } from './shoppingListUtilities'
 
 export const shoppingLists: QueryResolvers['shoppingLists'] = () => {
   return db.shoppingList.findMany()
@@ -20,8 +25,22 @@ export const shoppingList: QueryResolvers['shoppingList'] = ({ id }) => {
 export const createShoppingList: MutationResolvers['createShoppingList'] = ({
   input,
 }) => {
+  const currentUser = context.currentUser
+  if (!currentUser) throw new AuthenticationError('You are not logged in!')
+
+  const { items } = input
+
+  const dbInput: Prisma.ShoppingListCreateInput = {
+    author: {
+      connect: {
+        id: currentUser.id,
+      },
+    },
+    items: mapItemsMutationInputToDbCreateInput(items),
+  }
+
   return db.shoppingList.create({
-    data: input,
+    data: dbInput,
   })
 }
 

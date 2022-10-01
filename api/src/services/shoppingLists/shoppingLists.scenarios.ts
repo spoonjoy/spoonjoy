@@ -6,7 +6,8 @@ import {
   standard as userScenario,
 } from '../users/users.scenarios'
 
-export const shoppingListIncludeAllRelations: Prisma.ShoppingListInclude = {
+// This is type Prisma.ShoppingListInclude, but if you include it here, it'll throw off the generated type for any returned objects (ie from findUnique)
+export const shoppingListIncludeAllRelations = {
   author: true,
   items: {
     include: {

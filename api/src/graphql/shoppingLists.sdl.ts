@@ -12,11 +12,11 @@ export const schema = gql`
   }
 
   input CreateShoppingListInput {
-    items: [ShoppingListItem]!
+    items: [CreateShoppingListItemInput]!
   }
 
   input UpdateShoppingListInput {
-    items: [ShoppingListItem]!
+    items: [CreateShoppingListItemInput]!
   }
 
   type Mutation {

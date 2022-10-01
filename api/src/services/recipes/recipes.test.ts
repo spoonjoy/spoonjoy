@@ -149,6 +149,8 @@ describe('recipes', () => {
         username: scenario.user.bob.username,
       })
 
+      expect.assertions(11)
+
       const result = await createRecipe(recipeMutationInput)
       const resultWithRelations = await db.recipe.findUnique({
         where: { id: result.id },

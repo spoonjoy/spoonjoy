@@ -16,17 +16,15 @@ export const schema = gql`
   }
 
   input CreateShoppingListItemInput {
-    shoppingListId: String!
     quantity: Float!
-    unitId: String!
-    ingredientRefId: String!
+    unitName: String!
+    ingredientName: String!
   }
 
   input UpdateShoppingListItemInput {
-    shoppingListId: String
-    quantity: Float
-    unitId: String
-    ingredientRefId: String
+    quantity: Float!
+    unitName: String!
+    ingredientName: String!
   }
 
   type Mutation {

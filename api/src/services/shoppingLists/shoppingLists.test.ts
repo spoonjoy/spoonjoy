@@ -1,4 +1,8 @@
-import { ShoppingListItem, User } from 'types/graphql'
+import { CreateShoppingListInput, ShoppingListItem, User } from 'types/graphql'
+
+import { db } from 'src/lib/db'
+
+import { StandardScenario as UserScenario } from '../users/users.scenarios'
 
 import {
   shoppingLists,
@@ -8,7 +12,10 @@ import {
   deleteShoppingList,
   ShoppingList,
 } from './shoppingLists'
-import type { StandardScenario } from './shoppingLists.scenarios'
+import {
+  shoppingListIncludeAllRelations,
+  StandardScenario,
+} from './shoppingLists.scenarios'
 
 // Generated boilerplate tests do not account for all circumstances
 // and can fail without adjustments, e.g. Float and DateTime types.
@@ -60,12 +67,89 @@ describe('shoppingLists', () => {
       )
     }
   )
-  // scenario('creates a shoppingList', async (scenario: StandardScenario) => {
-  //   const result = await createShoppingList({
-  //     input: { authorId: scenario.shoppingList.two.authorId },
-  //   })
-  //   expect(result.authorId).toEqual(scenario.shoppingList.two.authorId)
-  // })
+
+  const shoppingListMutationInput: { input: CreateShoppingListInput } = {
+    input: {
+      items: [
+        {
+          quantity: 500.2348,
+          unitName: 'grams',
+          ingredientName: 'yumminess',
+        },
+        {
+          quantity: 2000.234,
+          unitName: 'mlems',
+          ingredientName: 'toast',
+        },
+        {
+          quantity: 2384.29,
+          unitName: 'grams',
+          ingredientName: 'tastiness',
+        },
+        {
+          quantity: 2384892.23938,
+          unitName: 'oz',
+          ingredientName: 'liquor',
+        },
+      ],
+    },
+  }
+
+  scenario(
+    'userOnlyScenario',
+    'fails to create a shopping list while not logged in',
+    async () => {
+      expect.assertions(1)
+      expect(() => {
+        createShoppingList(shoppingListMutationInput)
+      }).toThrow()
+    }
+  )
+
+  scenario(
+    'userOnlyScenario',
+    "creates a shoppingList while logged in if user doesn't already have one",
+    async (scenario: UserScenario) => {
+      mockCurrentUser({
+        id: scenario.user.bob.id,
+        username: scenario.user.bob.username,
+      })
+
+      expect.assertions(11)
+
+      const result = await createShoppingList(shoppingListMutationInput)
+      const resultWithRelations = await db.shoppingList.findUnique({
+        where: { id: result.id },
+        include: shoppingListIncludeAllRelations,
+      })
+
+      const { input } = shoppingListMutationInput
+      const { bob } = scenario.user
+
+      expect(resultWithRelations).toBeTruthy()
+      if (resultWithRelations) {
+        const { author, items } = resultWithRelations
+        expect(author.username).toEqual(bob.username)
+        expect(items.length).toEqual(input.items.length)
+
+        // Because items will come back in a random order, we're sorting them by quantity. Please note that for this to work, we need to use unique quantities.
+        const sortedResultItems = items.sort((a, b) => {
+          return a.quantity - b.quantity
+        })
+        const sortedInputItems = input.items.sort((a, b) => {
+          return a!.quantity - b!.quantity
+        })
+        sortedResultItems.forEach((item, idx) => {
+          expect(item.unit.name).toBe(sortedInputItems[idx]?.unitName)
+          expect(item.ingredientRef.name).toBe(
+            sortedInputItems[idx]?.ingredientName
+          )
+        })
+      } else {
+        fail('No recipe got returned!')
+      }
+    }
+  )
   // scenario('updates a shoppingList', async (scenario: StandardScenario) => {
   //   const original = (await shoppingList({
   //     id: scenario.shoppingList.bobsList.id,
