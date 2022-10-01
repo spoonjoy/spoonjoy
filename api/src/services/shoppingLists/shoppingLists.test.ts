@@ -115,6 +115,7 @@ describe('shoppingLists', () => {
         username: scenario.user.bob.username,
       })
 
+      // TODO update this with non-hardcoded number
       expect.assertions(11)
 
       const result = await createShoppingList(shoppingListMutationInput)
