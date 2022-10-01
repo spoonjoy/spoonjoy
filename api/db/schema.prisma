@@ -69,6 +69,8 @@ model Ingredient {
   unit              Unit          @relation(fields: [unitId], references: [id])
   ingredientRefId   String
   ingredientRef     IngredientRef @relation(fields: [ingredientRefId], references: [id])
+
+  @@unique([recipeStepId, unitId, ingredientRefId])
 }
 
 model IngredientRef {
@@ -101,4 +103,6 @@ model ShoppingListItem {
   unit              Unit          @relation(fields: [unitId], references: [id])
   ingredientRefId   String
   ingredientRef     IngredientRef @relation(fields: [ingredientRefId], references: [id])
+
+  @@unique([shoppingListId, unitId, ingredientRefId])
 }
