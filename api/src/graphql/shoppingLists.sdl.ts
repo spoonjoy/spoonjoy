@@ -12,11 +12,11 @@ export const schema = gql`
   }
 
   input CreateShoppingListInput {
-    authorId: String!
+    items: [ShoppingListItem]!
   }
 
   input UpdateShoppingListInput {
-    authorId: String
+    items: [ShoppingListItem]!
   }
 
   type Mutation {
