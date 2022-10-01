@@ -195,7 +195,7 @@ export const mapIngredientsMutationInputToDbUpdateInput = (
     deleteMany: {}, // delete them all! TODO: delete only the ones *not* being updated
     upsert: ingredients.map((ingredient) => {
       const { quantity, unitName, ingredientName, id } = ingredient!
-      const ingredientId = id || 'noid' // TODO there won't be an ID here as what's passing it in is really the update thing
+      const ingredientId = id || 'noid' // TODO there won't be an ID here as what's passing it in is really the update input
       return {
         where: { id: ingredientId },
         update: {
