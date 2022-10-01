@@ -1,8 +1,10 @@
-import type { Prisma, ShoppingList } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
+import { ShoppingList, User } from 'types/graphql'
 
-import type { ScenarioData } from '@redwoodjs/testing/api'
-
-import { userScenarioData } from '../users/users.scenarios'
+import {
+  userScenarioData,
+  standard as userScenario,
+} from '../users/users.scenarios'
 
 export const shoppingListIncludeAllRelations: Prisma.ShoppingListInclude = {
   author: true,
@@ -14,12 +16,18 @@ export const shoppingListIncludeAllRelations: Prisma.ShoppingListInclude = {
   },
 }
 
-const getFirstShoppingListData = (
-  authorId: string
-): Prisma.ShoppingListCreateArgs => {
-  return {
+// I believe this is necessary so that this scenario will exist for the shoppingList tests, but there may be a better way to do this
+export const userOnlyScenario = userScenario
+
+export type StandardScenario = {
+  user: Record<keyof typeof userScenarioData, User>
+  shoppingList: Record<keyof typeof shoppingListScenarioData, ShoppingList>
+}
+
+const shoppingListScenarioData = {
+  bobsList: (scenario: StandardScenario): Prisma.ShoppingListCreateArgs => ({
     data: {
-      authorId: authorId,
+      authorId: scenario.user.bob.id,
       items: {
         create: [
           {
@@ -191,21 +199,10 @@ const getFirstShoppingListData = (
       },
     },
     include: shoppingListIncludeAllRelations,
-  }
+  }),
 }
 
-export type StandardScenario = ScenarioData<
-  ShoppingList,
-  'shoppingList',
-  'user'
->
-export const standard = defineScenario<
-  Prisma.ShoppingListCreateArgs | Prisma.UserCreateArgs,
-  'shoppingList' | 'user'
->({
-  user: userScenarioData.user,
-  shoppingList: {
-    // TODO: this is actually fine, but the type system probably needs to be updated
-    bobsList: (scenario) => getFirstShoppingListData(scenario.user.bob.id),
-  },
-})
+export const standard = {
+  user: userScenarioData,
+  shoppingList: shoppingListScenarioData,
+}
