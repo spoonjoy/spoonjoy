@@ -41,6 +41,8 @@ describe('recipes', () => {
   })
 
   scenario('returns a single recipe', async (scenario: RecipeScenario) => {
+    expect.assertions(14) // This will need to be updated if the scenario is updated
+
     const result = await recipe({ id: scenario.recipe.pizza.id })
 
     Recipe.chef!({}, { root: result }).then((chef) => {
