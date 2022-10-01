@@ -40,12 +40,26 @@ describe('recipes', () => {
   })
 
   scenario('returns a single recipe', async (scenario: RecipeScenario) => {
-    expect.assertions(14) // This will need to be updated if the scenario is updated
+    const { pizza } = scenario.recipe
 
-    const result = await recipe({ id: scenario.recipe.pizza.id })
+    const numOfSingleAssertions = 1 // Chef check
+    const numOfSteps = pizza.steps.length
+    const numOfIngredientsTotal = pizza.steps.reduce((totalNumIng, step) => {
+      return totalNumIng + step!.ingredients.length
+    }, 0)
+    const numAssertionsPerStep = 2 // Update based on below steps.forEach
+    const numAssertionsPerIng = 3 // Update based on below ingredientsByStep[stepIdx].forEach
 
-    Recipe.chef!({}, { root: result }).then((chef) => {
-      expect(chef).toEqual(scenario.recipe.pizza.chef)
+    expect.assertions(
+      numOfSingleAssertions +
+        numOfSteps * numAssertionsPerStep +
+        numOfIngredientsTotal * numAssertionsPerIng
+    ) // This will need to be updated if the scenario is updated
+
+    const result = await recipe({ id: pizza.id })
+
+    Recipe.chef!({}, { root: result }).then((chef: User) => {
+      expect(chef).toEqual(pizza.chef)
     })
 
     const steps = await Recipe.steps({}, { root: result })
@@ -55,9 +69,7 @@ describe('recipes', () => {
       })
     )
     steps.forEach((returnedStep, stepIdx) => {
-      const scenarioStep = scenario.recipe.pizza.steps[
-        stepIdx
-      ] as typeof RecipeStep
+      const scenarioStep = pizza.steps[stepIdx] as typeof RecipeStep
 
       // TODO fix all these weird type issues
       expect(returnedStep!.stepNum).toEqual(scenarioStep.stepNum)
