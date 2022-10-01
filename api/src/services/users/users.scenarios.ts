@@ -1,6 +1,6 @@
 import type { Prisma, User } from '@prisma/client'
 
-export const userScenarioDataTyped = {
+export const userScenarioData = {
   bob: {
     data: {
       email: 'bob@spoonjoy.app',
@@ -20,8 +20,8 @@ export const userScenarioDataTyped = {
 }
 
 export const standard = {
-  user: userScenarioDataTyped,
+  user: userScenarioData,
 }
 export type StandardScenario = {
-  user: Record<keyof typeof userScenarioDataTyped, User>
+  user: Record<keyof typeof userScenarioData, User>
 }

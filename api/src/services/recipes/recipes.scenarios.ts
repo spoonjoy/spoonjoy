@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client'
 import { Recipe, User } from 'types/graphql'
 
 import {
-  userScenarioDataTyped,
+  userScenarioData,
   standard as userScenario,
 } from '../users/users.scenarios'
 
@@ -24,7 +24,7 @@ export const recipeIncludeAllRelations: Prisma.RecipeInclude = {
 export const userOnlyScenario = userScenario
 
 export type StandardScenario = {
-  user: Record<keyof typeof userScenarioDataTyped, User>
+  user: Record<keyof typeof userScenarioData, User>
   recipe: Record<keyof typeof recipeScenarioData, Recipe>
 }
 
@@ -106,6 +106,6 @@ const recipeScenarioData = {
 }
 
 export const standard = {
-  user: userScenarioDataTyped,
+  user: userScenarioData,
   recipe: recipeScenarioData,
 }
