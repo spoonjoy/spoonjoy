@@ -261,7 +261,7 @@ describe('recipes', () => {
             {
               quantity: 2384.29,
               unitName: 'grams',
-              ingredientName: 'yumminess',
+              ingredientName: 'tastiness',
             },
             {
               quantity: 2384892.23938,
