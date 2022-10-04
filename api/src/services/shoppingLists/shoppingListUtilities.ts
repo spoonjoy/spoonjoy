@@ -16,6 +16,33 @@ import {
   IUnitDbOutput,
 } from '../recipes/recipeUtilities'
 
+export const mapItemsMutationInputToDbUpdateInput = (
+  items: InputMaybe<UpdateShoppingListItemInput>[]
+):
+  | Prisma.ShoppingListItemUpdateManyWithoutShoppingListNestedInput
+  | undefined => {
+  return {
+    create: items.map((item) => {
+      const { quantity, unitName, ingredientName } = item!
+      return {
+        quantity,
+        unit: {
+          connectOrCreate: {
+            where: { name: unitName.toLowerCase() },
+            create: { name: unitName.toLowerCase() },
+          },
+        },
+        ingredientRef: {
+          connectOrCreate: {
+            where: { name: ingredientName.toLowerCase() },
+            create: { name: ingredientName.toLowerCase() },
+          },
+        },
+      }
+    }),
+  }
+}
+
 export const mapItemsMutationInputToDbCreateInput = (
   items: InputMaybe<CreateShoppingListItemInput>[]
 ):

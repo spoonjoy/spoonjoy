@@ -188,16 +188,90 @@ describe('shoppingLists', () => {
     }
   )
 
-  // scenario('updates a shoppingList', async (scenario: ShoppingListScenario) => {
-  //   const original = (await shoppingList({
-  //     id: scenario.shoppingList.bobsList.id,
-  //   })) as ShoppingList
-  //   const result = await updateShoppingList({
-  //     id: original.id,
-  //     input: { authorId: scenario.shoppingList.two.authorId },
-  //   })
-  //   expect(result.authorId).toEqual(scenario.shoppingList.two.authorId)
-  // })
+  scenario(
+    'updates a shoppingList while logged in',
+    async (scenario: ShoppingListScenario) => {
+      await db.user
+        .findUnique({
+          where: { id: scenario.shoppingList.bobsList.author.id },
+        })
+        .then((user) => {
+          mockCurrentUser({
+            id: user!.id,
+            username: user!.username,
+          })
+        })
+
+      const original = await db.shoppingList.findUnique({
+        where: { id: scenario.shoppingList.bobsList.id },
+        include: shoppingListIncludeAllRelations,
+      })
+      const updated = mapShoppingListDbResponseToUpdateMutationInput(
+        original as unknown as IShoppingListResponse
+      )
+
+      updated.input.items = [
+        {
+          quantity: 500.2348,
+          unitName: 'grams',
+          ingredientName: 'yumminess',
+        },
+        {
+          quantity: 2000.234,
+          unitName: 'mlems',
+          ingredientName: 'toast',
+        },
+        {
+          quantity: 2384.29,
+          unitName: 'grams',
+          ingredientName: 'tastiness',
+        },
+        {
+          quantity: 2384892.23938,
+          unitName: 'fruits',
+          ingredientName: 'labor',
+        },
+      ]
+
+      const updatedInput = {
+        id: original!.id,
+        input: updated.input,
+      }
+
+      const result = await updateShoppingList(updatedInput)
+      const resultWithRelations = await db.shoppingList.findUnique({
+        where: { id: result.id },
+        include: shoppingListIncludeAllRelations,
+      })
+
+      const { input } = shoppingListMutationInput
+      const { bob } = scenario.user
+
+      expect(resultWithRelations).toBeTruthy()
+      if (resultWithRelations) {
+        const { author, items } = resultWithRelations
+        expect(author.username).toEqual(bob.username)
+        expect(items.length).toEqual(input.items.length)
+
+        // Because items will come back in a random order, we're sorting them by quantity. Please note that for this to work, we need to use unique quantities.
+        const sortedResultItems = items.sort((a, b) => {
+          return a.quantity - b.quantity
+        })
+        const sortedInputItems = input.items.sort((a, b) => {
+          return a!.quantity - b!.quantity
+        })
+        sortedResultItems.forEach((item, idx) => {
+          expect(item.unit.name).toBe(sortedInputItems[idx]?.unitName)
+          expect(item.ingredientRef.name).toBe(
+            sortedInputItems[idx]?.ingredientName
+          )
+        })
+      } else {
+        fail('No recipe got returned!')
+      }
+    }
+  )
+
   // scenario('deletes a shoppingList', async (scenario: ShoppingListScenario) => {
   //   const original = (await deleteShoppingList({
   //     id: scenario.shoppingList.bobsList.id,
