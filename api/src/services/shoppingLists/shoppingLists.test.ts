@@ -339,7 +339,7 @@ describe('shoppingLists', () => {
   )
 
   scenario(
-    'deletes your own shopping list while logged in',
+    'can delete your own shopping list while logged in',
     async (scenario: ShoppingListScenario) => {
       await db.user
         .findUnique({
