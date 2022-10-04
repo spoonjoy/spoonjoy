@@ -332,7 +332,7 @@ describe('shoppingLists', () => {
         })
       } catch (e) {
         expect(e).toMatchObject(
-          new RedwoodGraphQLError('You can only delete your own recipes!')
+          new RedwoodGraphQLError('You can only delete your own shoppingList!')
         )
       }
     }
