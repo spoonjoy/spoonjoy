@@ -9,7 +9,10 @@ import { AuthenticationError } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
 
-import { mapItemsMutationInputToDbCreateInput } from './shoppingListUtilities'
+import {
+  mapItemsMutationInputToDbCreateInput,
+  mapItemsMutationInputToDbUpdateInput,
+} from './shoppingListUtilities'
 
 export const shoppingLists: QueryResolvers['shoppingLists'] = () => {
   return db.shoppingList.findMany()
@@ -62,9 +65,14 @@ export const updateShoppingList: MutationResolvers['updateShoppingList'] =
       )
     }
 
+    const { items } = input
+    const dbInput: Prisma.ShoppingListUpdateInput = {
+      items: mapItemsMutationInputToDbUpdateInput(items),
+    }
+
     return db.shoppingList.update({
-      data: input,
       where: { id },
+      data: dbInput,
     })
   }
 

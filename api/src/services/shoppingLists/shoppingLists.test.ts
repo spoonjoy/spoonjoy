@@ -258,11 +258,6 @@ describe('shoppingLists', () => {
           unitName: 'grams',
           ingredientName: 'tastiness',
         },
-        {
-          quantity: 2384892.23938,
-          unitName: 'fruits',
-          ingredientName: 'labor',
-        },
       ]
 
       const updatedInput = {
@@ -276,8 +271,10 @@ describe('shoppingLists', () => {
         include: shoppingListIncludeAllRelations,
       })
 
-      const { input } = shoppingListMutationInput
+      const { input } = updatedInput
       const { bob } = scenario.user
+
+      expect.assertions(9) // TODO update this with non-hardcoded value
 
       expect(resultWithRelations).toBeTruthy()
       if (resultWithRelations) {

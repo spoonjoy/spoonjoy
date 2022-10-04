@@ -22,6 +22,7 @@ export const mapItemsMutationInputToDbUpdateInput = (
   | Prisma.ShoppingListItemUpdateManyWithoutShoppingListNestedInput
   | undefined => {
   return {
+    deleteMany: {}, // delete them all! TODO: delete only the ones *not* being updated
     create: items.map((item) => {
       const { quantity, unitName, ingredientName } = item!
       return {
