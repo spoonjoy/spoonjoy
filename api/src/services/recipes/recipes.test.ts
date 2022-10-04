@@ -210,6 +210,38 @@ describe('recipes', () => {
   )
 
   scenario(
+    "can't update another user's recipe",
+    async (scenario: RecipeScenario) => {
+      mockCurrentUser({
+        id: scenario.user.linda.id,
+        username: scenario.user.linda.username,
+      })
+
+      const original = await db.recipe.findUnique({
+        where: { id: scenario.recipe.pizza.id },
+        include: recipeIncludeAllRelations,
+      })
+      const updated = mapRecipeDbResponseToMutationInput(
+        original as unknown as IRecipeResponse // this type is actually derived from the generated type of 'original'
+      )
+
+      const updatedInput = {
+        id: original!.id,
+        input: updated.input,
+      }
+
+      expect.assertions(1)
+      try {
+        await updateRecipe(updatedInput)
+      } catch (e) {
+        expect(e).toMatchObject(
+          new RedwoodGraphQLError('You can only update your own recipes!')
+        )
+      }
+    }
+  )
+
+  scenario(
     'updates a recipe while logged in',
     async (scenario: RecipeScenario) => {
       await db.user
