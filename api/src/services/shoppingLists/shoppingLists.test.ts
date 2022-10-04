@@ -301,11 +301,67 @@ describe('shoppingLists', () => {
     }
   )
 
-  // scenario('deletes a shoppingList', async (scenario: ShoppingListScenario) => {
-  //   const original = (await deleteShoppingList({
-  //     id: scenario.shoppingList.bobsList.id,
-  //   })) as ShoppingList
-  //   const result = await shoppingList({ id: original.id })
-  //   expect(result).toEqual(null)
-  // })
+  scenario(
+    "can't delete a shoppingList while not logged in",
+    async (scenario: ShoppingListScenario) => {
+      expect.assertions(1)
+      try {
+        await deleteShoppingList({
+          id: scenario.shoppingList.bobsList.id,
+        })
+      } catch (e) {
+        expect(e).toMatchObject(
+          new RedwoodGraphQLError('You are not logged in!')
+        )
+      }
+    }
+  )
+
+  scenario(
+    "can't delete another user's shopping list",
+    async (scenario: ShoppingListScenario) => {
+      mockCurrentUser({
+        id: scenario.user.linda.id,
+        username: scenario.user.linda.username,
+      })
+
+      expect.assertions(1)
+      try {
+        await deleteShoppingList({
+          id: scenario.shoppingList.bobsList.id,
+        })
+      } catch (e) {
+        expect(e).toMatchObject(
+          new RedwoodGraphQLError('You can only delete your own recipes!')
+        )
+      }
+    }
+  )
+
+  scenario(
+    'deletes your own shopping list while logged in',
+    async (scenario: ShoppingListScenario) => {
+      await db.user
+        .findUnique({
+          where: { id: scenario.shoppingList.bobsList.authorId },
+        })
+        .then((user) => {
+          mockCurrentUser({
+            id: user!.id,
+            username: user!.username,
+          })
+        })
+
+      const original = await shoppingList({
+        id: scenario.shoppingList.bobsList.id,
+      })
+
+      const result = await deleteShoppingList({
+        id: scenario.shoppingList.bobsList.id,
+      })
+
+      expect(original).not.toBe(null)
+      expect(result).toBe(null)
+    }
+  )
 })
