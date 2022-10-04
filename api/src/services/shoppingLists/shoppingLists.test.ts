@@ -189,6 +189,38 @@ describe('shoppingLists', () => {
   )
 
   scenario(
+    "fails to update another user's shopping list",
+    async (scenario: ShoppingListScenario) => {
+      mockCurrentUser({
+        id: scenario.user.linda.id,
+        username: scenario.user.linda.username,
+      })
+
+      const original = await db.shoppingList.findUnique({
+        where: { id: scenario.shoppingList.bobsList.id },
+        include: shoppingListIncludeAllRelations,
+      })
+      const updated = mapShoppingListDbResponseToUpdateMutationInput(
+        original as unknown as IShoppingListResponse
+      )
+
+      const updatedInput = {
+        id: original!.id,
+        input: updated.input,
+      }
+
+      expect.assertions(1)
+      try {
+        await updateShoppingList(updatedInput)
+      } catch (e) {
+        expect(e).toMatchObject(
+          new RedwoodGraphQLError('You can only update your own shoppingLists!')
+        )
+      }
+    }
+  )
+
+  scenario(
     'updates a shoppingList while logged in',
     async (scenario: ShoppingListScenario) => {
       await db.user

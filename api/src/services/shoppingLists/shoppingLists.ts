@@ -44,18 +44,29 @@ export const createShoppingList: MutationResolvers['createShoppingList'] = ({
   })
 }
 
-export const updateShoppingList: MutationResolvers['updateShoppingList'] = ({
-  id,
-  input,
-}) => {
-  const currentUser = context.currentUser
-  if (!currentUser) throw new AuthenticationError('You are not logged in!')
+export const updateShoppingList: MutationResolvers['updateShoppingList'] =
+  async ({ id, input }) => {
+    const currentUser = context.currentUser
+    if (!currentUser) throw new AuthenticationError('You are not logged in!')
 
-  return db.shoppingList.update({
-    data: input,
-    where: { id },
-  })
-}
+    const shoppingListBasicInfo = await db.shoppingList.findUnique({
+      where: { id },
+      include: {
+        author: true,
+      },
+    })
+
+    if (currentUser.id !== shoppingListBasicInfo!.authorId) {
+      throw new AuthenticationError(
+        'You can only update your own shoppingLists!'
+      )
+    }
+
+    return db.shoppingList.update({
+      data: input,
+      where: { id },
+    })
+  }
 
 export const deleteShoppingList: MutationResolvers['deleteShoppingList'] = ({
   id,
