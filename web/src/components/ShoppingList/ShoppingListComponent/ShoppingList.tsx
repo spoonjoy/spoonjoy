@@ -1,8 +1,14 @@
-const ShoppingList = () => {
+import type { FindShoppingListById } from 'types/graphql'
+
+interface ShoppingListProps {
+  shoppingList: NonNullable<FindShoppingListById['shoppingList']>
+}
+
+const ShoppingList = ({ shoppingList }: ShoppingListProps) => {
   return (
     <div>
       <h2>{'ShoppingList'}</h2>
-      <p>{'Find me in ./web/src/components/ShoppingList/ShoppingList.tsx'}</p>
+      <p>{JSON.stringify(shoppingList)}</p>
     </div>
   )
 }

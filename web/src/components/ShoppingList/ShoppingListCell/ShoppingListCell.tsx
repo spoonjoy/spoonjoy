@@ -8,9 +8,23 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 import ShoppingList from '../ShoppingListComponent/ShoppingList'
 
 export const QUERY = gql`
-  query FindShoppingListQuery($id: String!) {
+  query FindShoppingListById($id: String!) {
     shoppingList: shoppingList(id: $id) {
       id
+      author {
+        id
+        username
+      }
+      items {
+        id
+        quantity
+        ingredientRef {
+          name
+        }
+        unit {
+          name
+        }
+      }
     }
   }
 `
@@ -28,5 +42,5 @@ export const Failure = ({
 export const Success = ({
   shoppingList,
 }: CellSuccessProps<FindShoppingListQuery, FindShoppingListQueryVariables>) => {
-  return <ShoppingList />
+  return <ShoppingList shoppingList={shoppingList} />
 }
