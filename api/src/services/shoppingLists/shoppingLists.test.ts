@@ -352,16 +352,13 @@ describe('shoppingLists', () => {
           })
         })
 
-      const original = await shoppingList({
+      const original = await deleteShoppingList({
         id: scenario.shoppingList.bobsList.id,
       })
-
-      const result = await deleteShoppingList({
-        id: scenario.shoppingList.bobsList.id,
-      })
-
       expect(original).not.toBe(null)
-      expect(result).toBe(null)
+
+      const result = await shoppingList({ id: original.id })
+      expect(result).toEqual(null)
     }
   )
 })
