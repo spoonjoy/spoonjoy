@@ -2,7 +2,7 @@ import type { FindRecipeById } from 'types/graphql'
 
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
-import Recipe from 'src/components/Recipe/Recipe'
+import Recipe from 'src/components/Recipe/RecipeComponent/Recipe'
 
 export const QUERY = gql`
   query FindRecipeById($id: String!) {
