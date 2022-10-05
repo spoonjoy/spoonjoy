@@ -5,8 +5,7 @@ import type {
   RecipeRelationResolvers,
 } from 'types/graphql'
 
-import { AuthenticationError } from '@redwoodjs/graphql-server'
-
+import { requireAuth, requireRecipeAuth } from 'src/lib/auth'
 import { db } from 'src/lib/db'
 
 import {
@@ -25,8 +24,7 @@ export const recipe: QueryResolvers['recipe'] = ({ id }) => {
 }
 
 export const createRecipe: MutationResolvers['createRecipe'] = ({ input }) => {
-  const currentUser = context.currentUser
-  if (!currentUser) throw new AuthenticationError('You are not logged in!')
+  requireAuth()
 
   const { title, description, servings, steps } = input
 
@@ -36,7 +34,7 @@ export const createRecipe: MutationResolvers['createRecipe'] = ({ input }) => {
     servings,
     chef: {
       connect: {
-        id: currentUser.id,
+        id: context.currentUser!.id,
       },
     },
     steps: mapStepsMutationInputToDbCreateInput(steps),
@@ -51,19 +49,7 @@ export const updateRecipe: MutationResolvers['updateRecipe'] = async ({
   id,
   input,
 }) => {
-  const currentUser = context.currentUser
-  if (!currentUser) throw new AuthenticationError('You are not logged in!')
-
-  const recipeBasicInfo = await db.recipe.findUnique({
-    where: { id },
-    include: {
-      chef: true,
-    },
-  })
-
-  if (currentUser.id !== recipeBasicInfo!.chefId) {
-    throw new AuthenticationError('You can only update your own recipes!')
-  }
+  await requireRecipeAuth(id)
 
   const { title, description, servings, steps } = input
   const dbInput: Prisma.RecipeUpdateInput = {
@@ -83,19 +69,7 @@ export const updateRecipe: MutationResolvers['updateRecipe'] = async ({
 export const deleteRecipe: MutationResolvers['deleteRecipe'] = async ({
   id,
 }) => {
-  const currentUser = context.currentUser
-  if (!currentUser) throw new AuthenticationError('You are not logged in!')
-
-  const recipeBasicInfo = await db.recipe.findUnique({
-    where: { id },
-    include: {
-      chef: true,
-    },
-  })
-
-  if (currentUser.id !== recipeBasicInfo!.chefId) {
-    throw new AuthenticationError('You can only delete your own recipes!')
-  }
+  await requireRecipeAuth(id)
 
   return db.recipe.update({
     where: { id },

@@ -235,7 +235,7 @@ describe('recipes', () => {
         await updateRecipe(updatedInput)
       } catch (e) {
         expect(e).toMatchObject(
-          new RedwoodGraphQLError('You can only update your own recipes!')
+          new RedwoodGraphQLError('You can only modify your own recipes!')
         )
       }
     }
@@ -389,7 +389,7 @@ describe('recipes', () => {
         })
       } catch (e) {
         expect(e).toMatchObject(
-          new RedwoodGraphQLError('You can only delete your own recipes!')
+          new RedwoodGraphQLError('You can only modify your own recipes!')
         )
       }
     }

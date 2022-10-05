@@ -106,10 +106,37 @@ export const hasRole = (roles: AllowedRoles): boolean => {
  */
 export const requireAuth = ({ roles }: { roles?: AllowedRoles } = {}) => {
   if (!isAuthenticated()) {
-    throw new AuthenticationError("You don't have permission to do that.")
+    throw new AuthenticationError('You are not logged in!')
   }
 
   if (roles && !hasRole(roles)) {
     throw new ForbiddenError("You don't have access to do that.")
+  }
+}
+
+/**
+ * Use requireRecipeAuth for checking that a user can modify/delete a recipe
+ *
+ * @param recipeId - The ID of the recipe for which we are checking auth
+ *
+ * @returns - If the currentUser is authenticated (and allowed to make changes to the given recipe)
+ *
+ * @throws {@link AuthenticationError} - If the currentUser is not authenticated
+ * @throws {@link ForbiddenError} If the currentUser is not allowed due to the recipe not being theirs
+ */
+export const requireRecipeAuth = async (recipeId: string) => {
+  if (!isAuthenticated()) {
+    throw new AuthenticationError('You are not logged in!')
+  }
+
+  const recipeBasicInfo = await db.recipe.findUnique({
+    where: { id: recipeId },
+    include: {
+      chef: true,
+    },
+  })
+
+  if (context.currentUser!.id !== recipeBasicInfo!.chefId) {
+    throw new ForbiddenError('You can only modify your own recipes!')
   }
 }
