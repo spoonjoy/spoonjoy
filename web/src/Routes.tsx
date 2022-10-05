@@ -4,10 +4,10 @@
 //
 // Examples:
 //
-// 'src/pages/HomePage/HomePage.js'         -> HomePage
+// 'src/pages/WelcomePage/WelcomePage.js'         -> WelcomePage
 // 'src/pages/Admin/BooksPage/BooksPage.js' -> AdminBooksPage
 
-import { Router, Route, Set } from '@redwoodjs/router'
+import { Router, Route, Set, Private } from '@redwoodjs/router'
 
 import RecipesLayout from 'src/layouts/RecipesLayout'
 
@@ -16,20 +16,22 @@ import SiteLayout from './layouts/SiteLayout/SiteLayout'
 const Routes = () => {
   return (
     <Router>
-      <Set wrap={RecipesLayout}>
-        <Route path="/recipes/new" page={RecipeNewRecipePage} name="newRecipe" />
-        <Route path="/recipes/{id}/edit" page={RecipeEditRecipePage} name="editRecipe" />
-        <Route path="/recipes/{id}" page={RecipeRecipePage} name="recipe" />
-        <Route path="/recipes" page={RecipeRecipesPage} name="recipes" />
-      </Set>
+      <Private wrap={SiteLayout} unauthenticated="welcome">
+        <Set wrap={RecipesLayout}>
+          <Route path="/recipes/new" page={RecipeNewRecipePage} name="newRecipe" />
+          <Route path="/recipes/{id}/edit" page={RecipeEditRecipePage} name="editRecipe" />
+          <Route path="/recipes/{id}" page={RecipeRecipePage} name="recipe" />
+          <Route path="/recipes" page={RecipeRecipesPage} name="recipes" />
+        </Set>
+      </Private>
       <Set wrap={SiteLayout}>
-        <Route path="/" page={HomePage} name="home" />
+        <Route path="/" page={WelcomePage} name="welcome" />
         <Route path="/login" page={LoginPage} name="login" />
         <Route path="/signup" page={SignupPage} name="signup" />
         <Route path="/forgot-password" page={ForgotPasswordPage} name="forgotPassword" />
         <Route path="/reset-password" page={ResetPasswordPage} name="resetPassword" />
-        <Route notfound page={NotFoundPage} />
       </Set>
+      <Route notfound page={NotFoundPage} />
     </Router>
   )
 }

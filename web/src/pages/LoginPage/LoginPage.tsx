@@ -15,7 +15,7 @@ import { MetaTags } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 
 const WELCOME_MESSAGE = 'Welcome back!'
-const REDIRECT = routes.home()
+const REDIRECT = routes.welcome()
 
 const LoginPage = ({ type }) => {
   const {

@@ -31,21 +31,31 @@ export const HeaderSlot = createSlot('header')
 const SiteLayout = ({ children }: SiteLayoutProps) => {
   const { isAuthenticated, currentUser } = useAuth()
 
-  const navigation: INavigation[] = [
+  const navigationNotLoggedIn: INavigation[] = [
     {
-      name: 'Home',
-      href: routes.home(),
-      current: useMatch(routes.home()).match,
+      name: 'Welcome',
+      href: routes.welcome(),
+      current: useMatch(routes.welcome()).match,
     },
-  ]
-  const isLoginCurrent = useMatch(routes.login()).match
-  if (!isAuthenticated) {
-    navigation.push({
+    {
       name: 'Login',
       href: routes.login(),
-      current: isLoginCurrent,
-    })
-  }
+      current: useMatch(routes.login()).match,
+    },
+  ]
+
+  const navigationLoggedIn: INavigation[] = [
+    {
+      name: 'Recipes',
+      href: routes.recipes(),
+      current: useMatch(routes.recipes()).match,
+    },
+    {
+      name: 'New Recipe',
+      href: routes.newRecipe(),
+      current: useMatch(routes.newRecipe()).match,
+    },
+  ]
 
   const userNavigation: IUserNavigation[] = [
     { name: 'Your Profile', href: '#' },
@@ -57,7 +67,9 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
     <SlotProvider>
       <div className="min-h-full">
         <Header
-          navigation={navigation}
+          navigation={
+            isAuthenticated ? navigationLoggedIn : navigationNotLoggedIn
+          }
           userNavigation={userNavigation}
           isAuthenticated={isAuthenticated}
           currentUser={currentUser as ICurrentUser | null}
