@@ -7,6 +7,8 @@ import { Link, routes, navigate } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
+import IngredientsItemsList from 'src/components/IngredientsItemsList/IngredientsItemsList'
+
 const DELETE_RECIPE_MUTATION = gql`
   mutation DeleteRecipeMutation($id: String!) {
     deleteRecipe(id: $id) {
@@ -65,19 +67,7 @@ const Recipe = ({ recipe }: Props) => {
           return (
             <div key={stepNum} className="mt-2">
               <h3>step {stepNum}</h3>
-              <ul>
-                {ingredients.map((ingredient) => {
-                  const { quantity, unit, ingredientRef } = ingredient!
-                  return (
-                    <li
-                      key={`${quantity}-${unit.name}-${ingredientRef.name}`}
-                      className="ml-5 list-item"
-                    >
-                      - {quantity} {unit.name} {ingredientRef.name}
-                    </li>
-                  )
-                })}
-              </ul>
+              {ingredients && <IngredientsItemsList items={ingredients} />}
               <p>{description}</p>
             </div>
           )

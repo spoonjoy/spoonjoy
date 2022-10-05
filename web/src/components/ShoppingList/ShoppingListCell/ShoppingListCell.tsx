@@ -1,6 +1,6 @@
 import type {
-  FindShoppingListQuery,
-  FindShoppingListQueryVariables,
+  FindShoppingListById,
+  FindShoppingListByIdVariables,
 } from 'types/graphql'
 
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
@@ -35,12 +35,12 @@ export const Empty = () => <div>Empty</div>
 
 export const Failure = ({
   error,
-}: CellFailureProps<FindShoppingListQueryVariables>) => (
+}: CellFailureProps<FindShoppingListByIdVariables>) => (
   <div style={{ color: 'red' }}>Error: {error?.message}</div>
 )
 
 export const Success = ({
   shoppingList,
-}: CellSuccessProps<FindShoppingListQuery, FindShoppingListQueryVariables>) => {
+}: CellSuccessProps<FindShoppingListById, FindShoppingListByIdVariables>) => {
   return <ShoppingList shoppingList={shoppingList} />
 }

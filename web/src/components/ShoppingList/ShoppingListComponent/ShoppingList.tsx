@@ -1,16 +1,14 @@
 import type { FindShoppingListById } from 'types/graphql'
 
+import IngredientsItemsList from 'src/components/IngredientsItemsList/IngredientsItemsList'
+
 interface ShoppingListProps {
   shoppingList: NonNullable<FindShoppingListById['shoppingList']>
 }
 
 const ShoppingList = ({ shoppingList }: ShoppingListProps) => {
-  return (
-    <div>
-      <h2>{'ShoppingList'}</h2>
-      <p>{JSON.stringify(shoppingList)}</p>
-    </div>
-  )
+  const { items } = shoppingList
+  return <>{items && <IngredientsItemsList items={items} />}</>
 }
 
 export default ShoppingList
