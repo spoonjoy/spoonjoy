@@ -7,6 +7,7 @@ import type {
 
 import { AuthenticationError } from '@redwoodjs/graphql-server'
 
+import { requireAuth, requireShoppingListAuth } from 'src/lib/auth'
 import { db } from 'src/lib/db'
 
 import {
@@ -28,15 +29,14 @@ export const shoppingList: QueryResolvers['shoppingList'] = ({ id }) => {
 export const createShoppingList: MutationResolvers['createShoppingList'] = ({
   input,
 }) => {
-  const currentUser = context.currentUser
-  if (!currentUser) throw new AuthenticationError('You are not logged in!')
+  requireAuth()
 
   const { items } = input
 
   const dbInput: Prisma.ShoppingListCreateInput = {
     author: {
       connect: {
-        id: currentUser.id,
+        id: context.currentUser!.id,
       },
     },
     items: mapItemsMutationInputToDbCreateInput(items),
@@ -49,21 +49,7 @@ export const createShoppingList: MutationResolvers['createShoppingList'] = ({
 
 export const updateShoppingList: MutationResolvers['updateShoppingList'] =
   async ({ id, input }) => {
-    const currentUser = context.currentUser
-    if (!currentUser) throw new AuthenticationError('You are not logged in!')
-
-    const shoppingListBasicInfo = await db.shoppingList.findUnique({
-      where: { id },
-      include: {
-        author: true,
-      },
-    })
-
-    if (currentUser.id !== shoppingListBasicInfo!.authorId) {
-      throw new AuthenticationError(
-        'You can only update your own shoppingLists!'
-      )
-    }
+    await requireShoppingListAuth(id)
 
     const { items } = input
     const dbInput: Prisma.ShoppingListUpdateInput = {
@@ -78,21 +64,8 @@ export const updateShoppingList: MutationResolvers['updateShoppingList'] =
 
 export const deleteShoppingList: MutationResolvers['deleteShoppingList'] =
   async ({ id }) => {
-    const currentUser = context.currentUser
-    if (!currentUser) throw new AuthenticationError('You are not logged in!')
+    await requireShoppingListAuth(id)
 
-    const shoppingListBasicInfo = await db.shoppingList.findUnique({
-      where: { id },
-      include: {
-        author: true,
-      },
-    })
-
-    if (currentUser.id !== shoppingListBasicInfo!.authorId) {
-      throw new AuthenticationError(
-        'You can only delete your own shoppingList!'
-      )
-    }
     return db.shoppingList.delete({
       where: { id },
     })

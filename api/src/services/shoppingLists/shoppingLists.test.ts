@@ -214,7 +214,7 @@ describe('shoppingLists', () => {
         await updateShoppingList(updatedInput)
       } catch (e) {
         expect(e).toMatchObject(
-          new RedwoodGraphQLError('You can only update your own shoppingLists!')
+          new RedwoodGraphQLError('You can only modify your own shoppingLists!')
         )
       }
     }
@@ -332,7 +332,7 @@ describe('shoppingLists', () => {
         })
       } catch (e) {
         expect(e).toMatchObject(
-          new RedwoodGraphQLError('You can only delete your own shoppingList!')
+          new RedwoodGraphQLError('You can only modify your own shoppingLists!')
         )
       }
     }

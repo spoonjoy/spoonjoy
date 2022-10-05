@@ -140,3 +140,30 @@ export const requireRecipeAuth = async (recipeId: string) => {
     throw new ForbiddenError('You can only modify your own recipes!')
   }
 }
+
+/**
+ * Use requireShoppingListAuth for checking that a user can modify/delete a shoppingList
+ *
+ * @param shoppingListId - The ID of the shoppingList for which we are checking auth
+ *
+ * @returns - If the currentUser is authenticated (and allowed to make changes to the given shoppingList)
+ *
+ * @throws {@link AuthenticationError} - If the currentUser is not authenticated
+ * @throws {@link ForbiddenError} If the currentUser is not allowed due to the shoppingList not being theirs
+ */
+export const requireShoppingListAuth = async (shoppingListId: string) => {
+  if (!isAuthenticated()) {
+    throw new AuthenticationError('You are not logged in!')
+  }
+
+  const shoppingListBasicInfo = await db.shoppingList.findUnique({
+    where: { id: shoppingListId },
+    include: {
+      author: true,
+    },
+  })
+
+  if (context.currentUser!.id !== shoppingListBasicInfo!.authorId) {
+    throw new ForbiddenError('You can only modify your own shoppingLists!')
+  }
+}
