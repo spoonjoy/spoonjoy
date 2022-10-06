@@ -1,4 +1,4 @@
-import type { FindRecipes } from 'types/graphql'
+import type { FindMyRecipes } from 'types/graphql'
 
 import { Link, routes } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
@@ -42,6 +42,6 @@ export const Failure = ({ error }: CellFailureProps) => (
   <div className="rw-cell-error">{error?.message}</div>
 )
 
-export const Success = ({ recipes }: CellSuccessProps<FindRecipes>) => {
+export const Success = ({ recipes }: CellSuccessProps<FindMyRecipes>) => {
   return <Recipes recipes={recipes} />
 }
