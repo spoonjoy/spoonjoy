@@ -17,6 +17,12 @@ export const recipes: QueryResolvers['recipes'] = () => {
   return db.recipe.findMany()
 }
 
+export const myRecipes: QueryResolvers['myRecipes'] = () => {
+  requireAuth()
+
+  return db.recipe.findMany({ where: { chefId: context.currentUser?.id } })
+}
+
 export const recipe: QueryResolvers['recipe'] = ({ id }) => {
   return db.recipe.findUnique({
     where: { id },
