@@ -1,5 +1,6 @@
 import type { Prisma } from '@prisma/client'
 import { db } from 'api/src/lib/db'
+import { getPizzaScenarioData } from 'api/src/services/recipes/recipes.scenarios'
 
 import { hashPassword } from '@redwoodjs/api'
 
@@ -15,6 +16,13 @@ export default async () => {
     const testUserPassword = 'test'
     const [hashedPassword, salt] = hashPassword(testUserPassword)
 
+    const admin = {
+      username: 'ari',
+      email: 'ari@spoonjoy.app',
+      hashedPassword,
+      salt,
+    }
+
     const users: Prisma.UserCreateArgs['data'][] = [
       {
         username: 'ari',
@@ -27,6 +35,16 @@ export default async () => {
     // Because we're using PostgreSQL, using `createMany` to insert multiple records is much faster
     // https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#createmany
     await db.user.createMany({ data: users })
+
+    const adminData = await db.user.findUnique({
+      where: { username: admin.username },
+    })
+
+    const pizzaRecipe: Prisma.RecipeCreateArgs['data'] = getPizzaScenarioData(
+      adminData!.id
+    )
+
+    await db.recipe.create({ data: pizzaRecipe })
   } catch (error) {
     console.warn('There was an issue with seeding.')
     console.error(error)
