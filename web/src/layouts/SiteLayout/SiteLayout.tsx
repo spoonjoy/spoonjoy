@@ -9,6 +9,7 @@ import { routes, useMatch } from '@redwoodjs/router'
 
 import { ICurrentUser } from 'src/lib/auth'
 
+import ChefRJ from './chef-rj.png'
 import LogoBlack from './sj_black.svg'
 
 type SiteLayoutProps = {
@@ -113,10 +114,8 @@ const Header = ({
   currentUser,
 }: IHeaderProps) => {
   const user = {
-    name: 'Tom Cook',
-    email: 'tom@example.com',
-    imageUrl:
-      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    name: currentUser?.username,
+    imageUrl: ChefRJ,
   }
 
   return (
@@ -249,9 +248,9 @@ const Header = ({
                     <div className="text-base font-medium text-gray-800">
                       {currentUser.username}
                     </div>
-                    <div className="text-sm font-medium text-gray-500">
+                    {/* <div className="text-sm font-medium text-gray-500">
                       {currentUser.email}
-                    </div>
+                    </div> */}
                   </div>
                   <button
                     type="button"
