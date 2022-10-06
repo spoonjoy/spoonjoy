@@ -5,6 +5,8 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import Recipes from 'src/components/Recipe/Recipes'
 
+import NoRecipes from '../Recipes/NoRecipes'
+
 export const QUERY = gql`
   query FindMyRecipes {
     recipes: myRecipes {
@@ -26,12 +28,13 @@ export const Loading = () => <div>Loading...</div>
 
 export const Empty = () => {
   return (
-    <div className="rw-text-center">
-      {'No recipes yet. '}
-      <Link to={routes.newRecipe()} className="rw-link">
-        {'Create one?'}
-      </Link>
-    </div>
+    <NoRecipes />
+    // <div className="rw-text-center">
+    //   {'No recipes yet. '}
+    //   <Link to={routes.newRecipe()} className="rw-link">
+    //     {'Create one?'}
+    //   </Link>
+    // </div>
   )
 }
 
