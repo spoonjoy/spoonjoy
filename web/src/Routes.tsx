@@ -17,11 +17,11 @@ const Routes = () => {
   return (
     <Router>
       <Private wrap={SiteLayout} unauthenticated="welcome">
+        <Route path="/recipes" page={RecipeRecipesPage} name="recipes" />
         <Set wrap={RecipesLayout}>
           <Route path="/recipes/new" page={RecipeNewRecipePage} name="newRecipe" />
           <Route path="/recipes/{id}/edit" page={RecipeEditRecipePage} name="editRecipe" />
           <Route path="/recipes/{id}" page={RecipeRecipePage} name="recipe" />
-          <Route path="/recipes" page={RecipeRecipesPage} name="recipes" />
         </Set>
       </Private>
       <Set wrap={SiteLayout}>

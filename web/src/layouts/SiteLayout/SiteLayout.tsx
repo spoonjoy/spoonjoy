@@ -66,7 +66,7 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
 
   return (
     <SlotProvider>
-      <div className="min-h-full">
+      <div className="min-h-screen bg-gray-100">
         <Header
           navigation={
             isAuthenticated ? navigationLoggedIn : navigationNotLoggedIn
