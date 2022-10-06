@@ -1,6 +1,5 @@
 import type { FindMyRecipes } from 'types/graphql'
 
-import { Link, routes } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import Recipes from 'src/components/Recipe/Recipes'
@@ -13,13 +12,6 @@ export const QUERY = gql`
       id
       title
       description
-      servings
-      chef {
-        id
-        username
-      }
-      createdAt
-      deletedAt
     }
   }
 `
