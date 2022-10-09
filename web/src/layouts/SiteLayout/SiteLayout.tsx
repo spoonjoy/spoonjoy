@@ -1,5 +1,6 @@
 import { Fragment } from 'react'
 
+import { Toaster } from '@redwoodjs/web/toast'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { SlotProvider, createSlot } from 'react-view-slot'
@@ -65,35 +66,38 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
   ]
 
   return (
-    <SlotProvider>
-      <div className="min-h-screen bg-gray-100">
-        <Header
-          navigation={
-            isAuthenticated ? navigationLoggedIn : navigationNotLoggedIn
-          }
-          userNavigation={userNavigation}
-          isAuthenticated={isAuthenticated}
-          currentUser={currentUser as ICurrentUser | null}
-        />
+    <>
+      <Toaster toastOptions={{ className: 'rw-toast', duration: 6000 }} />
+      <SlotProvider>
+        <div className="min-h-screen bg-gray-100">
+          <Header
+            navigation={
+              isAuthenticated ? navigationLoggedIn : navigationNotLoggedIn
+            }
+            userNavigation={userNavigation}
+            isAuthenticated={isAuthenticated}
+            currentUser={currentUser as ICurrentUser | null}
+          />
 
-        <div className="py-10">
-          <header>
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <h1 className="text-3xl font-bold leading-tight tracking-tight text-gray-900">
-                <HeaderSlot />
-              </h1>
-            </div>
-          </header>
-          <main>
-            <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-              {/* Replace with your content */}
-              <div className="px-4 py-8 sm:px-0">{children}</div>
-              {/* /End replace */}
-            </div>
-          </main>
+          <div className="py-10">
+            <header>
+              <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <h1 className="text-3xl font-bold leading-tight tracking-tight text-gray-900">
+                  <HeaderSlot />
+                </h1>
+              </div>
+            </header>
+            <main>
+              <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                {/* Replace with your content */}
+                <div className="px-4 py-8 sm:px-0">{children}</div>
+                {/* /End replace */}
+              </div>
+            </main>
+          </div>
         </div>
-      </div>
-    </SlotProvider>
+      </SlotProvider>
+    </>
   )
 }
 

@@ -64,16 +64,15 @@ const Recipe = ({ recipe }: Props) => {
 
         </div>
       </HeaderSlot.Plug>
-      <h2 className="text-center"></h2>
-      <p className="mt-2 text-center">{recipe.description}</p>
+      <p className="mt-2 text-gray-900">{recipe.description}</p>
       <div>
         {recipe.steps.map((step) => {
           const { stepNum, description, ingredients } = step!
           return (
             <div key={stepNum} className="mt-2">
-              <h3 className="text-lg font-medium text-gray-900">
+              <h2 className="text-lg font-medium text-gray-900">
                 step {stepNum}
-              </h3>
+              </h2>
               {ingredients && (
                 <div className="m-5">
                   <IngredientsItemsList
