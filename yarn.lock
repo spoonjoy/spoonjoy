@@ -17203,6 +17203,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mobx-devtools-mst@npm:^0.9.30":
+  version: 0.9.30
+  resolution: "mobx-devtools-mst@npm:0.9.30"
+  peerDependencies:
+    mobx: ^2.2.0 || ^3.0.0 || ^4.0.0 || ^5.0.0
+    mobx-state-tree: "*"
+  checksum: de7951ca627397a663ac5029e8397045968e59b7f4191466c514718cee54408991d040e0e10ed99b588a6cb25f921cd672fdcad39ca56a01f320e512ac06b2c1
+  languageName: node
+  linkType: hard
+
 "mobx-react-lite@npm:^3.4.0":
   version: 3.4.0
   resolution: "mobx-react-lite@npm:3.4.0"
@@ -23683,6 +23693,7 @@ __metadata:
     "@simplewebauthn/browser": ^6.0.0
     autoprefixer: ^10.4.12
     mobx: ^6.6.2
+    mobx-devtools-mst: ^0.9.30
     mobx-react-lite: ^3.4.0
     mobx-state-tree: ^5.1.6
     postcss: ^8.4.16

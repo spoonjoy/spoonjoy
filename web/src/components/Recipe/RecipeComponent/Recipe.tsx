@@ -8,6 +8,7 @@ import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import IngredientsItemsList from 'src/components/IngredientsItemsList/IngredientsItemsList'
+import { ListItemType } from 'src/stores/ListItemsStore'
 
 const DELETE_RECIPE_MUTATION = gql`
   mutation DeleteRecipeMutation($id: String!) {
@@ -67,7 +68,7 @@ const Recipe = ({ recipe }: Props) => {
           return (
             <div key={stepNum} className="mt-2">
               <h3>step {stepNum}</h3>
-              {ingredients && <IngredientsItemsList items={ingredients} />}
+              {ingredients && <IngredientsItemsList items={ingredients} itemsType={ListItemType.Ingredient} />}
               <p>{description}</p>
             </div>
           )

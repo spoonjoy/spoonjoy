@@ -1,5 +1,6 @@
 import { useStore } from 'src/stores/RootStore'
 import { ListItemType } from 'src/stores/ListItemsStore'
+import { observer } from 'mobx-react-lite'
 
 interface IIngredientItem {
   id: string
@@ -40,4 +41,4 @@ const IngredientsItemsList = ({ items, itemsType }: IIngredientsItemsList) => {
   )
 }
 
-export default IngredientsItemsList
+export default observer(IngredientsItemsList)

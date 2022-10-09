@@ -1,4 +1,4 @@
-import { observable } from 'mobx'
+import makeInspectable from 'mobx-devtools-mst'
 import { types, Instance } from 'mobx-state-tree'
 import { ListItemsStore, SnapshotInListItemsStore } from './ListItemsStore'
 
@@ -13,6 +13,8 @@ export const RootStore = types
 export const store = RootStore.create({
   listItemsStore: { items: {}}
 })
+
+makeInspectable(store)
 
 const RootStoreContext = React.createContext<null | Instance<typeof store>>(
   null
