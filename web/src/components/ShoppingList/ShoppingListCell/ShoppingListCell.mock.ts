@@ -8,7 +8,7 @@ const mockShoppingList1: RecursivePartial<ShoppingList> = {
   },
   items: [
     {
-      id: 'testIngId1',
+      id: 'testItemId1',
       quantity: 1.5,
       unit: {
         name: 'cups',
@@ -18,7 +18,7 @@ const mockShoppingList1: RecursivePartial<ShoppingList> = {
       },
     },
     {
-      id: 'testIngId2',
+      id: 'testItemId2',
       quantity: 1,
       unit: {
         name: 'tsp',
@@ -28,7 +28,7 @@ const mockShoppingList1: RecursivePartial<ShoppingList> = {
       },
     },
     {
-      id: 'testIngId3',
+      id: 'testItemId3',
       quantity: 0.5,
       unit: {
         name: 'tbsp',
@@ -38,7 +38,7 @@ const mockShoppingList1: RecursivePartial<ShoppingList> = {
       },
     },
     {
-      id: 'testIngId4',
+      id: 'testItemId4',
       quantity: 2,
       unit: {
         name: 'tsp',
@@ -48,7 +48,7 @@ const mockShoppingList1: RecursivePartial<ShoppingList> = {
       },
     },
     {
-      id: 'testIngId5',
+      id: 'testItemId5',
       quantity: 3,
       unit: {
         name: 'cloves',
@@ -58,7 +58,7 @@ const mockShoppingList1: RecursivePartial<ShoppingList> = {
       },
     },
     {
-      id: 'testIngId6',
+      id: 'testItemId6',
       quantity: 16,
       unit: {
         name: 'oz',
@@ -68,7 +68,7 @@ const mockShoppingList1: RecursivePartial<ShoppingList> = {
       },
     },
     {
-      id: 'testIngId7',
+      id: 'testItemId7',
       quantity: 1,
       unit: {
         name: 'cup',
