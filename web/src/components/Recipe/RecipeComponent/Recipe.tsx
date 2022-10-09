@@ -64,7 +64,7 @@ const Recipe = ({ recipe }: Props) => {
 
         </div>
       </HeaderSlot.Plug>
-      <p className="mt-2 text-gray-900">{recipe.description}</p>
+      <p className="py-5 text-gray-900">{recipe.description}</p>
       <div>
         {recipe.steps.map((step) => {
           const { stepNum, description, ingredients } = step!
@@ -81,7 +81,7 @@ const Recipe = ({ recipe }: Props) => {
                   />
                 </div>
               )}
-              <div className="pb-5">
+              <div className="pb-5 text-gray-800">
                 <p>{description}</p>
               </div>
             </div>
