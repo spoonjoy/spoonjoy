@@ -67,9 +67,20 @@ const Recipe = ({ recipe }: Props) => {
           const { stepNum, description, ingredients } = step!
           return (
             <div key={stepNum} className="mt-2">
-              <h3>step {stepNum}</h3>
-              {ingredients && <IngredientsItemsList items={ingredients} itemsType={ListItemType.Ingredient} />}
-              <p>{description}</p>
+              <h3 className="text-lg font-medium text-gray-900">
+                step {stepNum}
+              </h3>
+              {ingredients && (
+                <div className='m-5'>
+                  <IngredientsItemsList
+                    items={ingredients}
+                    itemsType={ListItemType.Ingredient}
+                  />
+                </div>
+              )}
+              <div className="pb-5">
+                <p>{description}</p>
+              </div>
             </div>
           )
         })}
