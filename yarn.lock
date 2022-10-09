@@ -17182,6 +17182,37 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mobx-react-lite@npm:^3.4.0":
+  version: 3.4.0
+  resolution: "mobx-react-lite@npm:3.4.0"
+  peerDependencies:
+    mobx: ^6.1.0
+    react: ^16.8.0 || ^17 || ^18
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+  checksum: 7aa64fb8740d48de23c370385331063f0a0821a87ed7a1eb0324305e8ef2f5173806c3e5ff2bfb7696e5b80faf19de11e2d3c0b64268df21895d4eec4816e325
+  languageName: node
+  linkType: hard
+
+"mobx-state-tree@npm:^5.1.6":
+  version: 5.1.6
+  resolution: "mobx-state-tree@npm:5.1.6"
+  peerDependencies:
+    mobx: ^6.3.0
+  checksum: 1986f90708d298da23fd72252b6984aa475c3953056683b9cc97dd67ed7047ec8a98e66ed899164110de4f5a0fa5efb30226d27c6c84e33caf4ad3bd57909cec
+  languageName: node
+  linkType: hard
+
+"mobx@npm:^6.6.2":
+  version: 6.6.2
+  resolution: "mobx@npm:6.6.2"
+  checksum: 99f5451c92f4b2092118ee3ae2f3ac61c199cda2266a910949f5dcae217400759f79598b2ec0c5e9be1eaa3efb09dafc944ed21435e9bb0029d48ec039e0c8f3
+  languageName: node
+  linkType: hard
+
 "module-not-found-error@npm:^1.0.1":
   version: 1.0.1
   resolution: "module-not-found-error@npm:1.0.1"
@@ -23630,6 +23661,9 @@ __metadata:
     "@redwoodjs/web": ^3.1.0
     "@simplewebauthn/browser": ^6.0.0
     autoprefixer: ^10.4.12
+    mobx: ^6.6.2
+    mobx-react-lite: ^3.4.0
+    mobx-state-tree: ^5.1.6
     postcss: ^8.4.16
     postcss-loader: ^7.0.1
     prop-types: 15.8.1
