@@ -11,8 +11,3 @@ export const RecipeFormStore = types
       self.name = name
     },
   }))
-
-export const RecipeFormStoreInitState = {
-  id: '',
-  name: '',
-}

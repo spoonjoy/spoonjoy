@@ -1,3 +1,6 @@
+import { useStore } from 'src/stores/RootStore'
+import { ListItemType } from 'src/stores/ListItemsStore'
+
 interface IIngredientItem {
   id: string
   quantity: number
@@ -11,14 +14,19 @@ interface IIngredientItem {
 
 interface IIngredientsItemsList {
   items: (IIngredientItem | null)[]
+  itemsType: ListItemType
 }
 
 // For use both when listing ingredients in a recipe and items in a shopping list
-const IngredientsItemsList = ({ items }: IIngredientsItemsList) => {
+const IngredientsItemsList = ({ items, itemsType }: IIngredientsItemsList) => {
+  const { listItemsStore } = useStore()
   return (
     <ul>
       {items.map((item) => {
-        const { quantity, unit, ingredientRef } = item!
+        const { quantity, unit, ingredientRef, id } = item!
+        if (!listItemsStore.items.get(id)) {
+          listItemsStore.addItem(id, itemsType)
+        }
         return (
           <li
             key={`${quantity}-${unit.name}-${ingredientRef.name}`}

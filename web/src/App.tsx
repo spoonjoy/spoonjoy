@@ -8,7 +8,7 @@ import Routes from 'src/Routes'
 
 import './scaffold.css'
 import './index.css'
-import { RootStore, StoreProvider } from './stores/rootStore'
+import { RootStore, StoreProvider } from 'src/stores/RootStore'
 
 const App = () => {
   return (

@@ -1,13 +1,12 @@
 import { types, Instance } from 'mobx-state-tree'
+import { ListItemsStore } from './ListItemsStore'
 
-import { RecipeFormStore, RecipeFormStoreInitState } from './RecipeFormStore'
+import { RecipeFormStore } from './RecipeFormStore'
 
 export const RootStore = types
   .model({
     recipeFormStore: RecipeFormStore,
-  })
-  .create({
-    recipeFormStore: RecipeFormStoreInitState,
+    listItemsStore: ListItemsStore
   })
 
 const RootStoreContext = React.createContext<null | Instance<typeof RootStore>>(
