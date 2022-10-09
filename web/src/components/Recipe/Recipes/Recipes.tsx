@@ -13,7 +13,7 @@ const RecipeCard = ({
       title={'Show recipe ' + recipe.id + ' detail'}
     >
       <div className="flex flex-1 flex-col p-8">
-        <h3 className="mt-2 text-xl font-medium text-gray-900">
+        <h3 className="text-xl font-medium text-gray-900">
           {recipe.title}
         </h3>
         <dl className="mt-1 flex flex-grow flex-col justify-between">
