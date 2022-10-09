@@ -42,7 +42,7 @@ const IngredientsItemsList = ({ items, itemsType }: IIngredientsItemsList) => {
               <div className="min-w-0 flex-1 text-sm">
                 <label
                   htmlFor={`ingredient-${id}`}
-                  className="select-none font-medium text-gray-700"
+                  className={`select-none font-medium  ${selected ? 'text-gray-400 line-through' : 'text-gray-700'}`}
                 >
                   {quantity} {unit.name} {ingredientRef.name}
                 </label>
