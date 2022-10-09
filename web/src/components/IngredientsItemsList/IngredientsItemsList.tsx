@@ -23,11 +23,16 @@ const IngredientsItemsList = ({ items, itemsType }: IIngredientsItemsList) => {
   const { listItemsStore } = useStore()
   return (
     <fieldset>
-      <ul className="mt-4 divide-y divide-gray-200 border-t border-b border-gray-200 max-w-xs">
+      <ul className="mt-4 max-w-xs divide-y divide-gray-200 border-t border-b border-gray-200">
         {items.map((item) => {
           const { quantity, unit, ingredientRef, id } = item!
-          if (!listItemsStore.items.get(id)) {
+          if (listItemsStore.items.get(id) === undefined) {
             listItemsStore.addItem(id, itemsType)
+          }
+          const itemStore = listItemsStore.items.get(id)!
+          const selected = itemStore.selected
+          const onCheck = () => {
+            itemStore.setItemState(!selected)
           }
           return (
             <li
@@ -47,6 +52,8 @@ const IngredientsItemsList = ({ items, itemsType }: IIngredientsItemsList) => {
                   id={`ingredient-${id}`}
                   name={`ingredient-${id}`}
                   type="checkbox"
+                  checked={selected}
+                  onChange={onCheck}
                   className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                 />
               </div>
