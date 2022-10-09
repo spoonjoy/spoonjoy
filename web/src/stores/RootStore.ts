@@ -1,15 +1,20 @@
+import { observable } from 'mobx'
 import { types, Instance } from 'mobx-state-tree'
-import { ListItemsStore } from './ListItemsStore'
+import { ListItemsStore, SnapshotInListItemsStore } from './ListItemsStore'
 
 import { RecipeFormStore } from './RecipeFormStore'
 
 export const RootStore = types
   .model({
-    recipeFormStore: RecipeFormStore,
-    listItemsStore: ListItemsStore
+    recipeFormStore: types.maybe(RecipeFormStore),
+    listItemsStore: ListItemsStore,
   })
 
-const RootStoreContext = React.createContext<null | Instance<typeof RootStore>>(
+export const store = RootStore.create({
+  listItemsStore: { items: {}}
+})
+
+const RootStoreContext = React.createContext<null | Instance<typeof store>>(
   null
 )
 export const StoreProvider = RootStoreContext.Provider

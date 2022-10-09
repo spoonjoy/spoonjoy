@@ -1,4 +1,4 @@
-import { types } from 'mobx-state-tree'
+import { SnapshotIn, types } from 'mobx-state-tree'
 
 export enum ListItemType {
   Ingredient = 'Ingredient',
@@ -20,7 +20,7 @@ const ListItemStore = types
 
 /**
  * This simply stores items IDs (either shopping list items or recipe step ingredients) and their selection state
-*/
+ */
 export const ListItemsStore = types
   .model('ListItemsStore')
   .props({
@@ -34,3 +34,5 @@ export const ListItemsStore = types
       self.items.put({ id, itemType })
     },
   }))
+
+export interface SnapshotInListItemsStore extends SnapshotIn<typeof ListItemsStore> {}

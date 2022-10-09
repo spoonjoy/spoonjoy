@@ -8,7 +8,7 @@ import Routes from 'src/Routes'
 
 import './scaffold.css'
 import './index.css'
-import { RootStore, StoreProvider } from 'src/stores/RootStore'
+import { store, StoreProvider } from 'src/stores/RootStore'
 
 const App = () => {
   return (
@@ -16,7 +16,7 @@ const App = () => {
       <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
         <AuthProvider type="dbAuth" client={WebAuthnClient}>
           <RedwoodApolloProvider>
-            <StoreProvider value={RootStore}>
+            <StoreProvider value={store}>
               <Routes />
             </StoreProvider>
           </RedwoodApolloProvider>
