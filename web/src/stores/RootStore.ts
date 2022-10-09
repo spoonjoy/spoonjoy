@@ -1,6 +1,8 @@
+import localforage from 'localforage'
 import makeInspectable from 'mobx-devtools-mst'
 import { types, Instance } from 'mobx-state-tree'
 import { ListItemsStore, SnapshotInListItemsStore } from './ListItemsStore'
+import persist from './mst-persist'
 
 import { RecipeFormStore } from './RecipeFormStore'
 
@@ -15,6 +17,12 @@ export const store = RootStore.create({
 })
 
 makeInspectable(store)
+
+persist('some', store, {
+  storage: localforage,
+  jsonify: false,
+  whitelist: ['listItemsStore']  // only these keys will be persisted
+}).then(() => console.log('store has been hydrated'))
 
 const RootStoreContext = React.createContext<null | Instance<typeof store>>(
   null
