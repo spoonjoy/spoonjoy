@@ -3,6 +3,9 @@ import type {
   FindRecipeById,
 } from 'types/graphql'
 
+import { MetaTags } from '@redwoodjs/web'
+import { HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
+
 import { Link, routes, navigate } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
@@ -50,17 +53,18 @@ const Recipe = ({ recipe }: Props) => {
 
   return (
     <>
-      <h2 className="text-center">
-        <span className="font-serif text-3xl">{recipe.title}</span>
-        <br />
-        <span>
-          by <span className="font-bold">{recipe.chef.username}</span>
-        </span>
-        <br />
-        <span className="text-xs">
-          created <TimeTag datetime={recipe.createdAt} />
-        </span>
-      </h2>
+      <MetaTags title="Recipe" description="Recipe" />
+      <HeaderSlot.Plug id="recipe">
+        <div className=' leading-[.8]'>
+          <span>{recipe.title}</span>
+          <br />
+          <span className="text-sm font-normal ml-2">
+            by <span className="font-bold">{recipe.chef.username}</span> on <TimeTag datetime={recipe.createdAt} />
+          </span>
+
+        </div>
+      </HeaderSlot.Plug>
+      <h2 className="text-center"></h2>
       <p className="mt-2 text-center">{recipe.description}</p>
       <div>
         {recipe.steps.map((step) => {
@@ -71,7 +75,7 @@ const Recipe = ({ recipe }: Props) => {
                 step {stepNum}
               </h3>
               {ingredients && (
-                <div className='m-5'>
+                <div className="m-5">
                   <IngredientsItemsList
                     items={ingredients}
                     itemsType={ListItemType.Ingredient}
