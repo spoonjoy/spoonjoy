@@ -7265,7 +7265,6 @@ __metadata:
     "@redwoodjs/graphql-server": ^3.1.0
     "@simplewebauthn/server": ^6.3.0-alpha.0
     "@tailwindcss/forms": ^0.5.3
-    mobx-store-provider: ^2.1.2
   languageName: unknown
   linkType: soft
 
@@ -17225,16 +17224,6 @@ __metadata:
   peerDependencies:
     mobx: ^6.3.0
   checksum: 1986f90708d298da23fd72252b6984aa475c3953056683b9cc97dd67ed7047ec8a98e66ed899164110de4f5a0fa5efb30226d27c6c84e33caf4ad3bd57909cec
-  languageName: node
-  linkType: hard
-
-"mobx-store-provider@npm:^2.1.2":
-  version: 2.1.2
-  resolution: "mobx-store-provider@npm:2.1.2"
-  peerDependencies:
-    mobx-state-tree: ">=3.0.0"
-    react: ">=16.8"
-  checksum: 8dfb4876d6d2f6475a4da70fd76a2d5283e57c141969fefa07f5cef576bb35df375b8daae34e66fb5af011b22af2c764f9c5339bbcb111a7bbfb828a1aa0e2bc
   languageName: node
   linkType: hard
 

@@ -8,17 +8,22 @@ import Routes from 'src/Routes'
 
 import './scaffold.css'
 import './index.css'
+import { RootStore, StoreProvider } from './stores/rootStore'
 
-const App = () => (
-  <FatalErrorBoundary page={FatalErrorPage}>
-    <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
-      <AuthProvider type="dbAuth" client={WebAuthnClient}>
-        <RedwoodApolloProvider>
-          <Routes />
-        </RedwoodApolloProvider>
-      </AuthProvider>
-    </RedwoodProvider>
-  </FatalErrorBoundary>
-)
+const App = () => {
+  return (
+    <FatalErrorBoundary page={FatalErrorPage}>
+      <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
+        <AuthProvider type="dbAuth" client={WebAuthnClient}>
+          <RedwoodApolloProvider>
+            <StoreProvider value={RootStore}>
+              <Routes />
+            </StoreProvider>
+          </RedwoodApolloProvider>
+        </AuthProvider>
+      </RedwoodProvider>
+    </FatalErrorBoundary>
+  )
+}
 
 export default App
