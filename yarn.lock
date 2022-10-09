@@ -5344,6 +5344,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tailwindcss/forms@npm:^0.5.3":
+  version: 0.5.3
+  resolution: "@tailwindcss/forms@npm:0.5.3"
+  dependencies:
+    mini-svg-data-uri: ^1.2.3
+  peerDependencies:
+    tailwindcss: ">=3.0.0 || >= 3.0.0-alpha.1"
+  checksum: 4881c1d5a9aeaa2eea453dd60a5b7c6671a11f0d74f6075d052a3b4f2d8c7e1f1a42f74fe52421da4c13b19018ab883199f528cd41e6fdb249ed638d3f04cd94
+  languageName: node
+  linkType: hard
+
 "@testing-library/dom@npm:^8.0.0, @testing-library/dom@npm:^8.11.1":
   version: 8.18.1
   resolution: "@testing-library/dom@npm:8.18.1"
@@ -7253,6 +7264,8 @@ __metadata:
     "@redwoodjs/api": ^3.1.0
     "@redwoodjs/graphql-server": ^3.1.0
     "@simplewebauthn/server": ^6.3.0-alpha.0
+    "@tailwindcss/forms": ^0.5.3
+    mobx-store-provider: ^2.1.2
   languageName: unknown
   linkType: soft
 
@@ -17016,6 +17029,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mini-svg-data-uri@npm:^1.2.3":
+  version: 1.4.4
+  resolution: "mini-svg-data-uri@npm:1.4.4"
+  bin:
+    mini-svg-data-uri: cli.js
+  checksum: 24545fa30b5a45449241bf19c25b8bc37594b63ec06401b3d563bd1c2e8a6abb7c18741f8b354e0064baa63c291be214154bf3a66f201ae71dfab3cc1a5e3191
+  languageName: node
+  linkType: hard
+
 "minimalistic-assert@npm:^1.0.0, minimalistic-assert@npm:^1.0.1":
   version: 1.0.1
   resolution: "minimalistic-assert@npm:1.0.1"
@@ -17203,6 +17225,16 @@ __metadata:
   peerDependencies:
     mobx: ^6.3.0
   checksum: 1986f90708d298da23fd72252b6984aa475c3953056683b9cc97dd67ed7047ec8a98e66ed899164110de4f5a0fa5efb30226d27c6c84e33caf4ad3bd57909cec
+  languageName: node
+  linkType: hard
+
+"mobx-store-provider@npm:^2.1.2":
+  version: 2.1.2
+  resolution: "mobx-store-provider@npm:2.1.2"
+  peerDependencies:
+    mobx-state-tree: ">=3.0.0"
+    react: ">=16.8"
+  checksum: 8dfb4876d6d2f6475a4da70fd76a2d5283e57c141969fefa07f5cef576bb35df375b8daae34e66fb5af011b22af2c764f9c5339bbcb111a7bbfb828a1aa0e2bc
   languageName: node
   linkType: hard
 
