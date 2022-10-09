@@ -22,22 +22,39 @@ interface IIngredientsItemsList {
 const IngredientsItemsList = ({ items, itemsType }: IIngredientsItemsList) => {
   const { listItemsStore } = useStore()
   return (
-    <ul>
-      {items.map((item) => {
-        const { quantity, unit, ingredientRef, id } = item!
-        if (!listItemsStore.items.get(id)) {
-          listItemsStore.addItem(id, itemsType)
-        }
-        return (
-          <li
-            key={`${quantity}-${unit.name}-${ingredientRef.name}`}
-            className="ml-5 list-item"
-          >
-            - {quantity} {unit.name} {ingredientRef.name}
-          </li>
-        )
-      })}
-    </ul>
+    <fieldset>
+      <ul className="mt-4 divide-y divide-gray-200 border-t border-b border-gray-200 max-w-xs">
+        {items.map((item) => {
+          const { quantity, unit, ingredientRef, id } = item!
+          if (!listItemsStore.items.get(id)) {
+            listItemsStore.addItem(id, itemsType)
+          }
+          return (
+            <li
+              key={`${quantity}-${unit.name}-${ingredientRef.name}`}
+              className="relative flex items-start py-4"
+            >
+              <div className="min-w-0 flex-1 text-sm">
+                <label
+                  htmlFor={`ingredient-${id}`}
+                  className="select-none font-medium text-gray-700"
+                >
+                  {quantity} {unit.name} {ingredientRef.name}
+                </label>
+              </div>
+              <div className="ml-3 flex h-5 items-center">
+                <input
+                  id={`ingredient-${id}`}
+                  name={`ingredient-${id}`}
+                  type="checkbox"
+                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                />
+              </div>
+            </li>
+          )
+        })}
+      </ul>
+    </fieldset>
   )
 }
 
