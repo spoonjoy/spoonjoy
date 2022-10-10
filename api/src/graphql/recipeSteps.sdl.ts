@@ -15,14 +15,15 @@ export const schema = gql`
 
   input CreateRecipeStepInput {
     stepNum: Int!
-    description: String
+    description: String!
     ingredients: [CreateIngredientInput]!
   }
 
+  """Use this for modifying existing recipes"""
   input UpdateRecipeStepInput {
     recipeId: String
     stepNum: Int
-    description: String
+    description: String!
     ingredients: [UpdateIngredientInput]!
   }
 

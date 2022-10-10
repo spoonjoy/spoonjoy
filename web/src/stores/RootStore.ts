@@ -4,16 +4,15 @@ import { types, Instance } from 'mobx-state-tree'
 import { ListItemsStore, SnapshotInListItemsStore } from './ListItemsStore'
 import persist from './mst-persist'
 
-import { RecipeFormStore } from './RecipeFormStore'
+import { RecipeInputStore } from './RecipeInputStore'
 
-export const RootStore = types
-  .model({
-    recipeFormStore: types.maybe(RecipeFormStore),
-    listItemsStore: ListItemsStore,
-  })
+export const RootStore = types.model({
+  recipeInputStore: types.maybe(RecipeInputStore),
+  listItemsStore: ListItemsStore,
+})
 
 export const store = RootStore.create({
-  listItemsStore: { items: {}}
+  listItemsStore: { items: {} },
 })
 
 makeInspectable(store)
@@ -21,7 +20,7 @@ makeInspectable(store)
 persist('some', store, {
   storage: localforage,
   jsonify: false,
-  whitelist: ['listItemsStore']  // only these keys will be persisted
+  whitelist: ['listItemsStore'], // only these keys will be persisted
 }).then(() => console.log('store has been hydrated'))
 
 const RootStoreContext = React.createContext<null | Instance<typeof store>>(

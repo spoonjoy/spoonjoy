@@ -27,7 +27,7 @@ export const schema = gql`
     title: String!
     description: String
     servings: Int
-    steps: [CreateRecipeStepInput]!
+    steps: [UpdateRecipeStepInput]!
   }
 
   type Mutation {
