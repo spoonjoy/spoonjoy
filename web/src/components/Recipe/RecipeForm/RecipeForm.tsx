@@ -7,10 +7,14 @@ import {
   NumberField,
   DatetimeLocalField,
   Submit,
+  useForm,
 } from '@redwoodjs/forms'
+import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
 
 import type { EditRecipeById, UpdateRecipeInput } from 'types/graphql'
 import type { RWGqlError } from '@redwoodjs/forms'
+import { useStore } from 'src/stores/RootStore'
+import StyledTextField from 'src/components/formComponents/StyledTextField'
 
 const formatDatetime = (value) => {
   if (value) {
@@ -28,13 +32,27 @@ interface RecipeFormProps {
 }
 
 const RecipeForm = (props: RecipeFormProps) => {
+  const { recipeInputStore } = useStore()
+  const formMethods = useForm()
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = formMethods
+
   const onSubmit = (data: FormRecipe) => {
     props.onSave(data, props?.recipe?.id)
   }
 
   return (
     <div className="rw-form-wrapper">
-      <Form<FormRecipe> onSubmit={onSubmit} error={props.error}>
+      <Form<FormRecipe>
+        formMethods={formMethods}
+        onSubmit={onSubmit}
+        error={props.error}
+        config={{ mode: 'onBlur' }}
+      >
         <FormError
           error={props.error}
           wrapperClassName="rw-form-error-wrapper"
@@ -42,23 +60,13 @@ const RecipeForm = (props: RecipeFormProps) => {
           listClassName="rw-form-error-list"
         />
 
-        <Label
-          name="title"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Title
-        </Label>
-
-        <TextField
-          name="title"
+        <StyledTextField
+          fieldName='title'
+          label='Title'
           defaultValue={props.recipe?.title}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
           validation={{ required: true }}
+          fieldErrors={errors.title}
         />
-
-        <FieldError name="title" className="rw-field-error" />
 
         <Label
           name="description"

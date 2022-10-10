@@ -17,10 +17,10 @@ export const store = RootStore.create({
 
 makeInspectable(store)
 
-persist('some', store, {
+persist('rootstore', store, {
   storage: localforage,
   jsonify: false,
-  whitelist: ['listItemsStore'], // only these keys will be persisted
+  whitelist: ['listItemsStore', 'recipeInputStore'], // only these keys will be persisted
 }).then(() => console.log('store has been hydrated'))
 
 const RootStoreContext = React.createContext<null | Instance<typeof store>>(
