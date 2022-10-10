@@ -6,7 +6,7 @@ import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { SlotProvider, createSlot } from 'react-view-slot'
 
 import { useAuth } from '@redwoodjs/auth'
-import { routes, useMatch } from '@redwoodjs/router'
+import { Link, routes, useMatch } from '@redwoodjs/router'
 
 import { ICurrentUser } from 'src/lib/auth'
 
@@ -129,10 +129,9 @@ const Header = ({
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 justify-between">
               <div className="flex">
-                <div className="flex flex-shrink-0 items-center">
-                  <LogoBlack className="block h-8 w-auto lg:hidden" />
-                  <LogoBlack className="hidden h-8 w-auto lg:block" />
-                </div>
+                <Link to={routes.welcome()} className="flex flex-shrink-0 items-center">
+                  <LogoBlack className="block h-8 w-auto" />
+                </Link>
                 <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
                   {navigation.map((item) => (
                     <a
