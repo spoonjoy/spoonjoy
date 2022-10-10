@@ -12,14 +12,11 @@ import {
 import type { EditRecipeById, UpdateRecipeInput } from 'types/graphql'
 import type { RWGqlError } from '@redwoodjs/forms'
 
-
-
 const formatDatetime = (value) => {
   if (value) {
     return value.replace(/:\d{2}\.\d{3}\w/, '')
   }
 }
-
 
 type FormRecipe = NonNullable<EditRecipeById['recipe']>
 
@@ -32,22 +29,6 @@ interface RecipeFormProps {
 
 const RecipeForm = (props: RecipeFormProps) => {
   const onSubmit = (data: FormRecipe) => {
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
     props.onSave(data, props?.recipe?.id)
   }
 
@@ -60,7 +41,7 @@ const RecipeForm = (props: RecipeFormProps) => {
           titleClassName="rw-form-error-title"
           listClassName="rw-form-error-list"
         />
-      
+
         <Label
           name="title"
           className="rw-label"
@@ -68,15 +49,14 @@ const RecipeForm = (props: RecipeFormProps) => {
         >
           Title
         </Label>
-        
-          <TextField
-            name="title"
-            defaultValue={props.recipe?.title}
-            className="rw-input"
-            errorClassName="rw-input rw-input-error"
-            validation={{ required: true }}
-          />
-        
+
+        <TextField
+          name="title"
+          defaultValue={props.recipe?.title}
+          className="rw-input"
+          errorClassName="rw-input rw-input-error"
+          validation={{ required: true }}
+        />
 
         <FieldError name="title" className="rw-field-error" />
 
@@ -87,14 +67,13 @@ const RecipeForm = (props: RecipeFormProps) => {
         >
           Description
         </Label>
-        
-          <TextField
-            name="description"
-            defaultValue={props.recipe?.description}
-            className="rw-input"
-            errorClassName="rw-input rw-input-error"
-          />
-        
+
+        <TextField
+          name="description"
+          defaultValue={props.recipe?.description}
+          className="rw-input"
+          errorClassName="rw-input rw-input-error"
+        />
 
         <FieldError name="description" className="rw-field-error" />
 
@@ -105,14 +84,13 @@ const RecipeForm = (props: RecipeFormProps) => {
         >
           Servings
         </Label>
-        
-          <NumberField
-            name="servings"
-            defaultValue={props.recipe?.servings}
-            className="rw-input"
-            errorClassName="rw-input rw-input-error"
-          />
-        
+
+        <NumberField
+          name="servings"
+          defaultValue={props.recipe?.servings}
+          className="rw-input"
+          errorClassName="rw-input rw-input-error"
+        />
 
         <FieldError name="servings" className="rw-field-error" />
 
@@ -123,15 +101,14 @@ const RecipeForm = (props: RecipeFormProps) => {
         >
           Chef id
         </Label>
-        
-          <TextField
-            name="chefId"
-            defaultValue={props.recipe?.chefId}
-            className="rw-input"
-            errorClassName="rw-input rw-input-error"
-            validation={{ required: true }}
-          />
-        
+
+        <TextField
+          name="chefId"
+          defaultValue={props.recipe?.chefId}
+          className="rw-input"
+          errorClassName="rw-input rw-input-error"
+          validation={{ required: true }}
+        />
 
         <FieldError name="chefId" className="rw-field-error" />
 
@@ -142,22 +119,18 @@ const RecipeForm = (props: RecipeFormProps) => {
         >
           Deleted at
         </Label>
-        
-          <DatetimeLocalField
-            name="deletedAt"
-            defaultValue={formatDatetime(props.recipe?.deletedAt)}
-            className="rw-input"
-            errorClassName="rw-input rw-input-error"
-          />
-        
+
+        <DatetimeLocalField
+          name="deletedAt"
+          defaultValue={formatDatetime(props.recipe?.deletedAt)}
+          className="rw-input"
+          errorClassName="rw-input rw-input-error"
+        />
 
         <FieldError name="deletedAt" className="rw-field-error" />
 
         <div className="rw-button-group">
-          <Submit
-            disabled={props.loading}
-            className="rw-button rw-button-blue"
-          >
+          <Submit disabled={props.loading} className="rw-button rw-button-blue">
             Save
           </Submit>
         </div>
