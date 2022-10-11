@@ -22,7 +22,6 @@
     "@simplewebauthn/browser": "^6.0.0",
     "localforage": "^1.10.0",
     "mobx": "^6.6.2",
-    "mobx-devtools-mst": "^0.9.30",
     "mobx-react-lite": "^3.4.0",
     "mobx-state-tree": "^5.1.6",
     "prop-types": "15.8.1",
@@ -31,6 +30,7 @@
     "react-view-slot": "^1.0.1"
   },
   "devDependencies": {
+    "mobx-devtools-mst": "^0.9.30",
     "@hookform/devtools": "^4.2.2",
     "autoprefixer": "^10.4.12",
     "postcss": "^8.4.16",
