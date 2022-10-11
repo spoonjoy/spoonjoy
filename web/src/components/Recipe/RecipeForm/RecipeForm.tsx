@@ -106,7 +106,7 @@ const RecipeForm = (props: RecipeFormProps) => {
               <h2 className="block text-lg font-medium text-gray-700">
                 Step {step.stepNum}
                 <StyledTextAreaField
-                  fieldName={`step-${stepNum}-description`}
+                  fieldName={`steps[${stepNum - 1}].description`}
                   label="Description"
                   defaultValue={description}
                   onChange={(e) => {
