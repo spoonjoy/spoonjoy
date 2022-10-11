@@ -9,7 +9,8 @@ import {
   Submit,
   useForm,
 } from '@redwoodjs/forms'
-import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
+
+import { DevTool } from '@hookform/devtools'
 
 import type { EditRecipeById, UpdateRecipeInput } from 'types/graphql'
 import type { RWGqlError } from '@redwoodjs/forms'
@@ -35,10 +36,8 @@ const RecipeForm = (props: RecipeFormProps) => {
   const { recipeInputStore } = useStore()
   const formMethods = useForm()
   const {
-    register,
-    handleSubmit,
-    watch,
     formState: { errors },
+    control,
   } = formMethods
 
   const onSubmit = (data: FormRecipe) => {
@@ -61,9 +60,14 @@ const RecipeForm = (props: RecipeFormProps) => {
         />
 
         <StyledTextField
-          fieldName='title'
-          label='Title'
-          defaultValue={props.recipe?.title}
+          fieldName="title"
+          label="Title"
+          defaultValue={recipeInputStore?.title}
+          onChange={(e) => {
+            const { value } = e.target
+            console.log('title value:', value)
+            recipeInputStore?.setTitle(value)
+          }}
           validation={{ required: true }}
           fieldErrors={errors.title}
         />
@@ -143,6 +147,7 @@ const RecipeForm = (props: RecipeFormProps) => {
           </Submit>
         </div>
       </Form>
+      <DevTool control={control} />
     </div>
   )
 }

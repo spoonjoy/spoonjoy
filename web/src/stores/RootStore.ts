@@ -7,11 +7,12 @@ import persist from './mst-persist'
 import { RecipeInputStore } from './RecipeInputStore'
 
 export const RootStore = types.model({
-  recipeInputStore: types.maybe(RecipeInputStore),
+  recipeInputStore: RecipeInputStore,
   listItemsStore: ListItemsStore,
 })
 
 export const store = RootStore.create({
+  recipeInputStore: { id: "", title: ""},
   listItemsStore: { items: {} },
 })
 

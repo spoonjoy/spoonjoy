@@ -12,7 +12,7 @@ interface StyledTextFieldProps {
   fieldName: string
   label: string
   defaultValue: string | number | readonly string[] | undefined
-  customOnChange: (input: string | undefined) => void
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   validation: RegisterOptions | undefined
   fieldErrors:
     | FieldErrorType
@@ -23,7 +23,7 @@ const StyledTextField = ({
   fieldName,
   label,
   defaultValue,
-  customOnChange,
+  onChange,
   validation,
   fieldErrors,
 }: StyledTextFieldProps) => {
@@ -43,7 +43,7 @@ const StyledTextField = ({
           className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           errorClassName="block w-full rounded-md border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
           validation={validation}
-          onInput={(e) => {console.log(e.target.value)}}
+          onChange={onChange}
         />
         {fieldErrors && (
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">

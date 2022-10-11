@@ -31,6 +31,7 @@
     "react-view-slot": "^1.0.1"
   },
   "devDependencies": {
+    "@hookform/devtools": "^4.2.2",
     "autoprefixer": "^10.4.12",
     "postcss": "^8.4.16",
     "postcss-loader": "^7.0.1",
