@@ -41,7 +41,8 @@ const RecipeForm = (props: RecipeFormProps) => {
   } = formMethods
 
   const onSubmit = (data: FormRecipe) => {
-    props.onSave(data, props?.recipe?.id)
+    console.log("onSubmit data:", data)
+    // props.onSave(data, props?.recipe?.id)
   }
 
   return (
@@ -71,75 +72,6 @@ const RecipeForm = (props: RecipeFormProps) => {
           validation={{ required: true }}
           fieldErrors={errors.title}
         />
-
-        <Label
-          name="description"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Description
-        </Label>
-
-        <TextField
-          name="description"
-          defaultValue={props.recipe?.description}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
-        />
-
-        <FieldError name="description" className="rw-field-error" />
-
-        <Label
-          name="servings"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Servings
-        </Label>
-
-        <NumberField
-          name="servings"
-          defaultValue={props.recipe?.servings}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
-        />
-
-        <FieldError name="servings" className="rw-field-error" />
-
-        <Label
-          name="chefId"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Chef id
-        </Label>
-
-        <TextField
-          name="chefId"
-          defaultValue={props.recipe?.chefId}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
-          validation={{ required: true }}
-        />
-
-        <FieldError name="chefId" className="rw-field-error" />
-
-        <Label
-          name="deletedAt"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Deleted at
-        </Label>
-
-        <DatetimeLocalField
-          name="deletedAt"
-          defaultValue={formatDatetime(props.recipe?.deletedAt)}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
-        />
-
-        <FieldError name="deletedAt" className="rw-field-error" />
 
         <div className="rw-button-group">
           <Submit disabled={props.loading} className="rw-button rw-button-blue">
