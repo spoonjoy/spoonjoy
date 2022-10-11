@@ -60,6 +60,9 @@ export const RecipeInputStore = types
     },
     addStep: () => {
       const newStepNum = self.steps.length + 1
-      self.steps.push({stepNum: newStepNum, description: ""})
-    }
+      self.steps.push({ stepNum: newStepNum, description: '' })
+    },
+    removeStep: () => {
+      self.steps.pop()
+    },
   }))

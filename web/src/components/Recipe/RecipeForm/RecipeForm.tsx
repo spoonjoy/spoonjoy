@@ -20,6 +20,7 @@ import StyledTextAreaField from 'src/components/formComponents/StyledTextAreaFie
 import StyledNumberField from 'src/components/formComponents/StyledNumberField'
 import { PlusIcon } from '@heroicons/react/20/solid'
 import { MinusIcon } from '@heroicons/react/24/outline'
+import { observer } from 'mobx-react-lite'
 
 const formatDatetime = (value) => {
   if (value) {
@@ -98,20 +99,29 @@ const RecipeForm = (props: RecipeFormProps) => {
           fieldErrors={errors.servings}
         />
 
-        <div id="add-rem-steps-btns" className="flex items-center justify-center p-8">
+        <div
+          id="add-rem-steps-btns"
+          className="flex items-center justify-center p-8"
+        >
           <span className="isolate inline-flex rounded-md shadow-sm">
             <button
+              onClick={() => {
+                recipeInputStore.addStep()
+              }}
               type="button"
-              className="relative inline-flex items-center rounded-l-md border border-r-gray-500 border-green-800 border-opacity-25 hover:shadow-md bg-white px-4 py-2 text-sm font-medium text-green-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              className="relative inline-flex items-center rounded-l-md border border-green-800 border-r-gray-500 border-opacity-25 bg-white px-4 py-2 text-sm font-medium text-green-700 hover:bg-gray-50 hover:shadow-md focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
             >
               <span className="sr-only">Add Step</span>
               <PlusIcon className="h-5 w-5" aria-hidden="true" />
               Step
             </button>
             <button
+              onClick={() => {
+                recipeInputStore.removeStep()
+              }}
               type="button"
-              className="relative -ml-px inline-flex items-center rounded-r-md border border-l-gray-500 border-red-800 border-opacity-25 hover:shadow-md bg-white px-4 py-2 text-sm font-medium text-red-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 disabled:border-gray-300 disabled:text-gray-500 disabled:hover:bg-white disabled:hover:shadow-sm"
-              disabled
+              className="relative -ml-px inline-flex items-center rounded-r-md border bg-white px-4 py-2 text-sm font-medium focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 enabled:border-red-800 enabled:border-l-gray-500 enabled:border-opacity-25 enabled:text-red-700 enabled:hover:bg-gray-50 enabled:hover:shadow-md disabled:border-gray-300 disabled:text-gray-500"
+              disabled={recipeInputStore.steps.length > 0 ? false : true}
             >
               <span className="sr-only">Remove Step</span>
               <MinusIcon className="h-5 w-5" aria-hidden="true" />
@@ -131,4 +141,4 @@ const RecipeForm = (props: RecipeFormProps) => {
   )
 }
 
-export default RecipeForm
+export default observer(RecipeForm)
