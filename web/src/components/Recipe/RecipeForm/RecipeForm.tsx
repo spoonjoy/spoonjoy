@@ -8,6 +8,7 @@ import {
   DatetimeLocalField,
   Submit,
   useForm,
+  HiddenField,
 } from '@redwoodjs/forms'
 
 import { DevTool } from '@hookform/devtools'
@@ -105,6 +106,10 @@ const RecipeForm = (props: RecipeFormProps) => {
             <div className="mb-3" key={step.stepNum}>
               <h2 className="block text-lg font-medium text-gray-700">
                 Step {step.stepNum}
+                <HiddenField
+                  name={`steps[${stepNum - 1}].stepNum`}
+                  defaultValue={stepNum}
+                />
                 <StyledTextAreaField
                   fieldName={`steps[${stepNum - 1}].description`}
                   label="Description"
