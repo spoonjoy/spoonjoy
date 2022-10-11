@@ -16,6 +16,7 @@ import type { EditRecipeById, UpdateRecipeInput } from 'types/graphql'
 import type { RWGqlError } from '@redwoodjs/forms'
 import { useStore } from 'src/stores/RootStore'
 import StyledTextField from 'src/components/formComponents/StyledTextField'
+import StyledTextAreaField from 'src/components/formComponents/StyledTextAreaField'
 
 const formatDatetime = (value) => {
   if (value) {
@@ -41,7 +42,7 @@ const RecipeForm = (props: RecipeFormProps) => {
   } = formMethods
 
   const onSubmit = (data: FormRecipe) => {
-    console.log("onSubmit data:", data)
+    console.log('onSubmit data:', data)
     // props.onSave(data, props?.recipe?.id)
   }
 
@@ -63,13 +64,23 @@ const RecipeForm = (props: RecipeFormProps) => {
         <StyledTextField
           fieldName="title"
           label="Title"
-          defaultValue={recipeInputStore?.title}
+          defaultValue={recipeInputStore.title}
           onChange={(e) => {
             const { value } = e.target
-            console.log('title value:', value)
-            recipeInputStore?.setTitle(value)
+            recipeInputStore.setTitle(value)
           }}
           validation={{ required: true }}
+          fieldErrors={errors.title}
+        />
+
+        <StyledTextAreaField
+          fieldName="description"
+          label="Description"
+          defaultValue={recipeInputStore.description}
+          onChange={(e) => {
+            const { value } = e.target
+            recipeInputStore.setDescription(value)
+          }}
           fieldErrors={errors.title}
         />
 
