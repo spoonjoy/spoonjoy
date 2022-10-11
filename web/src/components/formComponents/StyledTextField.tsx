@@ -10,7 +10,7 @@ const StyledTextField = ({
   onChange,
   validation,
   fieldErrors,
-}: StyledFieldProps) => {
+}: StyledFieldProps<HTMLInputElement>) => {
   return (
     <StyledFieldWrapper
       label={label}

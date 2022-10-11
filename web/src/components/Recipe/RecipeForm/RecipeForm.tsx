@@ -17,6 +17,7 @@ import type { RWGqlError } from '@redwoodjs/forms'
 import { useStore } from 'src/stores/RootStore'
 import StyledTextField from 'src/components/formComponents/StyledTextField'
 import StyledTextAreaField from 'src/components/formComponents/StyledTextAreaField'
+import StyledNumberField from 'src/components/formComponents/StyledNumberField'
 
 const formatDatetime = (value) => {
   if (value) {
@@ -81,7 +82,18 @@ const RecipeForm = (props: RecipeFormProps) => {
             const { value } = e.target
             recipeInputStore.setDescription(value)
           }}
-          fieldErrors={errors.title}
+          fieldErrors={errors.description}
+        />
+
+        <StyledNumberField
+          fieldName="servings"
+          label="Servings"
+          defaultValue={recipeInputStore.servings}
+          onChange={(e) => {
+            const { value } = e.target
+            recipeInputStore.setServings(Number(value))
+          }}
+          fieldErrors={errors.servings}
         />
 
         <div className="rw-button-group">

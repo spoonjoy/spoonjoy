@@ -8,10 +8,10 @@ import {
   Merge,
 } from 'react-hook-form'
 
-export interface StyledFieldProps
+export interface StyledFieldProps<T = Element>
   extends Omit<StyledFieldWrapperProps, 'children'> {
   defaultValue?: string | number | readonly string[]
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onChange: (e: React.ChangeEvent<T>) => void
   validation?: RegisterOptions
 }
 
