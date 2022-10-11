@@ -18,6 +18,8 @@ import { useStore } from 'src/stores/RootStore'
 import StyledTextField from 'src/components/formComponents/StyledTextField'
 import StyledTextAreaField from 'src/components/formComponents/StyledTextAreaField'
 import StyledNumberField from 'src/components/formComponents/StyledNumberField'
+import { PlusIcon } from '@heroicons/react/20/solid'
+import { MinusIcon } from '@heroicons/react/24/outline'
 
 const formatDatetime = (value) => {
   if (value) {
@@ -48,7 +50,7 @@ const RecipeForm = (props: RecipeFormProps) => {
   }
 
   return (
-    <div className="rw-form-wrapper">
+    <div className="p-5">
       <Form<FormRecipe>
         formMethods={formMethods}
         onSubmit={onSubmit}
@@ -95,6 +97,28 @@ const RecipeForm = (props: RecipeFormProps) => {
           }}
           fieldErrors={errors.servings}
         />
+
+        <div id="add-rem-steps-btns" className="flex items-center justify-center p-8">
+          <span className="isolate inline-flex rounded-md shadow-sm">
+            <button
+              type="button"
+              className="relative inline-flex items-center rounded-l-md border border-r-gray-500 border-green-800 border-opacity-25 hover:shadow-md bg-white px-4 py-2 text-sm font-medium text-green-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            >
+              <span className="sr-only">Add Step</span>
+              <PlusIcon className="h-5 w-5" aria-hidden="true" />
+              Step
+            </button>
+            <button
+              type="button"
+              className="relative -ml-px inline-flex items-center rounded-r-md border border-l-gray-500 border-red-800 border-opacity-25 hover:shadow-md bg-white px-4 py-2 text-sm font-medium text-red-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 disabled:border-gray-300 disabled:text-gray-500 disabled:hover:bg-white disabled:hover:shadow-sm"
+              disabled
+            >
+              <span className="sr-only">Remove Step</span>
+              <MinusIcon className="h-5 w-5" aria-hidden="true" />
+              Step
+            </button>
+          </span>
+        </div>
 
         <div className="rw-button-group">
           <Submit disabled={props.loading} className="rw-button rw-button-blue">

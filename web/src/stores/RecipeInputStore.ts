@@ -58,4 +58,8 @@ export const RecipeInputStore = types
     setServings: (servings: number | undefined) => {
       self.servings = servings
     },
+    addStep: () => {
+      const newStepNum = self.steps.length + 1
+      self.steps.push({stepNum: newStepNum, description: ""})
+    }
   }))
