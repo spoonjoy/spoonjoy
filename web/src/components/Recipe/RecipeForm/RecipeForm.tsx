@@ -99,6 +99,27 @@ const RecipeForm = (props: RecipeFormProps) => {
           fieldErrors={errors.servings}
         />
 
+        {recipeInputStore.steps.map((step) => {
+          const { stepNum, description, ingredients } = step
+          return (
+            <div className="mb-3" key={step.stepNum}>
+              <h2 className="block text-lg font-medium text-gray-700">
+                Step {step.stepNum}
+                <StyledTextAreaField
+                  fieldName={`step-${stepNum}-description`}
+                  label="Description"
+                  defaultValue={description}
+                  onChange={(e) => {
+                    const { value } = e.target
+                    step.setDescription(value)
+                  }}
+                  fieldErrors={errors.description}
+                />
+              </h2>
+            </div>
+          )
+        })}
+
         <div
           id="add-rem-steps-btns"
           className="flex items-center justify-center p-8"
