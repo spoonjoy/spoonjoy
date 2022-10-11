@@ -28,7 +28,7 @@ type FormRecipe = NonNullable<EditRecipeById['recipe']>
 interface RecipeFormProps {
   recipe?: EditRecipeById['recipe']
   onSave: (data: UpdateRecipeInput, id?: FormRecipe['id']) => void
-  error: RWGqlError
+  error?: RWGqlError
   loading: boolean
 }
 
