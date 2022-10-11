@@ -31,7 +31,7 @@ const StyledFieldWrapper = ({
   fieldErrors,
 }: StyledFieldWrapperProps) => {
   return (
-    <div>
+    <div className='mb-3'>
       <Label
         name={fieldName}
         className="block text-sm font-medium text-gray-700"
