@@ -4,7 +4,7 @@ const IngredientInputStore = types
   .model('IngredientInputStore')
   .props({
     ingredientId: types.maybe(types.identifier),
-    quantity: types.number,
+    quantity: types.maybe(types.number),
     unitName: types.string,
     ingredientName: types.string,
   })
@@ -37,6 +37,16 @@ const RecipeStepInputStore = types
     setDescription: (description: string) => {
       self.description = description
     },
+    addIngredient: () => {
+      self.ingredients.push({
+        ingredientId: '',
+        unitName: '',
+        ingredientName: '',
+      })
+    },
+    removeIngredient: () => {
+      self.ingredients.pop()
+    }
   }))
 
 export const RecipeInputStore = types
@@ -60,7 +70,17 @@ export const RecipeInputStore = types
     },
     addStep: () => {
       const newStepNum = self.steps.length + 1
-      self.steps.push({ stepNum: newStepNum, description: '' })
+      self.steps.push({
+        stepNum: newStepNum,
+        description: '',
+        ingredients: [
+          IngredientInputStore.create({
+            ingredientId: '',
+            unitName: '',
+            ingredientName: '',
+          }),
+        ],
+      })
     },
     removeStep: () => {
       self.steps.pop()

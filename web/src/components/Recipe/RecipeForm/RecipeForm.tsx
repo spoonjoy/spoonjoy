@@ -22,6 +22,7 @@ import StyledNumberField from 'src/components/formComponents/StyledNumberField'
 import { PlusIcon } from '@heroicons/react/20/solid'
 import { MinusIcon } from '@heroicons/react/24/outline'
 import { observer } from 'mobx-react-lite'
+import AddRemBtns from 'src/components/formComponents/AddRemBtns'
 
 const formatDatetime = (value) => {
   if (value) {
@@ -103,58 +104,133 @@ const RecipeForm = (props: RecipeFormProps) => {
         {recipeInputStore.steps.map((step) => {
           const { stepNum, description, ingredients } = step
           return (
-            <div className="mb-3" key={step.stepNum}>
+            <div className="mb-3" key={`step-${stepNum}`}>
               <h2 className="block text-lg font-medium text-gray-700">
                 Step {step.stepNum}
-                <HiddenField
-                  name={`steps[${stepNum - 1}].stepNum`}
-                  defaultValue={stepNum}
-                />
-                <StyledTextAreaField
-                  fieldName={`steps[${stepNum - 1}].description`}
-                  label="Description"
-                  defaultValue={description}
-                  onChange={(e) => {
-                    const { value } = e.target
-                    step.setDescription(value)
-                  }}
-                  fieldErrors={errors.description}
-                />
               </h2>
+              <div className="ml-3 mb-3">
+                <legend className="block text-sm font-medium text-gray-700">
+                  Step {step.stepNum} Ingredients
+                </legend>
+                {ingredients.map((ingredient, ingIdx) => {
+                  const { quantity, unitName, ingredientName } = ingredient
+                  return (
+                    <div
+                      key={`step-${stepNum}-ingredient-${ingIdx}`}
+                      className="mt-1 max-w-sm -space-y-px rounded-md shadow-sm"
+                    >
+                      <div className="flex -space-x-px">
+                        <div className="min-w-0">
+                          <label
+                            htmlFor={`steps[${
+                              stepNum - 1
+                            }].ingredients[${ingIdx}].quantity`}
+                            className="sr-only"
+                          >
+                            Quantity
+                          </label>
+                          <NumberField
+                            name={`steps[${
+                              stepNum - 1
+                            }].ingredients[${ingIdx}].quantity`}
+                            defaultValue={quantity}
+                            className="relative block w-full rounded-none rounded-l-md border-gray-300 bg-transparent focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            placeholder="5"
+                            onChange={(e) => {
+                              const { value } = e.target
+                              ingredient.setQuantity(Number(value))
+                            }}
+                          />
+                        </div>
+                        <div className="min-w-0">
+                          <label
+                            htmlFor={`steps[${
+                              stepNum - 1
+                            }].ingredients[${ingIdx}].unitName`}
+                            className="sr-only"
+                          >
+                            Unit name
+                          </label>
+                          <TextField
+                            name={`steps[${
+                              stepNum - 1
+                            }].ingredients[${ingIdx}].unitName`}
+                            defaultValue={unitName}
+                            className="relative block w-full rounded-none border-gray-300 bg-transparent focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            placeholder="cups"
+                            onChange={(e) => {
+                              const { value } = e.target
+                              ingredient.setUnitName(value)
+                            }}
+                          />
+                        </div>
+                        <div className="min-w-0">
+                          <label
+                            htmlFor={`steps[${
+                              stepNum - 1
+                            }].ingredients[${ingIdx}].ingredientName`}
+                            className="sr-only"
+                          >
+                            Ingredient name
+                          </label>
+                          <TextField
+                            name={`steps[${
+                              stepNum - 1
+                            }].ingredients[${ingIdx}].ingredientName`}
+                            defaultValue={ingredientName}
+                            className="relative block w-full rounded-none rounded-r-md border-gray-300 bg-transparent focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            placeholder="flour"
+                            onChange={(e) => {
+                              const { value } = e.target
+                              ingredient.setIngredientName(value)
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
+                <AddRemBtns
+                  id="add-rem-ings-btns"
+                  itemName="Ingredient"
+                  onAdd={() => {
+                    step.addIngredient()
+                  }}
+                  onRem={() => {
+                    step.removeIngredient()
+                  }}
+                  canRem={step.ingredients.length > 1} // need to have at least one ingredient
+                />
+              </div>
+              <HiddenField
+                name={`steps[${stepNum - 1}].stepNum`}
+                defaultValue={stepNum}
+              />
+              <StyledTextAreaField
+                fieldName={`steps[${stepNum - 1}].description`}
+                label={`Step ${step.stepNum} Description`}
+                defaultValue={description}
+                onChange={(e) => {
+                  const { value } = e.target
+                  step.setDescription(value)
+                }}
+                fieldErrors={errors.description}
+              />
             </div>
           )
         })}
 
-        <div
+        <AddRemBtns
           id="add-rem-steps-btns"
-          className="flex items-center justify-center p-8"
-        >
-          <span className="isolate inline-flex rounded-md shadow-sm">
-            <button
-              onClick={() => {
-                recipeInputStore.addStep()
-              }}
-              type="button"
-              className="relative inline-flex items-center rounded-l-md border border-green-800 border-r-gray-500 border-opacity-25 bg-white px-4 py-2 text-sm font-medium text-green-700 hover:bg-gray-50 hover:shadow-md focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-            >
-              <span className="sr-only">Add Step</span>
-              <PlusIcon className="h-5 w-5" aria-hidden="true" />
-              Step
-            </button>
-            <button
-              onClick={() => {
-                recipeInputStore.removeStep()
-              }}
-              type="button"
-              className="relative -ml-px inline-flex items-center rounded-r-md border bg-white px-4 py-2 text-sm font-medium focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 enabled:border-red-800 enabled:border-l-gray-500 enabled:border-opacity-25 enabled:text-red-700 enabled:hover:bg-gray-50 enabled:hover:shadow-md disabled:border-gray-300 disabled:text-gray-500"
-              disabled={recipeInputStore.steps.length > 0 ? false : true}
-            >
-              <span className="sr-only">Remove Step</span>
-              <MinusIcon className="h-5 w-5" aria-hidden="true" />
-              Step
-            </button>
-          </span>
-        </div>
+          itemName="Step"
+          onAdd={() => {
+            recipeInputStore.addStep()
+          }}
+          onRem={() => {
+            recipeInputStore.removeStep()
+          }}
+          canRem={recipeInputStore.steps.length > 0}
+        />
 
         <div className="rw-button-group">
           <Submit disabled={props.loading} className="rw-button rw-button-blue">
