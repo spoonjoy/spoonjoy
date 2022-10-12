@@ -6,6 +6,7 @@ interface AddRemBtnsProps {
   onAdd: () => void
   onRem: () => void
   canRem: boolean
+  containerClassName: string
 }
 const AddRemBtns = ({
   id,
@@ -13,9 +14,10 @@ const AddRemBtns = ({
   onAdd,
   onRem,
   canRem,
+  containerClassName,
 }: AddRemBtnsProps) => {
   return (
-    <div id={id} className="flex items-center justify-center p-8">
+    <div id={id} className={containerClassName}>
       <span className="isolate inline-flex rounded-md shadow-sm">
         <button
           onClick={onAdd}

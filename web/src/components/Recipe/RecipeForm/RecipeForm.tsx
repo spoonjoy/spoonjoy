@@ -200,6 +200,7 @@ const RecipeForm = (props: RecipeFormProps) => {
                     step.removeIngredient()
                   }}
                   canRem={step.ingredients.length > 1} // need to have at least one ingredient
+                  containerClassName="pt-2"
                 />
               </div>
               <HiddenField
@@ -230,6 +231,7 @@ const RecipeForm = (props: RecipeFormProps) => {
             recipeInputStore.removeStep()
           }}
           canRem={recipeInputStore.steps.length > 0}
+          containerClassName="flex items-center justify-center p-8"
         />
 
         <div className="rw-button-group">
