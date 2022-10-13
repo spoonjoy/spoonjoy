@@ -1,34 +1,23 @@
+import { DevTool } from '@hookform/devtools'
+import { observer } from 'mobx-react-lite'
+import type { EditRecipeById, UpdateRecipeInput } from 'types/graphql'
+
+import type { RWGqlError } from '@redwoodjs/forms'
 import {
   Form,
   FormError,
-  FieldError,
-  Label,
   TextField,
   NumberField,
-  DatetimeLocalField,
   Submit,
   useForm,
   HiddenField,
 } from '@redwoodjs/forms'
 
-import { DevTool } from '@hookform/devtools'
-
-import type { EditRecipeById, UpdateRecipeInput } from 'types/graphql'
-import type { RWGqlError } from '@redwoodjs/forms'
-import { useStore } from 'src/stores/RootStore'
-import StyledTextField from 'src/components/formComponents/StyledTextField'
-import StyledTextAreaField from 'src/components/formComponents/StyledTextAreaField'
-import StyledNumberField from 'src/components/formComponents/StyledNumberField'
-import { PlusIcon } from '@heroicons/react/20/solid'
-import { MinusIcon } from '@heroicons/react/24/outline'
-import { observer } from 'mobx-react-lite'
 import AddRemBtns from 'src/components/formComponents/AddRemBtns'
-
-const formatDatetime = (value) => {
-  if (value) {
-    return value.replace(/:\d{2}\.\d{3}\w/, '')
-  }
-}
+import StyledNumberField from 'src/components/formComponents/StyledNumberField'
+import StyledTextAreaField from 'src/components/formComponents/StyledTextAreaField'
+import StyledTextField from 'src/components/formComponents/StyledTextField'
+import { useStore } from 'src/stores/RootStore'
 
 type FormRecipe = NonNullable<EditRecipeById['recipe']>
 
@@ -45,11 +34,39 @@ const RecipeForm = (props: RecipeFormProps) => {
   const {
     formState: { errors },
     control,
+    unregister,
   } = formMethods
 
   const onSubmit = (data: FormRecipe) => {
     console.log('onSubmit data:', data)
     // props.onSave(data, props?.recipe?.id)
+  }
+
+  const getIngredientFieldsNames = (stepNum: number, ingIdx: number) => {
+    return [
+      `steps[${stepNum - 1}].ingredients[${ingIdx}].quantity`,
+      `steps[${stepNum - 1}].ingredients[${ingIdx}].unitName`,
+      `steps[${stepNum - 1}].ingredients[${ingIdx}].ingredientName`,
+    ]
+  }
+
+  const getStepFieldsNames = (stepNum: number) => {
+    return [
+      `steps[${stepNum - 1}].stepNum`,
+      `steps[${stepNum - 1}].description`,
+    ]
+  }
+
+  const removeIngredientFields = (stepNum: number, ingIdx: number) => {
+    unregister(getIngredientFieldsNames(stepNum, ingIdx))
+  }
+
+  const removeStepFields = (stepNum: number) => {
+    const numOfIngs = recipeInputStore.steps[stepNum - 1].ingredients.length
+    for (let i = 0; i < numOfIngs; i++) {
+      removeIngredientFields(stepNum, i)
+    }
+    unregister(getStepFieldsNames(stepNum))
   }
 
   return (
@@ -197,6 +214,7 @@ const RecipeForm = (props: RecipeFormProps) => {
                     step.addIngredient()
                   }}
                   onRem={() => {
+                    removeIngredientFields(stepNum, step.ingredients.length - 1)
                     step.removeIngredient()
                   }}
                   canRem={step.ingredients.length > 1} // need to have at least one ingredient
@@ -228,6 +246,7 @@ const RecipeForm = (props: RecipeFormProps) => {
             recipeInputStore.addStep()
           }}
           onRem={() => {
+            removeStepFields(recipeInputStore.steps.length)
             recipeInputStore.removeStep()
           }}
           canRem={recipeInputStore.steps.length > 0}

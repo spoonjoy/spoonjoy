@@ -1,12 +1,12 @@
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
-import { FieldError, Label, RegisterOptions } from '@redwoodjs/forms'
 import { observer } from 'mobx-react-lite'
-
 import {
   FieldError as FieldErrorType,
   FieldErrorsImpl,
   Merge,
 } from 'react-hook-form'
+
+import { FieldError, Label, RegisterOptions } from '@redwoodjs/forms'
 
 export interface StyledFieldProps<T = Element>
   extends Omit<StyledFieldWrapperProps, 'children'> {
@@ -31,7 +31,7 @@ const StyledFieldWrapper = ({
   fieldErrors,
 }: StyledFieldWrapperProps) => {
   return (
-    <div className='mb-3'>
+    <div className="mb-3">
       <Label
         name={fieldName}
         className="block text-sm font-medium text-gray-700"
