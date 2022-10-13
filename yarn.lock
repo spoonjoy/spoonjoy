@@ -2785,7 +2785,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hookform/devtools@npm:^4.2.2":
+"@hookform/devtools@npm:4.2.2":
   version: 4.2.2
   resolution: "@hookform/devtools@npm:4.2.2"
   dependencies:
@@ -2801,6 +2801,25 @@ __metadata:
     react: ">=17.0.2"
     react-dom: ">=17.0.2"
   checksum: 1e405a86e8f4ea053b469f3ccd62c2ad2b4f6423b47f76698ecdbc61616a2d3300a0f9d76636826b382e3e921baaff660447fcac5828c2b82a0cc81b55777abc
+  languageName: node
+  linkType: hard
+
+"@hookform/devtools@patch:@hookform/devtools@npm%3A4.2.2#./.yarn/patches/@hookform-devtools-npm-4.2.2-aafab2382b.patch::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 4.2.2
+  resolution: "@hookform/devtools@patch:@hookform/devtools@npm%3A4.2.2#./.yarn/patches/@hookform-devtools-npm-4.2.2-aafab2382b.patch::version=4.2.2&hash=3c0dc1&locator=root-workspace-0b6124%40workspace%3A."
+  dependencies:
+    "@emotion/react": ^11.1.5
+    "@emotion/styled": ^11.3.0
+    "@types/lodash": ^4.14.168
+    little-state-machine: ^4.1.0
+    lodash: ^4.17.21
+    react-simple-animate: ^3.3.12
+    use-deep-compare-effect: ^1.8.1
+    uuid: ^8.3.2
+  peerDependencies:
+    react: ">=17.0.2"
+    react-dom: ">=17.0.2"
+  checksum: f638fe62e6f68d9b3ee3624033038ee691511201f6799a2d2e03402960eb6a3694f49f562eed680122cfaa71bb2f8f46edf50c10b02a563ec1d4b58abc4507fe
   languageName: node
   linkType: hard
 
