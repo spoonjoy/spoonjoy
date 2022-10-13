@@ -30,9 +30,9 @@
     "react-view-slot": "^1.0.1"
   },
   "devDependencies": {
-    "mobx-devtools-mst": "^0.9.30",
     "@hookform/devtools": "^4.2.2",
     "autoprefixer": "^10.4.12",
+    "mobx-devtools-mst": "^0.9.30",
     "postcss": "^8.4.16",
     "postcss-loader": "^7.0.1",
     "tailwindcss": "^3.1.8"
