@@ -1,4 +1,4 @@
-import { types } from 'mobx-state-tree'
+import { Instance, types } from 'mobx-state-tree'
 
 const IngredientInputStore = types
   .model('IngredientInputStore')
@@ -23,6 +23,9 @@ const IngredientInputStore = types
     },
   }))
 
+export interface IIngredientInputStore
+  extends Instance<typeof IngredientInputStore> {}
+
 const RecipeStepInputStore = types
   .model('RecipeStepStore')
   .props({
@@ -46,7 +49,7 @@ const RecipeStepInputStore = types
     },
     removeIngredient: () => {
       self.ingredients.pop()
-    }
+    },
   }))
 
 export const RecipeInputStore = types

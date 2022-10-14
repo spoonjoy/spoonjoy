@@ -2,7 +2,7 @@ import { DevTool } from '@hookform/devtools'
 import { observer } from 'mobx-react-lite'
 import type { EditRecipeById, UpdateRecipeInput } from 'types/graphql'
 
-import type { RWGqlError } from '@redwoodjs/forms'
+import { FieldError, RWGqlError } from '@redwoodjs/forms'
 import {
   Form,
   FormError,
@@ -18,6 +18,8 @@ import StyledNumberField from 'src/components/formComponents/StyledNumberField'
 import StyledTextAreaField from 'src/components/formComponents/StyledTextAreaField'
 import StyledTextField from 'src/components/formComponents/StyledTextField'
 import { useStore } from 'src/stores/RootStore'
+
+import IngredientFormFrag from './IngredientFormFrag'
 
 type FormRecipe = NonNullable<EditRecipeById['recipe']>
 
@@ -130,81 +132,13 @@ const RecipeForm = (props: RecipeFormProps) => {
                   Step {step.stepNum} Ingredients
                 </legend>
                 {ingredients.map((ingredient, ingIdx) => {
-                  const { quantity, unitName, ingredientName } = ingredient
                   return (
-                    <div
+                    <IngredientFormFrag
                       key={`step-${stepNum}-ingredient-${ingIdx}`}
-                      className="mt-1 max-w-sm -space-y-px rounded-md shadow-sm"
-                    >
-                      <div className="flex -space-x-px">
-                        <div className="min-w-0">
-                          <label
-                            htmlFor={`steps[${
-                              stepNum - 1
-                            }].ingredients[${ingIdx}].quantity`}
-                            className="sr-only"
-                          >
-                            Quantity
-                          </label>
-                          <NumberField
-                            name={`steps[${
-                              stepNum - 1
-                            }].ingredients[${ingIdx}].quantity`}
-                            defaultValue={quantity}
-                            className="relative block w-full rounded-none rounded-l-md border-gray-300 bg-transparent focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                            placeholder="5"
-                            onChange={(e) => {
-                              const { value } = e.target
-                              ingredient.setQuantity(Number(value))
-                            }}
-                          />
-                        </div>
-                        <div className="min-w-0">
-                          <label
-                            htmlFor={`steps[${
-                              stepNum - 1
-                            }].ingredients[${ingIdx}].unitName`}
-                            className="sr-only"
-                          >
-                            Unit name
-                          </label>
-                          <TextField
-                            name={`steps[${
-                              stepNum - 1
-                            }].ingredients[${ingIdx}].unitName`}
-                            defaultValue={unitName}
-                            className="relative block w-full rounded-none border-gray-300 bg-transparent focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                            placeholder="cups"
-                            onChange={(e) => {
-                              const { value } = e.target
-                              ingredient.setUnitName(value)
-                            }}
-                          />
-                        </div>
-                        <div className="min-w-0">
-                          <label
-                            htmlFor={`steps[${
-                              stepNum - 1
-                            }].ingredients[${ingIdx}].ingredientName`}
-                            className="sr-only"
-                          >
-                            Ingredient name
-                          </label>
-                          <TextField
-                            name={`steps[${
-                              stepNum - 1
-                            }].ingredients[${ingIdx}].ingredientName`}
-                            defaultValue={ingredientName}
-                            className="relative block w-full rounded-none rounded-r-md border-gray-300 bg-transparent focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                            placeholder="flour"
-                            onChange={(e) => {
-                              const { value } = e.target
-                              ingredient.setIngredientName(value)
-                            }}
-                          />
-                        </div>
-                      </div>
-                    </div>
+                      stepNum={stepNum}
+                      ingIdx={ingIdx}
+                      ingredient={ingredient}
+                    />
                   )
                 })}
                 <AddRemBtns

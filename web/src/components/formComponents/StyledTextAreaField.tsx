@@ -1,5 +1,6 @@
-import { TextAreaField, RegisterOptions } from '@redwoodjs/forms'
 import { observer } from 'mobx-react-lite'
+
+import { TextAreaField } from '@redwoodjs/forms'
 
 import StyledFieldWrapper, { StyledFieldProps } from './StyledFieldWrapper'
 
