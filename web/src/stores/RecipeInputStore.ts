@@ -52,6 +52,9 @@ const RecipeStepInputStore = types
     },
   }))
 
+export interface IRecipeStepInputStore
+  extends Instance<typeof RecipeStepInputStore> {}
+
 export const RecipeInputStore = types
   .model('RecipeInputStore')
   .props({
@@ -89,3 +92,5 @@ export const RecipeInputStore = types
       self.steps.pop()
     },
   }))
+
+export interface IRecipeInputStore extends Instance<typeof RecipeInputStore> {}

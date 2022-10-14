@@ -12,9 +12,16 @@ const IngredientFormFrag = ({
   ingIdx,
   ingredient,
 }: IngredientFormFragProps) => {
-  const { quantity, unitName, ingredientName } = ingredient
+  const {
+    quantity,
+    setQuantity,
+    unitName,
+    setUnitName,
+    ingredientName,
+    setIngredientName,
+  } = ingredient
   return (
-    <div>
+    <>
       <div className="mt-1 max-w-sm -space-y-px rounded-md shadow-sm">
         <div className="flex -space-x-px">
           <div className="min-w-0">
@@ -32,7 +39,7 @@ const IngredientFormFrag = ({
               placeholder="5"
               onChange={(e) => {
                 const { value } = e.target
-                ingredient.setQuantity(Number(value))
+                setQuantity(Number(value))
               }}
               validation={{ required: true }}
             />
@@ -52,7 +59,7 @@ const IngredientFormFrag = ({
               placeholder="cups"
               onChange={(e) => {
                 const { value } = e.target
-                ingredient.setUnitName(value)
+                setUnitName(value)
               }}
               validation={{ required: true }}
             />
@@ -76,7 +83,7 @@ const IngredientFormFrag = ({
               placeholder="flour"
               onChange={(e) => {
                 const { value } = e.target
-                ingredient.setIngredientName(value)
+                setIngredientName(value)
               }}
               validation={{ required: true }}
             />
@@ -97,7 +104,7 @@ const IngredientFormFrag = ({
           className="mt-1 text-sm text-red-600"
         />
       </div>
-    </div>
+    </>
   )
 }
 

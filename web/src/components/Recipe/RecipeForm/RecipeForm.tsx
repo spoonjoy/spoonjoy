@@ -2,24 +2,15 @@ import { DevTool } from '@hookform/devtools'
 import { observer } from 'mobx-react-lite'
 import type { EditRecipeById, UpdateRecipeInput } from 'types/graphql'
 
-import { FieldError, RWGqlError } from '@redwoodjs/forms'
-import {
-  Form,
-  FormError,
-  TextField,
-  NumberField,
-  Submit,
-  useForm,
-  HiddenField,
-} from '@redwoodjs/forms'
+import { RWGqlError } from '@redwoodjs/forms'
+import { Form, FormError, Submit, useForm, HiddenField } from '@redwoodjs/forms'
 
 import AddRemBtns from 'src/components/formComponents/AddRemBtns'
-import StyledNumberField from 'src/components/formComponents/StyledNumberField'
 import StyledTextAreaField from 'src/components/formComponents/StyledTextAreaField'
-import StyledTextField from 'src/components/formComponents/StyledTextField'
 import { useStore } from 'src/stores/RootStore'
 
 import IngredientFormFrag from './IngredientFormFrag'
+import RecipeBasicInfoFormFrag from './RecipeBasicInfoFormFrag'
 
 type FormRecipe = NonNullable<EditRecipeById['recipe']>
 
@@ -86,38 +77,9 @@ const RecipeForm = (props: RecipeFormProps) => {
           listClassName="rw-form-error-list"
         />
 
-        <StyledTextField
-          fieldName="title"
-          label="Title"
-          defaultValue={recipeInputStore.title}
-          onChange={(e) => {
-            const { value } = e.target
-            recipeInputStore.setTitle(value)
-          }}
-          validation={{ required: true }}
-          fieldErrors={errors.title}
-        />
-
-        <StyledTextAreaField
-          fieldName="description"
-          label="Description"
-          defaultValue={recipeInputStore.description}
-          onChange={(e) => {
-            const { value } = e.target
-            recipeInputStore.setDescription(value)
-          }}
-          fieldErrors={errors.description}
-        />
-
-        <StyledNumberField
-          fieldName="servings"
-          label="Servings"
-          defaultValue={recipeInputStore.servings}
-          onChange={(e) => {
-            const { value } = e.target
-            recipeInputStore.setServings(Number(value))
-          }}
-          fieldErrors={errors.servings}
+        <RecipeBasicInfoFormFrag
+          recipeInputStore={recipeInputStore}
+          errors={errors}
         />
 
         {recipeInputStore.steps.map((step) => {
