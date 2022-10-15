@@ -41,7 +41,10 @@ const IngredientFormFrag = ({
                 const { value } = e.target
                 setQuantity(Number(value))
               }}
-              validation={{ required: true, valueAsNumber: true }}
+              validation={{
+                required: { value: true, message: 'unit is required.' },
+                valueAsNumber: true,
+              }}
             />
           </div>
           <div className="min-w-0">
@@ -59,9 +62,11 @@ const IngredientFormFrag = ({
               placeholder="cups"
               onChange={(e) => {
                 const { value } = e.target
-                setUnitName(value)
+                setUnitName(value.toLowerCase())
               }}
-              validation={{ required: true }}
+              validation={{
+                required: { value: true, message: 'unit is required.' },
+              }}
             />
           </div>
           <div className="min-w-0">
@@ -83,9 +88,14 @@ const IngredientFormFrag = ({
               placeholder="flour"
               onChange={(e) => {
                 const { value } = e.target
-                setIngredientName(value)
+                setIngredientName(value.toLowerCase())
               }}
-              validation={{ required: true }}
+              validation={{
+                required: {
+                  value: true,
+                  message: 'ingredient name is required.',
+                },
+              }}
             />
           </div>
         </div>
