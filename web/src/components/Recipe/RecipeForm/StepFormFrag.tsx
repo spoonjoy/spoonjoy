@@ -57,6 +57,7 @@ const StepFormFrag = ({
       <HiddenField
         name={`steps[${stepNum - 1}].stepNum`}
         defaultValue={stepNum}
+        validation={{ valueAsNumber: true }}
       />
       <StyledTextAreaField
         fieldName={`steps[${stepNum - 1}].description`}

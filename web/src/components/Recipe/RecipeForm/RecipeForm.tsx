@@ -1,6 +1,10 @@
 import { DevTool } from '@hookform/devtools'
 import { observer } from 'mobx-react-lite'
-import type { EditRecipeById, UpdateRecipeInput } from 'types/graphql'
+import type {
+  CreateRecipeInput,
+  EditRecipeById,
+  UpdateRecipeInput,
+} from 'types/graphql'
 
 import { RWGqlError } from '@redwoodjs/forms'
 import { Form, FormError, Submit, useForm } from '@redwoodjs/forms'
@@ -15,7 +19,10 @@ type FormRecipe = NonNullable<EditRecipeById['recipe']>
 
 interface RecipeFormProps {
   recipe?: EditRecipeById['recipe']
-  onSave: (data: UpdateRecipeInput, id?: FormRecipe['id']) => void
+  onSave: (
+    data: CreateRecipeInput | UpdateRecipeInput,
+    id?: FormRecipe['id']
+  ) => void
   error?: RWGqlError
   loading: boolean
 }
@@ -31,7 +38,7 @@ const RecipeForm = (props: RecipeFormProps) => {
 
   const onSubmit = (data: FormRecipe) => {
     console.log('onSubmit data:', data)
-    // props.onSave(data, props?.recipe?.id)
+    props.onSave(data, props?.recipe?.id)
   }
 
   const getIngredientFieldsNames = (stepNum: number, ingIdx: number) => {

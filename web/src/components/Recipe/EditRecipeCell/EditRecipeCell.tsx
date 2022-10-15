@@ -18,8 +18,19 @@ export const QUERY = gql`
         id
         username
       }
-      createdAt
-      deletedAt
+      steps {
+        id
+        description
+        ingredients {
+          id
+          unit {
+            name
+          }
+          ingredientRef {
+            name
+          }
+        }
+      }
     }
   }
 `
