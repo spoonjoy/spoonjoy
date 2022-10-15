@@ -1,4 +1,5 @@
 import { MetaTags } from '@redwoodjs/web'
+
 import NewRecipe from 'src/components/Recipe/NewRecipe'
 import { HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
 
