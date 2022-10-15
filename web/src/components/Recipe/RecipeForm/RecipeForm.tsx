@@ -106,9 +106,12 @@ const RecipeForm = (props: RecipeFormProps) => {
           containerClassName="flex items-center justify-center p-8"
         />
 
-        <div className="rw-button-group">
-          <Submit disabled={props.loading} className="rw-button rw-button-blue">
-            Save
+        <div className="flex justify-end">
+          <Submit
+            disabled={props.loading}
+            className="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          >
+            {recipeInputStore.id ? 'Update Recipe' : 'Create New Recipe'}
           </Submit>
         </div>
       </Form>
