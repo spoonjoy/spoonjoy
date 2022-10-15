@@ -2824,7 +2824,7 @@ __metadata:
 
 "@hookform/devtools@patch:@hookform/devtools@npm%3A4.2.2#./.yarn/patches/@hookform-devtools-npm-4.2.2-aafab2382b.patch::locator=root-workspace-0b6124%40workspace%3A.":
   version: 4.2.2
-  resolution: "@hookform/devtools@patch:@hookform/devtools@npm%3A4.2.2#./.yarn/patches/@hookform-devtools-npm-4.2.2-aafab2382b.patch::version=4.2.2&hash=3c0dc1&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@hookform/devtools@patch:@hookform/devtools@npm%3A4.2.2#./.yarn/patches/@hookform-devtools-npm-4.2.2-aafab2382b.patch::version=4.2.2&hash=246c22&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     "@emotion/react": ^11.1.5
     "@emotion/styled": ^11.3.0
@@ -2837,7 +2837,7 @@ __metadata:
   peerDependencies:
     react: ">=17.0.2"
     react-dom: ">=17.0.2"
-  checksum: f638fe62e6f68d9b3ee3624033038ee691511201f6799a2d2e03402960eb6a3694f49f562eed680122cfaa71bb2f8f46edf50c10b02a563ec1d4b58abc4507fe
+  checksum: b255a84a11a36c2a21932dc5346c69b31a49f5ebce96b7437ba9518e09f5d4e6c5a7a89c62f4e27b8e11ca3badd2210bf70f4d88bc63a8477b61b34f93062a19
   languageName: node
   linkType: hard
 
