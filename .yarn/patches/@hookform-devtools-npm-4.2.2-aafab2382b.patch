@@ -1,5 +1,5 @@
 diff --git a/dist/index.cjs.development.js b/dist/index.cjs.development.js
-index 00b72e4509175387c23231ca4210d182228d91ab..6834a2115898c00a332233a60883e4bd3f8bb9a3 100644
+index 00b72e4509175387c23231ca4210d182228d91ab..fadb0a2b8a517a5f9ba2fb2d8f3de41624a17920 100644
 --- a/dist/index.cjs.development.js
 +++ b/dist/index.cjs.development.js
 @@ -1979,7 +1979,7 @@ const PanelTable = ({ refObject, hasError, isDirty, fieldsValues, isNative, erro
@@ -11,11 +11,15 @@ index 00b72e4509175387c23231ca4210d182228d91ab..6834a2115898c00a332233a60883e4bd
                      } },
                      React__namespace.createElement("p", { style: Object.assign(Object.assign({ margin: 0, padding: 0, top: 0, position: 'relative', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }, paraGraphDefaultStyle), { lineHeight: '24px' }), title: name }, name)))),
          !collapse && (React__namespace.createElement("tbody", null,
-@@ -2195,7 +2195,7 @@ const DevToolUI = ({ control, placement = 'top-right', }) => {
+@@ -2193,9 +2193,9 @@ const DevToolUI = ({ control, placement = 'top-right', }) => {
+     const position = getPositionByPlacement(placement, 0, 0);
+     return (React__namespace.createElement(React__namespace.Fragment, null,
          React__namespace.createElement(reactSimpleAnimate.Animate, { play: state.visible, duration: 0.2, start: Object.assign(Object.assign({}, position), { position: 'fixed', transform: placement.includes('right')
-                     ? 'translateX(280px)'
-                     : 'translateX(-280px)', zIndex: 99999 }), end: Object.assign(Object.assign({}, position), { position: 'fixed', transform: 'translateX(0)', zIndex: 99999 }) },
+-                    ? 'translateX(280px)'
+-                    : 'translateX(-280px)', zIndex: 99999 }), end: Object.assign(Object.assign({}, position), { position: 'fixed', transform: 'translateX(0)', zIndex: 99999 }) },
 -            React__namespace.createElement("div", { style: Object.assign(Object.assign({}, position), { position: 'fixed', height: '100vh', width: 250, zIndex: 99999, background: colors.buttonBlue, display: 'grid', textAlign: 'left', color: 'white', fontSize: 14, gridTemplateRows: '40px auto', fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif" }) },
++                    ? 'translateX(430px)'
++                    : 'translateX(-430px)', zIndex: 99999 }), end: Object.assign(Object.assign({}, position), { position: 'fixed', transform: 'translateX(0)', zIndex: 99999 }) },
 +            React__namespace.createElement("div", { style: Object.assign(Object.assign({}, position), { position: 'fixed', height: '100vh', width: 400, zIndex: 99999, background: colors.buttonBlue, display: 'grid', textAlign: 'left', color: 'white', fontSize: 14, gridTemplateRows: '40px auto', fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif" }) },
                  React__namespace.createElement(Header, { setVisible: actions.setVisible, control: control }),
                  React__namespace.createElement(Panel, { control: control }))),
