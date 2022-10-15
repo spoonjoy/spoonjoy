@@ -1,3 +1,5 @@
+import { observer } from 'mobx-react-lite'
+
 import { FieldErrors, HiddenField } from '@redwoodjs/forms'
 
 import AddRemBtns from 'src/components/formComponents/AddRemBtns'
@@ -70,4 +72,4 @@ const StepFormFrag = ({
   )
 }
 
-export default StepFormFrag
+export default observer(StepFormFrag)

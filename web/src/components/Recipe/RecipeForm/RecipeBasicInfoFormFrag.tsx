@@ -1,3 +1,5 @@
+import { observer } from 'mobx-react-lite'
+
 import { FieldErrors } from '@redwoodjs/forms'
 
 import StyledNumberField from 'src/components/formComponents/StyledNumberField'
@@ -59,4 +61,4 @@ const RecipeBasicInfoFormFrag = ({
   )
 }
 
-export default RecipeBasicInfoFormFrag
+export default observer(RecipeBasicInfoFormFrag)

@@ -1,3 +1,5 @@
+import { observer } from 'mobx-react-lite'
+
 import { NumberField, TextField, FieldError } from '@redwoodjs/forms'
 
 import { IIngredientInputStore } from 'src/stores/RecipeInputStore'
@@ -42,7 +44,7 @@ const IngredientFormFrag = ({
                 setQuantity(Number(value))
               }}
               validation={{
-                required: { value: true, message: 'unit is required.' },
+                required: { value: true, message: 'quantity is required.' },
                 valueAsNumber: true,
               }}
             />
@@ -118,4 +120,4 @@ const IngredientFormFrag = ({
   )
 }
 
-export default IngredientFormFrag
+export default observer(IngredientFormFrag)
