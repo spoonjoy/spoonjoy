@@ -41,7 +41,7 @@ const IngredientFormFrag = ({
                 const { value } = e.target
                 setQuantity(Number(value))
               }}
-              validation={{ required: true }}
+              validation={{ required: true, valueAsNumber: true }}
             />
           </div>
           <div className="min-w-0">

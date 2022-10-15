@@ -53,6 +53,7 @@ const RecipeBasicInfoFormFrag = ({
           setServings(Number(value))
         }}
         fieldErrors={errors.servings}
+        validation={{ valueAsNumber: true }}
       />
     </>
   )
