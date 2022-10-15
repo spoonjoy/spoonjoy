@@ -3,14 +3,13 @@ import { observer } from 'mobx-react-lite'
 import type { EditRecipeById, UpdateRecipeInput } from 'types/graphql'
 
 import { RWGqlError } from '@redwoodjs/forms'
-import { Form, FormError, Submit, useForm, HiddenField } from '@redwoodjs/forms'
+import { Form, FormError, Submit, useForm } from '@redwoodjs/forms'
 
 import AddRemBtns from 'src/components/formComponents/AddRemBtns'
-import StyledTextAreaField from 'src/components/formComponents/StyledTextAreaField'
 import { useStore } from 'src/stores/RootStore'
 
-import IngredientFormFrag from './IngredientFormFrag'
 import RecipeBasicInfoFormFrag from './RecipeBasicInfoFormFrag'
+import StepFormFrag from './StepFormFrag'
 
 type FormRecipe = NonNullable<EditRecipeById['recipe']>
 
@@ -83,55 +82,13 @@ const RecipeForm = (props: RecipeFormProps) => {
         />
 
         {recipeInputStore.steps.map((step) => {
-          const { stepNum, description, ingredients } = step
           return (
-            <div className="mb-3" key={`step-${stepNum}`}>
-              <h2 className="block text-lg font-medium text-gray-700">
-                Step {step.stepNum}
-              </h2>
-              <div className="ml-3 mb-3">
-                <legend className="block text-sm font-medium text-gray-700">
-                  Step {step.stepNum} Ingredients
-                </legend>
-                {ingredients.map((ingredient, ingIdx) => {
-                  return (
-                    <IngredientFormFrag
-                      key={`step-${stepNum}-ingredient-${ingIdx}`}
-                      stepNum={stepNum}
-                      ingIdx={ingIdx}
-                      ingredient={ingredient}
-                    />
-                  )
-                })}
-                <AddRemBtns
-                  id="add-rem-ings-btns"
-                  itemName="Ingredient"
-                  onAdd={() => {
-                    step.addIngredient()
-                  }}
-                  onRem={() => {
-                    removeIngredientFields(stepNum, step.ingredients.length - 1)
-                    step.removeIngredient()
-                  }}
-                  canRem={step.ingredients.length > 1} // need to have at least one ingredient
-                  containerClassName="pt-2"
-                />
-              </div>
-              <HiddenField
-                name={`steps[${stepNum - 1}].stepNum`}
-                defaultValue={stepNum}
-              />
-              <StyledTextAreaField
-                fieldName={`steps[${stepNum - 1}].description`}
-                label={`Step ${step.stepNum} Description`}
-                defaultValue={description}
-                onChange={(e) => {
-                  const { value } = e.target
-                  step.setDescription(value)
-                }}
-                fieldErrors={errors.description}
-              />
-            </div>
+            <StepFormFrag
+              key={`step-${step.stepNum}`}
+              step={step}
+              removeIngredientFields={removeIngredientFields}
+              errors={errors}
+            />
           )
         })}
 
