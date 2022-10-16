@@ -1,4 +1,4 @@
-import { Instance, types } from 'mobx-state-tree'
+import { applySnapshot, Instance, SnapshotIn, types } from 'mobx-state-tree'
 
 const IngredientInputStore = types
   .model('IngredientInputStore')
@@ -91,6 +91,14 @@ export const RecipeInputStore = types
     removeStep: () => {
       self.steps.pop()
     },
+    clear: () => {
+      applySnapshot(self, initRecipeInputStore)
+    },
   }))
-
+export interface IRecipeInputStoreSnapshotIn
+  extends SnapshotIn<typeof RecipeInputStore> {}
 export interface IRecipeInputStore extends Instance<typeof RecipeInputStore> {}
+export const initRecipeInputStore: IRecipeInputStoreSnapshotIn = {
+  id: '',
+  title: '',
+}

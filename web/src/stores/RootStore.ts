@@ -1,10 +1,10 @@
 import localforage from 'localforage'
 import makeInspectable from 'mobx-devtools-mst'
 import { types, Instance } from 'mobx-state-tree'
-import { ListItemsStore, SnapshotInListItemsStore } from './ListItemsStore'
-import persist from './mst-persist'
 
-import { RecipeInputStore } from './RecipeInputStore'
+import { ListItemsStore } from './ListItemsStore'
+import persist from './mst-persist'
+import { initRecipeInputStore, RecipeInputStore } from './RecipeInputStore'
 
 export const RootStore = types.model({
   recipeInputStore: RecipeInputStore,
@@ -12,7 +12,7 @@ export const RootStore = types.model({
 })
 
 export const store = RootStore.create({
-  recipeInputStore: { id: "", title: ""},
+  recipeInputStore: initRecipeInputStore,
   listItemsStore: { items: {} },
 })
 
