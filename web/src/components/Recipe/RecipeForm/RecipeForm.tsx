@@ -21,6 +21,7 @@ interface RecipeFormProps {
   recipe?: EditRecipeById['recipe']
   onSave: (
     data: CreateRecipeInput | UpdateRecipeInput,
+    onSaveComplete?: () => void,
     id?: FormRecipe['id']
   ) => void
   error?: RWGqlError
@@ -38,7 +39,13 @@ const RecipeForm = (props: RecipeFormProps) => {
 
   const onSubmit = (data: FormRecipe) => {
     console.log('onSubmit data:', data)
-    props.onSave(data, props?.recipe?.id)
+    props.onSave(
+      data,
+      () => {
+        recipeInputStore.clear()
+      },
+      props?.recipe?.id
+    )
   }
 
   const getIngredientFieldsNames = (stepNum: number, ingIdx: number) => {

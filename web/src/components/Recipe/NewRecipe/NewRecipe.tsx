@@ -28,8 +28,10 @@ const NewRecipe = () => {
     }
   )
 
-  const onSave = (input: CreateRecipeInput) => {
-    createRecipe({ variables: { input } })
+  const onSave = (input: CreateRecipeInput, onSaveComplete?: () => void) => {
+    createRecipe({ variables: { input } }).then(() => {
+      onSaveComplete && onSaveComplete()
+    })
   }
 
   return <RecipeForm onSave={onSave} loading={loading} error={error} />
