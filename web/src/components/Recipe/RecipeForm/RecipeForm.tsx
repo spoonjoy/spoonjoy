@@ -121,12 +121,19 @@ const RecipeForm = (props: RecipeFormProps) => {
         />
 
         <div className="flex justify-end">
-          <Submit
-            disabled={props.loading}
-            className="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-          >
-            {recipeInputStore.id ? 'Update Recipe' : 'Create New Recipe'}
-          </Submit>
+          <div className="flex flex-col">
+            {recipeInputStore.steps.length < 1 && (
+              <span className="mb-2 text-sm text-red-600">
+                You need to add at least 1 step.
+              </span>
+            )}
+            <Submit
+              disabled={props.loading || recipeInputStore.steps.length < 1}
+              className="inline-flex items-center rounded-md border border-transparent px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 enabled:bg-indigo-600 disabled:bg-gray-400"
+            >
+              {recipeInputStore.id ? 'Update Recipe' : 'Create New Recipe'}
+            </Submit>
+          </div>
         </div>
       </Form>
       <DevTool control={control} />
