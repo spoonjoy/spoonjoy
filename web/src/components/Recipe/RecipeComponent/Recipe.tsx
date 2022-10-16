@@ -1,25 +1,13 @@
-import type {
-  DeleteRecipeMutationVariables,
-  FindRecipeById,
-} from 'types/graphql'
+import type { FindRecipeById } from 'types/graphql'
 
+import { useAuth } from '@redwoodjs/auth'
 import { MetaTags } from '@redwoodjs/web'
-import { HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
-
-import { Link, routes, navigate } from '@redwoodjs/router'
-import { useMutation } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/toast'
 
 import IngredientsItemsList from 'src/components/IngredientsItemsList/IngredientsItemsList'
+import { HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
 import { ListItemType } from 'src/stores/ListItemsStore'
 
-const DELETE_RECIPE_MUTATION = gql`
-  mutation DeleteRecipeMutation($id: String!) {
-    deleteRecipe(id: $id) {
-      id
-    }
-  }
-`
+import RecipeControlBar from './RecipeControlBar'
 
 const TimeTag = ({ datetime }: { datetime: string }) => {
   console.log(datetime)
@@ -35,33 +23,20 @@ interface Props {
 }
 
 const Recipe = ({ recipe }: Props) => {
-  const [deleteRecipe] = useMutation(DELETE_RECIPE_MUTATION, {
-    onCompleted: () => {
-      toast.success('Recipe deleted')
-      navigate(routes.recipes())
-    },
-    onError: (error) => {
-      toast.error(error.message)
-    },
-  })
-
-  const onDeleteClick = (id: DeleteRecipeMutationVariables['id']) => {
-    if (confirm('Are you sure you want to delete recipe ' + id + '?')) {
-      deleteRecipe({ variables: { id } })
-    }
-  }
+  const { currentUser } = useAuth()
+  const isOwnRecipe = recipe.chef.id === currentUser?.id
 
   return (
     <>
       <MetaTags title="Recipe" description="Recipe" />
       <HeaderSlot.Plug id="recipe">
-        <div className=' leading-[.8]'>
+        <div className=" leading-[.8]">
           <span>{recipe.title}</span>
           <br />
-          <span className="text-sm font-normal ml-2">
-            by <span className="font-bold">{recipe.chef.username}</span> on <TimeTag datetime={recipe.createdAt} />
+          <span className="ml-2 text-sm font-normal">
+            by <span className="font-bold">{recipe.chef.username}</span> on{' '}
+            <TimeTag datetime={recipe.createdAt} />
           </span>
-
         </div>
       </HeaderSlot.Plug>
       <p className="py-5 text-gray-900">{recipe.description}</p>
@@ -88,6 +63,7 @@ const Recipe = ({ recipe }: Props) => {
           )
         })}
       </div>
+      {isOwnRecipe && <RecipeControlBar recipeId={recipe.id} />}
     </>
   )
 }
