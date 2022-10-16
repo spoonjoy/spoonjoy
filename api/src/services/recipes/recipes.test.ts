@@ -18,6 +18,7 @@ import {
 } from './recipes'
 import {
   deletedRecipeScenarioData,
+  lindasRecipeScenarioData,
   recipeIncludeAllRelations,
   recipeScenarioData,
   StandardScenario as RecipeScenario,
@@ -67,13 +68,16 @@ describe('recipes', () => {
   )
 
   scenario(
-    'allows a logged in user to get their own recipes',
+    'allows a logged in user to get their own (non-deleted) recipes',
     async (scenario: RecipeScenario) => {
       mockCurrentUser({
         id: scenario.user.bob.id,
         username: scenario.user.bob.username,
       })
       const result = await myRecipes()
+      expect(Object.keys(recipeScenarioData).length).toEqual(
+        result.length + Object.keys(lindasRecipeScenarioData).length
+      )
       expect(result.length)
     }
   )
