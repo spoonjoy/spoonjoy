@@ -129,10 +129,20 @@ const RecipeForm = (props: RecipeFormProps) => {
             )}
             <Submit
               disabled={props.loading || recipeInputStore.steps.length < 1}
-              className="inline-flex items-center rounded-md border border-transparent px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 enabled:bg-indigo-600 disabled:bg-gray-400"
+              className="rounded-md border border-transparent px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 enabled:bg-indigo-600 disabled:bg-gray-400"
             >
               {recipeInputStore.id ? 'Update Recipe' : 'Create New Recipe'}
             </Submit>
+            <button
+              onClick={(e) => {
+                e.preventDefault() // needed so that this button doesn't try to submit the form
+                recipeInputStore.clear()
+                window.location.reload() // easiest way to do this but can also explore instead directly setting the form fields directly
+              }}
+              className="rounded-md border border-transparent px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 enabled:bg-indigo-600 disabled:bg-gray-400"
+            >
+              Reset Form
+            </button>
           </div>
         </div>
       </Form>
