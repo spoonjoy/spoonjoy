@@ -37,7 +37,7 @@ const IngredientFormFrag = ({
               name={`steps[${stepNum - 1}].ingredients[${ingIdx}].quantity`}
               defaultValue={quantity}
               className="relative block w-full rounded-none rounded-l-md border-gray-300 bg-transparent focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              errorClassName="block w-full rounded-none rounded-l-md border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
+              errorClassName="relative block w-full rounded-none rounded-l-md border-red-300 bg-transparent focus:z-10 focus:border-red-500 focus:ring-red-500 sm:text-sm"
               placeholder="5"
               onChange={(e) => {
                 const { value } = e.target
@@ -60,7 +60,7 @@ const IngredientFormFrag = ({
               name={`steps[${stepNum - 1}].ingredients[${ingIdx}].unitName`}
               defaultValue={unitName}
               className="relative block w-full rounded-none border-gray-300 bg-transparent focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              errorClassName="block w-full rounded-none border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
+              errorClassName="relative block w-full rounded-none border-red-300 bg-transparent focus:z-10 focus:border-red-500 focus:ring-red-500 sm:text-sm"
               placeholder="cups"
               onChange={(e) => {
                 const { value } = e.target
@@ -86,7 +86,7 @@ const IngredientFormFrag = ({
               }].ingredients[${ingIdx}].ingredientName`}
               defaultValue={ingredientName}
               className="relative block w-full rounded-none rounded-r-md border-gray-300 bg-transparent focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              errorClassName="block w-full rounded-none rounded-r-md border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
+              errorClassName="relative block w-full rounded-none rounded-r-md border-red-300 bg-transparent focus:z-10 focus:border-red-500 focus:ring-red-500 sm:text-sm"
               placeholder="flour"
               onChange={(e) => {
                 const { value } = e.target
