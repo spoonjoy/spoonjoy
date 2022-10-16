@@ -120,7 +120,7 @@ const RecipeForm = (props: RecipeFormProps) => {
           containerClassName="flex items-center justify-center p-8"
         />
 
-        <div className="flex justify-end">
+        <div className="flex justify-center sm:justify-end">
           <div className="flex flex-col">
             {recipeInputStore.steps.length < 1 && (
               <span className="mb-2 text-sm text-red-600">
@@ -139,7 +139,7 @@ const RecipeForm = (props: RecipeFormProps) => {
                 recipeInputStore.clear()
                 window.location.reload() // easiest way to do this but can also explore instead directly setting the form fields directly
               }}
-              className="rounded-md border border-transparent px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 enabled:bg-indigo-600 disabled:bg-gray-400"
+              className="mt-4 rounded-md border border-transparent px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 enabled:bg-red-600"
             >
               Reset Form
             </button>
