@@ -14,7 +14,11 @@ import {
 } from './recipeUtilities'
 
 export const recipes: QueryResolvers['recipes'] = () => {
-  return db.recipe.findMany()
+  return db.recipe.findMany({
+    where: {
+      deletedAt: null,
+    },
+  })
 }
 
 export const myRecipes: QueryResolvers['myRecipes'] = () => {

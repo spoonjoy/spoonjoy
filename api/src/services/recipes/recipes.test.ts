@@ -14,9 +14,12 @@ import {
   updateRecipe,
   deleteRecipe,
   Recipe,
+  myRecipes,
 } from './recipes'
 import {
+  deletedRecipeScenarioData,
   recipeIncludeAllRelations,
+  recipeScenarioData,
   StandardScenario as RecipeScenario,
 } from './recipes.scenarios'
 import {
@@ -33,19 +36,59 @@ describe('recipes', () => {
   beforeEach(() => {
     mockCurrentUser(null) // TODO this is actually allowed but redwood types need to be updated
   })
-  scenario('returns all recipes', async (scenario: RecipeScenario) => {
-    const result = await recipes()
-    expect(result.length).toEqual(Object.keys(scenario.recipe).length)
-  })
+
+  scenario(
+    "returns all recipes that don't have 'deletedAt' set",
+    async (scenario: RecipeScenario) => {
+      const result = await recipes()
+      const numDeletedRecipes = Object.keys(deletedRecipeScenarioData).length
+      const numNotDeletedRecipes = Object.keys(recipeScenarioData).length
+      expect(numDeletedRecipes > 0)
+      expect(numNotDeletedRecipes > 0)
+      expect(Object.keys(scenario.recipe).length).toEqual(
+        numDeletedRecipes + numNotDeletedRecipes
+      )
+      expect(result.length).toEqual(numNotDeletedRecipes)
+    }
+  )
+
+  scenario(
+    "throws an error if a user that's not logged in tries to get their own recipes",
+    async () => {
+      expect.assertions(1)
+      try {
+        await myRecipes()
+      } catch (e) {
+        expect(e).toMatchObject(
+          new RedwoodGraphQLError('You are not logged in!')
+        )
+      }
+    }
+  )
+
+  scenario(
+    'allows a logged in user to get their own recipes',
+    async (scenario: RecipeScenario) => {
+      mockCurrentUser({
+        id: scenario.user.bob.id,
+        username: scenario.user.bob.username,
+      })
+      const result = await myRecipes()
+      expect(result.length)
+    }
+  )
 
   scenario('returns a single recipe', async (scenario: RecipeScenario) => {
-    const { pizza } = scenario.recipe
+    const { bobsPizza } = scenario.recipe
 
     const numOfSingleAssertions = 1 // Chef check
-    const numOfSteps = pizza.steps.length
-    const numOfIngredientsTotal = pizza.steps.reduce((totalNumIng, step) => {
-      return totalNumIng + step!.ingredients.length
-    }, 0)
+    const numOfSteps = bobsPizza.steps.length
+    const numOfIngredientsTotal = bobsPizza.steps.reduce(
+      (totalNumIng, step) => {
+        return totalNumIng + step!.ingredients.length
+      },
+      0
+    )
     const numAssertionsPerStep = 2 // Update based on below steps.forEach
     const numAssertionsPerIng = 3 // Update based on below ingredientsByStep[stepIdx].forEach
 
@@ -55,10 +98,10 @@ describe('recipes', () => {
         numOfIngredientsTotal * numAssertionsPerIng
     ) // This will need to be updated if the scenario is updated
 
-    const result = await recipe({ id: pizza.id })
+    const result = await recipe({ id: bobsPizza.id })
 
     Recipe.chef!({}, { root: result }).then((chef: User) => {
-      expect(chef).toEqual(pizza.chef)
+      expect(chef).toEqual(bobsPizza.chef)
     })
 
     const steps = await Recipe.steps({}, { root: result })
@@ -68,7 +111,7 @@ describe('recipes', () => {
       })
     )
     steps.forEach((returnedStep, stepIdx) => {
-      const scenarioStep = pizza.steps[stepIdx] as typeof RecipeStep
+      const scenarioStep = bobsPizza.steps[stepIdx] as typeof RecipeStep
 
       // TODO fix all these weird type issues
       expect(returnedStep!.stepNum).toEqual(scenarioStep.stepNum)
@@ -186,7 +229,7 @@ describe('recipes', () => {
     'fails to update a recipe when not logged in',
     async (scenario: RecipeScenario) => {
       const original = await db.recipe.findUnique({
-        where: { id: scenario.recipe.pizza.id },
+        where: { id: scenario.recipe.bobsPizza.id },
         include: recipeIncludeAllRelations,
       })
       const updated = mapRecipeDbResponseToMutationInput(
@@ -218,7 +261,7 @@ describe('recipes', () => {
       })
 
       const original = await db.recipe.findUnique({
-        where: { id: scenario.recipe.pizza.id },
+        where: { id: scenario.recipe.bobsPizza.id },
         include: recipeIncludeAllRelations,
       })
       const updated = mapRecipeDbResponseToMutationInput(
@@ -246,7 +289,7 @@ describe('recipes', () => {
     async (scenario: RecipeScenario) => {
       await db.user
         .findUnique({
-          where: { id: scenario.recipe.pizza.chef.id },
+          where: { id: scenario.recipe.bobsPizza.chef.id },
         })
         .then((user) => {
           mockCurrentUser({
@@ -256,7 +299,7 @@ describe('recipes', () => {
         })
 
       const original = await db.recipe.findUnique({
-        where: { id: scenario.recipe.pizza.id },
+        where: { id: scenario.recipe.bobsPizza.id },
         include: recipeIncludeAllRelations,
       })
       const updated = mapRecipeDbResponseToMutationInput(
@@ -319,7 +362,7 @@ describe('recipes', () => {
       if (resultWithRelations) {
         const { chef, title, steps, description, servings } =
           resultWithRelations
-        expect(chef!.id).toBe(scenario.recipe.pizza.chefId)
+        expect(chef!.id).toBe(scenario.recipe.bobsPizza.chefId)
         expect(title).toBe(updated.input.title)
         expect(description).toBe(updated.input.description)
         expect(servings).toBe(updated.input.servings)
@@ -355,7 +398,7 @@ describe('recipes', () => {
     async (scenario: RecipeScenario) => {
       await db.user
         .findUnique({
-          where: { id: scenario.recipe.pizza.chefId },
+          where: { id: scenario.recipe.bobsPizza.chefId },
         })
         .then((user) => {
           mockCurrentUser({
@@ -363,10 +406,10 @@ describe('recipes', () => {
             username: user!.username,
           })
         })
-      const original = await recipe({ id: scenario.recipe.pizza.id })
+      const original = await recipe({ id: scenario.recipe.bobsPizza.id })
 
       const result = await deleteRecipe({
-        id: scenario.recipe.pizza.id,
+        id: scenario.recipe.bobsPizza.id,
       })
 
       expect(original?.deletedAt).toBe(null)
@@ -385,7 +428,7 @@ describe('recipes', () => {
       expect.assertions(1)
       try {
         await deleteRecipe({
-          id: scenario.recipe.pizza.id,
+          id: scenario.recipe.bobsPizza.id,
         })
       } catch (e) {
         expect(e).toMatchObject(
@@ -401,7 +444,7 @@ describe('recipes', () => {
       expect.assertions(1)
       try {
         await deleteRecipe({
-          id: scenario.recipe.pizza.id,
+          id: scenario.recipe.bobsPizza.id,
         })
       } catch (e) {
         expect(e).toMatchObject(
