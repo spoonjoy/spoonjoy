@@ -1,4 +1,7 @@
 import { applySnapshot, Instance, SnapshotIn, types } from 'mobx-state-tree'
+import { EditRecipeById } from 'types/graphql'
+
+import { mapRecipeDbResponseToMutationInput } from ''
 
 const IngredientInputStore = types
   .model('IngredientInputStore')
@@ -101,4 +104,26 @@ export interface IRecipeInputStore extends Instance<typeof RecipeInputStore> {}
 export const initRecipeInputStore: IRecipeInputStoreSnapshotIn = {
   id: '',
   title: '',
+}
+
+export const recipeQueryResponseToInputSnapshotIn = (
+  recipe: EditRecipeById['recipe']
+): IRecipeInputStoreSnapshotIn => {
+  if (!recipe) {
+    throw new Error('No recipe was passed in!')
+  }
+  const recipeSnapshotIn: IRecipeInputStoreSnapshotIn = {
+    id: recipe.id,
+    title: recipe.title,
+    description: recipe.description || undefined,
+    servings: recipe.servings || undefined,
+    steps: recipe.steps.forEach((step) => {
+      if (step) {
+        return {
+          id: step.id,
+          stepNum: step.stepNum,
+        }
+      }
+    }),
+  }
 }

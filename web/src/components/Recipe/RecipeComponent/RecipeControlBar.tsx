@@ -4,7 +4,7 @@ import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { DeleteRecipeMutationVariables } from 'types/graphql'
 
-import { navigate, routes } from '@redwoodjs/router'
+import { Link, navigate, routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/dist/toast'
 
@@ -61,12 +61,12 @@ const RecipeEditDeleteBtn = ({ recipeId }: RecipeEditDeleteBtnProps) => {
         onCancel={onCancelDelete}
       />
       <div className="inline-flex rounded-md shadow-sm">
-        <button
-          type="button"
+        <Link
+          to={routes.editRecipe({ id: recipeId })}
           className="relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
         >
           Edit Recipe
-        </button>
+        </Link>
         <Menu as="div" className="relative -ml-px block">
           <Menu.Button className="relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
             <span className="sr-only">Open options</span>

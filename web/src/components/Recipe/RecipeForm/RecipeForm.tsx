@@ -34,7 +34,7 @@ interface RecipeFormProps {
   loading: boolean
 }
 
-const RecipeForm = (props: RecipeFormProps) => {
+const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
   const { recipeInputStore } = useStore()
   const formMethods = useForm()
   const {
@@ -45,13 +45,15 @@ const RecipeForm = (props: RecipeFormProps) => {
 
   const onSubmit = (data: FormRecipe) => {
     console.log('onSubmit data:', data)
-    props.onSave(
-      data,
-      () => {
+    if (recipe) {
+      ;(onSave as onUpdateRecipe)(recipe.id, data, () => {
         recipeInputStore.clear()
-      },
-      props?.recipe?.id
-    )
+      })
+    } else {
+      ;(onSave as onCreateRecipe)(data, () => {
+        recipeInputStore.clear()
+      })
+    }
   }
 
   const getIngredientFieldsNames = (stepNum: number, ingIdx: number) => {
@@ -86,11 +88,11 @@ const RecipeForm = (props: RecipeFormProps) => {
       <Form<FormRecipe>
         formMethods={formMethods}
         onSubmit={onSubmit}
-        error={props.error}
+        error={error}
         config={{ mode: 'onBlur' }}
       >
         <FormError
-          error={props.error}
+          error={error}
           wrapperClassName="rw-form-error-wrapper"
           titleClassName="rw-form-error-title"
           listClassName="rw-form-error-list"
@@ -134,7 +136,7 @@ const RecipeForm = (props: RecipeFormProps) => {
               </span>
             )}
             <Submit
-              disabled={props.loading || recipeInputStore.steps.length < 1}
+              disabled={loading || recipeInputStore.steps.length < 1}
               className="rounded-md border border-transparent px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 enabled:bg-indigo-600 disabled:bg-gray-400"
             >
               {recipeInputStore.id ? 'Update Recipe' : 'Create New Recipe'}

@@ -20,6 +20,7 @@ export const QUERY = gql`
       }
       steps {
         id
+        stepNum
         description
         ingredients {
           id
@@ -49,12 +50,14 @@ export const Failure = ({ error }: CellFailureProps) => (
 )
 
 export const Success = ({ recipe }: CellSuccessProps<EditRecipeById>) => {
+  const { recipeInputStore } = useStore()
+
   const [updateRecipe, { loading, error }] = useMutation(
     UPDATE_RECIPE_MUTATION,
     {
       onCompleted: () => {
-        toast.success('Recipe updated')
-        navigate(routes.recipes())
+        toast.success('Recipe updated!')
+        navigate(routes.recipe({ id: recipe.id }))
       },
       onError: (error) => {
         toast.error(error.message)
