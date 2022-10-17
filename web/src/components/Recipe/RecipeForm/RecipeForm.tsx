@@ -50,11 +50,11 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
   const onSubmit = (data: FormUpdateRecipe | FormCreateRecipe) => {
     console.log('onSubmit data:', data)
     if (recipe) {
-      ;(onSave as onUpdateRecipe)(recipe.id, data, () => {
+      ;(onSave as onUpdateRecipe)(recipe.id, data as FormUpdateRecipe, () => {
         recipeInputStore.clear()
       })
     } else {
-      ;(onSave as onCreateRecipe)(data, () => {
+      ;(onSave as onCreateRecipe)(data as FormCreateRecipe, () => {
         recipeInputStore.clear()
       })
     }
