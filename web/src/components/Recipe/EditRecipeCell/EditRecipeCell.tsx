@@ -1,11 +1,15 @@
+import { applySnapshot } from 'mobx-state-tree'
 import type { EditRecipeById, UpdateRecipeInput } from 'types/graphql'
 
 import { navigate, routes } from '@redwoodjs/router'
-import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
+import { CellSuccessProps, CellFailureProps, MetaTags } from '@redwoodjs/web'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import RecipeForm, { onUpdateRecipe } from 'src/components/Recipe/RecipeForm'
+import { HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
+import { recipeQueryResponseToInputSnapshotIn } from 'src/stores/RecipeInputStore'
+import { useStore } from 'src/stores/RootStore'
 
 export const QUERY = gql`
   query EditRecipeById($id: String!) {
@@ -24,6 +28,7 @@ export const QUERY = gql`
         description
         ingredients {
           id
+          quantity
           unit {
             name
           }
@@ -75,21 +80,21 @@ export const Success = ({ recipe }: CellSuccessProps<EditRecipeById>) => {
     })
   }
 
+  applySnapshot(recipeInputStore, recipeQueryResponseToInputSnapshotIn(recipe))
+
   return (
-    <div className="rw-segment">
-      <header className="rw-segment-header">
-        <h2 className="rw-heading rw-heading-secondary">
-          Edit Recipe {recipe?.id}
-        </h2>
-      </header>
-      <div className="rw-segment-main">
-        <RecipeForm
-          recipe={recipe}
-          onSave={onSave}
-          error={error}
-          loading={loading}
-        />
-      </div>
-    </div>
+    <>
+      <MetaTags
+        title={`Edit Recipe "${recipe.title}"`}
+        description="Edit Recipe Page"
+      />
+      <HeaderSlot.Plug id="edit-recipe">{`Edit Recipe "${recipe.title}"`}</HeaderSlot.Plug>
+      <RecipeForm
+        recipe={recipe}
+        onSave={onSave}
+        error={error}
+        loading={loading}
+      />
+    </>
   )
 }

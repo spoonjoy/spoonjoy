@@ -6,7 +6,7 @@ import { mapRecipeDbResponseToMutationInput } from ''
 const IngredientInputStore = types
   .model('IngredientInputStore')
   .props({
-    ingredientId: types.maybe(types.identifier),
+    ingredientId: types.maybe(types.string),
     quantity: types.maybe(types.number),
     unitName: types.string,
     ingredientName: types.string,
@@ -25,7 +25,8 @@ const IngredientInputStore = types
       self.ingredientName = ingredientName
     },
   }))
-
+export interface IIngredientInputStoreSnapshotIn
+  extends SnapshotIn<typeof IngredientInputStore> {}
 export interface IIngredientInputStore
   extends Instance<typeof IngredientInputStore> {}
 
@@ -54,14 +55,15 @@ const RecipeStepInputStore = types
       self.ingredients.pop()
     },
   }))
-
+export interface IRecipeStepInputStoreSnapshotIn
+  extends SnapshotIn<typeof RecipeStepInputStore> {}
 export interface IRecipeStepInputStore
   extends Instance<typeof RecipeStepInputStore> {}
 
 export const RecipeInputStore = types
   .model('RecipeInputStore')
   .props({
-    id: types.maybe(types.identifier), // only present when editing an existing recipe
+    id: types.maybe(types.string), // only present when editing an existing recipe
     title: types.string,
     description: types.maybe(types.string),
     servings: types.maybe(types.number),
@@ -117,13 +119,28 @@ export const recipeQueryResponseToInputSnapshotIn = (
     title: recipe.title,
     description: recipe.description || undefined,
     servings: recipe.servings || undefined,
-    steps: recipe.steps.forEach((step) => {
-      if (step) {
-        return {
-          id: step.id,
-          stepNum: step.stepNum,
-        }
+    steps: recipe.steps.map((step): IRecipeStepInputStoreSnapshotIn => {
+      if (!step) {
+        throw new Error('The step seems to be missing!')
+      }
+      return {
+        stepNum: step.stepNum,
+        description: step.description || '',
+        ingredients: step.ingredients.map(
+          (ingredient): IIngredientInputStoreSnapshotIn => {
+            if (!ingredient) {
+              throw new Error('The ingredient seems to be missing!')
+            }
+            return {
+              ingredientId: ingredient.id,
+              quantity: ingredient.quantity,
+              unitName: ingredient.unit.name,
+              ingredientName: ingredient.ingredientRef.name,
+            }
+          }
+        ),
       }
     }),
   }
+  return recipeSnapshotIn
 }
