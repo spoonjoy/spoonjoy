@@ -46,7 +46,8 @@ model Recipe {
   deletedAt           DateTime?
   steps               RecipeStep[]
 
-  @@unique([chefId, title])
+  // Allow users to create a second recipe with the same title *if* the other one is deleted
+  @@unique([chefId, title, deletedAt])
 }
 
 model RecipeStep {
