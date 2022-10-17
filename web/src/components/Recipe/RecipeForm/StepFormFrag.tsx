@@ -55,12 +55,12 @@ const StepFormFrag = ({
         />
       </div>
       <HiddenField
-        name={`steps[${stepNum - 1}].stepNum`}
+        name={`steps.${stepNum - 1}.stepNum`}
         defaultValue={stepNum}
         validation={{ valueAsNumber: true }}
       />
       <StyledTextAreaField
-        fieldName={`steps[${stepNum - 1}].description`}
+        fieldName={`steps.${stepNum - 1}.description`}
         label={`Step ${step.stepNum} Description`}
         defaultValue={description}
         onChange={(e) => {

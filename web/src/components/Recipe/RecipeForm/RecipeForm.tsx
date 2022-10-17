@@ -1,6 +1,5 @@
 import { DevTool } from '@hookform/devtools'
 import { observer } from 'mobx-react-lite'
-import { applySnapshot } from 'mobx-state-tree'
 import type {
   CreateRecipeInput,
   EditRecipeById,
@@ -13,13 +12,13 @@ import { navigate, routes } from '@redwoodjs/router'
 import { toast } from '@redwoodjs/web/dist/toast'
 
 import AddRemBtns from 'src/components/formComponents/AddRemBtns'
-import { recipeQueryResponseToInputSnapshotIn } from 'src/stores/RecipeInputStore'
 import { useStore } from 'src/stores/RootStore'
 
 import RecipeBasicInfoFormFrag from './RecipeBasicInfoFormFrag'
 import StepFormFrag from './StepFormFrag'
 
-type FormRecipe = NonNullable<EditRecipeById['recipe']>
+type FormUpdateRecipe = NonNullable<UpdateRecipeInput>
+type FormCreateRecipe = NonNullable<CreateRecipeInput>
 
 export type onCreateRecipe = (
   data: CreateRecipeInput,
@@ -40,7 +39,7 @@ interface RecipeFormProps {
 
 const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
   const { recipeInputStore } = useStore()
-  const formMethods = useForm()
+  const formMethods = useForm<FormUpdateRecipe | FormCreateRecipe>()
   const {
     formState: { errors },
     control,
@@ -48,7 +47,7 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
     reset,
   } = formMethods
 
-  const onSubmit = (data: FormRecipe) => {
+  const onSubmit = (data: FormUpdateRecipe | FormCreateRecipe) => {
     console.log('onSubmit data:', data)
     if (recipe) {
       ;(onSave as onUpdateRecipe)(recipe.id, data, () => {
@@ -61,19 +60,25 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
     }
   }
 
-  const getIngredientFieldsNames = (stepNum: number, ingIdx: number) => {
+  const getIngredientFieldsNames = (
+    stepNum: number,
+    ingIdx: number
+  ): Array<
+    | `steps.${number}.ingredients.${number}.quantity`
+    | `steps.${number}.ingredients.${number}.unitName`
+    | `steps.${number}.ingredients.${number}.ingredientName`
+  > => {
     return [
-      `steps[${stepNum - 1}].ingredients[${ingIdx}].quantity`,
-      `steps[${stepNum - 1}].ingredients[${ingIdx}].unitName`,
-      `steps[${stepNum - 1}].ingredients[${ingIdx}].ingredientName`,
+      `steps.${stepNum - 1}.ingredients.${ingIdx}.quantity`,
+      `steps.${stepNum - 1}.ingredients.${ingIdx}.unitName`,
+      `steps.${stepNum - 1}.ingredients.${ingIdx}.ingredientName`,
     ]
   }
 
-  const getStepFieldsNames = (stepNum: number) => {
-    return [
-      `steps[${stepNum - 1}].stepNum`,
-      `steps[${stepNum - 1}].description`,
-    ]
+  const getStepFieldsNames = (
+    stepNum: number
+  ): Array<`steps.${number}.description` | `steps.${number}.stepNum`> => {
+    return [`steps.${stepNum - 1}.stepNum`, `steps.${stepNum - 1}.description`]
   }
 
   const removeIngredientFields = (stepNum: number, ingIdx: number) => {
@@ -90,7 +95,7 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
 
   return (
     <div className="p-5">
-      <Form<FormRecipe>
+      <Form<FormUpdateRecipe | FormCreateRecipe>
         formMethods={formMethods}
         onSubmit={onSubmit}
         error={error}

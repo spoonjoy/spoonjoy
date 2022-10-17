@@ -28,13 +28,13 @@ const IngredientFormFrag = ({
         <div className="flex -space-x-px">
           <div className="min-w-0">
             <label
-              htmlFor={`steps[${stepNum - 1}].ingredients[${ingIdx}].quantity`}
+              htmlFor={`steps.${stepNum - 1}.ingredients.${ingIdx}.quantity`}
               className="sr-only"
             >
               Quantity
             </label>
             <NumberField
-              name={`steps[${stepNum - 1}].ingredients[${ingIdx}].quantity`}
+              name={`steps.${stepNum - 1}.ingredients.${ingIdx}.quantity`}
               defaultValue={quantity}
               className="relative block w-full rounded-none rounded-l-md border-gray-300 bg-transparent focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               errorClassName="relative block w-full rounded-none rounded-l-md border-red-300 bg-transparent focus:z-10 focus:border-red-500 focus:ring-red-500 sm:text-sm"
@@ -51,13 +51,13 @@ const IngredientFormFrag = ({
           </div>
           <div className="min-w-0">
             <label
-              htmlFor={`steps[${stepNum - 1}].ingredients[${ingIdx}].unitName`}
+              htmlFor={`steps.${stepNum - 1}.ingredients.${ingIdx}.unitName`}
               className="sr-only"
             >
               Unit name
             </label>
             <TextField
-              name={`steps[${stepNum - 1}].ingredients[${ingIdx}].unitName`}
+              name={`steps.${stepNum - 1}.ingredients.${ingIdx}.unitName`}
               defaultValue={unitName}
               className="relative block w-full rounded-none border-gray-300 bg-transparent focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               errorClassName="relative block w-full rounded-none border-red-300 bg-transparent focus:z-10 focus:border-red-500 focus:ring-red-500 sm:text-sm"
@@ -73,17 +73,15 @@ const IngredientFormFrag = ({
           </div>
           <div className="min-w-0">
             <label
-              htmlFor={`steps[${
+              htmlFor={`steps.${
                 stepNum - 1
-              }].ingredients[${ingIdx}].ingredientName`}
+              }.ingredients.${ingIdx}.ingredientName`}
               className="sr-only"
             >
               Ingredient name
             </label>
             <TextField
-              name={`steps[${
-                stepNum - 1
-              }].ingredients[${ingIdx}].ingredientName`}
+              name={`steps.${stepNum - 1}.ingredients.${ingIdx}.ingredientName`}
               defaultValue={ingredientName}
               className="relative block w-full rounded-none rounded-r-md border-gray-300 bg-transparent focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               errorClassName="relative block w-full rounded-none rounded-r-md border-red-300 bg-transparent focus:z-10 focus:border-red-500 focus:ring-red-500 sm:text-sm"
@@ -104,15 +102,15 @@ const IngredientFormFrag = ({
       </div>
       <div className="flex flex-col">
         <FieldError
-          name={`steps[${stepNum - 1}].ingredients[${ingIdx}].quantity`}
+          name={`steps.${stepNum - 1}.ingredients.${ingIdx}.quantity`}
           className="mt-1 text-sm text-red-600"
         />
         <FieldError
-          name={`steps[${stepNum - 1}].ingredients[${ingIdx}].unitName`}
+          name={`steps.${stepNum - 1}.ingredients.${ingIdx}.unitName`}
           className="mt-1 text-sm text-red-600"
         />
         <FieldError
-          name={`steps[${stepNum - 1}].ingredients[${ingIdx}].ingredientName`}
+          name={`steps.${stepNum - 1}.ingredients.${ingIdx}.ingredientName`}
           className="mt-1 text-sm text-red-600"
         />
       </div>
