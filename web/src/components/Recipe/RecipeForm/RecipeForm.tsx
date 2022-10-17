@@ -1,5 +1,6 @@
 import { DevTool } from '@hookform/devtools'
 import { observer } from 'mobx-react-lite'
+import { applySnapshot } from 'mobx-state-tree'
 import type {
   CreateRecipeInput,
   EditRecipeById,
@@ -8,8 +9,11 @@ import type {
 
 import { RWGqlError } from '@redwoodjs/forms'
 import { Form, FormError, Submit, useForm } from '@redwoodjs/forms'
+import { navigate, routes } from '@redwoodjs/router'
+import { toast } from '@redwoodjs/web/dist/toast'
 
 import AddRemBtns from 'src/components/formComponents/AddRemBtns'
+import { recipeQueryResponseToInputSnapshotIn } from 'src/stores/RecipeInputStore'
 import { useStore } from 'src/stores/RootStore'
 
 import RecipeBasicInfoFormFrag from './RecipeBasicInfoFormFrag'
@@ -41,6 +45,7 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
     formState: { errors },
     control,
     unregister,
+    reset,
   } = formMethods
 
   const onSubmit = (data: FormRecipe) => {
@@ -139,17 +144,27 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
               disabled={loading || recipeInputStore.steps.length < 1}
               className="rounded-md border border-transparent px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 enabled:bg-indigo-600 disabled:bg-gray-400"
             >
-              {recipeInputStore.id ? 'Update Recipe' : 'Create New Recipe'}
+              {recipe ? 'Update Recipe' : 'Create New Recipe'}
             </Submit>
             <button
               onClick={(e) => {
                 e.preventDefault() // needed so that this button doesn't try to submit the form
                 recipeInputStore.clear()
-                window.location.reload() // easiest way to do this but can also explore instead directly setting the form fields directly
+                reset({
+                  title: '',
+                  description: '',
+                  servings: null,
+                })
+                if (recipe) {
+                  navigate(routes.recipe({ id: recipe.id }))
+                  toast('Recipe changes have been discarded')
+                } else {
+                  toast('Recipe form has been reset')
+                }
               }}
               className="mt-4 rounded-md border border-transparent px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 enabled:bg-red-600"
             >
-              Reset Form
+              {recipe ? 'Discard Changes' : 'Reset'}
             </button>
           </div>
         </div>

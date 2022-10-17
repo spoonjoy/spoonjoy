@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite'
 import { applySnapshot } from 'mobx-state-tree'
 import type { EditRecipeById, UpdateRecipeInput } from 'types/graphql'
 
@@ -54,47 +55,57 @@ export const Failure = ({ error }: CellFailureProps) => (
   <div className="rw-cell-error">{error?.message}</div>
 )
 
-export const Success = ({ recipe }: CellSuccessProps<EditRecipeById>) => {
-  const { recipeInputStore } = useStore()
+export const Success = observer(
+  ({ recipe }: CellSuccessProps<EditRecipeById>) => {
+    const { recipeInputStore } = useStore()
 
-  const [updateRecipe, { loading, error }] = useMutation(
-    UPDATE_RECIPE_MUTATION,
-    {
-      onCompleted: () => {
-        toast.success('Recipe updated!')
-        navigate(routes.recipe({ id: recipe.id }))
-      },
-      onError: (error) => {
-        toast.error(error.message)
-      },
+    if (recipeInputStore.id !== recipe.id) {
+      applySnapshot(
+        recipeInputStore,
+        recipeQueryResponseToInputSnapshotIn(recipe)
+      )
     }
-  )
 
-  const onSave: onUpdateRecipe = (
-    id: string,
-    input: UpdateRecipeInput,
-    onSaveComplete?: () => void
-  ) => {
-    updateRecipe({ variables: { id, input } }).then(() => {
-      onSaveComplete && onSaveComplete()
-    })
+    const [updateRecipe, { loading, error }] = useMutation(
+      UPDATE_RECIPE_MUTATION,
+      {
+        onCompleted: () => {
+          toast.success('Recipe updated!')
+          navigate(routes.recipe({ id: recipe.id }))
+        },
+        onError: (error) => {
+          toast.error(error.message)
+        },
+      }
+    )
+
+    const onSave: onUpdateRecipe = (
+      id: string,
+      input: UpdateRecipeInput,
+      onSaveComplete?: () => void
+    ) => {
+      updateRecipe({ variables: { id, input } }).then(() => {
+        onSaveComplete && onSaveComplete()
+      })
+    }
+
+    return (
+      <>
+        <MetaTags
+          title={`Edit Recipe "${recipe.title}"`}
+          description="Edit Recipe Page"
+        />
+        <HeaderSlot.Plug id="edit-recipe">{`Edit Recipe "${recipe.title}"`}</HeaderSlot.Plug>
+        {/* only render the form once the store's id reflects the recipes id, aka the store has been set to the recipe that's being edited */}
+        {recipeInputStore.id === recipe.id && (
+          <RecipeForm
+            recipe={recipe}
+            onSave={onSave}
+            error={error}
+            loading={loading}
+          />
+        )}
+      </>
+    )
   }
-
-  applySnapshot(recipeInputStore, recipeQueryResponseToInputSnapshotIn(recipe))
-
-  return (
-    <>
-      <MetaTags
-        title={`Edit Recipe "${recipe.title}"`}
-        description="Edit Recipe Page"
-      />
-      <HeaderSlot.Plug id="edit-recipe">{`Edit Recipe "${recipe.title}"`}</HeaderSlot.Plug>
-      <RecipeForm
-        recipe={recipe}
-        onSave={onSave}
-        error={error}
-        loading={loading}
-      />
-    </>
-  )
-}
+)

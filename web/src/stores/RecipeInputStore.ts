@@ -104,7 +104,6 @@ export interface IRecipeInputStoreSnapshotIn
   extends SnapshotIn<typeof RecipeInputStore> {}
 export interface IRecipeInputStore extends Instance<typeof RecipeInputStore> {}
 export const initRecipeInputStore: IRecipeInputStoreSnapshotIn = {
-  id: '',
   title: '',
 }
 

@@ -5,6 +5,7 @@ import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import RecipeForm, { onCreateRecipe } from 'src/components/Recipe/RecipeForm'
+import { useStore } from 'src/stores/RootStore'
 
 const CREATE_RECIPE_MUTATION = gql`
   mutation CreateRecipeMutation($input: CreateRecipeInput!) {
@@ -15,6 +16,12 @@ const CREATE_RECIPE_MUTATION = gql`
 `
 
 const NewRecipe = () => {
+  const { recipeInputStore } = useStore()
+
+  if (recipeInputStore.id) {
+    recipeInputStore.clear()
+  }
+
   const [createRecipe, { loading, error }] = useMutation(
     CREATE_RECIPE_MUTATION,
     {
@@ -37,7 +44,14 @@ const NewRecipe = () => {
     })
   }
 
-  return <RecipeForm onSave={onSave} loading={loading} error={error} />
+  return (
+    <>
+      {/* Only render the form once the store reflects a new recipe */}
+      {!recipeInputStore.id && (
+        <RecipeForm onSave={onSave} loading={loading} error={error} />
+      )}
+    </>
+  )
 }
 
 export default NewRecipe
