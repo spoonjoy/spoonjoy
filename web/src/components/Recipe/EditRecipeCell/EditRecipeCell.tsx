@@ -84,8 +84,8 @@ export const Success = observer(
       input: UpdateRecipeInput,
       onSaveComplete?: () => void
     ) => {
-      updateRecipe({ variables: { id, input } }).then(() => {
-        onSaveComplete && onSaveComplete()
+      updateRecipe({ variables: { id, input } }).then((response) => {
+        !response.errors && onSaveComplete && onSaveComplete()
       })
     }
 

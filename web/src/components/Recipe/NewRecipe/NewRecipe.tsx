@@ -39,8 +39,8 @@ const NewRecipe = () => {
     input: CreateRecipeInput,
     onSaveComplete?: () => void
   ) => {
-    createRecipe({ variables: { input } }).then(() => {
-      onSaveComplete && onSaveComplete()
+    createRecipe({ variables: { input } }).then((response) => {
+      !response.errors && onSaveComplete && onSaveComplete()
     })
   }
 
