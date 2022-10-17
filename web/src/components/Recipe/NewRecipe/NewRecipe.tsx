@@ -4,7 +4,7 @@ import { navigate, routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
-import RecipeForm from 'src/components/Recipe/RecipeForm'
+import RecipeForm, { onCreateRecipe } from 'src/components/Recipe/RecipeForm'
 
 const CREATE_RECIPE_MUTATION = gql`
   mutation CreateRecipeMutation($input: CreateRecipeInput!) {
@@ -28,8 +28,11 @@ const NewRecipe = () => {
     }
   )
 
-  const onSave = (input: CreateRecipeInput, onSaveComplete?: () => void) => {
-    createRecipe({ variables: { input } }).then(() => {
+  const onSave: onCreateRecipe = (
+    data: CreateRecipeInput,
+    onSaveComplete?: () => void
+  ) => {
+    createRecipe({ variables: { data } }).then(() => {
       onSaveComplete && onSaveComplete()
     })
   }

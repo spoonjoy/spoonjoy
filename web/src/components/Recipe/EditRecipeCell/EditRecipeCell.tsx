@@ -5,7 +5,7 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
-import RecipeForm from 'src/components/Recipe/RecipeForm'
+import RecipeForm, { onUpdateRecipe } from 'src/components/Recipe/RecipeForm'
 
 export const QUERY = gql`
   query EditRecipeById($id: String!) {
@@ -38,15 +38,6 @@ const UPDATE_RECIPE_MUTATION = gql`
   mutation UpdateRecipeMutation($id: String!, $input: UpdateRecipeInput!) {
     updateRecipe(id: $id, input: $input) {
       id
-      title
-      description
-      servings
-      chef {
-        id
-        username
-      }
-      createdAt
-      deletedAt
     }
   }
 `
@@ -71,11 +62,14 @@ export const Success = ({ recipe }: CellSuccessProps<EditRecipeById>) => {
     }
   )
 
-  const onSave = (
+  const onSave: onUpdateRecipe = (
+    id: string,
     input: UpdateRecipeInput,
-    id: EditRecipeById['recipe']['id']
+    onSaveComplete?: () => void
   ) => {
-    updateRecipe({ variables: { id, input } })
+    updateRecipe({ variables: { id, input } }).then(() => {
+      onSaveComplete && onSaveComplete()
+    })
   }
 
   return (

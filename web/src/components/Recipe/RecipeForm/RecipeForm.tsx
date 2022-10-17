@@ -17,13 +17,19 @@ import StepFormFrag from './StepFormFrag'
 
 type FormRecipe = NonNullable<EditRecipeById['recipe']>
 
+export type onCreateRecipe = (
+  data: CreateRecipeInput,
+  onSaveComplete?: () => void
+) => void
+export type onUpdateRecipe = (
+  recipeId: string,
+  data: UpdateRecipeInput,
+  onSaveComplete?: () => void
+) => void
+
 interface RecipeFormProps {
   recipe?: EditRecipeById['recipe']
-  onSave: (
-    data: CreateRecipeInput | UpdateRecipeInput,
-    onSaveComplete?: () => void,
-    id?: FormRecipe['id']
-  ) => void
+  onSave: onCreateRecipe | onUpdateRecipe
   error?: RWGqlError
   loading: boolean
 }
