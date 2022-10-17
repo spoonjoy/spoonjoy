@@ -36,10 +36,10 @@ const NewRecipe = () => {
   )
 
   const onSave: onCreateRecipe = (
-    data: CreateRecipeInput,
+    input: CreateRecipeInput,
     onSaveComplete?: () => void
   ) => {
-    createRecipe({ variables: { data } }).then(() => {
+    createRecipe({ variables: { input } }).then(() => {
       onSaveComplete && onSaveComplete()
     })
   }
