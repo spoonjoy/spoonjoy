@@ -36,30 +36,32 @@ const IngredientsItemsList = ({ items, itemsType }: IIngredientsItemsList) => {
             itemStore.setItemState(!selected)
           }
           return (
-            <li
-              key={`${quantity}-${unit.name}-${ingredientRef.name}`}
-              className="relative flex items-start py-4"
-            >
-              <div className="min-w-0 flex-1 text-sm">
-                <label
-                  htmlFor={`ingredient-${id}`}
-                  className={`select-none font-medium  ${
-                    selected ? 'text-gray-400 line-through' : 'text-gray-700'
-                  }`}
-                >
-                  {quantity} {unit.name} {ingredientRef.name}
-                </label>
-              </div>
-              <div className="ml-3 flex h-5 items-center">
-                <input
-                  id={`ingredient-${id}`}
-                  name={`ingredient-${id}`}
-                  type="checkbox"
-                  checked={selected}
-                  onChange={onCheck}
-                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                />
-              </div>
+            <li key={`${quantity}-${unit.name}-${ingredientRef.name}`}>
+              <button
+                className="relative flex h-full w-full items-start py-4"
+                onClick={onCheck}
+              >
+                <div className="min-w-0 flex-1 text-start text-sm">
+                  <span
+                    id={`ingredient-${id}-label`}
+                    className={`select-none font-medium  ${
+                      selected ? 'text-gray-400 line-through' : 'text-gray-700'
+                    }`}
+                  >
+                    {quantity} {unit.name} {ingredientRef.name}
+                  </span>
+                </div>
+                <div className="ml-3 flex h-5 items-center">
+                  <input
+                    id={`ingredient-${id}`}
+                    name={`ingredient-${id}`}
+                    type="checkbox"
+                    checked={selected}
+                    onChange={onCheck}
+                    className="h-4 w-4 cursor-pointer rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                  />
+                </div>
+              </button>
             </li>
           )
         })}
