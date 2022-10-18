@@ -5,8 +5,6 @@ import type {
   ShoppingListRelationResolvers,
 } from 'types/graphql'
 
-import { AuthenticationError } from '@redwoodjs/graphql-server'
-
 import { requireAuth, requireShoppingListAuth } from 'src/lib/auth'
 import { db } from 'src/lib/db'
 
