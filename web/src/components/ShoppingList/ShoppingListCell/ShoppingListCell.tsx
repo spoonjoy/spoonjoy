@@ -8,8 +8,8 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 import ShoppingList from '../ShoppingListComponent/ShoppingList'
 
 export const QUERY = gql`
-  query FindShoppingListById($id: String!) {
-    shoppingList: shoppingList(id: $id) {
+  query FindMyShoppingList {
+    shoppingList: myShoppingList {
       id
       author {
         id
