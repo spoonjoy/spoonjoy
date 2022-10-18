@@ -13,5 +13,12 @@ export default {
     header: 'Delete Recipe',
     body: 'If you delete your recipe, you\'ll never see it again! Until we get around to creating the "recently deleted" section, but who knows how long that will take.',
     confirmTxt: 'Delete',
+    openState: true,
+    onCancel: () => {
+      console.log("Clicked 'cancel")
+    },
+    onConfirm: () => {
+      console.log('Clicked confirm')
+    },
   },
 } as ComponentMeta<typeof Alert>
