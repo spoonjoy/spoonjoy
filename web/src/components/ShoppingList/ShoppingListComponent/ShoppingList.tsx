@@ -9,7 +9,16 @@ interface ShoppingListProps {
 
 const ShoppingList = ({ shoppingList }: ShoppingListProps) => {
   const { items } = shoppingList
-  return <>{items && <IngredientsItemsList items={items} itemsType={ListItemType.ShoppingListItem} />}</>
+  return (
+    <>
+      {items && (
+        <IngredientsItemsList
+          items={items}
+          itemsType={ListItemType.ShoppingListItem}
+        />
+      )}
+    </>
+  )
 }
 
 export default ShoppingList
