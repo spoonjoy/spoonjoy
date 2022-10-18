@@ -13,13 +13,22 @@ import {
   mapItemsMutationInputToDbUpdateInput,
 } from './shoppingListUtilities'
 
-export const shoppingLists: QueryResolvers['shoppingLists'] = () => {
-  return db.shoppingList.findMany()
-}
+// export const shoppingLists: QueryResolvers['shoppingLists'] = () => {
+//   return db.shoppingList.findMany()
+// }
 
 export const shoppingList: QueryResolvers['shoppingList'] = ({ id }) => {
   const list = db.shoppingList.findUnique({
     where: { id },
+  })
+  return list
+}
+
+export const myShoppingList: QueryResolvers['myShoppingList'] = () => {
+  requireAuth()
+
+  const list = db.shoppingList.findUnique({
+    where: { authorId: context.currentUser?.id },
   })
   return list
 }

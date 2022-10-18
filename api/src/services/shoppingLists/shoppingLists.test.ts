@@ -7,12 +7,13 @@ import { db } from 'src/lib/db'
 import { StandardScenario as UserScenario } from '../users/users.scenarios'
 
 import {
-  shoppingLists,
+  // shoppingLists,
   shoppingList,
   createShoppingList,
   updateShoppingList,
   deleteShoppingList,
   ShoppingList,
+  myShoppingList,
 } from './shoppingLists'
 import {
   shoppingListIncludeAllRelations,
@@ -33,13 +34,13 @@ describe('shoppingLists', () => {
   beforeEach(() => {
     mockCurrentUser(null) // TODO this is actually allowed but redwood types need to be updated
   })
-  scenario(
-    'returns all shoppingLists',
-    async (scenario: ShoppingListScenario) => {
-      const result = await shoppingLists()
-      expect(result.length).toEqual(Object.keys(scenario.shoppingList).length)
-    }
-  )
+  // scenario(
+  //   'returns all shoppingLists',
+  //   async (scenario: ShoppingListScenario) => {
+  //     const result = await shoppingLists()
+  //     expect(result.length).toEqual(Object.keys(scenario.shoppingList).length)
+  //   }
+  // )
   scenario(
     'returns a single shoppingList',
     async (scenario: ShoppingListScenario) => {
@@ -73,6 +74,40 @@ describe('shoppingLists', () => {
             expect(returnedItem.unitId).toEqual(scenarioItem!.unitId)
           })
         }
+      )
+    }
+  )
+
+  scenario(
+    "throws an error if a user that's not logged in tries to get their own shopping list",
+    async () => {
+      expect.assertions(1)
+      try {
+        await myShoppingList()
+      } catch (e) {
+        expect(e).toMatchObject(
+          new RedwoodGraphQLError('You are not logged in!')
+        )
+      }
+    }
+  )
+
+  scenario(
+    'allows a logged in user to get their own shopping list',
+    async (scenario: ShoppingListScenario) => {
+      mockCurrentUser({
+        id: scenario.user.bob.id,
+        username: scenario.user.bob.username,
+      })
+      const result = await myShoppingList()
+      const resultWithRelations = await db.shoppingList.findUnique({
+        where: { id: result?.id },
+        include: shoppingListIncludeAllRelations,
+      })
+      expect(result?.authorId).toEqual(scenario.user.bob.id)
+      expect(resultWithRelations?.authorId).toEqual(scenario.user.bob.id)
+      expect(resultWithRelations?.items?.length).toEqual(
+        scenario.shoppingList.bobsList.items.length
       )
     }
   )

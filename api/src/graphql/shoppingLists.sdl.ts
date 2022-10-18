@@ -7,8 +7,9 @@ export const schema = gql`
   }
 
   type Query {
-    shoppingLists: [ShoppingList!]! @requireAuth
+    # shoppingLists: [ShoppingList!]! @requireAuth
     shoppingList(id: String!): ShoppingList @requireAuth
+    myShoppingList: ShoppingList @requireAuth
   }
 
   input CreateShoppingListInput {
