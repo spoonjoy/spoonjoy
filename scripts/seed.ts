@@ -1,6 +1,7 @@
 import type { Prisma } from '@prisma/client'
 import { db } from 'api/src/lib/db'
 import { getPizzaScenarioData } from 'api/src/services/recipes/recipes.scenarios'
+import { getShoppingListScenarioData } from 'api/src/services/shoppingLists/shoppingLists.scenarios'
 
 import { hashPassword } from '@redwoodjs/api'
 
@@ -44,7 +45,11 @@ export default async () => {
       adminData!.id
     )
 
+    const shoppingList: Prisma.ShoppingListCreateArgs['data'] =
+      getShoppingListScenarioData(adminData!.id)
+
     await db.recipe.create({ data: pizzaRecipe })
+    await db.shoppingList.create({ data: shoppingList })
   } catch (error) {
     console.warn('There was an issue with seeding.')
     console.error(error)

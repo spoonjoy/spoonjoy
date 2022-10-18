@@ -9,7 +9,7 @@
 
 import { Router, Route, Set, Private } from '@redwoodjs/router'
 
-import RecipesLayout from 'src/layouts/RecipesLayout'
+import BackgroundLayout from 'src/layouts/BackgroundLayout/BackgroundLayout'
 
 import SiteLayout from './layouts/SiteLayout/SiteLayout'
 
@@ -18,10 +18,11 @@ const Routes = () => {
     <Router>
       <Private wrap={SiteLayout} unauthenticated="welcome">
         <Route path="/recipes" page={RecipeRecipesPage} name="recipes" />
-        <Set wrap={RecipesLayout}>
+        <Set wrap={BackgroundLayout}>
           <Route path="/recipes/new" page={RecipeNewRecipePage} name="newRecipe" />
           <Route path="/recipes/{id}/edit" page={RecipeEditRecipePage} name="editRecipe" />
           <Route path="/recipes/{id}" page={RecipeRecipePage} name="recipe" />
+          <Route path="/shopping-list" page={ShoppingListPage} name="shoppingList" />
         </Set>
       </Private>
       <Set wrap={SiteLayout}>
