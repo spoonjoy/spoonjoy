@@ -49,7 +49,7 @@ const Recipe = ({ recipe }: Props) => {
                 step {stepNum}
               </h2>
               {ingredients && (
-                <div className="m-5">
+                <div className="m-5 max-w-xs">
                   <IngredientsItemsList
                     items={ingredients}
                     itemsType={ListItemType.Ingredient}

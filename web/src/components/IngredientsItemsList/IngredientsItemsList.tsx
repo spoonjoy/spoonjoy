@@ -23,8 +23,8 @@ interface IIngredientsItemsList {
 const IngredientsItemsList = ({ items, itemsType }: IIngredientsItemsList) => {
   const { listItemsStore } = useStore()
   return (
-    <fieldset>
-      <ul className="mt-4 max-w-xs divide-y divide-gray-200 border-t border-b border-gray-200">
+    <fieldset className="border-t border-b border-gray-200">
+      <ul className="divide-y divide-gray-200 ">
         {items.map((item) => {
           const { quantity, unit, ingredientRef, id } = item!
           if (listItemsStore.items.get(id) === undefined) {

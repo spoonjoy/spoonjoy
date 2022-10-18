@@ -8,7 +8,7 @@ const ShoppingListPage = () => {
     <>
       <MetaTags title="My shopping list" description="My shopping list page" />
       <HeaderSlot.Plug id="my-shopping-list">Shopping List</HeaderSlot.Plug>
-      <div className="m-auto w-full">
+      <div className="m-auto w-full max-w-xs pt-4">
         <ShoppingListCell />
       </div>
     </>

@@ -3,7 +3,7 @@ type BackgroundLayoutProps = {
 }
 
 const BackgroundLayout = ({ children }: BackgroundLayoutProps) => {
-  return <main className="mx-4 bg-white pb-4">{children}</main>
+  return <main className="bg-white px-4 pb-4">{children}</main>
 }
 
 export default BackgroundLayout
