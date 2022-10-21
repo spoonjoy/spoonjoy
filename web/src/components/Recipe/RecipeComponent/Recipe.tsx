@@ -49,7 +49,10 @@ const Recipe = ({ recipe }: Props) => {
       <p className="py-5 text-gray-900">{recipe.description}</p>
 
       <div className="flex justify-center ">
-        <ReloadIngredientsItemsList itemIds={listItemIds} />
+        <ReloadIngredientsItemsList
+          label={'Clear Progress'}
+          itemIds={listItemIds}
+        />
       </div>
 
       <div>
