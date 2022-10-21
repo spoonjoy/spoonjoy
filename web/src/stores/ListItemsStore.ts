@@ -8,7 +8,7 @@ export enum ListItemType {
 const ListItemStore = types
   .model('ListItemStore')
   .props({
-    id: types.maybe(types.string),
+    id: types.identifier,
     itemType: types.enumeration<ListItemType>(Object.values(ListItemType)),
     selected: types.optional(types.boolean, false),
   })
