@@ -35,7 +35,10 @@ const Recipe = ({ recipe }: Props) => {
 
   return (
     <>
-      <MetaTags title="Recipe" description="Recipe" />
+      <MetaTags
+        title={recipe.title}
+        description={recipe.description || `${recipe.title} page.`}
+      />
       <HeaderSlot.Plug id="recipe">
         <div className=" leading-[.8]">
           <span>{recipe.title}</span>

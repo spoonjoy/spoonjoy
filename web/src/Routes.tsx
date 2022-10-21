@@ -21,7 +21,6 @@ const Routes = () => {
         <Set wrap={BackgroundLayout}>
           <Route path="/recipes/new" page={RecipeNewRecipePage} name="newRecipe" />
           <Route path="/recipes/{id}/edit" page={RecipeEditRecipePage} name="editRecipe" />
-          <Route path="/recipes/{id}" page={RecipeRecipePage} name="recipe" />
           <Route path="/shopping-list" page={ShoppingListPage} name="shoppingList" />
         </Set>
       </Private>
@@ -31,6 +30,9 @@ const Routes = () => {
         <Route path="/signup" page={SignupPage} name="signup" />
         <Route path="/forgot-password" page={ForgotPasswordPage} name="forgotPassword" />
         <Route path="/reset-password" page={ResetPasswordPage} name="resetPassword" />
+        <Set wrap={BackgroundLayout}>
+          <Route path="/recipes/{id}" page={RecipeRecipePage} name="recipe" />
+        </Set>
       </Set>
       <Route notfound page={NotFoundPage} />
     </Router>
