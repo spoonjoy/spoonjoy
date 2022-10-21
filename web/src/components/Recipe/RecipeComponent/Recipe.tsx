@@ -4,6 +4,7 @@ import { useAuth } from '@redwoodjs/auth'
 import { MetaTags } from '@redwoodjs/web'
 
 import IngredientsItemsList from 'src/components/IngredientsItemsList/IngredientsItemsList'
+import ReloadIngredientsItemsList from 'src/components/IngredientsItemsList/ReloadIngredientsItemsList'
 import { HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
 import { ListItemType } from 'src/stores/ListItemsStore'
 
@@ -26,6 +27,12 @@ const Recipe = ({ recipe }: Props) => {
   const { currentUser } = useAuth()
   const isOwnRecipe = recipe.chef.id === currentUser?.id
 
+  const listItemIds = recipe.steps.flatMap((step) => {
+    return step!.ingredients.flatMap((ingredient) => {
+      return ingredient!.id
+    })
+  })
+
   return (
     <>
       <MetaTags title="Recipe" description="Recipe" />
@@ -40,6 +47,11 @@ const Recipe = ({ recipe }: Props) => {
         </div>
       </HeaderSlot.Plug>
       <p className="py-5 text-gray-900">{recipe.description}</p>
+
+      <div className="flex justify-center ">
+        <ReloadIngredientsItemsList itemIds={listItemIds} />
+      </div>
+
       <div>
         {recipe.steps.map((step) => {
           const { stepNum, description, ingredients } = step!

@@ -8,7 +8,7 @@ export enum ListItemType {
 const ListItemStore = types
   .model('ListItemStore')
   .props({
-    id: types.maybe(types.identifier), // only present when editing an existing form
+    id: types.maybe(types.string),
     itemType: types.enumeration<ListItemType>(Object.values(ListItemType)),
     selected: types.optional(types.boolean, false),
   })
@@ -33,6 +33,12 @@ export const ListItemsStore = types
     addItem: (id: string, itemType: ListItemType) => {
       self.items.put({ id, itemType })
     },
+    resetItemStates: (itemIds: string[]) => {
+      itemIds.forEach((id) => {
+        self.items.get(id)?.setItemState(false)
+      })
+    },
   }))
 
-export interface SnapshotInListItemsStore extends SnapshotIn<typeof ListItemsStore> {}
+export interface SnapshotInListItemsStore
+  extends SnapshotIn<typeof ListItemsStore> {}
