@@ -109,19 +109,33 @@ const LoginPage = ({ type }) => {
     setShouldShowWebAuthn(false)
   }
 
-  const AuthWebAuthnPrompt = () => {
-    return (
-      <AuthFormWrapper>
-        <h2>WebAuthn Login Enabled</h2>
+  const AuthWebAuthnPrompt = () => (
+    <AuthFormWrapper>
+      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gray-50">
+        <FingerPrintIcon className="h-8 w-8 text-red-400" aria-hidden="true" />
+      </div>
+      <div className="mt-3 text-center sm:mt-5">
+        <h2 className="text-lg font-medium leading-6 text-gray-900">
+          Passwordless Login Enabled
+        </h2>
         <p>Log in with your fingerprint, face or PIN</p>
-        <div className="rw-button-group">
-          <button className="rw-button rw-button-blue" onClick={onAuthenticate}>
-            Open Authenticator
-          </button>
-        </div>
-      </AuthFormWrapper>
-    )
-  }
+      </div>
+      <div className="mt-5">
+        <button className="btn-primary w-full" onClick={onAuthenticate}>
+          Open Authenticator
+        </button>
+      </div>
+      <div className=" mt-5 text-center text-sm text-gray-300">
+        <span>or login with </span>{' '}
+        <a
+          href="?type=password"
+          className="text-indigo-500 hover:text-indigo-700 hover:underline"
+        >
+          username and password
+        </a>
+      </div>
+    </AuthFormWrapper>
+  )
 
   const RegisterWebAuthnPrompt = () => (
     <AuthFormWrapper>
@@ -203,21 +217,6 @@ const LoginPage = ({ type }) => {
     }
   }
 
-  const linkToRender = () => {
-    if (showWebAuthn) {
-      if (webAuthn.isEnabled()) {
-        return (
-          <div className="rw-login-link">
-            <span>or login with </span>{' '}
-            <a href="?type=password" className="rw-link">
-              username and password
-            </a>
-          </div>
-        )
-      }
-    }
-  }
-
   if (loading) {
     return null
   }
@@ -226,7 +225,6 @@ const LoginPage = ({ type }) => {
     <>
       <MetaTags title="Login" />
       {formToRender()}
-      {linkToRender()}
     </>
   )
 }
