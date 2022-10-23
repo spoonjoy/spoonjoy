@@ -171,7 +171,7 @@ export const handler = async (
     resetPassword: resetPasswordOptions,
     signup: signupOptions,
 
-    // See https://redwoodjs.com/docs/authentication/dbauth#webauthn for options
+    // See https://redwoodjs.com/docs/auth/dbauth#function-config for options
     webAuthn: {
       enabled: true,
       // How long to allow re-auth via WebAuthn in seconds (default is 10 years).
@@ -181,13 +181,13 @@ export const handler = async (
       // *must* re-enter username and password to authenticate (WebAuthn will
       // then be re-enabled for this amount of time).
       expires: 60 * 60 * 24 * 365 * 10,
-      name: 'Redwood Application',
+      name: 'Spoonjoy',
       domain:
-        process.env.NODE_ENV === 'development' ? 'localhost' : 'server.com',
+        process.env.NODE_ENV === 'development' ? 'localhost' : 'spoonjoy.app',
       origin:
         process.env.NODE_ENV === 'development'
           ? 'http://localhost:8910'
-          : 'https://server.com',
+          : 'https://spoonjoy.app',
       type: 'platform',
       timeout: 60000,
       credentialFields: {
