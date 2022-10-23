@@ -11,14 +11,17 @@ import { FieldError, Label, RegisterOptions } from '@redwoodjs/forms'
 export interface StyledFieldProps<T = Element>
   extends Omit<StyledFieldWrapperProps, 'children'> {
   defaultValue?: string | number | readonly string[]
-  onChange: (e: React.ChangeEvent<T>) => void
+  onChange?: (e: React.ChangeEvent<T>) => void
   validation?: RegisterOptions
 }
 
 export interface StyledFieldWrapperProps {
   children: JSX.Element
+  /** Identifier name for this field */
   fieldName: string
+  /** Visual name for this field */
   label: string
+  /** The field errors, taken from RHF's useForm.formState and passed into here for more granular control */
   fieldErrors:
     | FieldErrorType
     | Merge<FieldErrorType, FieldErrorsImpl<any>>

@@ -1,38 +1,49 @@
 import { useRef } from 'react'
 import { useEffect } from 'react'
 
+import { IFormSignup } from 'types/auth'
+
 import { useAuth } from '@redwoodjs/auth'
 import {
   Form,
+  useForm,
   Label,
   TextField,
   PasswordField,
   FieldError,
   Submit,
 } from '@redwoodjs/forms'
-import { Link, navigate, routes } from '@redwoodjs/router'
+import { navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
-import { toast, Toaster } from '@redwoodjs/web/toast'
+import { toast } from '@redwoodjs/web/toast'
+
+import StyledPasswordField from 'src/components/formComponents/StyledPasswordField'
+import StyledTextField from 'src/components/formComponents/StyledTextField'
 
 import AuthFormWrapper from '../shared/AuthFormWrapper'
 import AuthHeader from '../shared/AuthHeader'
 
 const SignupPage = () => {
   const { isAuthenticated, signUp } = useAuth()
+  const formMethods = useForm<IFormSignup>()
+
+  const {
+    formState: { errors },
+  } = formMethods
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate(routes.welcome())
+      navigate(routes.recipes())
     }
   }, [isAuthenticated])
 
-  // focus on email box on page load
+  // focus on username box on page load
   const usernameRef = useRef<HTMLInputElement>(null)
   useEffect(() => {
     usernameRef.current?.focus()
   }, [])
 
-  const onSubmit = async (data: Record<string, string>) => {
+  const onSubmit = async (data: IFormSignup) => {
     const response = await signUp({ ...data })
 
     if (response.message) {
@@ -53,68 +64,30 @@ const SignupPage = () => {
         <AuthHeader location="signup" />
 
         <AuthFormWrapper>
-          <Form onSubmit={onSubmit} className="rw-form-wrapper">
-            <Label
-              name="username"
-              className="rw-label"
-              errorClassName="rw-label rw-label-error"
-            >
-              Username
-            </Label>
-            <TextField
-              name="username"
-              className="rw-input"
-              errorClassName="rw-input rw-input-error"
-              ref={usernameRef}
-              validation={{
-                required: {
-                  value: true,
-                  message: 'Username is required',
-                },
-              }}
+          <Form<IFormSignup>
+            formMethods={formMethods}
+            onSubmit={onSubmit}
+            className="space-y-6"
+          >
+            <StyledTextField
+              label="Username"
+              fieldName="username"
+              fieldErrors={errors.username}
+              validation={{ required: true }}
             />
-            <FieldError name="username" className="rw-field-error" />
+            <StyledTextField
+              label="Email"
+              fieldName="email"
+              fieldErrors={errors.email}
+              validation={{ required: true }}
+            />
 
-            <Label
-              name="username"
-              className="rw-label"
-              errorClassName="rw-label rw-label-error"
-            >
-              Email
-            </Label>
-            <TextField
-              name="email"
-              className="rw-input"
-              errorClassName="rw-input rw-input-error"
-              validation={{
-                required: {
-                  value: true,
-                  message: 'Email is required',
-                },
-              }}
+            <StyledPasswordField
+              label="Password"
+              fieldName="password"
+              fieldErrors={errors.password}
+              validation={{ required: true }}
             />
-            <FieldError name="email" className="rw-field-error" />
-
-            <Label
-              name="password"
-              className="rw-label"
-              errorClassName="rw-label rw-label-error"
-            >
-              Password
-            </Label>
-            <PasswordField
-              name="password"
-              className="rw-input"
-              errorClassName="rw-input rw-input-error"
-              autoComplete="current-password"
-              validation={{
-                required: {
-                  value: true,
-                  message: 'Password is required',
-                },
-              }}
-            />
-            <FieldError name="password" className="rw-field-error" />
 
             <div className="rw-button-group">
               <Submit className="rw-button rw-button-blue">Sign Up</Submit>
