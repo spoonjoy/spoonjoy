@@ -6,7 +6,7 @@ import { SlotProvider, createSlot } from 'react-view-slot'
 
 import { useAuth } from '@redwoodjs/auth'
 import { Link, routes, useMatch } from '@redwoodjs/router'
-import { Toaster } from '@redwoodjs/web/toast'
+import { toast, Toaster } from '@redwoodjs/web/toast'
 
 import { ICurrentUser } from 'src/lib/auth'
 
@@ -25,13 +25,13 @@ interface INavigation {
 
 interface IUserNavigation {
   name: string
-  href: string
+  onClick: () => void
 }
 
 export const HeaderSlot = createSlot('header')
 
 const SiteLayout = ({ children }: SiteLayoutProps) => {
-  const { isAuthenticated, currentUser } = useAuth()
+  const { isAuthenticated, currentUser, logOut } = useAuth()
 
   const navigationNotLoggedIn: INavigation[] = [
     {
@@ -60,9 +60,18 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
   ]
 
   const userNavigation: IUserNavigation[] = [
-    { name: 'Your Profile', href: '#' },
-    { name: 'Settings', href: '#' },
-    { name: 'Sign out', href: '#' },
+    {
+      name: 'Sign out',
+      onClick: () => {
+        logOut()
+          .then(() => {
+            toast('You have been signed out')
+          })
+          .catch(() => {
+            toast.error('There was a problem with signing you out')
+          })
+      },
+    },
   ]
 
   return (
@@ -188,15 +197,15 @@ const Header = ({
                         {userNavigation.map((item) => (
                           <Menu.Item key={item.name}>
                             {({ active }) => (
-                              <a
-                                href={item.href}
+                              <button
+                                onClick={item.onClick}
                                 className={classNames(
                                   active ? 'bg-gray-100' : '',
-                                  'block px-4 py-2 text-sm text-gray-700'
+                                  'block w-full px-4 py-2 text-left text-sm text-gray-700'
                                 )}
                               >
                                 {item.name}
-                              </a>
+                              </button>
                             )}
                           </Menu.Item>
                         ))}
@@ -258,21 +267,21 @@ const Header = ({
                       {currentUser.email}
                     </div> */}
                   </div>
-                  <button
+                  {/* <button
                     type="button"
                     className="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                   >
                     <span className="sr-only">View notifications</span>
                     <BellIcon className="h-6 w-6" aria-hidden="true" />
-                  </button>
+                  </button> */}
                 </div>
                 <div className="mt-3 space-y-1">
                   {userNavigation.map((item) => (
                     <Disclosure.Button
                       key={item.name}
-                      as="a"
-                      href={item.href}
-                      className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+                      as="button"
+                      onClick={item.onClick}
+                      className="block w-full cursor-pointer px-4 py-2 text-left text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
                     >
                       {item.name}
                     </Disclosure.Button>
