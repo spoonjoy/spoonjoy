@@ -1,8 +1,8 @@
-interface IAuthWrapperProps {
+interface IAuthFormWrapperProps {
   children: JSX.Element
 }
 
-const AuthWrapper = ({ children }: IAuthWrapperProps) => (
+const AuthFormWrapper = ({ children }: IAuthFormWrapperProps) => (
   <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
     <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
       {children}
@@ -10,4 +10,4 @@ const AuthWrapper = ({ children }: IAuthWrapperProps) => (
   </div>
 )
 
-export default AuthWrapper
+export default AuthFormWrapper

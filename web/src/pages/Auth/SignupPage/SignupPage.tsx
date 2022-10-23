@@ -14,8 +14,8 @@ import { Link, navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 
+import AuthFormWrapper from '../shared/AuthFormWrapper'
 import AuthHeader from '../shared/AuthHeader'
-import AuthWrapper from '../shared/AuthWrapper'
 
 const SignupPage = () => {
   const { isAuthenticated, signUp } = useAuth()
@@ -52,7 +52,7 @@ const SignupPage = () => {
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <AuthHeader location="signup" />
 
-        <AuthWrapper>
+        <AuthFormWrapper>
           <Form onSubmit={onSubmit} className="rw-form-wrapper">
             <Label
               name="username"
@@ -120,7 +120,7 @@ const SignupPage = () => {
               <Submit className="rw-button rw-button-blue">Sign Up</Submit>
             </div>
           </Form>
-        </AuthWrapper>
+        </AuthFormWrapper>
       </div>
     </>
   )
