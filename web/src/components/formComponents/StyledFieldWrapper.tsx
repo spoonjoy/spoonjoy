@@ -13,6 +13,7 @@ export interface StyledFieldProps<T = Element>
   defaultValue?: string | number | readonly string[]
   onChange?: (e: React.ChangeEvent<T>) => void
   validation?: RegisterOptions
+  ref?: React.RefObject<HTMLInputElement> | null | undefined
 }
 
 export interface StyledFieldWrapperProps {

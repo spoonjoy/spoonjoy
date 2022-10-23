@@ -1,4 +1,3 @@
-import { useRef } from 'react'
 import { useEffect } from 'react'
 
 import { IFormSignup } from 'types/auth'
@@ -28,15 +27,11 @@ const SignupPage = () => {
       navigate(routes.recipes())
     }
   }, [isAuthenticated])
-
-  // focus on username box on page load
-  const usernameRef = useRef<HTMLInputElement>(null)
-  useEffect(() => {
-    usernameRef.current?.focus()
-  }, [])
-
+  const [loading, setLoading] = React.useState(false)
   const onSubmit = async (data: IFormSignup) => {
+    setLoading(true)
     const response = await signUp({ ...data })
+    setLoading(false)
 
     if (response.message) {
       toast(response.message)
@@ -82,7 +77,12 @@ const SignupPage = () => {
             />
 
             <div className="rw-button-group">
-              <Submit className="rw-button rw-button-blue">Sign Up</Submit>
+              <Submit
+                disabled={loading}
+                className="rounded-md border border-transparent px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 enabled:bg-indigo-600 disabled:bg-gray-400"
+              >
+                Sign Up
+              </Submit>
             </div>
           </Form>
         </AuthFormWrapper>
