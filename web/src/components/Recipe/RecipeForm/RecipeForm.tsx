@@ -147,7 +147,7 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
             )}
             <Submit
               disabled={loading || recipeInputStore.steps.length < 1}
-              className="rounded-md border border-transparent px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 enabled:bg-indigo-600 disabled:bg-gray-400"
+              className="btn-submit-primary"
             >
               {recipe ? 'Update Recipe' : 'Create New Recipe'}
             </Submit>
