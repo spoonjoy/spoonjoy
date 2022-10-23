@@ -1,12 +1,12 @@
 import { Fragment } from 'react'
 
-import { Toaster } from '@redwoodjs/web/toast'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { SlotProvider, createSlot } from 'react-view-slot'
 
 import { useAuth } from '@redwoodjs/auth'
 import { Link, routes, useMatch } from '@redwoodjs/router'
+import { Toaster } from '@redwoodjs/web/toast'
 
 import { ICurrentUser } from 'src/lib/auth'
 
@@ -129,7 +129,10 @@ const Header = ({
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 justify-between">
               <div className="flex">
-                <Link to={routes.welcome()} className="flex flex-shrink-0 items-center">
+                <Link
+                  to={routes.welcome()}
+                  className="flex flex-shrink-0 items-center"
+                >
                   <LogoBlack className="block h-8 w-auto" />
                 </Link>
                 <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
