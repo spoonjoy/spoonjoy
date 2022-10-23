@@ -12,8 +12,17 @@
  * END --- SETUP TAILWINDCSS EDIT
  */
 
- @layer components {
+@layer components {
+  .btn {
+    @apply rounded-md border border-transparent shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+  .btn-primary {
+    @apply btn px-4 py-2 text-base font-medium  text-white enabled:hover:bg-indigo-800 focus:ring-indigo-500 enabled:bg-indigo-600 disabled:bg-gray-400 sm:text-sm;
+  }
+  .btn-dismiss {
+    @apply btn border-gray-300 px-4 py-2 text-base font-medium enabled:hover:bg-gray-50  focus:ring-indigo-500 enabled:bg-white disabled:bg-gray-400 sm:text-sm;
+  }
   .btn-submit-primary {
-    @apply rounded-md border border-transparent px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 enabled:bg-indigo-600 disabled:bg-gray-400;
+    @apply btn px-6 py-3 text-base font-medium text-white focus:ring-indigo-500 enabled:bg-indigo-600 enabled:hover:bg-indigo-700 disabled:bg-gray-400;
   }
 }

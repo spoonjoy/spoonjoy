@@ -1,5 +1,5 @@
 interface IAuthFormWrapperProps {
-  children: JSX.Element
+  children: React.ReactNode
 }
 
 const AuthFormWrapper = ({ children }: IAuthFormWrapperProps) => (

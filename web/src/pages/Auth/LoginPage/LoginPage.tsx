@@ -1,18 +1,11 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
 
+import { FingerPrintIcon } from '@heroicons/react//24/solid'
 import { IFormSignin } from 'types/auth'
 
 import { useAuth } from '@redwoodjs/auth'
-import {
-  Form,
-  Label,
-  TextField,
-  PasswordField,
-  Submit,
-  FieldError,
-  useForm,
-} from '@redwoodjs/forms'
+import { Form, Submit, useForm } from '@redwoodjs/forms'
 import { Link, navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
@@ -118,7 +111,7 @@ const LoginPage = ({ type }) => {
 
   const AuthWebAuthnPrompt = () => {
     return (
-      <div className="rw-webauthn-wrapper">
+      <AuthFormWrapper>
         <h2>WebAuthn Login Enabled</h2>
         <p>Log in with your fingerprint, face or PIN</p>
         <div className="rw-button-group">
@@ -126,26 +119,39 @@ const LoginPage = ({ type }) => {
             Open Authenticator
           </button>
         </div>
-      </div>
+      </AuthFormWrapper>
     )
   }
 
   const RegisterWebAuthnPrompt = () => (
-    <div className="rw-webauthn-wrapper">
-      <h2>No more passwords!</h2>
-      <p>
-        Depending on your device you can log in with your fingerprint, face or
-        PIN next time.
-      </p>
-      <div className="rw-button-group">
-        <button className="rw-button rw-button-blue" onClick={onRegister}>
+    <AuthFormWrapper>
+      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gray-50">
+        <FingerPrintIcon className="h-8 w-8 text-red-400" aria-hidden="true" />
+      </div>
+      <div className="mt-3 text-center sm:mt-5">
+        <h2 className="text-lg font-medium leading-6 text-gray-900">
+          No more passwords!
+        </h2>
+        <p className="mt-2 text-sm text-gray-500">
+          Depending on your device you can log in with your fingerprint, face or
+          PIN next time.
+        </p>
+      </div>
+      <div className="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
+        <button
+          className="btn-primary inline-flex w-full justify-center sm:col-start-2"
+          onClick={onRegister}
+        >
           Turn On
         </button>
-        <button className="rw-button" onClick={onSkip}>
+        <button
+          className="btn-dismiss mt-2 inline-flex w-full justify-center sm:col-start-1 sm:mt-0"
+          onClick={onSkip}
+        >
           Skip for now
         </button>
       </div>
-    </div>
+    </AuthFormWrapper>
   )
 
   const PasswordForm = () => (
@@ -175,8 +181,8 @@ const LoginPage = ({ type }) => {
             <Link to={routes.forgotPassword()}>Forgot Password?</Link>
           </div>
 
-          <div className="flex justify-center">
-            <Submit disabled={loading} className="btn-submit-primary">
+          <div>
+            <Submit disabled={loading} className="btn-primary w-full">
               Sign In
             </Submit>
           </div>
