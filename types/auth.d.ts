@@ -16,3 +16,8 @@ export interface IFormSignup extends IExtraSignupAttributes {
   username: string
   password: string
 }
+
+export interface IFormSignin {
+  username: string
+  password: string
+}

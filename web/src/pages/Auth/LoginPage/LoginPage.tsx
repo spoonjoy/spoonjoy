@@ -1,5 +1,7 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { useEffect } from 'react'
+
+import { IFormSignin } from 'types/auth'
 
 import { useAuth } from '@redwoodjs/auth'
 import {
@@ -9,10 +11,17 @@ import {
   PasswordField,
   Submit,
   FieldError,
+  useForm,
 } from '@redwoodjs/forms'
 import { Link, navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
-import { toast, Toaster } from '@redwoodjs/web/toast'
+import { toast } from '@redwoodjs/web/toast'
+
+import StyledPasswordField from 'src/components/formComponents/StyledPasswordField'
+import StyledTextField from 'src/components/formComponents/StyledTextField'
+
+import AuthFormWrapper from '../shared/AuthFormWrapper'
+import AuthHeader from '../shared/AuthHeader'
 
 const WELCOME_MESSAGE = 'Welcome back!'
 const REDIRECT = routes.welcome()
@@ -25,30 +34,48 @@ const LoginPage = ({ type }) => {
     logIn,
     reauthenticate,
   } = useAuth()
+  const formMethods = useForm<IFormSignin>()
+
+  const {
+    formState: { errors },
+  } = formMethods
+
   const [shouldShowWebAuthn, setShouldShowWebAuthn] = useState(false)
   const [showWebAuthn, setShowWebAuthn] = useState(
     webAuthn.isEnabled() && type !== 'password'
   )
+
+  const onAuthenticate = React.useCallback(async () => {
+    try {
+      await webAuthn.authenticate()
+      await reauthenticate()
+      toast.success(WELCOME_MESSAGE)
+      navigate(REDIRECT)
+    } catch (e) {
+      if (e.name === 'WebAuthnDeviceNotFoundError') {
+        toast.error(
+          'Device not found, log in with username/password to continue'
+        )
+        setShowWebAuthn(false)
+      } else {
+        toast.error(e.message)
+      }
+    }
+  }, [webAuthn, reauthenticate])
 
   // should redirect right after login or wait to show the webAuthn prompts?
   useEffect(() => {
     if (isAuthenticated && (!shouldShowWebAuthn || webAuthn.isEnabled())) {
       navigate(REDIRECT)
     }
-  }, [isAuthenticated, shouldShowWebAuthn])
+  }, [isAuthenticated, shouldShowWebAuthn, webAuthn])
 
   // if WebAuthn is enabled, show the prompt as soon as the page loads
   useEffect(() => {
     if (!loading && !isAuthenticated && showWebAuthn) {
       onAuthenticate()
     }
-  }, [loading, isAuthenticated])
-
-  // focus on the username field as soon as the page loads
-  const usernameRef = useRef()
-  useEffect(() => {
-    usernameRef.current && usernameRef.current.focus()
-  }, [])
+  }, [loading, isAuthenticated, showWebAuthn, onAuthenticate])
 
   const onSubmit = async (data) => {
     const webAuthnSupported = await webAuthn.isSupported()
@@ -70,24 +97,6 @@ const LoginPage = ({ type }) => {
         setShowWebAuthn(true)
       } else {
         toast.success(WELCOME_MESSAGE)
-      }
-    }
-  }
-
-  const onAuthenticate = async () => {
-    try {
-      await webAuthn.authenticate()
-      await reauthenticate()
-      toast.success(WELCOME_MESSAGE)
-      navigate(REDIRECT)
-    } catch (e) {
-      if (e.name === 'WebAuthnDeviceNotFoundError') {
-        toast.error(
-          'Device not found, log in with username/password to continue'
-        )
-        setShowWebAuthn(false)
-      } else {
-        toast.error(e.message)
       }
     }
   }
@@ -140,62 +149,40 @@ const LoginPage = ({ type }) => {
   )
 
   const PasswordForm = () => (
-    <Form onSubmit={onSubmit} className="rw-form-wrapper">
-      <Label
-        name="username"
-        className="rw-label"
-        errorClassName="rw-label rw-label-error"
-      >
-        Username
-      </Label>
-      <TextField
-        name="username"
-        className="rw-input"
-        errorClassName="rw-input rw-input-error"
-        ref={usernameRef}
-        autoFocus
-        validation={{
-          required: {
-            value: true,
-            message: 'Username is required',
-          },
-        }}
-      />
+    <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <AuthHeader location="login" />
 
-      <FieldError name="username" className="rw-field-error" />
+      <AuthFormWrapper>
+        <Form<IFormSignin>
+          formMethods={formMethods}
+          onSubmit={onSubmit}
+          className="space-y-6"
+        >
+          <StyledTextField
+            label="Username"
+            fieldName="username"
+            fieldErrors={errors.username}
+            validation={{ required: true }}
+          />
+          <StyledPasswordField
+            label="Password"
+            fieldName="password"
+            fieldErrors={errors.password}
+            validation={{ required: true }}
+          />
 
-      <Label
-        name="password"
-        className="rw-label"
-        errorClassName="rw-label rw-label-error"
-      >
-        Password
-      </Label>
-      <PasswordField
-        name="password"
-        className="rw-input"
-        errorClassName="rw-input rw-input-error"
-        autoComplete="current-password"
-        validation={{
-          required: {
-            value: true,
-            message: 'Password is required',
-          },
-        }}
-      />
+          <div className="text-right text-xs text-gray-500 hover:text-indigo-700 hover:underline">
+            <Link to={routes.forgotPassword()}>Forgot Password?</Link>
+          </div>
 
-      <div className="rw-forgot-link">
-        <Link to={routes.forgotPassword()} className="rw-forgot-link">
-          Forgot Password?
-        </Link>
-      </div>
-
-      <FieldError name="password" className="rw-field-error" />
-
-      <div className="rw-button-group">
-        <Submit className="rw-button rw-button-blue">Login</Submit>
-      </div>
-    </Form>
+          <div className="flex justify-center">
+            <Submit disabled={loading} className="btn-submit-primary">
+              Sign In
+            </Submit>
+          </div>
+        </Form>
+      </AuthFormWrapper>
+    </div>
   )
 
   const formToRender = () => {
@@ -222,15 +209,6 @@ const LoginPage = ({ type }) => {
           </div>
         )
       }
-    } else {
-      return (
-        <div className="rw-login-link">
-          <span>Don&apos;t have an account?</span>{' '}
-          <Link to={routes.signup()} className="rw-link">
-            Sign up!
-          </Link>
-        </div>
-      )
     }
   }
 
@@ -241,22 +219,8 @@ const LoginPage = ({ type }) => {
   return (
     <>
       <MetaTags title="Login" />
-
-      <main className="rw-main">
-        <Toaster toastOptions={{ className: 'rw-toast', duration: 6000 }} />
-        <div className="rw-scaffold rw-login-container">
-          <div className="rw-segment">
-            <header className="rw-segment-header">
-              <h2 className="rw-heading rw-heading-secondary">Login</h2>
-            </header>
-
-            <div className="rw-segment-main">
-              <div className="rw-form-wrapper">{formToRender()}</div>
-            </div>
-          </div>
-          {linkToRender()}
-        </div>
-      </main>
+      {formToRender()}
+      {linkToRender()}
     </>
   )
 }

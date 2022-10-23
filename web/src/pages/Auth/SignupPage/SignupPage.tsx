@@ -76,7 +76,7 @@ const SignupPage = () => {
               validation={{ required: true }}
             />
 
-            <div className="rw-button-group">
+            <div className="flex justify-center">
               <Submit disabled={loading} className="btn-submit-primary">
                 Sign Up
               </Submit>
