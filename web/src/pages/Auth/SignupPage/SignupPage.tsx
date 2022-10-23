@@ -4,15 +4,7 @@ import { useEffect } from 'react'
 import { IFormSignup } from 'types/auth'
 
 import { useAuth } from '@redwoodjs/auth'
-import {
-  Form,
-  useForm,
-  Label,
-  TextField,
-  PasswordField,
-  FieldError,
-  Submit,
-} from '@redwoodjs/forms'
+import { Form, useForm, Submit } from '@redwoodjs/forms'
 import { navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
