@@ -191,11 +191,12 @@ const LoginPage = ({ type }) => {
             validation={{ required: true }}
           />
 
-          <div className="text-right text-xs text-gray-500 hover:text-indigo-700 hover:underline">
+          {/* TODO forgot password flow */}
+          {/* <div className="text-right text-xs text-gray-500 hover:text-indigo-700 hover:underline">
             <Link to={routes.forgotPassword()}>Forgot Password?</Link>
-          </div>
+          </div> */}
 
-          <div>
+          <div className="pt-2">
             <Submit disabled={loading} className="btn-primary w-full">
               Sign In
             </Submit>
