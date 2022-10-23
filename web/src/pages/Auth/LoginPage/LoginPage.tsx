@@ -70,7 +70,7 @@ const LoginPage = ({ type }) => {
     }
   }, [loading, isAuthenticated, showWebAuthn, onAuthenticate])
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: IFormSignin) => {
     const webAuthnSupported = await webAuthn.isSupported()
 
     if (webAuthnSupported) {
