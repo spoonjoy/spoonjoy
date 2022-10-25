@@ -3,7 +3,11 @@ import type {
   QueryResolvers,
   MutationResolvers,
   RecipeRelationResolvers,
+  CreateRecipeStepInput,
+  UpdateRecipeStepInput,
 } from 'types/graphql'
+
+import { validateWith } from '@redwoodjs/api'
 
 import { requireAuth, requireRecipeAuth } from 'src/lib/auth'
 import { db } from 'src/lib/db'
@@ -40,10 +44,31 @@ export const recipe: QueryResolvers['recipe'] = ({ id }) => {
   })
 }
 
+// TODO add service validation for all step nums being sequential and starting at 1
+
+const everyStepHasAtLeastOneIngredientOrStepOutput = (
+  input: Array<CreateRecipeStepInput | UpdateRecipeStepInput>
+) => {
+  const errors: Array<Error> = []
+  input.forEach((step) => {
+    if (!step.ingredients?.length && !step.stepOutputUses?.length) {
+      errors.push(
+        new Error(
+          `Step ${step.stepNum} must use at least one ingredient OR the output of at least one previous step`
+        )
+      )
+    }
+  })
+  if (errors.length > 0) throw errors
+}
+
 export const createRecipe: MutationResolvers['createRecipe'] = ({ input }) => {
   requireAuth()
 
   const { title, description, servings, steps } = input
+  validateWith(() => {
+    everyStepHasAtLeastOneIngredientOrStepOutput(steps)
+  })
 
   const dbInput: Prisma.RecipeCreateInput = {
     title,
@@ -69,6 +94,10 @@ export const updateRecipe: MutationResolvers['updateRecipe'] = async ({
   await requireRecipeAuth(id)
 
   const { title, description, servings, steps } = input
+  validateWith(() => {
+    everyStepHasAtLeastOneIngredientOrStepOutput(steps)
+  })
+
   const dbInput: Prisma.RecipeUpdateInput = {
     title,
     description,

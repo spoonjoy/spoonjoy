@@ -13,22 +13,27 @@ export const schema = gql`
   }
 
   input CreateStepOutputUseInput {
+    "The step who's output is being used"
     outputOfStepId: String!
+    "The step who's doing the using"
     inputOfStepId: String!
   }
 
   input UpdateStepOutputUseInput {
-    outputOfStepId: String
-    inputOfStepId: String
+    "The step who's output is being used"
+    outputOfStepId: String!
+    "The step who's doing the using"
+    inputOfStepId: String!
   }
 
-  type Mutation {
-    createStepOutputUse(input: CreateStepOutputUseInput!): StepOutputUse!
-      @requireAuth
-    updateStepOutputUse(
-      id: String!
-      input: UpdateStepOutputUseInput!
-    ): StepOutputUse! @requireAuth
-    deleteStepOutputUse(id: String!): StepOutputUse! @requireAuth
-  }
+  #   type Mutation {
+  #     createStepOutputUse(input: CreateStepOutputUseInput!): StepOutputUse!
+  #       @requireAuth
+  #     updateStepOutputUse(
+  #       id: String!
+  #       input: UpdateStepOutputUseInput!
+  #     ): StepOutputUse! @requireAuth
+  #     deleteStepOutputUse(id: String!): StepOutputUse! @requireAuth
+  #   }
+  #
 `

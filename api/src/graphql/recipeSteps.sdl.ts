@@ -5,7 +5,8 @@ export const schema = gql`
     recipe: Recipe!
     stepNum: Int!
     description: String
-    ingredients: [Ingredient]!
+    ingredients: [Ingredient]
+    stepOutputUses: [StepOutputUse]
   }
 
   type Query {
@@ -16,15 +17,19 @@ export const schema = gql`
   input CreateRecipeStepInput {
     stepNum: Int!
     description: String!
-    ingredients: [CreateIngredientInput]!
+    ingredients: [CreateIngredientInput]
+    stepOutputUses: [CreateStepOutputUseInput]
   }
 
-  """Use this for modifying existing recipes"""
+  """
+  Use this for modifying existing recipes
+  """
   input UpdateRecipeStepInput {
     recipeId: String
     stepNum: Int
     description: String!
-    ingredients: [UpdateIngredientInput]!
+    ingredients: [UpdateIngredientInput]
+    stepOutputUses: [UpdateStepOutputUseInput]
   }
 
   # type Mutation {
