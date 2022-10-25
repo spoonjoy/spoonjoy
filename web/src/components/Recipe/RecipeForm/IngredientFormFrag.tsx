@@ -39,6 +39,8 @@ const IngredientFormFrag = ({
               className="relative block w-full rounded-none rounded-l-md border-gray-300 bg-transparent focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               errorClassName="relative block w-full rounded-none rounded-l-md border-red-300 bg-transparent focus:z-10 focus:border-red-500 focus:ring-red-500 sm:text-sm"
               placeholder="5"
+              step="any"
+              min={0}
               onChange={(e) => {
                 const { value } = e.target
                 setQuantity(Number(value))
