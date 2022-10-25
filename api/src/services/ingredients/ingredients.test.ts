@@ -1,11 +1,11 @@
-import type { Ingredient } from '@prisma/client'
+// import type { Ingredient } from '@prisma/client'
 
 import {
   ingredients,
   ingredient,
-  createIngredient,
-  updateIngredient,
-  deleteIngredient,
+  // createIngredient,
+  // updateIngredient,
+  // deleteIngredient,
 } from './ingredients'
 import type { StandardScenario } from './ingredients.scenarios'
 
@@ -19,13 +19,18 @@ describe('ingredients', () => {
   scenario('returns all ingredients', async (scenario: StandardScenario) => {
     const result = await ingredients()
 
-    expect(result.length).toEqual(Object.keys(scenario.ingredient).length)
+    expect(result!.length).toEqual(Object.keys(scenario.ingredient).length)
   })
 
   scenario(
     'returns a single ingredient',
     async (scenario: StandardScenario) => {
-      const result = await ingredient({ id: scenario.ingredient.one.id })
+      const result = await ingredient({
+        recipeId: scenario.ingredient.one.recipeId,
+        stepNum: scenario.ingredient.one.stepNum,
+        unitId: scenario.ingredient.one.unitId,
+        ingredientRefId: scenario.ingredient.one.ingredientRefId,
+      })
 
       expect(result).toEqual(scenario.ingredient.one)
     }
@@ -51,24 +56,24 @@ describe('ingredients', () => {
   //   )
   // })
 
-  scenario('updates a ingredient', async (scenario: StandardScenario) => {
-    const original = (await ingredient({
-      id: scenario.ingredient.one.id,
-    })) as Ingredient
-    const result = await updateIngredient({
-      id: original.id,
-      input: { quantity: 1584794.792976447 },
-    })
+  // scenario('updates a ingredient', async (scenario: StandardScenario) => {
+  //   const original = (await ingredient({
+  //     id: scenario.ingredient.one.id,
+  //   })) as Ingredient
+  //   const result = await updateIngredient({
+  //     id: original.id,
+  //     input: { quantity: 1584794.792976447 },
+  //   })
 
-    expect(result.quantity).toEqual(1584794.792976447)
-  })
+  //   expect(result.quantity).toEqual(1584794.792976447)
+  // })
 
-  scenario('deletes a ingredient', async (scenario: StandardScenario) => {
-    const original = (await deleteIngredient({
-      id: scenario.ingredient.one.id,
-    })) as Ingredient
-    const result = await ingredient({ id: original.id })
+  // scenario('deletes a ingredient', async (scenario: StandardScenario) => {
+  //   const original = (await deleteIngredient({
+  //     id: scenario.ingredient.one.id,
+  //   })) as Ingredient
+  //   const result = await ingredient({ id: original.id })
 
-    expect(result).toEqual(null)
-  })
+  //   expect(result).toEqual(null)
+  // })
 })

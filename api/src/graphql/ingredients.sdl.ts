@@ -1,7 +1,7 @@
 export const schema = gql`
   type Ingredient {
-    id: String!
-    recipeStepId: String!
+    recipeId: String!
+    stepNum: Int!
     recipeStep: RecipeStep!
     quantity: Float!
     unitId: String!
@@ -11,8 +11,13 @@ export const schema = gql`
   }
 
   type Query {
-    ingredients: [Ingredient!]! @requireAuth
-    ingredient(id: String!): Ingredient @requireAuth
+    ingredients: [Ingredient] @requireAuth
+    ingredient(
+      recipeId: String!
+      stepNum: Int!
+      unitId: String!
+      ingredientRefId: String!
+    ): Ingredient @requireAuth
   }
 
   input CreateIngredientInput {

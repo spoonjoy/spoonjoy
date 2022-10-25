@@ -14,16 +14,16 @@ export const schema = gql`
 
   input CreateStepOutputUseInput {
     "The step who's output is being used"
-    outputOfStepId: String!
+    outputOfStepNum: Int!
     "The step who's doing the using"
-    inputOfStepId: String!
+    inputOfStepNum: Int!
   }
 
   input UpdateStepOutputUseInput {
     "The step who's output is being used"
-    outputOfStepId: String!
+    outputOfStepNum: Int!
     "The step who's doing the using"
-    inputOfStepId: String!
+    inputOfStepNum: Int!
   }
 
   #   type Mutation {

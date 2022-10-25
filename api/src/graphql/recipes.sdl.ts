@@ -7,7 +7,7 @@ export const schema = gql`
     chef: User!
     createdAt: DateTime!
     deletedAt: DateTime
-    steps: [RecipeStep]!
+    steps: [RecipeStep!]!
   }
 
   type Query {

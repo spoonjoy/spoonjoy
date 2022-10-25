@@ -1,24 +1,23 @@
 export const schema = gql`
   type RecipeStep {
-    id: String!
     recipeId: String!
     recipe: Recipe!
     stepNum: Int!
     description: String
-    ingredients: [Ingredient]
-    stepOutputUses: [StepOutputUse]
+    ingredients: [Ingredient]!
+    stepOutputUses: [StepOutputUse]!
   }
 
   type Query {
     recipeSteps: [RecipeStep!]! @requireAuth
-    recipeStep(id: String!): RecipeStep @requireAuth
+    recipeStep(recipeId: String!, stepNum: Int!): RecipeStep @requireAuth
   }
 
   input CreateRecipeStepInput {
     stepNum: Int!
     description: String!
-    ingredients: [CreateIngredientInput]
-    stepOutputUses: [CreateStepOutputUseInput]
+    ingredients: [CreateIngredientInput!]
+    stepOutputUses: [CreateStepOutputUseInput!]
   }
 
   """

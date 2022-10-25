@@ -1,8 +1,14 @@
 import type {
   QueryResolvers,
-  MutationResolvers,
-  RecipeStepRelationResolvers,
+  // MutationResolvers,
+  // RecipeStepRelationResolvers,
+  RequiredResolverFn,
+  ResolversParentTypes,
+  ResolversTypes,
+  Maybe,
 } from 'types/graphql'
+
+import { RedwoodGraphQLContext } from '@redwoodjs/graphql-server/dist/functions/types'
 
 import { db } from 'src/lib/db'
 
@@ -10,43 +16,89 @@ export const recipeSteps: QueryResolvers['recipeSteps'] = () => {
   return db.recipeStep.findMany()
 }
 
-export const recipeStep: QueryResolvers['recipeStep'] = ({ id }) => {
+export const recipeStep: QueryResolvers['recipeStep'] = ({
+  recipeId,
+  stepNum,
+}) => {
   return db.recipeStep.findUnique({
-    where: { id },
+    where: {
+      recipeId_stepNum: {
+        recipeId,
+        stepNum,
+      },
+    },
   })
 }
 
-export const createRecipeStep: MutationResolvers['createRecipeStep'] = ({
-  input,
-}) => {
-  return db.recipeStep.create({
-    data: input,
-  })
+// export const createRecipeStep: MutationResolvers['createRecipeStep'] = ({
+//   input,
+// }) => {
+//   return db.recipeStep.create({
+//     data: input,
+//   })
+// }
+
+// export const updateRecipeStep: MutationResolvers['updateRecipeStep'] = ({
+//   id,
+//   input,
+// }) => {
+//   return db.recipeStep.update({
+//     data: input,
+//     where: { id },
+//   })
+// }
+
+// export const deleteRecipeStep: MutationResolvers['deleteRecipeStep'] = ({
+//   id,
+// }) => {
+//   return db.recipeStep.delete({
+//     where: { id },
+//   })
+// }
+
+type RequiredRecipeStepRelationResolvers = {
+  recipe: RequiredResolverFn<
+    ResolversTypes['Recipe'],
+    ResolversParentTypes['RecipeStep'],
+    RedwoodGraphQLContext
+  >
+  ingredients: RequiredResolverFn<
+    Maybe<Array<Maybe<ResolversTypes['Ingredient']>>>,
+    ResolversParentTypes['RecipeStep'],
+    RedwoodGraphQLContext
+  >
 }
 
-export const updateRecipeStep: MutationResolvers['updateRecipeStep'] = ({
-  id,
-  input,
-}) => {
-  return db.recipeStep.update({
-    data: input,
-    where: { id },
-  })
-}
+export const RecipeStep: RequiredRecipeStepRelationResolvers = {
+  recipe: async (_obj, { root }) => {
+    const maybeRecipe = await db.recipeStep
+      .findUnique({
+        where: {
+          recipeId_stepNum: {
+            recipeId: root.recipeId,
+            stepNum: root.stepNum,
+          },
+        },
+      })
+      .recipe()
+    if (!maybeRecipe) {
+      throw new Error('Could not resolve recipe')
+    }
 
-export const deleteRecipeStep: MutationResolvers['deleteRecipeStep'] = ({
-  id,
-}) => {
-  return db.recipeStep.delete({
-    where: { id },
-  })
-}
-
-export const RecipeStep: RecipeStepRelationResolvers = {
-  recipe: (_obj, { root }) => {
-    return db.recipeStep.findUnique({ where: { id: root?.id } }).recipe()
+    return maybeRecipe
   },
-  ingredients: (_obj, { root }) => {
-    return db.recipeStep.findUnique({ where: { id: root?.id } }).ingredients()
+  ingredients: async (_obj, { root }) => {
+    const maybeIngredients = await db.recipeStep
+      .findUnique({
+        where: {
+          recipeId_stepNum: {
+            recipeId: root.recipeId,
+            stepNum: root.stepNum,
+          },
+        },
+      })
+      .ingredients()
+
+    return maybeIngredients.length ? maybeIngredients : null
   },
 }

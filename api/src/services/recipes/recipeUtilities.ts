@@ -4,6 +4,7 @@ import {
   CreateIngredientInput,
   UpdateRecipeStepInput,
   UpdateIngredientInput,
+  CreateStepOutputUseInput,
   InputMaybe,
   Recipe,
   User,
@@ -146,11 +147,11 @@ export const mapRecipeDbResponseToMutationInput = (
 }
 
 export const mapIngredientsMutationInputToDbCreateInput = (
-  ingredients: InputMaybe<CreateIngredientInput>[]
+  ingredients: CreateIngredientInput[]
 ): Prisma.IngredientCreateNestedManyWithoutRecipeStepInput => {
   return {
     create: ingredients.map((ingredient) => {
-      const { quantity, unitName, ingredientName } = ingredient!
+      const { quantity, unitName, ingredientName } = ingredient
       return {
         quantity,
         unit: {
@@ -170,16 +171,35 @@ export const mapIngredientsMutationInputToDbCreateInput = (
   }
 }
 
+export const mapStepOutputUsesMutationInputToDbCreateInput = (
+  recipeId: string,
+  stepOutputUses: CreateStepOutputUseInput[]
+): Prisma.StepOutputUseCreateNestedManyWithoutInputOfStepInput => {
+  return {
+    create: stepOutputUses.map((stepOutputUse) => {
+      const { outputOfStepNum } = stepOutputUse
+      return {
+        outputOfStep: {
+          connect: { recipeId_stepNum: { recipeId, stepNum: outputOfStepNum } },
+        },
+      }
+    }),
+  }
+}
+
 export const mapStepsMutationInputToDbCreateInput = (
-  steps: InputMaybe<CreateRecipeStepInput>[]
-): Prisma.RecipeStepCreateNestedManyWithoutRecipeInput | undefined => {
+  recipeId: string,
+  steps: CreateRecipeStepInput[]
+): Prisma.RecipeStepUpdateManyWithoutRecipeNestedInput => {
   return {
     create: steps.map((step) => {
-      const { stepNum, description, ingredients } = step!
+      const { stepNum, description, ingredients } = step
       return {
         stepNum,
         description,
-        ingredients: mapIngredientsMutationInputToDbCreateInput(ingredients),
+        ingredients: ingredients
+          ? mapIngredientsMutationInputToDbCreateInput(ingredients)
+          : undefined,
       }
     }),
   }

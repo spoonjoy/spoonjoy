@@ -2,12 +2,15 @@ import type { Prisma } from '@prisma/client'
 import type {
   QueryResolvers,
   MutationResolvers,
-  RecipeRelationResolvers,
   CreateRecipeStepInput,
   UpdateRecipeStepInput,
+  RequiredResolverFn,
+  ResolversTypes,
+  ResolversParentTypes,
 } from 'types/graphql'
 
 import { validateWith } from '@redwoodjs/api'
+import { RedwoodGraphQLContext } from '@redwoodjs/graphql-server/dist/functions/types'
 
 import { requireAuth, requireRecipeAuth } from 'src/lib/auth'
 import { db } from 'src/lib/db'
@@ -62,7 +65,9 @@ const everyStepHasAtLeastOneIngredientOrStepOutput = (
   if (errors.length > 0) throw errors
 }
 
-export const createRecipe: MutationResolvers['createRecipe'] = ({ input }) => {
+export const createRecipe: MutationResolvers['createRecipe'] = async ({
+  input,
+}) => {
   requireAuth()
 
   const { title, description, servings, steps } = input
@@ -70,7 +75,8 @@ export const createRecipe: MutationResolvers['createRecipe'] = ({ input }) => {
     everyStepHasAtLeastOneIngredientOrStepOutput(steps)
   })
 
-  const dbInput: Prisma.RecipeCreateInput = {
+  // Because steps in a recipe can refer to other steps, we need to first create the recipe so that we can have the recipe ID
+  const recipeNoStepsDbInput: Prisma.RecipeCreateInput = {
     title,
     description,
     servings,
@@ -79,11 +85,22 @@ export const createRecipe: MutationResolvers['createRecipe'] = ({ input }) => {
         id: context.currentUser!.id,
       },
     },
-    steps: mapStepsMutationInputToDbCreateInput(steps),
   }
 
-  return db.recipe.create({
-    data: dbInput,
+  return await db.$transaction(async (tx) => {
+    // 1. Create the recipe
+    const newRecipe = await tx.recipe.create({
+      data: recipeNoStepsDbInput,
+    })
+
+    const newRecipeWithSteps = await tx.recipe.update({
+      where: { id: newRecipe.id },
+      data: {
+        steps: mapStepsMutationInputToDbCreateInput(newRecipe.id, steps),
+      },
+    })
+
+    return newRecipeWithSteps
   })
 }
 
@@ -127,11 +144,38 @@ export const deleteRecipe: MutationResolvers['deleteRecipe'] = async ({
   // })
 }
 
-export const Recipe: RecipeRelationResolvers = {
-  chef: (_obj, { root }) => {
-    return db.recipe.findUnique({ where: { id: root?.id } }).chef()
+type RequiredRecipeRelationResolvers = {
+  chef: RequiredResolverFn<
+    ResolversTypes['User'],
+    ResolversParentTypes['Recipe'],
+    RedwoodGraphQLContext
+  >
+  steps: RequiredResolverFn<
+    Array<ResolversTypes['RecipeStep']>,
+    ResolversParentTypes['Recipe'],
+    RedwoodGraphQLContext
+  >
+}
+
+export const Recipe: RequiredRecipeRelationResolvers = {
+  chef: async (_obj, { root }) => {
+    const maybeChef = await db.recipe
+      .findUnique({ where: { id: root?.id } })
+      .chef()
+    if (!maybeChef) {
+      throw new Error('Could not resolve chef')
+    }
+
+    return maybeChef
   },
-  steps: (_obj, { root }) => {
-    return db.recipe.findUnique({ where: { id: root?.id } }).steps()
+  steps: async (_obj, { root }) => {
+    const maybeSteps = await db.recipe
+      .findUnique({ where: { id: root?.id } })
+      .steps()
+    if (!maybeSteps) {
+      throw new Error('Could not resolve steps')
+    }
+
+    return maybeSteps
   },
 }

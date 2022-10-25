@@ -1,11 +1,11 @@
-import type { RecipeStep } from '@prisma/client'
+// import type { RecipeStep } from '@prisma/client'
 
 import {
   recipeSteps,
   recipeStep,
-  createRecipeStep,
-  updateRecipeStep,
-  deleteRecipeStep,
+  // createRecipeStep,
+  // updateRecipeStep,
+  // deleteRecipeStep,
 } from './recipeSteps'
 import type { StandardScenario } from './recipeSteps.scenarios'
 
@@ -25,39 +25,48 @@ describe('recipeSteps', () => {
   scenario(
     'returns a single recipeStep',
     async (scenario: StandardScenario) => {
-      const result = await recipeStep({ id: scenario.recipeStep.one.id })
+      const result = await recipeStep({
+        recipeId: scenario.recipeStep.one.recipeId,
+        stepNum: scenario.recipeStep.one.stepNum,
+      })
 
       expect(result).toEqual(scenario.recipeStep.one)
     }
   )
 
-  scenario('creates a recipeStep', async (scenario: StandardScenario) => {
-    const result = await createRecipeStep({
-      input: { recipeId: scenario.recipeStep.two.recipeId, stepNum: 1407538 },
-    })
+  // scenario('creates a recipeStep', async (scenario: StandardScenario) => {
+  //   const result = await createRecipeStep({
+  //     input: { recipeId: scenario.recipeStep.two.recipeId, stepNum: 1407538 },
+  //   })
 
-    expect(result.recipeId).toEqual(scenario.recipeStep.two.recipeId)
-    expect(result.stepNum).toEqual(1407538)
-  })
+  //   expect(result.recipeId).toEqual(scenario.recipeStep.two.recipeId)
+  //   expect(result.stepNum).toEqual(1407538)
+  // })
 
-  scenario('updates a recipeStep', async (scenario: StandardScenario) => {
-    const original = (await recipeStep({
-      id: scenario.recipeStep.one.id,
-    })) as RecipeStep
-    const result = await updateRecipeStep({
-      id: original.id,
-      input: { stepNum: 3093023 },
-    })
+  // scenario('updates a recipeStep', async (scenario: StandardScenario) => {
+  //   const original = (await recipeStep({
+  //     recipeId: scenario.recipeStep.one.recipeId,
+  //     stepNum: scenario.recipeStep.one.stepNum,
+  //   })) as RecipeStep
+  //   const result = await updateRecipeStep({
+  //     recipeId: original.recipeId,
+  //     stepNum: original.stepNum,
+  //     input: { stepNum: 3093023 },
+  //   })
 
-    expect(result.stepNum).toEqual(3093023)
-  })
+  //   expect(result.stepNum).toEqual(3093023)
+  // })
 
-  scenario('deletes a recipeStep', async (scenario: StandardScenario) => {
-    const original = (await deleteRecipeStep({
-      id: scenario.recipeStep.one.id,
-    })) as RecipeStep
-    const result = await recipeStep({ id: original.id })
+  // scenario('deletes a recipeStep', async (scenario: StandardScenario) => {
+  //   const original = (await deleteRecipeStep({
+  //     recipeId: scenario.recipeStep.one.recipeId,
+  //     stepNum: scenario.recipeStep.one.stepNum,
+  //   })) as RecipeStep
+  //   const result = await recipeStep({
+  //     recipeId: original.recipeId,
+  //     stepNum: original.stepNum,
+  //   })
 
-    expect(result).toEqual(null)
-  })
+  //   expect(result).toEqual(null)
+  // })
 })
