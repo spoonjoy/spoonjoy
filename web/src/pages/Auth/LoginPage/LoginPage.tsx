@@ -7,7 +7,7 @@ import { IFormSignin } from 'types/auth'
 import { useAuth } from '@redwoodjs/auth'
 import WebAuthnClient from '@redwoodjs/auth/dist/webAuthn'
 import { Form, Submit, useForm } from '@redwoodjs/forms'
-import { Link, navigate, routes } from '@redwoodjs/router'
+import { navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
@@ -97,7 +97,6 @@ const LoginPage = ({ type }) => {
       toast.success(WELCOME_MESSAGE)
       navigate(REDIRECT)
     } catch (e) {
-      console.log('webauthn reg error', e)
       toast.error(e.message)
     }
   }
