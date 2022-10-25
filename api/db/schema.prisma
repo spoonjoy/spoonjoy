@@ -57,8 +57,19 @@ model RecipeStep {
   stepNum           Int
   description       String?
   ingredients       Ingredient[]
+  usingSteps        StepOutputUse[] @relation("input")
+  usedBySteps       StepOutputUse[] @relation("output")
 
   @@unique([recipeId, stepNum])
+}
+
+/// Allow a step to refer to the output of another step. AKA, in step 3, use the outputs from step 1 and 2
+model StepOutputUse {
+  id                String     @id @default(cuid())
+  outputOfStepId    String
+  outputOfStep      RecipeStep @relation(name: "output", fields: [outputOfStepId], references: [id], onDelete: Cascade)
+  inputOfStepId     String
+  inputOfStep       RecipeStep @relation(name: "input", fields: [inputOfStepId], references: [id], onDelete: Cascade)
 }
 
 model Ingredient {
