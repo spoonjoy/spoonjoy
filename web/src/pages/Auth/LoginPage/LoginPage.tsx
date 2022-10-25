@@ -5,6 +5,7 @@ import { FingerPrintIcon } from '@heroicons/react//24/solid'
 import { IFormSignin } from 'types/auth'
 
 import { useAuth } from '@redwoodjs/auth'
+import WebAuthnClient from '@redwoodjs/auth/dist/webAuthn'
 import { Form, Submit, useForm } from '@redwoodjs/forms'
 import { Link, navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
@@ -20,13 +21,9 @@ const WELCOME_MESSAGE = 'Welcome back!'
 const REDIRECT = routes.welcome()
 
 const LoginPage = ({ type }) => {
-  const {
-    isAuthenticated,
-    client: webAuthn,
-    loading,
-    logIn,
-    reauthenticate,
-  } = useAuth()
+  const { isAuthenticated, loading, logIn, reauthenticate } = useAuth()
+  const { client: webAuthn }: { client?: typeof WebAuthnClient } = useAuth()
+
   const formMethods = useForm<IFormSignin>()
 
   const {
@@ -35,12 +32,12 @@ const LoginPage = ({ type }) => {
 
   const [shouldShowWebAuthn, setShouldShowWebAuthn] = useState(false)
   const [showWebAuthn, setShowWebAuthn] = useState(
-    webAuthn.isEnabled() && type !== 'password'
+    webAuthn?.isEnabled() && type !== 'password'
   )
 
   const onAuthenticate = React.useCallback(async () => {
     try {
-      await webAuthn.authenticate()
+      await webAuthn?.authenticate()
       await reauthenticate()
       toast.success(WELCOME_MESSAGE)
       navigate(REDIRECT)
@@ -58,7 +55,7 @@ const LoginPage = ({ type }) => {
 
   // should redirect right after login or wait to show the webAuthn prompts?
   useEffect(() => {
-    if (isAuthenticated && (!shouldShowWebAuthn || webAuthn.isEnabled())) {
+    if (isAuthenticated && (!shouldShowWebAuthn || webAuthn?.isEnabled())) {
       navigate(REDIRECT)
     }
   }, [isAuthenticated, shouldShowWebAuthn, webAuthn])
@@ -71,7 +68,7 @@ const LoginPage = ({ type }) => {
   }, [loading, isAuthenticated, showWebAuthn, onAuthenticate])
 
   const onSubmit = async (data: IFormSignin) => {
-    const webAuthnSupported = await webAuthn.isSupported()
+    const webAuthnSupported = await webAuthn?.isSupported()
 
     if (webAuthnSupported) {
       setShouldShowWebAuthn(true)
@@ -96,10 +93,11 @@ const LoginPage = ({ type }) => {
 
   const onRegister = async () => {
     try {
-      await webAuthn.register()
+      await webAuthn?.register()
       toast.success(WELCOME_MESSAGE)
       navigate(REDIRECT)
     } catch (e) {
+      console.log('webauthn reg error', e)
       toast.error(e.message)
     }
   }
@@ -208,7 +206,7 @@ const LoginPage = ({ type }) => {
 
   const formToRender = () => {
     if (showWebAuthn) {
-      if (webAuthn.isEnabled()) {
+      if (webAuthn?.isEnabled()) {
         return <AuthWebAuthnPrompt />
       } else {
         return <RegisterWebAuthnPrompt />
