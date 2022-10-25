@@ -51,7 +51,6 @@ model Recipe {
 }
 
 model RecipeStep {
-  id                String  @id @default(cuid())
   recipeId          String
   recipe            Recipe  @relation(fields: [recipeId], references: [id])
   stepNum           Int
@@ -60,31 +59,31 @@ model RecipeStep {
   usingSteps        StepOutputUse[] @relation("input")
   usedBySteps       StepOutputUse[] @relation("output")
 
-  @@unique([recipeId, stepNum])
+  @@id([recipeId, stepNum])
 }
 
 /// Allow a step to refer to the output of another step. AKA, in step 3, use the outputs from step 1 and 2
 model StepOutputUse {
-  id                String     @id @default(cuid())
-  outputOfStepId    String
-  outputOfStep      RecipeStep @relation(name: "output", fields: [outputOfStepId], references: [id], onDelete: Cascade)
-  inputOfStepId     String
-  inputOfStep       RecipeStep @relation(name: "input", fields: [inputOfStepId], references: [id], onDelete: Cascade)
+  recipeId          String
+  outputStepNum     Int
+  outputOfStep      RecipeStep @relation(name: "output", fields: [recipeId, outputStepNum], references: [recipeId, stepNum], onDelete: Cascade)
+  inputStepNum      Int
+  inputOfStep       RecipeStep @relation(name: "input", fields: [recipeId, inputStepNum], references: [recipeId, stepNum], onDelete: Cascade)
 
-  @@unique([outputOfStepId, inputOfStepId])
+  @@id([recipeId, outputStepNum, inputStepNum])
 }
 
 model Ingredient {
-  id                String        @id @default(cuid())
-  recipeStepId      String
-  recipeStep        RecipeStep    @relation(fields: [recipeStepId], references: [id], onDelete: Cascade)
+  recipeId          String
+  stepNum           Int
+  recipeStep        RecipeStep    @relation(fields: [recipeId, stepNum], references: [recipeId, stepNum], onDelete: Cascade)
   quantity          Float
   unitId            String
   unit              Unit          @relation(fields: [unitId], references: [id])
   ingredientRefId   String
   ingredientRef     IngredientRef @relation(fields: [ingredientRefId], references: [id])
 
-  @@unique([recipeStepId, unitId, ingredientRefId])
+  @@id([recipeId, stepNum, unitId, ingredientRefId])
 }
 
 model IngredientRef {
