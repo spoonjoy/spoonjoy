@@ -70,6 +70,8 @@ model StepOutputUse {
   outputOfStep      RecipeStep @relation(name: "output", fields: [outputOfStepId], references: [id], onDelete: Cascade)
   inputOfStepId     String
   inputOfStep       RecipeStep @relation(name: "input", fields: [inputOfStepId], references: [id], onDelete: Cascade)
+
+  @@unique([outputOfStepId, inputOfStepId])
 }
 
 model Ingredient {
