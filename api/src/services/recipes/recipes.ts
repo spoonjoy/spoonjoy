@@ -16,7 +16,7 @@ import { requireAuth, requireRecipeAuth } from 'src/lib/auth'
 import { db } from 'src/lib/db'
 
 import {
-  mapStepsMutationInputToDbCreateInput,
+  mapStepsMutationInputToDbCreateInputNoStepOutputUses,
   mapStepsMutationInputToDbUpdateInput,
 } from './recipeUtilities'
 
@@ -76,7 +76,7 @@ export const createRecipe: MutationResolvers['createRecipe'] = async ({
   })
 
   // Because steps in a recipe can refer to other steps, we need to first create the recipe so that we can have the recipe ID
-  const recipeNoStepsDbInput: Prisma.RecipeCreateInput = {
+  const recipeNoStepOutputUsesDbInput: Prisma.RecipeCreateInput = {
     title,
     description,
     servings,
@@ -85,22 +85,16 @@ export const createRecipe: MutationResolvers['createRecipe'] = async ({
         id: context.currentUser!.id,
       },
     },
+    steps: mapStepsMutationInputToDbCreateInputNoStepOutputUses(steps),
   }
 
   return await db.$transaction(async (tx) => {
     // 1. Create the recipe
-    const newRecipe = await tx.recipe.create({
-      data: recipeNoStepsDbInput,
+    const newRecipeNoStepOutputUses = await tx.recipe.create({
+      data: recipeNoStepOutputUsesDbInput,
     })
 
-    const newRecipeWithSteps = await tx.recipe.update({
-      where: { id: newRecipe.id },
-      data: {
-        steps: mapStepsMutationInputToDbCreateInput(newRecipe.id, steps),
-      },
-    })
-
-    return newRecipeWithSteps
+    return newRecipeNoStepOutputUses
   })
 }
 
