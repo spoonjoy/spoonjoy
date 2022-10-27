@@ -57,12 +57,17 @@ export const Success = observer(
   ({ recipe }: CellSuccessProps<EditRecipeById>) => {
     const { recipeInputStore } = useStore()
 
-    if (recipeInputStore.id !== recipe.id) {
-      applySnapshot(
-        recipeInputStore,
-        recipeQueryResponseToInputSnapshotIn(recipe)
-      )
-    }
+    // only want this to run on first load. what was happening is that it was resetting the inputStore even after submitting
+    // that's why it's got an empty dependency array, this is intentional
+    React.useEffect(() => {
+      if (recipeInputStore.id !== recipe.id) {
+        console.log('applying snapshot')
+        applySnapshot(
+          recipeInputStore,
+          recipeQueryResponseToInputSnapshotIn(recipe)
+        )
+      }
+    }, [])
 
     const [updateRecipe, { loading, error }] = useMutation(
       UPDATE_RECIPE_MUTATION,

@@ -97,6 +97,7 @@ export const RecipeInputStore = types
       self.steps.pop()
     },
     clear: () => {
+      console.log('clearing recipe input store!')
       applySnapshot(self, initRecipeInputStore)
     },
   }))
