@@ -1,10 +1,11 @@
-import type { FindShoppingListById } from 'types/graphql'
+import type { FindMyShoppingList } from 'types/graphql'
 
 import IngredientsItemsList from 'src/components/IngredientsItemsList/IngredientsItemsList'
+import ReloadIngredientsItemsList from 'src/components/IngredientsItemsList/ReloadIngredientsItemsList'
 import { ListItemType } from 'src/stores/ListItemsStore'
 
 interface ShoppingListProps {
-  shoppingList: NonNullable<FindShoppingListById['shoppingList']>
+  shoppingList: NonNullable<FindMyShoppingList['shoppingList']>
 }
 
 const ShoppingList = ({ shoppingList }: ShoppingListProps) => {

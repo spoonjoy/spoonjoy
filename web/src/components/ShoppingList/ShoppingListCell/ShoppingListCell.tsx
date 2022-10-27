@@ -19,9 +19,11 @@ export const QUERY = gql`
         id
         quantity
         ingredientRef {
+          id
           name
         }
         unit {
+          id
           name
         }
       }

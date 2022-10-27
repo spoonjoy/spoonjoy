@@ -1,6 +1,6 @@
 export const schema = gql`
   type ShoppingList {
-    id: String!
+    id: ID!
     authorId: String!
     author: User!
     items: [ShoppingListItem]!

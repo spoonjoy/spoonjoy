@@ -42,7 +42,7 @@ model Recipe {
   description         String?
   servings            Int?
   chefId              String
-  chef                User      @relation(fields: [chefId], references: [id])
+  chef                User      @relation(fields: [chefId], references: [id], onDelete: Cascade)
   createdAt           DateTime  @default(now())
   deletedAt           DateTime?
   steps               RecipeStep[]
@@ -52,29 +52,32 @@ model Recipe {
 }
 
 model RecipeStep {
+  id                String  @id @default(cuid())
   recipeId          String
-  recipe            Recipe  @relation(fields: [recipeId], references: [id])
+  recipe            Recipe  @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   stepNum           Int
   description       String?
   ingredients       Ingredient[]
   usingSteps        StepOutputUse[] @relation("input")
   usedBySteps       StepOutputUse[] @relation("output")
 
-  @@id([recipeId, stepNum])
+  @@unique([recipeId, stepNum])
 }
 
 /// Allow a step to refer to the output of another step. AKA, in step 3, use the outputs from step 1 and 2
 model StepOutputUse {
+  id                String  @id @default(cuid())
   recipeId          String
   outputStepNum     Int
   outputOfStep      RecipeStep @relation(name: "output", fields: [recipeId, outputStepNum], references: [recipeId, stepNum], onDelete: Cascade)
   inputStepNum      Int
   inputOfStep       RecipeStep @relation(name: "input", fields: [recipeId, inputStepNum], references: [recipeId, stepNum], onDelete: Cascade)
 
-  @@id([recipeId, outputStepNum, inputStepNum])
+  @@unique([recipeId, outputStepNum, inputStepNum])
 }
 
 model Ingredient {
+  id                String  @id @default(cuid())
   recipeId          String
   stepNum           Int
   recipeStep        RecipeStep    @relation(fields: [recipeId, stepNum], references: [recipeId, stepNum], onDelete: Cascade)
@@ -84,7 +87,7 @@ model Ingredient {
   ingredientRefId   String
   ingredientRef     IngredientRef @relation(fields: [ingredientRefId], references: [id])
 
-  @@id([recipeId, stepNum, unitId, ingredientRefId])
+  @@unique([recipeId, stepNum, unitId, ingredientRefId])
 }
 
 model IngredientRef {
@@ -104,11 +107,12 @@ model Unit {
 model ShoppingList {
   id          String  @id @default(cuid())
   authorId    String  @unique
-  author      User    @relation(fields: [authorId], references: [id])
+  author      User    @relation(fields: [authorId], references: [id], onDelete: Cascade)
   items       ShoppingListItem[]
 }
 
 model ShoppingListItem {
+  id                String  @id @default(cuid())
   shoppingListId    String
   shoppingList      ShoppingList  @relation(fields: [shoppingListId], references: [id], onDelete: Cascade)
   quantity          Float
@@ -117,5 +121,5 @@ model ShoppingListItem {
   ingredientRefId   String
   ingredientRef     IngredientRef @relation(fields: [ingredientRefId], references: [id])
 
-  @@id([shoppingListId, unitId, ingredientRefId])
+  @@unique([shoppingListId, unitId, ingredientRefId])
 }

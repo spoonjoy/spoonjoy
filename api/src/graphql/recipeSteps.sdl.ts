@@ -1,5 +1,6 @@
 export const schema = gql`
   type RecipeStep {
+    id: ID!
     recipeId: String!
     recipe: Recipe!
     stepNum: Int!

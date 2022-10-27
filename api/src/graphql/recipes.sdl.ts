@@ -1,6 +1,6 @@
 export const schema = gql`
   type Recipe {
-    id: String!
+    id: ID!
     title: String!
     description: String
     servings: Int

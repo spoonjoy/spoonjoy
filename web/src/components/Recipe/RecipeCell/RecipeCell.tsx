@@ -16,14 +16,18 @@ export const QUERY = gql`
         username
       }
       steps {
+        id
         stepNum
         description
         ingredients {
+          id
           quantity
           ingredientRef {
+            id
             name
           }
           unit {
+            id
             name
           }
         }
