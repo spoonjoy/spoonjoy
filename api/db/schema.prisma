@@ -50,6 +50,7 @@ model Recipe {
 
   // Allow users to create a second recipe with the same title *if* the other one is deleted
   @@unique([chefId, title, deletedAt])
+  @@index([chefId])
 }
 
 model RecipeStep {
@@ -63,6 +64,7 @@ model RecipeStep {
   usedBySteps       StepOutputUse[] @relation("output")
 
   @@unique([recipeId, stepNum])
+  @@index([recipeId])
 }
 
 /// Allow a step to refer to the output of another step. AKA, in step 3, use the outputs from step 1 and 2
@@ -75,6 +77,9 @@ model StepOutputUse {
   inputOfStep       RecipeStep @relation(name: "input", fields: [recipeId, inputStepNum], references: [recipeId, stepNum], onDelete: Cascade)
 
   @@unique([recipeId, outputStepNum, inputStepNum])
+  @@index([recipeId, outputStepNum, inputStepNum])
+  @@index([recipeId, outputStepNum])
+  @@index([recipeId, inputStepNum])
 }
 
 model Ingredient {
@@ -89,6 +94,9 @@ model Ingredient {
   ingredientRef     IngredientRef @relation(fields: [ingredientRefId], references: [id])
 
   @@unique([recipeId, stepNum, unitId, ingredientRefId])
+  @@index([recipeId, stepNum, unitId, ingredientRefId])
+  @@index([recipeId, stepNum])
+  @@index([recipeId])
 }
 
 model IngredientRef {
@@ -110,6 +118,8 @@ model ShoppingList {
   authorId    String  @unique
   author      User    @relation(fields: [authorId], references: [id], onDelete: Cascade)
   items       ShoppingListItem[]
+
+  @@index([authorId])
 }
 
 model ShoppingListItem {
@@ -123,4 +133,7 @@ model ShoppingListItem {
   ingredientRef     IngredientRef @relation(fields: [ingredientRefId], references: [id])
 
   @@unique([shoppingListId, unitId, ingredientRefId])
+  @@index([shoppingListId])
+  @@index([unitId])
+  @@index([ingredientRefId])
 }
