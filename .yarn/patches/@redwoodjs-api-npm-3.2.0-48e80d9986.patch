@@ -1,5 +1,5 @@
 diff --git a/dist/functions/dbAuth/DbAuthHandler.js b/dist/functions/dbAuth/DbAuthHandler.js
-index f392e1c7408d11809ffb6d713ba571ceb4a53662..02eec3ea8910cfd254eb70087fe05269ba26e6c1 100644
+index f392e1c7408d11809ffb6d713ba571ceb4a53662..3d866835eaddfc43646304a68bebac44127d7ffc 100644
 --- a/dist/functions/dbAuth/DbAuthHandler.js
 +++ b/dist/functions/dbAuth/DbAuthHandler.js
 @@ -2,33 +2,51 @@
@@ -673,7 +673,8 @@ index f392e1c7408d11809ffb6d713ba571ceb4a53662..02eec3ea8910cfd254eb70087fe05269
 +      throw new DbAuthError.WebAuthnError("WebAuthn is not enabled");
      }
  
-     const jsonBody = JSON.parse(this.event.body);
+-    const jsonBody = JSON.parse(this.event.body);
++    const jsonBody = JSON.parse(this.params);
      const credential = await this.dbCredentialAccessor.findFirst({
        where: {
 -        id: jsonBody.rawId
@@ -893,7 +894,7 @@ index f392e1c7408d11809ffb6d713ba571ceb4a53662..02eec3ea8910cfd254eb70087fe05269
      }
  
      const webAuthnOptions = this.options.webAuthn;
-@@ -597,39 +783,48 @@ class DbAuthHandler {
+@@ -597,35 +783,41 @@ class DbAuthHandler {
        rpID: webAuthnOptions.domain,
        userID: user[this.options.authFields.id],
        userName: user[this.options.authFields.username],
@@ -948,25 +949,15 @@ index f392e1c7408d11809ffb6d713ba571ceb4a53662..02eec3ea8910cfd254eb70087fe05269
      }
  
      const user = await this._getCurrentUser();
-+    console.log("in webAuthnRegister, user:", user);
-+    console.log("in webAuthnRegister, this.event:", this.event);
-     const jsonBody = JSON.parse(this.event.body);
-+    console.log("in webAuthnRegister, jsonBody:", jsonBody);
-     let verification;
- 
-     try {
-@@ -638,122 +833,275 @@ class DbAuthHandler {
+@@ -638,122 +830,272 @@ class DbAuthHandler {
          expectedChallenge: user[this.options.authFields.challenge],
          expectedOrigin: this.options.webAuthn.origin,
          expectedRPID: this.options.webAuthn.domain,
 -        requireUserVerification: true
 +        requireUserVerification: true,
        };
-+      console.log("in webAuthnRegister, options:", options);
        verification = await verifyRegistrationResponse(options);
-+      console.log("in webAuthnRegister, verification:", verification);
      } catch (e) {
-+      console.log("in webAuthnRegister, error:", e);
        throw new DbAuthError.WebAuthnError(e.message);
      }
  
@@ -1280,7 +1271,7 @@ index f392e1c7408d11809ffb6d713ba571ceb4a53662..02eec3ea8910cfd254eb70087fe05269
    _sanitizeUser(user) {
      const sanitized = JSON.parse((0, _stringify.default)(user));
      delete sanitized[this.options.authFields.hashedPassword];
-@@ -761,11 +1109,12 @@ class DbAuthHandler {
+@@ -761,11 +1103,12 @@ class DbAuthHandler {
      return sanitized;
    } // parses the event body into JSON, whether it's base64 encoded or not
  
@@ -1295,7 +1286,7 @@ index f392e1c7408d11809ffb6d713ba571ceb4a53662..02eec3ea8910cfd254eb70087fe05269
        } else {
          return JSON.parse(this.event.body);
        }
-@@ -777,55 +1126,55 @@ class DbAuthHandler {
+@@ -777,55 +1120,55 @@ class DbAuthHandler {
    // pass the argument `expires` set to "now" to get the attributes needed to expire
    // the session, or "future" (or left out completely) to set to `futureExpiresDate`
  
@@ -1379,7 +1370,7 @@ index f392e1c7408d11809ffb6d713ba571ceb4a53662..02eec3ea8910cfd254eb70087fe05269
    _validateCsrf() {
      if (this.sessionCsrfToken !== this.headerCsrfToken) {
        throw new DbAuthError.CsrfTokenMismatchError();
-@@ -836,56 +1185,86 @@ class DbAuthHandler {
+@@ -836,56 +1179,86 @@ class DbAuthHandler {
  
    async _findUserByToken(token) {
      const tokenExpires = new Date();
@@ -1479,7 +1470,7 @@ index f392e1c7408d11809ffb6d713ba571ceb4a53662..02eec3ea8910cfd254eb70087fe05269
      }
  
      let user;
-@@ -894,8 +1273,8 @@ class DbAuthHandler {
+@@ -894,8 +1267,8 @@ class DbAuthHandler {
        // does user exist?
        user = await this.dbAccessor.findUnique({
          where: {
@@ -1490,7 +1481,7 @@ index f392e1c7408d11809ffb6d713ba571ceb4a53662..02eec3ea8910cfd254eb70087fe05269
        });
      } catch (e) {
        throw new DbAuthError.GenericError();
-@@ -904,35 +1283,65 @@ class DbAuthHandler {
+@@ -904,35 +1277,65 @@ class DbAuthHandler {
      if (!user) {
        var _this$options$login3, _this$options$login3$;
  
@@ -1564,7 +1555,7 @@ index f392e1c7408d11809ffb6d713ba571ceb4a53662..02eec3ea8910cfd254eb70087fe05269
        select[this.options.authFields.challenge] = true;
      }
  
-@@ -943,9 +1352,13 @@ class DbAuthHandler {
+@@ -943,9 +1346,13 @@ class DbAuthHandler {
  
        user = await this.dbAccessor.findUnique({
          where: {
@@ -1580,7 +1571,7 @@ index f392e1c7408d11809ffb6d713ba571ceb4a53662..02eec3ea8910cfd254eb70087fe05269
        });
      } catch (e) {
        throw new DbAuthError.GenericError(e.message);
-@@ -959,52 +1372,68 @@ class DbAuthHandler {
+@@ -959,52 +1366,68 @@ class DbAuthHandler {
    } // creates and returns a user, first checking that the username/password
    // values pass validation
  
@@ -1666,7 +1657,7 @@ index f392e1c7408d11809ffb6d713ba571ceb4a53662..02eec3ea8910cfd254eb70087fe05269
        }
      }
  
-@@ -1012,13 +1441,21 @@ class DbAuthHandler {
+@@ -1012,13 +1435,21 @@ class DbAuthHandler {
    } // checks that a single field meets validation requirements and
    // currently checks for presense only
  
@@ -1691,7 +1682,7 @@ index f392e1c7408d11809ffb6d713ba571ceb4a53662..02eec3ea8910cfd254eb70087fe05269
      } else {
        return true;
      }
-@@ -1026,41 +1463,51 @@ class DbAuthHandler {
+@@ -1026,41 +1457,51 @@ class DbAuthHandler {
  
    _loginResponse(user, statusCode = 200) {
      const sessionData = {
@@ -1760,7 +1751,7 @@ index f392e1c7408d11809ffb6d713ba571ceb4a53662..02eec3ea8910cfd254eb70087fe05269
      };
    }
  
-@@ -1068,22 +1515,20 @@ class DbAuthHandler {
+@@ -1068,22 +1509,20 @@ class DbAuthHandler {
      return {
        statusCode: 400,
        body: (0, _stringify.default)({

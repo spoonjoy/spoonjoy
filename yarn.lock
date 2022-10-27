@@ -3855,7 +3855,7 @@ __metadata:
 
 "@redwoodjs/api@patch:@redwoodjs/api@npm%3A3.2.0#./.yarn/patches/@redwoodjs-api-npm-3.2.0-48e80d9986.patch::locator=root-workspace-0b6124%40workspace%3A.":
   version: 3.2.0
-  resolution: "@redwoodjs/api@patch:@redwoodjs/api@npm%3A3.2.0#./.yarn/patches/@redwoodjs-api-npm-3.2.0-48e80d9986.patch::version=3.2.0&hash=f21162&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@redwoodjs/api@patch:@redwoodjs/api@npm%3A3.2.0#./.yarn/patches/@redwoodjs-api-npm-3.2.0-48e80d9986.patch::version=3.2.0&hash=5b7f3a&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     "@babel/runtime-corejs3": 7.19.1
     "@prisma/client": 4.3.1
@@ -3890,7 +3890,7 @@ __metadata:
     rw: dist/bins/redwood.js
     rwfw: dist/bins/rwfw.js
     tsc: dist/bins/tsc.js
-  checksum: 56ba45bdbd9d822c3ea93eac57f1e02064c7ac0cd383cca6c1e293a70d6fc11890a68155bea62a0f402dddba94cd65e74e2201ea744e1cf1618c884e6edb1c73
+  checksum: b4f82c63c51e4bfe8290b734cda10d22693ac8d82a93f96dafe7ce3031223e57a8a7b66969d34a6671e32b4c905a89510da26d0be71ee3028a8045a0aafb6ea8
   languageName: node
   linkType: hard
 
@@ -22880,7 +22880,7 @@ __metadata:
 
 "typescript@patch:typescript@4.7.4#~builtin<compat/typescript>":
   version: 4.7.4
-  resolution: "typescript@patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=a1c5e5"
+  resolution: "typescript@patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=701156"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
