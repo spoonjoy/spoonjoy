@@ -56,10 +56,12 @@ const StepFormFrag = ({
           containerClassName="pt-2"
         />
       </div>
-      <HiddenField
-        name={`steps.${stepNum - 1}.recipeId`}
-        defaultValue={recipeId}
-      />
+      {recipeId && (
+        <HiddenField
+          name={`steps.${stepNum - 1}.recipeId`}
+          defaultValue={recipeId}
+        />
+      )}
       <HiddenField
         name={`steps.${stepNum - 1}.stepNum`}
         defaultValue={stepNum}
