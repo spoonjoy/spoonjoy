@@ -9,12 +9,14 @@ import { IRecipeStepInputStore } from 'src/stores/RecipeInputStore'
 import IngredientFormFrag from './IngredientFormFrag'
 
 interface StepFormFragProps {
+  recipeId?: string // this is necessary when editing a recipe because eventually I'd like to be able to update steps directly etc
   step: IRecipeStepInputStore
   removeIngredientFields: (stepNum: number, ingIdx: number) => void
   errors: FieldErrors
 }
 
 const StepFormFrag = ({
+  recipeId,
   step,
   removeIngredientFields,
   errors,
@@ -54,6 +56,10 @@ const StepFormFrag = ({
           containerClassName="pt-2"
         />
       </div>
+      <HiddenField
+        name={`steps.${stepNum - 1}.recipeId`}
+        defaultValue={recipeId}
+      />
       <HiddenField
         name={`steps.${stepNum - 1}.stepNum`}
         defaultValue={stepNum}

@@ -77,8 +77,16 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
 
   const getStepFieldsNames = (
     stepNum: number
-  ): Array<`steps.${number}.description` | `steps.${number}.stepNum`> => {
-    return [`steps.${stepNum - 1}.stepNum`, `steps.${stepNum - 1}.description`]
+  ): Array<
+    | `steps.${number}.recipeId`
+    | `steps.${number}.description`
+    | `steps.${number}.stepNum`
+  > => {
+    return [
+      `steps.${stepNum - 1}.recipeId`,
+      `steps.${stepNum - 1}.stepNum`,
+      `steps.${stepNum - 1}.description`,
+    ]
   }
 
   const removeIngredientFields = (stepNum: number, ingIdx: number) => {
@@ -117,6 +125,7 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
           return (
             <StepFormFrag
               key={`step-${step.stepNum}`}
+              recipeId={recipeInputStore.id}
               step={step}
               removeIngredientFields={removeIngredientFields}
               errors={errors}
