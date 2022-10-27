@@ -3812,7 +3812,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@redwoodjs/api@npm:3.2.0, @redwoodjs/api@npm:^3.2.0":
+"@redwoodjs/api@npm:3.2.0":
   version: 3.2.0
   resolution: "@redwoodjs/api@npm:3.2.0"
   dependencies:
@@ -3850,6 +3850,47 @@ __metadata:
     rwfw: dist/bins/rwfw.js
     tsc: dist/bins/tsc.js
   checksum: 879690cc1c9f5729cfac25003c1c9336d54a191b413efeb68e7afc1be465348ea4e36158b365010592bdc85b9784a70466ede093e74497c3fdfb5ff76d16c1c6
+  languageName: node
+  linkType: hard
+
+"@redwoodjs/api@patch:@redwoodjs/api@npm%3A3.2.0#./.yarn/patches/@redwoodjs-api-npm-3.2.0-48e80d9986.patch::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 3.2.0
+  resolution: "@redwoodjs/api@patch:@redwoodjs/api@npm%3A3.2.0#./.yarn/patches/@redwoodjs-api-npm-3.2.0-48e80d9986.patch::version=3.2.0&hash=f21162&locator=root-workspace-0b6124%40workspace%3A."
+  dependencies:
+    "@babel/runtime-corejs3": 7.19.1
+    "@prisma/client": 4.3.1
+    base64url: 3.0.1
+    core-js: 3.25.5
+    cross-undici-fetch: 0.4.14
+    crypto-js: 4.1.1
+    humanize-string: 2.1.0
+    jsonwebtoken: 8.5.1
+    jwks-rsa: 2.0.5
+    md5: 2.3.0
+    pascalcase: 1.0.0
+    pino: 8.6.1
+    title-case: 3.0.3
+    uuid: 9.0.0
+  peerDependencies:
+    "@clerk/clerk-sdk-node": 3.9.2
+    "@magic-sdk/admin": 1.4.1
+    "@okta/jwt-verifier": 2.6.0
+    firebase-admin: 10.3.0
+  peerDependenciesMeta:
+    "@clerk/clerk-sdk-node":
+      optional: true
+    "@magic-sdk/admin":
+      optional: true
+    "@okta/jwt-verifier":
+      optional: true
+    firebase-admin:
+      optional: true
+  bin:
+    redwood: dist/bins/redwood.js
+    rw: dist/bins/redwood.js
+    rwfw: dist/bins/rwfw.js
+    tsc: dist/bins/tsc.js
+  checksum: 56ba45bdbd9d822c3ea93eac57f1e02064c7ac0cd383cca6c1e293a70d6fc11890a68155bea62a0f402dddba94cd65e74e2201ea744e1cf1618c884e6edb1c73
   languageName: node
   linkType: hard
 
