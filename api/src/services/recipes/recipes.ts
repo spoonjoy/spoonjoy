@@ -7,6 +7,7 @@ import type {
   RequiredResolverFn,
   ResolversTypes,
   ResolversParentTypes,
+  RecipeRelationResolvers,
 } from 'types/graphql'
 
 import { validateWith } from '@redwoodjs/api'
@@ -109,16 +110,21 @@ export const updateRecipe: MutationResolvers['updateRecipe'] = async ({
     everyStepHasAtLeastOneIngredientOrStepOutput(steps)
   })
 
-  const dbInput: Prisma.RecipeUpdateInput = {
+  const recipeNoStepOutputUsesDbInput: Prisma.RecipeUpdateInput = {
     title,
     description,
     servings,
     steps: mapStepsMutationInputToDbUpdateInput(steps, id),
   }
 
-  return db.recipe.update({
-    where: { id },
-    data: dbInput,
+  return await db.$transaction(async (tx) => {
+    // 1. Create the recipe
+    const newRecipeNoStepOutputUses = await tx.recipe.update({
+      where: { id },
+      data: recipeNoStepOutputUsesDbInput,
+    })
+
+    return newRecipeNoStepOutputUses
   })
 }
 
@@ -138,7 +144,7 @@ export const deleteRecipe: MutationResolvers['deleteRecipe'] = async ({
   // })
 }
 
-type RequiredRecipeRelationResolvers = {
+type RequiredRecipeRelationResolvers = RecipeRelationResolvers & {
   chef: RequiredResolverFn<
     ResolversTypes['User'],
     ResolversParentTypes['Recipe'],

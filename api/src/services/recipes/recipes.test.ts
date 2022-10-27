@@ -1,9 +1,4 @@
-import {
-  CreateRecipeInput,
-  Recipe as RecipeType,
-  ResolversParentTypes,
-  User,
-} from 'types/graphql'
+import { CreateRecipeInput } from 'types/graphql'
 
 import { RedwoodGraphQLError } from '@redwoodjs/graphql-server'
 
@@ -121,11 +116,13 @@ describe('recipes', () => {
       })
     )
     steps.forEach((returnedStep, stepIdx) => {
-      const scenarioStep = bobsPizza.steps[stepIdx] as typeof RecipeStep
+      const scenarioStep = bobsPizza.steps[
+        stepIdx
+      ] as unknown as typeof RecipeStep
 
       // TODO fix all these weird type issues
-      expect(returnedStep!.stepNum).toEqual(scenarioStep.stepNum)
-      expect(returnedStep!.description).toEqual(scenarioStep.description)
+      expect(returnedStep.stepNum).toEqual(scenarioStep.stepNum)
+      expect(returnedStep.description).toEqual(scenarioStep.description)
 
       ingredientsByStep[stepIdx].forEach((returnedIng, ingIdx) => {
         const scenarioIng = scenarioStep.ingredients[ingIdx]
@@ -239,173 +236,173 @@ describe('recipes', () => {
     }
   )
 
-  // scenario(
-  //   'fails to update a recipe when not logged in',
-  //   async (scenario: RecipeScenario) => {
-  //     const original = await db.recipe.findUnique({
-  //       where: { id: scenario.recipe.bobsPizza.id },
-  //       include: recipeIncludeAllRelations,
-  //     })
-  //     const updated = mapRecipeDbResponseToMutationInput(
-  //       original as unknown as IRecipeResponse // this type is actually derived from the generated type of 'original'
-  //     )
+  scenario(
+    'fails to update a recipe when not logged in',
+    async (scenario: RecipeScenario) => {
+      const original = await db.recipe.findUnique({
+        where: { id: scenario.recipe.bobsPizza.id },
+        include: recipeIncludeAllRelations,
+      })
+      const updated = mapRecipeDbResponseToMutationInput(
+        original as unknown as IRecipeResponse // this type is actually derived from the generated type of 'original'
+      )
 
-  //     const updatedInput = {
-  //       id: original!.id,
-  //       input: updated.input,
-  //     }
+      const updatedInput = {
+        id: original!.id,
+        input: updated.input,
+      }
 
-  //     expect.assertions(1)
-  //     try {
-  //       await updateRecipe(updatedInput)
-  //     } catch (e) {
-  //       expect(e).toMatchObject(
-  //         new RedwoodGraphQLError('You are not logged in!')
-  //       )
-  //     }
-  //   }
-  // )
+      expect.assertions(1)
+      try {
+        await updateRecipe(updatedInput)
+      } catch (e) {
+        expect(e).toMatchObject(
+          new RedwoodGraphQLError('You are not logged in!')
+        )
+      }
+    }
+  )
 
-  // scenario(
-  //   "can't update another user's recipe",
-  //   async (scenario: RecipeScenario) => {
-  //     mockCurrentUser({
-  //       id: scenario.user.linda.id,
-  //       username: scenario.user.linda.username,
-  //     })
+  scenario(
+    "can't update another user's recipe",
+    async (scenario: RecipeScenario) => {
+      mockCurrentUser({
+        id: scenario.user.linda.id,
+        username: scenario.user.linda.username,
+      })
 
-  //     const original = await db.recipe.findUnique({
-  //       where: { id: scenario.recipe.bobsPizza.id },
-  //       include: recipeIncludeAllRelations,
-  //     })
-  //     const updated = mapRecipeDbResponseToMutationInput(
-  //       original as unknown as IRecipeResponse // this type is actually derived from the generated type of 'original'
-  //     )
+      const original = await db.recipe.findUnique({
+        where: { id: scenario.recipe.bobsPizza.id },
+        include: recipeIncludeAllRelations,
+      })
+      const updated = mapRecipeDbResponseToMutationInput(
+        original as unknown as IRecipeResponse // this type is actually derived from the generated type of 'original'
+      )
 
-  //     const updatedInput = {
-  //       id: original!.id,
-  //       input: updated.input,
-  //     }
+      const updatedInput = {
+        id: original!.id,
+        input: updated.input,
+      }
 
-  //     expect.assertions(1)
-  //     try {
-  //       await updateRecipe(updatedInput)
-  //     } catch (e) {
-  //       expect(e).toMatchObject(
-  //         new RedwoodGraphQLError('You can only modify your own recipes!')
-  //       )
-  //     }
-  //   }
-  // )
+      expect.assertions(1)
+      try {
+        await updateRecipe(updatedInput)
+      } catch (e) {
+        expect(e).toMatchObject(
+          new RedwoodGraphQLError('You can only modify your own recipes!')
+        )
+      }
+    }
+  )
 
-  // scenario(
-  //   'updates a recipe while logged in',
-  //   async (scenario: RecipeScenario) => {
-  //     await db.user
-  //       .findUnique({
-  //         where: { id: scenario.recipe.bobsPizza.chef.id },
-  //       })
-  //       .then((user) => {
-  //         mockCurrentUser({
-  //           id: user!.id,
-  //           username: user!.username,
-  //         })
-  //       })
+  scenario(
+    'updates a recipe while logged in',
+    async (scenario: RecipeScenario) => {
+      await db.user
+        .findUnique({
+          where: { id: scenario.recipe.bobsPizza.chef.id },
+        })
+        .then((user) => {
+          mockCurrentUser({
+            id: user!.id,
+            username: user!.username,
+          })
+        })
 
-  //     const original = await db.recipe.findUnique({
-  //       where: { id: scenario.recipe.bobsPizza.id },
-  //       include: recipeIncludeAllRelations,
-  //     })
-  //     const updated = mapRecipeDbResponseToMutationInput(
-  //       original as unknown as IRecipeResponse
-  //     )
+      const original = await db.recipe.findUnique({
+        where: { id: scenario.recipe.bobsPizza.id },
+        include: recipeIncludeAllRelations,
+      })
+      const updated = mapRecipeDbResponseToMutationInput(
+        original as unknown as IRecipeResponse
+      )
 
-  //     updated.input.title = 'New title!'
-  //     updated.input.description = 'New description!'
-  //     updated.input.servings = 10000
-  //     updated.input.steps = [
-  //       {
-  //         stepNum: 1,
-  //         description: 'new first step!',
-  //         ingredients: [
-  //           {
-  //             quantity: 500,
-  //             unitName: 'grams',
-  //             ingredientName: 'yumminess',
-  //           },
-  //         ],
-  //       },
-  //       {
-  //         stepNum: 2,
-  //         description: 'new second step!',
-  //         ingredients: [
-  //           {
-  //             quantity: 500.2348,
-  //             unitName: 'grams',
-  //             ingredientName: 'yumminess',
-  //           },
-  //           {
-  //             quantity: 2000.234,
-  //             unitName: 'mlems',
-  //             ingredientName: 'toast',
-  //           },
-  //           {
-  //             quantity: 2384.29,
-  //             unitName: 'grams',
-  //             ingredientName: 'tastiness',
-  //           },
-  //           {
-  //             quantity: 2384892.23938,
-  //             unitName: 'fruits',
-  //             ingredientName: 'labor',
-  //           },
-  //         ],
-  //       },
-  //     ]
+      updated.input.title = 'New title!'
+      updated.input.description = 'New description!'
+      updated.input.servings = 10000
+      updated.input.steps = [
+        {
+          stepNum: 1,
+          description: 'new first step!',
+          ingredients: [
+            {
+              quantity: 500,
+              unitName: 'grams',
+              ingredientName: 'yumminess',
+            },
+          ],
+        },
+        {
+          stepNum: 2,
+          description: 'new second step!',
+          ingredients: [
+            {
+              quantity: 500.2348,
+              unitName: 'grams',
+              ingredientName: 'yumminess',
+            },
+            {
+              quantity: 2000.234,
+              unitName: 'mlems',
+              ingredientName: 'toast',
+            },
+            {
+              quantity: 2384.29,
+              unitName: 'grams',
+              ingredientName: 'tastiness',
+            },
+            {
+              quantity: 2384892.23938,
+              unitName: 'fruits',
+              ingredientName: 'labor',
+            },
+          ],
+        },
+      ]
 
-  //     const result = await updateRecipe({
-  //       id: original!.id,
-  //       input: updated.input,
-  //     })
-  //     const resultWithRelations = await db.recipe.findUnique({
-  //       where: { id: result.id },
-  //       include: recipeIncludeAllRelations,
-  //     })
+      const result = await updateRecipe({
+        id: original!.id,
+        input: updated.input,
+      })
+      const resultWithRelations = await db.recipe.findUnique({
+        where: { id: result.id },
+        include: recipeIncludeAllRelations,
+      })
 
-  //     expect(resultWithRelations).toBeTruthy()
-  //     if (resultWithRelations) {
-  //       const { chef, title, steps, description, servings } =
-  //         resultWithRelations
-  //       expect(chef!.id).toBe(scenario.recipe.bobsPizza.chefId)
-  //       expect(title).toBe(updated.input.title)
-  //       expect(description).toBe(updated.input.description)
-  //       expect(servings).toBe(updated.input.servings)
+      expect(resultWithRelations).toBeTruthy()
+      if (resultWithRelations) {
+        const { chef, title, steps, description, servings } =
+          resultWithRelations
+        expect(chef!.id).toBe(scenario.recipe.bobsPizza.chefId)
+        expect(title).toBe(updated.input.title)
+        expect(description).toBe(updated.input.description)
+        expect(servings).toBe(updated.input.servings)
 
-  //       expect(steps.length).toBe(updated.input.steps.length)
-  //       steps.forEach((step, sIdx) => {
-  //         expect(step.description).toBe(updated.input.steps[sIdx]?.description)
-  //         expect(step.stepNum).toBe(updated.input.steps[sIdx]?.stepNum)
-  //         expect(step.stepNum).toBe(updated.input.steps[sIdx]?.stepNum)
-  //         expect(step.ingredients.length).toBe(
-  //           updated.input.steps[sIdx]?.ingredients.length
-  //         )
-  //         step.ingredients.forEach((ingredient, iIdx) => {
-  //           expect(ingredient.quantity).toBe(
-  //             updated.input.steps[sIdx]?.ingredients[iIdx]?.quantity
-  //           )
-  //           expect(ingredient.ingredientRef.name).toBe(
-  //             updated.input.steps[sIdx]?.ingredients[iIdx]?.ingredientName
-  //           )
-  //           expect(ingredient.unit.name).toBe(
-  //             updated.input.steps[sIdx]?.ingredients[iIdx]?.unitName
-  //           )
-  //         })
-  //       })
-  //     } else {
-  //       fail('No recipe got returned!')
-  //     }
-  //   }
-  // )
+        expect(steps.length).toBe(updated.input.steps.length)
+        steps.forEach((step, sIdx) => {
+          expect(step.description).toBe(updated.input.steps[sIdx]?.description)
+          expect(step.stepNum).toBe(updated.input.steps[sIdx]?.stepNum)
+          expect(step.stepNum).toBe(updated.input.steps[sIdx]?.stepNum)
+          expect(step.ingredients.length).toBe(
+            updated.input.steps[sIdx]?.ingredients.length
+          )
+          step.ingredients.forEach((ingredient, iIdx) => {
+            expect(ingredient.quantity).toBe(
+              updated.input.steps[sIdx]?.ingredients[iIdx]?.quantity
+            )
+            expect(ingredient.ingredientRef.name).toBe(
+              updated.input.steps[sIdx]?.ingredients[iIdx]?.ingredientName
+            )
+            expect(ingredient.unit.name).toBe(
+              updated.input.steps[sIdx]?.ingredients[iIdx]?.unitName
+            )
+          })
+        })
+      } else {
+        fail('No recipe got returned!')
+      }
+    }
+  )
 
   scenario(
     'deletes a recipe while logged in',

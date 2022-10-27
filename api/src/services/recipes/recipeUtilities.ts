@@ -205,7 +205,7 @@ export const mapStepsMutationInputToDbCreateInputNoStepOutputUses = (
 }
 
 export const mapIngredientsMutationInputToDbUpdateInput = (
-  ingredients: InputMaybe<UpdateIngredientInput>[]
+  ingredients: UpdateIngredientInput[]
 ): Prisma.IngredientUpdateManyWithoutRecipeStepNestedInput => {
   // const allIngIds = ingredients.map((ingredient) => {
   //   return ingredient!.id!
@@ -213,10 +213,17 @@ export const mapIngredientsMutationInputToDbUpdateInput = (
   return {
     deleteMany: {}, // delete them all! TODO: delete only the ones *not* being updated
     upsert: ingredients.map((ingredient) => {
-      const { quantity, unitName, ingredientName, id } = ingredient!
-      const ingredientId = id || 'noid' // TODO there won't be an ID here as what's passing it in is really the update input
+      const { quantity, unitName, ingredientName } = ingredient
       return {
-        where: { id: ingredientId },
+        where: {
+          recipeId_stepNum_unitId_ingredientRefId: {
+            // TODO figure out how to get these IDs in here
+            recipeId: 'noid',
+            stepNum: -1,
+            unitId: 'noid',
+            ingredientRefId: 'noid',
+          },
+        },
         update: {
           quantity,
           unit: {
@@ -253,12 +260,12 @@ export const mapIngredientsMutationInputToDbUpdateInput = (
 }
 
 export const mapStepsMutationInputToDbUpdateInput = (
-  steps: InputMaybe<UpdateRecipeStepInput>[],
+  steps: UpdateRecipeStepInput[],
   recipeId: string
 ): Prisma.RecipeStepUpdateManyWithoutRecipeNestedInput | undefined => {
   return {
     upsert: steps.map((step) => {
-      const { stepNum, description, ingredients } = step!
+      const { stepNum, description, ingredients } = step
       return {
         where: {
           recipeId_stepNum: {
@@ -269,12 +276,18 @@ export const mapStepsMutationInputToDbUpdateInput = (
         update: {
           stepNum,
           description,
-          ingredients: mapIngredientsMutationInputToDbUpdateInput(ingredients),
+          ingredients:
+            ingredients &&
+            mapIngredientsMutationInputToDbUpdateInput(ingredients),
         },
         create: {
           stepNum,
           description,
-          ingredients: mapIngredientsMutationInputToDbCreateInput(ingredients),
+          ingredients:
+            ingredients &&
+            mapIngredientsMutationInputToDbCreateInput(
+              ingredients as CreateIngredientInput[] // these types overlap enough to do this
+            ),
         },
       }
     }),

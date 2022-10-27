@@ -24,8 +24,8 @@ export const schema = gql`
   Use this for modifying existing recipes
   """
   input UpdateRecipeStepInput {
-    recipeId: String
-    stepNum: Int
+    recipeId: String!
+    stepNum: Int!
     description: String!
     ingredients: [UpdateIngredientInput]
     stepOutputUses: [UpdateStepOutputUseInput]

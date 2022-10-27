@@ -6,6 +6,7 @@ import type {
   ResolversParentTypes,
   ResolversTypes,
   Maybe,
+  RecipeStepRelationResolvers,
 } from 'types/graphql'
 
 import { RedwoodGraphQLContext } from '@redwoodjs/graphql-server/dist/functions/types'
@@ -56,17 +57,13 @@ export const recipeStep: QueryResolvers['recipeStep'] = ({
 //   })
 // }
 
-type RequiredRecipeStepRelationResolvers = {
+type RequiredRecipeStepRelationResolvers = RecipeStepRelationResolvers & {
   recipe: RequiredResolverFn<
     ResolversTypes['Recipe'],
     ResolversParentTypes['RecipeStep'],
     RedwoodGraphQLContext
   >
-  ingredients: RequiredResolverFn<
-    Maybe<Array<Maybe<ResolversTypes['Ingredient']>>>,
-    ResolversParentTypes['RecipeStep'],
-    RedwoodGraphQLContext
-  >
+  ingredients: NonNullable<RecipeStepRelationResolvers['ingredients']>
 }
 
 export const RecipeStep: RequiredRecipeStepRelationResolvers = {
@@ -99,6 +96,6 @@ export const RecipeStep: RequiredRecipeStepRelationResolvers = {
       })
       .ingredients()
 
-    return maybeIngredients.length ? maybeIngredients : null
+    return maybeIngredients
   },
 }
