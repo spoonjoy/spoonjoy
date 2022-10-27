@@ -24,18 +24,16 @@ export default async () => {
       salt,
     }
 
-    const users: Prisma.UserCreateArgs['data'][] = [
-      {
-        username: 'ari',
-        email: 'ari@spoonjoy.app',
-        hashedPassword,
-        salt,
-      },
-    ]
+    const adminDbInput: Prisma.UserCreateArgs['data'] = {
+      username: 'ari',
+      email: 'ari@spoonjoy.app',
+      hashedPassword,
+      salt,
+    }
 
-    // Because we're using PostgreSQL, using `createMany` to insert multiple records is much faster
+    // Using `createMany` to insert multiple records is much faster
     // https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#createmany
-    await db.user.createMany({ data: users })
+    await db.user.create({ data: adminDbInput })
 
     const adminData = await db.user.findUnique({
       where: { username: admin.username },
