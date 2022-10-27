@@ -22,7 +22,7 @@
   "prisma": {
     "seed": "yarn rw exec seed"
   },
-  "packageManager": "yarn@3.2.3",
+  "packageManager": "yarn@3.2.4",
   "resolutions": {
     "@hookform/devtools@^4.2.2": "patch:@hookform/devtools@npm%3A4.2.2#./.yarn/patches/@hookform-devtools-npm-4.2.2-aafab2382b.patch",
     "@redwoodjs/api@^3.2.0": "patch:@redwoodjs/api@npm%3A3.2.0#./.yarn/patches/@redwoodjs-api-npm-3.2.0-48e80d9986.patch",
