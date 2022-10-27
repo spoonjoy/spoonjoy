@@ -109,7 +109,6 @@ model ShoppingList {
 }
 
 model ShoppingListItem {
-  id                String        @id @default(cuid())
   shoppingListId    String
   shoppingList      ShoppingList  @relation(fields: [shoppingListId], references: [id], onDelete: Cascade)
   quantity          Float
@@ -118,5 +117,5 @@ model ShoppingListItem {
   ingredientRefId   String
   ingredientRef     IngredientRef @relation(fields: [ingredientRefId], references: [id])
 
-  @@unique([shoppingListId, unitId, ingredientRefId])
+  @@id([shoppingListId, unitId, ingredientRefId])
 }
