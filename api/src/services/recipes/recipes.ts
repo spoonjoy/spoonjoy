@@ -53,16 +53,19 @@ export const recipe: QueryResolvers['recipe'] = ({ id }) => {
 const stepNumsAreSequentialAndOneIndexed = (
   input: Array<CreateRecipeStepInput | UpdateRecipeStepInput>
 ) => {
+  const errors: Array<Error> = []
   let expectedStepNum = 1
   input.forEach((step) => {
     if (step.stepNum != expectedStepNum) {
-      throw new Error(
-        `Step ${expectedStepNum} has the incorrect stepNum ${step.stepNum}. Step numbers must be sequential and start at 1`
+      errors.push(
+        new Error(
+          `Step ${expectedStepNum} has the incorrect stepNum ${step.stepNum}. Step numbers must be sequential and start at 1`
+        )
       )
-    } else {
-      expectedStepNum++
     }
+    expectedStepNum++
   })
+  if (errors.length > 0) throw errors
 }
 
 const everyStepHasAtLeastOneIngredientOrStepOutput = (

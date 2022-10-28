@@ -241,7 +241,7 @@ describe('recipes', () => {
         })
         expect(e).toStrictEqual(
           new ServiceValidationError(
-            'Step 2 has the incorrect stepNum 3. Step numbers must be sequential and start at 1'
+            'Error: Step 2 has the incorrect stepNum 3. Step numbers must be sequential and start at 1'
           )
         )
       }
@@ -398,22 +398,108 @@ describe('recipes', () => {
           expect(step.stepNum).toBe(updated.input.steps[sIdx]?.stepNum)
           expect(step.stepNum).toBe(updated.input.steps[sIdx]?.stepNum)
           expect(step.ingredients.length).toBe(
-            updated.input.steps[sIdx]?.ingredients.length
+            updated.input.steps[sIdx]?.ingredients!.length
           )
           step.ingredients.forEach((ingredient, iIdx) => {
             expect(ingredient.quantity).toBe(
-              updated.input.steps[sIdx]?.ingredients[iIdx]?.quantity
+              updated.input.steps[sIdx]?.ingredients![iIdx]?.quantity
             )
             expect(ingredient.ingredientRef.name).toBe(
-              updated.input.steps[sIdx]?.ingredients[iIdx]?.ingredientName
+              updated.input.steps[sIdx]?.ingredients![iIdx]?.ingredientName
             )
             expect(ingredient.unit.name).toBe(
-              updated.input.steps[sIdx]?.ingredients[iIdx]?.unitName
+              updated.input.steps[sIdx]?.ingredients![iIdx]?.unitName
             )
           })
         })
       } else {
         fail('No recipe got returned!')
+      }
+    }
+  )
+
+  scenario(
+    "can't update a recipe with incorrectly numbered steps",
+    async (scenario: RecipeScenario) => {
+      await db.user
+        .findUnique({
+          where: { id: scenario.recipe.bobsPizza.chef.id },
+        })
+        .then((user) => {
+          mockCurrentUser({
+            id: user!.id,
+            username: user!.username,
+          })
+        })
+
+      const original = await db.recipe.findUnique({
+        where: { id: scenario.recipe.bobsPizza.id },
+        include: recipeIncludeAllRelations,
+      })
+      const updated = mapRecipeDbResponseToMutationInput(
+        original as unknown as IRecipeResponse
+      )
+
+      updated.input.title = 'New title!'
+      updated.input.description = 'New description!'
+      updated.input.servings = 10000
+      updated.input.steps = [
+        {
+          recipeId: original!.id,
+          stepNum: 2,
+          description: 'new first step!',
+          ingredients: [
+            {
+              quantity: 500,
+              unitName: 'grams',
+              ingredientName: 'yumminess',
+            },
+          ],
+        },
+        {
+          recipeId: original!.id,
+          stepNum: 5,
+          description: 'new second step!',
+          ingredients: [
+            {
+              quantity: 500.2348,
+              unitName: 'grams',
+              ingredientName: 'yumminess',
+            },
+            {
+              quantity: 2000.234,
+              unitName: 'mlems',
+              ingredientName: 'toast',
+            },
+            {
+              quantity: 2384.29,
+              unitName: 'grams',
+              ingredientName: 'tastiness',
+            },
+            {
+              quantity: 2384892.23938,
+              unitName: 'fruits',
+              ingredientName: 'labor',
+            },
+          ],
+        },
+      ]
+
+      expect.assertions(2)
+      try {
+        await updateRecipe({
+          id: original!.id,
+          input: updated.input,
+        })
+      } catch (e) {
+        expect(e).toMatchObject({
+          name: 'ServiceValidationError',
+        })
+        expect(e).toStrictEqual(
+          new ServiceValidationError(
+            'Error: Step 1 has the incorrect stepNum 2. Step numbers must be sequential and start at 1,Error: Step 2 has the incorrect stepNum 5. Step numbers must be sequential and start at 1'
+          )
+        )
       }
     }
   )
