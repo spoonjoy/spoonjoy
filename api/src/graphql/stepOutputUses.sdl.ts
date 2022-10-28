@@ -1,9 +1,9 @@
 export const schema = gql`
   type StepOutputUse {
     id: String!
-    outputOfStepId: String!
+    "The step who's output is being used"
     outputOfStep: RecipeStep!
-    inputOfStepId: String!
+    "The step who's doing the using"
     inputOfStep: RecipeStep!
   }
 
@@ -15,15 +15,15 @@ export const schema = gql`
   input CreateStepOutputUseInput {
     "The step who's output is being used"
     outputOfStepNum: Int!
-    "The step who's doing the using"
-    inputOfStepNum: Int!
+    "The step who's doing the using. Can be left out if creating steps output uses at the same time as the recipeSteps"
+    inputOfStepNum: Int
   }
 
   input UpdateStepOutputUseInput {
     "The step who's output is being used"
     outputOfStepNum: Int!
-    "The step who's doing the using"
-    inputOfStepNum: Int!
+    "The step who's doing the using. Can be left out if creating steps output uses at the same time as the recipeSteps"
+    inputOfStepNum: Int
   }
 
   #   type Mutation {

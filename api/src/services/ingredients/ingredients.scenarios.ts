@@ -1,4 +1,5 @@
 import type { Prisma, Ingredient } from '@prisma/client'
+
 import type { ScenarioData } from '@redwoodjs/testing/api'
 
 export const standard = defineScenario<Prisma.IngredientCreateArgs>({
@@ -9,6 +10,7 @@ export const standard = defineScenario<Prisma.IngredientCreateArgs>({
         recipeStep: {
           create: {
             stepNum: 453873,
+            description: 'String',
             recipe: {
               create: {
                 title: 'String',
@@ -34,6 +36,7 @@ export const standard = defineScenario<Prisma.IngredientCreateArgs>({
         recipeStep: {
           create: {
             stepNum: 7890004,
+            description: 'String',
             recipe: {
               create: {
                 title: 'String',

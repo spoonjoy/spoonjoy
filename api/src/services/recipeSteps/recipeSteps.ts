@@ -64,6 +64,7 @@ type RequiredRecipeStepRelationResolvers = RecipeStepRelationResolvers & {
     RedwoodGraphQLContext
   >
   ingredients: NonNullable<RecipeStepRelationResolvers['ingredients']>
+  stepOutputUses: NonNullable<RecipeStepRelationResolvers['stepOutputUses']>
 }
 
 export const RecipeStep: RequiredRecipeStepRelationResolvers = {
@@ -97,5 +98,19 @@ export const RecipeStep: RequiredRecipeStepRelationResolvers = {
       .ingredients()
 
     return maybeIngredients
+  },
+  stepOutputUses: async (_obj, { root }) => {
+    const maybeStepOutputUses = await db.recipeStep
+      .findUnique({
+        where: {
+          recipeId_stepNum: {
+            recipeId: root.recipeId,
+            stepNum: root.stepNum,
+          },
+        },
+      })
+      .usingSteps()
+
+    return maybeStepOutputUses
   },
 }

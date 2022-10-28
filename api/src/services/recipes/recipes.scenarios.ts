@@ -17,6 +17,12 @@ export const recipeIncludeAllRelations = {
           unit: true,
         },
       },
+      usingSteps: {
+        include: {
+          outputOfStep: true,
+          inputOfStep: true,
+        },
+      },
     },
   },
 }
