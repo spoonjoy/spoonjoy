@@ -1,5 +1,4 @@
-import { CreateRecipeInput } from 'types/graphql'
-
+import { ServiceValidationError } from '@redwoodjs/api'
 import { RedwoodGraphQLError } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
@@ -7,6 +6,10 @@ import { db } from 'src/lib/db'
 import { RecipeStep } from '../recipeSteps/recipeSteps'
 import { StandardScenario as UserScenario } from '../users/users.scenarios'
 
+import {
+  recipeMutationInputIngsOnly,
+  recipeMutationInputNoIngOrStepUses,
+} from './recipeMockMutationInputs'
 import {
   recipes,
   recipe,
@@ -136,55 +139,13 @@ describe('recipes', () => {
     })
   })
 
-  const recipeMutationInput: { input: CreateRecipeInput } = {
-    input: {
-      title: 'Pizza!',
-      description: "The yummiest pizza you've ever had.",
-      servings: 2,
-      steps: [
-        {
-          stepNum: 1,
-          description: 'first step!',
-          ingredients: [
-            {
-              quantity: 1.5,
-              unitName: 'pounds',
-              ingredientName: 'cheese',
-            },
-            {
-              quantity: 2,
-              unitName: 'gallons',
-              ingredientName: 'tomato sauce',
-            },
-          ],
-        },
-        {
-          stepNum: 2,
-          description: null,
-          ingredients: [
-            {
-              quantity: 1.0,
-              unitName: 'stick',
-              ingredientName: 'butter',
-            },
-            {
-              quantity: 19,
-              unitName: 'loaf',
-              ingredientName: 'toast',
-            },
-          ],
-        },
-      ],
-    },
-  }
-
   scenario(
     'userOnlyScenario',
     'fails to create a recipe while not logged in',
     async () => {
       expect.assertions(1)
       try {
-        await createRecipe(recipeMutationInput)
+        await createRecipe(recipeMutationInputIngsOnly)
       } catch (e) {
         expect(e).toMatchObject(
           new RedwoodGraphQLError('You are not logged in!')
@@ -205,13 +166,13 @@ describe('recipes', () => {
       // TODO update this with non-hardcoded number
       expect.assertions(11)
 
-      const result = await createRecipe(recipeMutationInput)
+      const result = await createRecipe(recipeMutationInputIngsOnly)
       const resultWithRelations = await db.recipe.findUnique({
         where: { id: result.id },
         include: recipeIncludeAllRelations,
       })
 
-      const { input } = recipeMutationInput
+      const { input } = recipeMutationInputIngsOnly
       const { bob } = scenario.user
 
       expect(resultWithRelations).toBeTruthy()
@@ -232,6 +193,31 @@ describe('recipes', () => {
         })
       } else {
         fail('No recipe got returned!')
+      }
+    }
+  )
+
+  scenario(
+    'userOnlyScenario',
+    "can't create recipe without ingredients or stepUses on all steps",
+    async (scenario: UserScenario) => {
+      mockCurrentUser({
+        id: scenario.user.bob.id,
+        username: scenario.user.bob.username,
+      })
+
+      expect.assertions(2)
+      try {
+        await createRecipe(recipeMutationInputNoIngOrStepUses)
+      } catch (e) {
+        expect(e).toMatchObject({
+          name: 'ServiceValidationError',
+        })
+        expect(e).toStrictEqual(
+          new ServiceValidationError(
+            'Error: Step 1 must use at least one ingredient OR the output of at least one previous step,Error: Step 2 must use at least one ingredient OR the output of at least one previous step'
+          )
+        )
       }
     }
   )
