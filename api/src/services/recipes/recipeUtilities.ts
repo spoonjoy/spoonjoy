@@ -11,6 +11,7 @@ import {
   CreateRecipeInput,
   IngredientRef,
   Unit,
+  UpdateRecipeInput,
 } from 'types/graphql'
 
 // The below types are created based on the recipe scenarios. Trying to use the generated Prisma types was too...nonsensical
@@ -61,7 +62,7 @@ export interface IIngredientDbOutput {
 
 export interface IRecipeStepDbOutput {
   stepNum: number
-  description?: string
+  description: string
   ingredients: IIngredientDbOutput[]
 }
 // export type IRecipeStepDbOutput = Maybe<RecipeStep>[] &
@@ -110,10 +111,11 @@ export const mapIngredientsDbResponseToMutationInput = (
 
 export const mapStepsDbResponseToMutationInput = (
   steps: IRecipeStepDbOutput[]
-): InputMaybe<CreateRecipeStepInput>[] => {
+): UpdateRecipeStepInput[] => {
   return steps.map((step) => {
-    const { stepNum, description, ingredients } = step
+    const { stepNum, description, ingredients, recipeId } = step
     return {
+      recipeId,
       stepNum,
       description,
       ingredients: mapIngredientsDbResponseToMutationInput(ingredients),
@@ -134,11 +136,11 @@ export type IRecipeResponse = Recipe & {
 
 export const mapRecipeDbResponseToMutationInput = (
   recipe: IRecipeResponse
-): { input: CreateRecipeInput } => {
+): { input: UpdateRecipeInput } => {
   const { title, description, servings, steps } = recipe
   return {
     input: {
-      title: title!,
+      title: title,
       description,
       servings,
       steps: mapStepsDbResponseToMutationInput(steps as IRecipeStepDbOutput[]),

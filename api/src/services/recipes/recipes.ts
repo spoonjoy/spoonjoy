@@ -50,6 +50,21 @@ export const recipe: QueryResolvers['recipe'] = ({ id }) => {
 
 // TODO add service validation for all step nums being sequential and starting at 1
 
+const stepNumsAreSequentialAndOneIndexed = (
+  input: Array<CreateRecipeStepInput | UpdateRecipeStepInput>
+) => {
+  let expectedStepNum = 1
+  input.forEach((step) => {
+    if (step.stepNum != expectedStepNum) {
+      throw new Error(
+        `Step ${expectedStepNum} has the incorrect stepNum ${step.stepNum}. Step numbers must be sequential and start at 1`
+      )
+    } else {
+      expectedStepNum++
+    }
+  })
+}
+
 const everyStepHasAtLeastOneIngredientOrStepOutput = (
   input: Array<CreateRecipeStepInput | UpdateRecipeStepInput>
 ) => {
@@ -74,6 +89,7 @@ export const createRecipe: MutationResolvers['createRecipe'] = async ({
   const { title, description, servings, steps } = input
   validateWith(() => {
     everyStepHasAtLeastOneIngredientOrStepOutput(steps)
+    stepNumsAreSequentialAndOneIndexed(steps)
   })
 
   // Because steps in a recipe can refer to other steps, we need to first create the recipe so that we can have the recipe ID
@@ -108,6 +124,7 @@ export const updateRecipe: MutationResolvers['updateRecipe'] = async ({
   const { title, description, servings, steps } = input
   validateWith(() => {
     everyStepHasAtLeastOneIngredientOrStepOutput(steps)
+    stepNumsAreSequentialAndOneIndexed(steps)
   })
 
   const recipeNoStepOutputUsesDbInput: Prisma.RecipeUpdateInput = {
