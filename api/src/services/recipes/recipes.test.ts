@@ -7,6 +7,7 @@ import { RecipeStep } from '../recipeSteps/recipeSteps'
 import { StandardScenario as UserScenario } from '../users/users.scenarios'
 
 import {
+  recipeMutationInputIngsAndStepUses,
   recipeMutationInputIngsOnly,
   recipeMutationInputNoIngOrStepUses,
   recipeMutationInputWrongStepNums,
@@ -157,7 +158,7 @@ describe('recipes', () => {
 
   scenario(
     'userOnlyScenario',
-    'creates a recipe while logged in',
+    'creates a recipe while logged in, ingredients only',
     async (scenario: UserScenario) => {
       mockCurrentUser({
         id: scenario.user.bob.id,
@@ -190,6 +191,52 @@ describe('recipes', () => {
 
           expect(step.ingredients.length).toBe(
             input.steps[idx]!.ingredients!.length
+          )
+        })
+      } else {
+        fail('No recipe got returned!')
+      }
+    }
+  )
+
+  scenario(
+    'userOnlyScenario',
+    'creates a recipe while logged in, ingredients and step uses',
+    async (scenario: UserScenario) => {
+      mockCurrentUser({
+        id: scenario.user.bob.id,
+        username: scenario.user.bob.username,
+      })
+
+      // TODO update this with non-hardcoded number
+      expect.assertions(13)
+
+      const result = await createRecipe(recipeMutationInputIngsAndStepUses)
+      const resultWithRelations = await db.recipe.findUnique({
+        where: { id: result.id },
+        include: recipeIncludeAllRelations,
+      })
+
+      const { input } = recipeMutationInputIngsAndStepUses
+      const { bob } = scenario.user
+
+      expect(resultWithRelations).toBeTruthy()
+      if (resultWithRelations) {
+        const { chef, title, steps, description } = resultWithRelations
+        expect(chef.username).toEqual(bob.username)
+        expect(title).toEqual(input.title)
+        expect(description).toEqual(input.description)
+        expect(steps.length).toEqual(input.steps.length)
+
+        steps.forEach((step, idx) => {
+          expect(step.stepNum).toBe(input.steps[idx]?.stepNum)
+          expect(step.description).toBe(input.steps[idx]?.description)
+
+          expect(step.ingredients.length).toBe(
+            input.steps[idx]!.ingredients?.length || 0
+          )
+          expect(step.usingSteps.length).toBe(
+            input.steps[idx]!.stepOutputUses?.length || 0
           )
         })
       } else {

@@ -16,6 +16,8 @@ import { RedwoodGraphQLContext } from '@redwoodjs/graphql-server/dist/functions/
 import { requireAuth, requireRecipeAuth } from 'src/lib/auth'
 import { db } from 'src/lib/db'
 
+import { mapStepsMutationInputToDbCreateManyStepOutputUsesInput } from '../stepOutputUses/stepOutputUsesUtilities'
+
 import {
   mapStepsMutationInputToDbCreateInputNoStepOutputUses,
   mapStepsMutationInputToDbUpdateInput,
@@ -112,6 +114,15 @@ export const createRecipe: MutationResolvers['createRecipe'] = async ({
     // 1. Create the recipe
     const newRecipeNoStepOutputUses = await tx.recipe.create({
       data: recipeNoStepOutputUsesDbInput,
+    })
+
+    const recipeId = newRecipeNoStepOutputUses.id
+
+    await tx.stepOutputUse.createMany({
+      data: mapStepsMutationInputToDbCreateManyStepOutputUsesInput(
+        recipeId,
+        steps
+      ),
     })
 
     return newRecipeNoStepOutputUses
