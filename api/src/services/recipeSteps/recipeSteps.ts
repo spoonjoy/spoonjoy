@@ -5,7 +5,6 @@ import type {
   RequiredResolverFn,
   ResolversParentTypes,
   ResolversTypes,
-  Maybe,
   RecipeStepRelationResolvers,
 } from 'types/graphql'
 
