@@ -1,8 +1,6 @@
 import { applySnapshot, Instance, SnapshotIn, types } from 'mobx-state-tree'
 import { EditRecipeById } from 'types/graphql'
 
-import { mapRecipeDbResponseToMutationInput } from ''
-
 const IngredientInputStore = types
   .model('IngredientInputStore')
   .props({
