@@ -752,7 +752,7 @@ describe('recipes', () => {
     async (scenario: RecipeScenario) => {
       await db.user
         .findUnique({
-          where: { id: scenario.recipe.bobsPizza.chefId },
+          where: { id: scenario.recipe.bobsPizza.chef.id },
         })
         .then((user) => {
           mockCurrentUser({
