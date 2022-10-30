@@ -32,6 +32,7 @@ export const QUERY = gql`
           }
         }
         stepOutputUses {
+          id
           outputOfStep {
             id
             stepNum

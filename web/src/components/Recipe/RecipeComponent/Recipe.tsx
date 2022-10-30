@@ -28,9 +28,17 @@ const Recipe = ({ recipe }: Props) => {
   const isOwnRecipe = recipe.chef.id === currentUser?.id
 
   const listItemIds = recipe.steps.flatMap((step) => {
-    return step!.ingredients.flatMap((ingredient) => {
-      return ingredient!.id
-    })
+    const ingIds = step!.ingredients?.length
+      ? step.ingredients.flatMap((ingredient) => {
+          return ingredient!.id
+        })
+      : []
+    const stepUsageIds = step!.stepOutputUses?.length
+      ? step.stepOutputUses.flatMap((stepOutputUse) => {
+          return stepOutputUse!.id
+        })
+      : []
+    return [...ingIds, ...stepUsageIds]
   })
 
   return (

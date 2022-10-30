@@ -76,8 +76,9 @@ const mockRecipe1: RecursivePartial<Recipe> = {
       ],
       stepOutputUses: [
         {
+          id: 'testOutputUse1',
           outputOfStep: {
-            id: 'testOutputUse1',
+            id: 'testStepId1',
             stepNum: 1,
           },
         },
@@ -111,8 +112,9 @@ const mockRecipe1: RecursivePartial<Recipe> = {
       ],
       stepOutputUses: [
         {
+          id: 'testOutputUse2',
           outputOfStep: {
-            id: 'testOutputUse2',
+            id: 'testStepId2',
             stepNum: 2,
           },
         },
