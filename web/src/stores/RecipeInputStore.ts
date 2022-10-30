@@ -28,12 +28,28 @@ export interface IIngredientInputStoreSnapshotIn
 export interface IIngredientInputStore
   extends Instance<typeof IngredientInputStore> {}
 
+const StepUsageInputStore = types
+  .model('StepUsageInputStore')
+  .props({
+    outputOfStepNum: types.number,
+  })
+  .actions((self) => ({
+    setOutputOfStepNum: (outputOfStepNum: number) => {
+      self.outputOfStepNum = outputOfStepNum
+    },
+  }))
+export interface IStepUsageInputStoreSnapshotIn
+  extends SnapshotIn<typeof StepUsageInputStore> {}
+export interface IStepUsageInputStore
+  extends Instance<typeof StepUsageInputStore> {}
+
 const RecipeStepInputStore = types
   .model('RecipeStepStore')
   .props({
     stepNum: types.number,
     description: types.string,
     ingredients: types.array(IngredientInputStore),
+    stepOutputUsage: types.array(StepUsageInputStore),
   })
   .actions((self) => ({
     setStepNum: (stepNum: number) => {
@@ -134,6 +150,16 @@ export const recipeQueryResponseToInputSnapshotIn = (
               quantity: ingredient.quantity,
               unitName: ingredient.unit.name,
               ingredientName: ingredient.ingredientRef.name,
+            }
+          }
+        ),
+        stepOutputUsage: step.stepOutputUses.map(
+          (stepOutputUse): IStepUsageInputStoreSnapshotIn => {
+            if (!stepOutputUse) {
+              throw new Error('The ingredient seems to be missing!')
+            }
+            return {
+              outputOfStepNum: stepOutputUse.outputOfStep.stepNum,
             }
           }
         ),
