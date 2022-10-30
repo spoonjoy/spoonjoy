@@ -120,6 +120,58 @@ export const recipeMutationInputWrongStepNums: { input: CreateRecipeInput } = {
   },
 }
 
+export const recipeMutationInputWrongStepUses: { input: CreateRecipeInput } = {
+  input: {
+    title: 'Pizza!',
+    description: "The yummiest pizza you've ever had.",
+    servings: 2,
+    steps: [
+      {
+        stepNum: 1,
+        description: 'first step!',
+        ingredients: [
+          {
+            quantity: 1.5,
+            unitName: 'pounds',
+            ingredientName: 'cheese',
+          },
+          {
+            quantity: 2,
+            unitName: 'gallons',
+            ingredientName: 'tomato sauce',
+          },
+        ],
+        stepOutputUses: [
+          {
+            outputOfStepNum: 1,
+          },
+        ],
+      },
+      {
+        stepNum: 2,
+        description: 'another step',
+        ingredients: [
+          {
+            quantity: 1.0,
+            unitName: 'stick',
+            ingredientName: 'butter',
+          },
+          {
+            quantity: 19,
+            unitName: 'loaf',
+            ingredientName: 'toast',
+          },
+        ],
+        stepOutputUses: [
+          {
+            outputOfStepNum: 3,
+          },
+        ],
+      },
+    ],
+  },
+}
+
 export const recipeMutationInputNoIngOrStepUses: { input: CreateRecipeInput } =
   {
     input: {

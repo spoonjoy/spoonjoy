@@ -11,6 +11,7 @@ import {
   recipeMutationInputIngsOnly,
   recipeMutationInputNoIngOrStepUses,
   recipeMutationInputWrongStepNums,
+  recipeMutationInputWrongStepUses,
 } from './recipeMockMutationInputs'
 import {
   recipes,
@@ -289,6 +290,31 @@ describe('recipes', () => {
         expect(e).toStrictEqual(
           new ServiceValidationError(
             'Error: Step 2 has the incorrect stepNum 3. Step numbers must be sequential and start at 1'
+          )
+        )
+      }
+    }
+  )
+
+  scenario(
+    'userOnlyScenario',
+    "can't create a recipe with incorrect step output uses",
+    async (scenario: UserScenario) => {
+      mockCurrentUser({
+        id: scenario.user.bob.id,
+        username: scenario.user.bob.username,
+      })
+
+      expect.assertions(2)
+      try {
+        await createRecipe(recipeMutationInputWrongStepUses)
+      } catch (e) {
+        expect(e).toMatchObject({
+          name: 'ServiceValidationError',
+        })
+        expect(e).toStrictEqual(
+          new ServiceValidationError(
+            'Error: Step 1 is using the output of step 1. Steps can only use the outputs of previous steps,Error: Step 2 is using the output of step 3. Steps can only use the outputs of previous steps'
           )
         )
       }

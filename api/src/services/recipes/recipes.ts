@@ -50,40 +50,63 @@ export const recipe: QueryResolvers['recipe'] = ({ id }) => {
   })
 }
 
-// TODO add service validation for all step nums being sequential and starting at 1
-
-const stepNumsAreSequentialAndOneIndexed = (
-  input: Array<CreateRecipeStepInput | UpdateRecipeStepInput>
+const stepNumIsSequentialAndOneIndexed = (
+  step: CreateRecipeStepInput | UpdateRecipeStepInput,
+  stepIdx: number
 ) => {
-  const errors: Array<Error> = []
-  let expectedStepNum = 1
-  input.forEach((step) => {
-    if (step.stepNum != expectedStepNum) {
-      errors.push(
-        new Error(
-          `Step ${expectedStepNum} has the incorrect stepNum ${step.stepNum}. Step numbers must be sequential and start at 1`
-        )
-      )
-    }
-    expectedStepNum++
-  })
-  if (errors.length > 0) throw errors
+  if (step.stepNum != stepIdx + 1) {
+    return new Error(
+      `Step ${stepIdx + 1} has the incorrect stepNum ${
+        step.stepNum
+      }. Step numbers must be sequential and start at 1`
+    )
+  }
 }
 
-const everyStepHasAtLeastOneIngredientOrStepOutput = (
+const stepHasAtLeastOneIngredientOrStepOutput = (
+  step: CreateRecipeStepInput | UpdateRecipeStepInput
+) => {
+  if (!step.ingredients?.length && !step.stepOutputUses?.length) {
+    return new Error(
+      `Step ${step.stepNum} must use at least one ingredient OR the output of at least one previous step`
+    )
+  }
+}
+
+const stepOutputUsesAreValid = (
+  step: CreateRecipeStepInput | UpdateRecipeStepInput
+) => {
+  const errors: Array<Error> = []
+  step.stepOutputUses?.length &&
+    step.stepOutputUses.forEach((stepOutputUse) => {
+      const { outputOfStepNum } = stepOutputUse || {
+        outputOfStepNum: undefined,
+      }
+      // a step can't use the output of a step that didn't come before it
+      if (outputOfStepNum && outputOfStepNum >= step.stepNum) {
+        errors.push(
+          new Error(
+            `Step ${step.stepNum} is using the output of step ${outputOfStepNum}. Steps can only use the outputs of previous steps`
+          )
+        )
+      }
+    })
+  return errors
+}
+
+const stepValidations = (
   input: Array<CreateRecipeStepInput | UpdateRecipeStepInput>
 ) => {
   const errors: Array<Error> = []
-  input.forEach((step) => {
-    if (!step.ingredients?.length && !step.stepOutputUses?.length) {
-      errors.push(
-        new Error(
-          `Step ${step.stepNum} must use at least one ingredient OR the output of at least one previous step`
-        )
-      )
-    }
+  input.forEach((step, stepIdx) => {
+    const stepNumError = stepNumIsSequentialAndOneIndexed(step, stepIdx)
+    if (stepNumError) errors.push(stepNumError)
+    const stepIngOrOutputError = stepHasAtLeastOneIngredientOrStepOutput(step)
+    if (stepIngOrOutputError) errors.push(stepIngOrOutputError)
+    const stepOutputUseErrors = stepOutputUsesAreValid(step)
+    if (stepOutputUseErrors.length) errors.push(...stepOutputUseErrors)
   })
-  if (errors.length > 0) throw errors
+  if (errors.length) throw errors
 }
 
 export const createRecipe: MutationResolvers['createRecipe'] = async ({
@@ -93,8 +116,7 @@ export const createRecipe: MutationResolvers['createRecipe'] = async ({
 
   const { title, description, servings, steps } = input
   validateWith(() => {
-    everyStepHasAtLeastOneIngredientOrStepOutput(steps)
-    stepNumsAreSequentialAndOneIndexed(steps)
+    stepValidations(steps)
   })
 
   // Because steps in a recipe can refer to other steps, we need to first create the recipe so that we can have the recipe ID
@@ -137,8 +159,7 @@ export const updateRecipe: MutationResolvers['updateRecipe'] = async ({
 
   const { title, description, servings, steps } = input
   validateWith(() => {
-    everyStepHasAtLeastOneIngredientOrStepOutput(steps)
-    stepNumsAreSequentialAndOneIndexed(steps)
+    stepValidations(steps)
   })
 
   const recipeNoStepOutputUsesDbInput: Prisma.RecipeUpdateInput = {
