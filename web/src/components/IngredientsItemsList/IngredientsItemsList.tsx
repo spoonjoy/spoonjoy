@@ -82,11 +82,15 @@ const getIngredientItemInfo = (item: IIngredientItem, selected: boolean) => {
     itemLabel: (
       <span
         id={`ingredient-${id}-label`}
-        className={`select-none font-medium  ${
+        className={`flex select-none justify-between ${
           selected ? 'text-gray-400 line-through' : 'text-gray-700'
         }`}
       >
-        {quantity} {unit.name} {ingredientRef.name}
+        <span className="font-medium">{ingredientRef.name}</span>
+        <span className="font-normal">
+          {' '}
+          {quantity} {unit.name}{' '}
+        </span>
       </span>
     ),
   }
@@ -102,11 +106,12 @@ const getStepOutputUseItemInfo = (
     itemLabel: (
       <span
         id={`stepoutputusage-${id}-label`}
-        className={`select-none font-medium  ${
+        className={`select-none ${
           selected ? 'text-gray-400 line-through' : 'text-gray-700'
         }`}
       >
-        output of step {outputOfStep.stepNum}
+        <span className="font-normal">output of </span>
+        <span className="font-medium">step {outputOfStep.stepNum}</span>
       </span>
     ),
   }
