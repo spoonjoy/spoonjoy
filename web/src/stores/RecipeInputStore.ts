@@ -28,8 +28,8 @@ export interface IIngredientInputStoreSnapshotIn
 export interface IIngredientInputStore
   extends Instance<typeof IngredientInputStore> {}
 
-const StepUsageInputStore = types
-  .model('StepUsageInputStore')
+const StepUseInputStore = types
+  .model('StepUseInputStore')
   .props({
     outputOfStepNum: types.number,
   })
@@ -38,10 +38,10 @@ const StepUsageInputStore = types
       self.outputOfStepNum = outputOfStepNum
     },
   }))
-export interface IStepUsageInputStoreSnapshotIn
-  extends SnapshotIn<typeof StepUsageInputStore> {}
-export interface IStepUsageInputStore
-  extends Instance<typeof StepUsageInputStore> {}
+export interface IStepUseInputStoreSnapshotIn
+  extends SnapshotIn<typeof StepUseInputStore> {}
+export interface IStepUseInputStore
+  extends Instance<typeof StepUseInputStore> {}
 
 const RecipeStepInputStore = types
   .model('RecipeStepStore')
@@ -49,7 +49,7 @@ const RecipeStepInputStore = types
     stepNum: types.number,
     description: types.string,
     ingredients: types.array(IngredientInputStore),
-    stepOutputUsage: types.array(StepUsageInputStore),
+    stepOutputUses: types.array(StepUseInputStore),
   })
   .actions((self) => ({
     setStepNum: (stepNum: number) => {
@@ -67,6 +67,14 @@ const RecipeStepInputStore = types
     },
     removeIngredient: () => {
       self.ingredients.pop()
+    },
+    addStepOutputUse: () => {
+      self.stepOutputUses.push({
+        outputOfStepNum: NaN,
+      })
+    },
+    removeStepOutputUse: () => {
+      self.stepOutputUses.pop()
     },
   }))
 export interface IRecipeStepInputStoreSnapshotIn
@@ -153,8 +161,8 @@ export const recipeQueryResponseToInputSnapshotIn = (
             }
           }
         ),
-        stepOutputUsage: step.stepOutputUses.map(
-          (stepOutputUse): IStepUsageInputStoreSnapshotIn => {
+        stepOutputUses: step.stepOutputUses.map(
+          (stepOutputUse): IStepUseInputStoreSnapshotIn => {
             if (!stepOutputUse) {
               throw new Error('The ingredient seems to be missing!')
             }
