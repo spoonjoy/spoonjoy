@@ -74,6 +74,14 @@ const mockRecipe1: RecursivePartial<Recipe> = {
           },
         },
       ],
+      stepOutputUses: [
+        {
+          outputOfStep: {
+            id: 'testOutputUse1',
+            stepNum: 1,
+          },
+        },
+      ],
       description: 'Blend in food processor',
     },
     {
@@ -98,6 +106,14 @@ const mockRecipe1: RecursivePartial<Recipe> = {
           },
           ingredientRef: {
             name: 'cold water',
+          },
+        },
+      ],
+      stepOutputUses: [
+        {
+          outputOfStep: {
+            id: 'testOutputUse2',
+            stepNum: 2,
           },
         },
       ],
