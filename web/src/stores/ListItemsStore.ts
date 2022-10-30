@@ -1,15 +1,9 @@
 import { SnapshotIn, types } from 'mobx-state-tree'
 
-export enum ListItemType {
-  Ingredient = 'Ingredient',
-  ShoppingListItem = 'ShoppingListItem',
-}
-
 const ListItemStore = types
   .model('ListItemStore')
   .props({
     id: types.identifier,
-    itemType: types.enumeration<ListItemType>(Object.values(ListItemType)),
     selected: types.optional(types.boolean, false),
   })
   .actions((self) => ({
@@ -19,7 +13,7 @@ const ListItemStore = types
   }))
 
 /**
- * This simply stores items IDs (either shopping list items or recipe step ingredients) and their selection state
+ * This simply stores items IDs (either shopping list items or recipe step ingredients or recipe step output uses) and their selection state
  */
 export const ListItemsStore = types
   .model('ListItemsStore')
@@ -30,8 +24,8 @@ export const ListItemsStore = types
     clearState: () => {
       self.items.clear()
     },
-    addItem: (id: string, itemType: ListItemType) => {
-      self.items.put({ id, itemType })
+    addItem: (id: string) => {
+      self.items.put({ id })
     },
     resetItemStates: (itemIds: string[]) => {
       itemIds.forEach((id) => {

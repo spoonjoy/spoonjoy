@@ -6,7 +6,6 @@ import { MetaTags } from '@redwoodjs/web'
 import IngredientsItemsList from 'src/components/IngredientsItemsList/IngredientsItemsList'
 import ReloadIngredientsItemsList from 'src/components/IngredientsItemsList/ReloadIngredientsItemsList'
 import { HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
-import { ListItemType } from 'src/stores/ListItemsStore'
 
 import RecipeControlBar from './RecipeControlBar'
 
@@ -68,18 +67,26 @@ const Recipe = ({ recipe }: Props) => {
 
       <div>
         {recipe.steps.map((step) => {
-          const { stepNum, description, ingredients } = step!
+          const { stepNum, description, ingredients, stepOutputUses } = step!
           return (
             <div key={stepNum} className="mt-2">
               <h2 className="text-lg font-medium text-gray-900">
                 step {stepNum}
               </h2>
               {ingredients && (
-                <div className="m-5 max-w-xs">
-                  <IngredientsItemsList
-                    items={ingredients}
-                    itemsType={ListItemType.Ingredient}
-                  />
+                <div className="m-5 grid max-w-xs gap-y-4">
+                  {ingredients?.length && (
+                    <IngredientsItemsList
+                      items={ingredients}
+                      listType="recipeIngredients"
+                    />
+                  )}
+                  {stepOutputUses?.length && (
+                    <IngredientsItemsList
+                      items={stepOutputUses}
+                      listType="stepOutputUses"
+                    />
+                  )}
                 </div>
               )}
               <div className="pb-5 text-gray-800">
