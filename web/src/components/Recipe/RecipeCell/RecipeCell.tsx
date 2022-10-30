@@ -31,6 +31,12 @@ export const QUERY = gql`
             name
           }
         }
+        stepOutputUses {
+          outputOfStep {
+            id
+            stepNum
+          }
+        }
       }
       createdAt
       deletedAt
