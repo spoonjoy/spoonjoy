@@ -7,6 +7,7 @@ import StyledTextAreaField from 'src/components/formComponents/StyledTextAreaFie
 import { IRecipeStepInputStore } from 'src/stores/RecipeInputStore'
 
 import IngredientFormFrag from './IngredientFormFrag'
+import StepOutputUsesFormFrag from './StepOutputUsesFormFrag'
 
 interface StepFormFragProps {
   recipeId?: string // this is necessary when editing a recipe because eventually I'd like to be able to update steps directly etc
@@ -65,29 +66,17 @@ const StepFormFrag = ({
           canRem={ingredients.length > 1} // need to have at least one ingredient
           containerClassName="pt-2"
         />
-        <legend className="mt-2 block text-sm font-medium text-gray-700">
-          Step {stepNum} Previous Step Uses
-        </legend>
-        {stepOutputUses.map((stepOutputUse, stepUseIdx) => {
-          return (
-            <div key={`step-${stepNum}-stepusage-${stepUseIdx}`}>
-              step output use goes here
-            </div>
-          )
-        })}
-        <AddRemBtns
-          id="add-rem-stepoutputuses-btns"
-          itemName="Use Step Output"
-          onAdd={() => {
-            addStepOutputUse()
-          }}
-          onRem={() => {
-            removeStepOutputFields(stepNum, ingredients.length - 1)
-            removeStepOutputUse()
-          }}
-          canRem={stepOutputUses.length > 0}
-          containerClassName="pt-2"
-        />
+        {stepNum > 1 && (
+          <>
+            <legend className="mt-2 block text-sm font-medium text-gray-700">
+              In step {stepNum}, use the output of the following steps:
+            </legend>
+            <StepOutputUsesFormFrag
+              stepOutputUses={stepOutputUses}
+              stepNum={stepNum}
+            />
+          </>
+        )}
       </div>
       {recipeId && (
         <HiddenField
