@@ -2,7 +2,6 @@ import type { FindMyShoppingList } from 'types/graphql'
 
 import IngredientsItemsList from 'src/components/IngredientsItemsList/IngredientsItemsList'
 import ReloadIngredientsItemsList from 'src/components/IngredientsItemsList/ReloadIngredientsItemsList'
-import { ListItemType } from 'src/stores/ListItemsStore'
 
 interface ShoppingListProps {
   shoppingList: NonNullable<FindMyShoppingList['shoppingList']>
@@ -22,10 +21,7 @@ const ShoppingList = ({ shoppingList }: ShoppingListProps) => {
         />
       </div>
       {items && (
-        <IngredientsItemsList
-          items={items}
-          itemsType={ListItemType.ShoppingListItem}
-        />
+        <IngredientsItemsList items={items} listType="shoppingListItems" />
       )}
     </>
   )
