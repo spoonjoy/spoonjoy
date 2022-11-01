@@ -7,6 +7,7 @@ import StyledTextAreaField from 'src/components/formComponents/StyledTextAreaFie
 import { IRecipeStepInputStore } from 'src/stores/RecipeInputStore'
 
 import IngredientFormFrag from './IngredientFormFrag'
+import { RecipeFormControl } from './RecipeForm'
 import StepOutputUsesFormFrag from './StepOutputUsesFormFrag'
 
 interface StepFormFragProps {
@@ -15,24 +16,24 @@ interface StepFormFragProps {
   removeIngredientFields: (stepNum: number, ingIdx: number) => void
   removeStepOutputFields: (stepNum: number, outputUseIdx: number) => void
   errors: FieldErrors
+  control: RecipeFormControl
 }
 
 const StepFormFrag = ({
   recipeId,
   step,
   removeIngredientFields,
-  removeStepOutputFields,
   errors,
+  control,
 }: StepFormFragProps) => {
   const {
     stepNum,
     description,
     ingredients,
     stepOutputUses,
+    setStepOutputUses,
     addIngredient,
     removeIngredient,
-    addStepOutputUse,
-    removeStepOutputUse,
   } = step
   return (
     <div className="mb-3">
@@ -73,7 +74,10 @@ const StepFormFrag = ({
             </legend>
             <StepOutputUsesFormFrag
               stepOutputUses={stepOutputUses}
+              setStepOutputUses={setStepOutputUses}
               stepNum={stepNum}
+              name={`steps.${stepNum}.stepOutputUses`}
+              control={control}
             />
           </>
         )}

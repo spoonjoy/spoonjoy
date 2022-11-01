@@ -6,7 +6,7 @@ import type {
   UpdateRecipeInput,
 } from 'types/graphql'
 
-import { RWGqlError } from '@redwoodjs/forms'
+import { Control, RWGqlError } from '@redwoodjs/forms'
 import { Form, FormError, Submit, useForm } from '@redwoodjs/forms'
 import { navigate, routes } from '@redwoodjs/router'
 import { toast } from '@redwoodjs/web/dist/toast'
@@ -19,6 +19,11 @@ import StepFormFrag from './StepFormFrag'
 
 type FormUpdateRecipe = NonNullable<UpdateRecipeInput>
 type FormCreateRecipe = NonNullable<CreateRecipeInput>
+
+export type RecipeFormControl = Control<
+  UpdateRecipeInput | CreateRecipeInput,
+  any
+>
 
 export type onCreateRecipe = (
   data: CreateRecipeInput,
@@ -103,7 +108,7 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
   }
 
   const removeStepOutputFields = (stepNum: number, outputUseIdx: number) => {
-    unregister(getIngredientFieldsNames(stepNum, outputUseIdx))
+    unregister(getStepOutputFieldsNames(stepNum, outputUseIdx))
   }
 
   const removeStepFields = (stepNum: number) => {
@@ -148,6 +153,7 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
               removeIngredientFields={removeIngredientFields}
               removeStepOutputFields={removeStepOutputFields}
               errors={errors}
+              control={control}
             />
           )
         })}

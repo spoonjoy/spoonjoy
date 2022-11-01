@@ -1,70 +1,130 @@
-import { Listbox } from '@headlessui/react'
+import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 
-import { IRecipeStepInputStore } from 'src/stores/RecipeInputStore'
+import { useController } from '@redwoodjs/forms'
+
+import { classNames } from 'src/helpers/css'
+import {
+  IRecipeStepInputStore,
+  IStepUseInputStoreSnapshotIn,
+} from 'src/stores/RecipeInputStore'
+
+import { RecipeFormControl } from './RecipeForm'
 
 interface StepOutputUsesFormFragProps {
   stepNum: number
   stepOutputUses: IRecipeStepInputStore['stepOutputUses']
+  control: RecipeFormControl
+  name: `steps.${number}.stepOutputUses`
+  setStepOutputUses: (stepOutputUses: IStepUseInputStoreSnapshotIn[]) => void
 }
 const StepOutputUsesFormFrag = ({
   stepNum,
   stepOutputUses,
+  setStepOutputUses,
+  control,
+  name,
 }: StepOutputUsesFormFragProps) => {
-  const [selectedStepOutputUses, setSelectedStepOutputUses] =
-    React.useState(stepOutputUses)
+  const {
+    field: { value, onChange: rhfOnChange },
+  } = useController({
+    name: name,
+    control: control,
+    defaultValue: stepOutputUses,
+  })
+
+  // generate the valid stepnums
+  const stepOutputUseOptions = [...Array(stepNum - 1).keys()].map(
+    (stepNumToUse) => ({
+      outputOfStepNum: stepNumToUse + 1,
+    })
+  )
+
   return (
-    <Listbox
-      value={selectedStepOutputUses}
-      onChange={(e) => {
-        console.log('listbox onchange', e)
-        setSelectedStepOutputUses(e)
-      }}
-      multiple
-    >
-      <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
-        <span className="block truncate">
-          {selectedStepOutputUses.length
-            ? selectedStepOutputUses
-                .map((outputUse) => `step ${outputUse.outputOfStepNum}`)
-                .join(', ')
-            : 'Select Steps'}
-        </span>
-        <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-          <ChevronUpDownIcon
-            className="h-5 w-5 text-gray-400"
-            aria-hidden="true"
-          />
-        </span>
-      </Listbox.Button>
-      <Listbox.Options>
-        {/* generate the valid stepnums */}
-        {[...Array(stepNum - 1).keys()]
-          .map((stepNumToUse) => (stepNumToUse += 1))
-          .map((stepNumToUse) => (
-            <Listbox.Option
-              key={stepNumToUse}
-              value={{ outputOfStepNum: stepNumToUse }}
+    <div className="max-w-sm">
+      <Listbox
+        value={value}
+        defaultValue={stepOutputUses}
+        name={name}
+        by="outputOfStepNum"
+        onChange={(e) => {
+          setStepOutputUses(e)
+          rhfOnChange(e)
+        }}
+        multiple
+      >
+        {({ open }) => (
+          <>
+            <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
+              <span className="block truncate">
+                {stepOutputUses.length
+                  ? stepOutputUses
+                      .map((outputUse) => `Step ${outputUse.outputOfStepNum}`)
+                      .join(', ')
+                  : 'Select Steps'}
+              </span>
+              <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                <ChevronUpDownIcon
+                  className="h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
+              </span>
+            </Listbox.Button>
+            <Transition
+              show={open}
+              as={React.Fragment}
+              leave="transition ease-in duration-100"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
             >
-              Step {stepNumToUse}
-            </Listbox.Option>
-          ))}
-      </Listbox.Options>
-    </Listbox>
-    // <SelectField
-    //   name={`steps.${stepNum - 1}.stepOutputUses.[number].outputOfStepNum`}
-    //   multiple={true}
-    // >
-    //   {/* if stepnum is, say, 3, we want this to be array of values 0 and 1 so that we can turn it into the options of steps 1 and 2. note that this form field should not be present on step 1 */}
-    //   {[...Array(stepNum - 2).keys()].map((stepNumToUse) => {
-    //     stepNumToUse++ // array will be 0 indexed but stepnum is 1 indexed
-    //     return (
-    //       <option key={stepNumToUse} value={{ outputOfStepNum: stepNumToUse }}>
-    //         Step {stepNumToUse}
-    //       </option>
-    //     )
-    //   })}
-    // </SelectField>
+              <Listbox.Options className="absolute z-10 mt-1 max-h-60 max-w-sm overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                {stepOutputUseOptions.map((stepOutputUse) => (
+                  <Listbox.Option
+                    key={stepOutputUse.outputOfStepNum}
+                    value={stepOutputUse}
+                    className={({ active }) =>
+                      classNames(
+                        active ? 'bg-indigo-600 text-white' : 'text-gray-900',
+                        'relative cursor-default select-none py-2 pl-3 pr-9'
+                      )
+                    }
+                  >
+                    {({ selected, active }) => {
+                      return (
+                        <>
+                          <span
+                            className={classNames(
+                              selected ? 'font-semibold' : 'font-normal',
+                              'block truncate'
+                            )}
+                          >
+                            Step {stepOutputUse.outputOfStepNum}
+                          </span>
+
+                          {selected ? (
+                            <span
+                              className={classNames(
+                                active ? 'text-white' : 'text-indigo-600',
+                                'absolute inset-y-0 right-0 flex items-center pr-4'
+                              )}
+                            >
+                              <CheckIcon
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
+                            </span>
+                          ) : null}
+                        </>
+                      )
+                    }}
+                  </Listbox.Option>
+                ))}
+              </Listbox.Options>
+            </Transition>
+          </>
+        )}
+      </Listbox>
+    </div>
   )
 }
 

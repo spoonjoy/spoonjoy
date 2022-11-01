@@ -68,9 +68,9 @@ const RecipeStepInputStore = types
     removeIngredient: () => {
       self.ingredients.pop()
     },
-    // setStepOutputUses: (stepOutputUses: IStepUseInputStoreSnapshotIn[]) => {
-    //   self.stepOutputUses.
-    // },
+    setStepOutputUses: (stepOutputUses: IStepUseInputStoreSnapshotIn[]) => {
+      applySnapshot(self.stepOutputUses, stepOutputUses)
+    },
     addStepOutputUse: () => {
       self.stepOutputUses.push({
         outputOfStepNum: NaN,
