@@ -64,7 +64,10 @@ const StepFormFrag = ({
             removeIngredientFields(stepNum, ingredients.length - 1)
             removeIngredient()
           }}
-          canRem={ingredients.length > 1} // need to have at least one ingredient
+          canRem={
+            (ingredients.length > 1 || stepOutputUses.length >= 1) &&
+            ingredients.length > 0
+          } // need to have at least one ingredient or stepOutputUse
           containerClassName="pt-2"
         />
         {stepNum > 1 && (
