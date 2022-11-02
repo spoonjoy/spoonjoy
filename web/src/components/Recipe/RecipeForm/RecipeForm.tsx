@@ -81,12 +81,9 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
   }
 
   const getStepOutputFieldsNames = (
-    stepNum: number,
-    outputUseIdx: number
-  ): Array<`steps.${number}.stepOutputUses.${number}.outputOfStepNum`> => {
-    return [
-      `steps.${stepNum - 1}.stepOutputUses.${outputUseIdx}.outputOfStepNum`,
-    ]
+    stepNum: number
+  ): Array<`steps.${number}.stepOutputUses`> => {
+    return [`steps.${stepNum - 1}.stepOutputUses`]
   }
 
   const getStepFieldsNames = (
@@ -107,8 +104,8 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
     unregister(getIngredientFieldsNames(stepNum, ingIdx))
   }
 
-  const removeStepOutputFields = (stepNum: number, outputUseIdx: number) => {
-    unregister(getStepOutputFieldsNames(stepNum, outputUseIdx))
+  const removeStepOutputFields = (stepNum: number) => {
+    unregister(getStepOutputFieldsNames(stepNum))
   }
 
   const removeStepFields = (stepNum: number) => {
@@ -119,7 +116,7 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
       removeIngredientFields(stepNum, i)
     }
     for (let i = 0; i < numOfStepOutputUses; i++) {
-      removeStepOutputFields(stepNum, i)
+      removeStepOutputFields(stepNum)
     }
     unregister(getStepFieldsNames(stepNum))
   }
