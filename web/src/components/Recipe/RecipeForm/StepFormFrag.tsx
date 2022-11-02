@@ -76,7 +76,7 @@ const StepFormFrag = ({
               stepOutputUses={stepOutputUses}
               setStepOutputUses={setStepOutputUses}
               stepNum={stepNum}
-              name={`steps.${stepNum}.stepOutputUses`}
+              name={`steps.${stepNum - 1}.stepOutputUses`}
               control={control}
             />
           </>
