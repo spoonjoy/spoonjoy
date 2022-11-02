@@ -52,9 +52,15 @@ const IngredientsItemsList = ({ items, listType }: IIngredientsItemsList) => {
 
           const itemIcon =
             listType === 'recipeIngredients' ? (
-              <BeakerIcon className="mr-3 h-5 w-5" aria-hidden="true" />
+              <BeakerIcon
+                className="mr-3 h-5 w-5 text-indigo-600"
+                aria-hidden="true"
+              />
             ) : (
-              <Square2StackIcon className="mr-3 h-5 w-5" aria-hidden="true" />
+              <Square2StackIcon
+                className="mr-3 h-5 w-5 text-indigo-600"
+                aria-hidden="true"
+              />
             )
           return (
             <li key={itemInfo.key}>
