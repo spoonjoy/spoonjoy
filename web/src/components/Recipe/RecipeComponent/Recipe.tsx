@@ -75,7 +75,7 @@ const Recipe = ({ recipe }: Props) => {
               </h2>
               {ingredients && (
                 <div className="m-5 grid max-w-xs gap-y-4">
-                  {ingredients?.length && (
+                  {ingredients.length > 0 && (
                     <IngredientsItemsList
                       items={ingredients}
                       listType="recipeIngredients"
