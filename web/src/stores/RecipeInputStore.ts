@@ -109,13 +109,16 @@ export const RecipeInputStore = types
       self.steps.push({
         stepNum: newStepNum,
         description: '',
-        ingredients: [
-          IngredientInputStore.create({
-            ingredientId: '',
-            unitName: '',
-            ingredientName: '',
-          }),
-        ],
+        // only init the ingredients on the first step, because otherwise they aren't required (because you can use stepOutputUses)
+        ...(newStepNum === 1 && {
+          ingredients: [
+            IngredientInputStore.create({
+              ingredientId: '',
+              unitName: '',
+              ingredientName: '',
+            }),
+          ],
+        }),
       })
     },
     removeStep: () => {
