@@ -81,7 +81,7 @@ const Recipe = ({ recipe }: Props) => {
                       listType="recipeIngredients"
                     />
                   )}
-                  {stepOutputUses?.length && (
+                  {stepOutputUses.length > 0 && (
                     <IngredientsItemsList
                       items={stepOutputUses}
                       listType="stepOutputUses"
