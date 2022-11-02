@@ -260,7 +260,7 @@ export const mapIngredientsMutationInputToDbUpdateInput = (
   }
 }
 
-export const mapStepsMutationInputToDbUpdateInput = (
+export const mapStepsMutationInputToDbUpdateInputNoStepOutputUses = (
   steps: UpdateRecipeStepInput[],
   recipeId: string
 ): Prisma.RecipeStepUpdateManyWithoutRecipeNestedInput | undefined => {

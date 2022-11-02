@@ -29,7 +29,7 @@ export const schema = gql`
     stepNum: Int!
     description: String!
     ingredients: [UpdateIngredientInput]
-    stepOutputUses: [UpdateStepOutputUseInput]
+    stepOutputUses: [UpdateStepOutputUseInput!]
   }
 
   # type Mutation {

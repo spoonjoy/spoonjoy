@@ -444,6 +444,11 @@ describe('recipes', () => {
               ingredientName: 'labor',
             },
           ],
+          stepOutputUses: [
+            {
+              outputOfStepNum: 1,
+            },
+          ],
         },
       ]
 
@@ -484,6 +489,9 @@ describe('recipes', () => {
               updated.input.steps[sIdx]?.ingredients![iIdx]?.unitName
             )
           })
+          expect(step.usingSteps.length).toBe(
+            updated.input.steps[sIdx]!.stepOutputUses?.length || 0
+          )
         })
       } else {
         fail('No recipe got returned!')

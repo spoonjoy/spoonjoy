@@ -1,9 +1,9 @@
 import type { Prisma } from '@prisma/client'
-import { CreateRecipeStepInput } from 'types/graphql'
+import { CreateRecipeStepInput, UpdateRecipeStepInput } from 'types/graphql'
 
 export const mapStepsMutationInputToDbCreateManyStepOutputUsesInput = (
   recipeId: string,
-  steps: CreateRecipeStepInput[]
+  steps: Array<CreateRecipeStepInput | UpdateRecipeStepInput>
 ): Prisma.StepOutputUseCreateManyInput[] => {
   return steps
     .filter((step) => step.stepOutputUses?.length)

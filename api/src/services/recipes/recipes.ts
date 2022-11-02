@@ -20,7 +20,7 @@ import { mapStepsMutationInputToDbCreateManyStepOutputUsesInput } from '../stepO
 
 import {
   mapStepsMutationInputToDbCreateInputNoStepOutputUses,
-  mapStepsMutationInputToDbUpdateInput,
+  mapStepsMutationInputToDbUpdateInputNoStepOutputUses,
 } from './recipeUtilities'
 
 export const recipes: QueryResolvers['recipes'] = () => {
@@ -140,6 +140,7 @@ export const createRecipe: MutationResolvers['createRecipe'] = async ({
 
     const recipeId = newRecipeNoStepOutputUses.id
 
+    // 2. Create the step output uses
     await tx.stepOutputUse.createMany({
       data: mapStepsMutationInputToDbCreateManyStepOutputUsesInput(
         recipeId,
@@ -166,17 +167,30 @@ export const updateRecipe: MutationResolvers['updateRecipe'] = async ({
     title,
     description,
     servings,
-    steps: mapStepsMutationInputToDbUpdateInput(steps, id),
+    steps: mapStepsMutationInputToDbUpdateInputNoStepOutputUses(steps, id),
   }
 
   return await db.$transaction(async (tx) => {
     // 1. Create the recipe
-    const newRecipeNoStepOutputUses = await tx.recipe.update({
+    const updatedRecipeNoStepOutputUses = await tx.recipe.update({
       where: { id },
       data: recipeNoStepOutputUsesDbInput,
     })
 
-    return newRecipeNoStepOutputUses
+    const recipeId = updatedRecipeNoStepOutputUses.id
+
+    // 2. Delete any existing step output uses. Doing it this way because it's the easiest way to figure out which should be deleted :)
+    await tx.stepOutputUse.deleteMany({ where: { recipeId: recipeId } })
+
+    // 3. Create the step output uses
+    await tx.stepOutputUse.createMany({
+      data: mapStepsMutationInputToDbCreateManyStepOutputUsesInput(
+        recipeId,
+        steps
+      ),
+    })
+
+    return updatedRecipeNoStepOutputUses
   })
 }
 
