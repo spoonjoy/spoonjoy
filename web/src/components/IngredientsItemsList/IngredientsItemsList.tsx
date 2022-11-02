@@ -1,3 +1,5 @@
+import { BeakerIcon } from '@heroicons/react/20/solid'
+import { Square2StackIcon } from '@heroicons/react/20/solid'
 import { observer } from 'mobx-react-lite'
 
 import { useStore } from 'src/stores/RootStore'
@@ -47,12 +49,20 @@ const IngredientsItemsList = ({ items, listType }: IIngredientsItemsList) => {
             listType === 'recipeIngredients'
               ? getIngredientItemInfo(item as IIngredientItem, selected)
               : getStepOutputUseItemInfo(item as IStepOutputUseItem, selected)
+
+          const itemIcon =
+            listType === 'recipeIngredients' ? (
+              <BeakerIcon className="mr-3 h-5 w-5" aria-hidden="true" />
+            ) : (
+              <Square2StackIcon className="mr-3 h-5 w-5" aria-hidden="true" />
+            )
           return (
             <li key={itemInfo.key}>
               <button
                 className="relative flex h-full w-full items-start py-4"
                 onClick={onCheck}
               >
+                {itemIcon}
                 <div className="min-w-0 flex-1 text-start text-sm">
                   {itemInfo.itemLabel}
                 </div>
