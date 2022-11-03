@@ -16,6 +16,17 @@ interface IIngredientItem {
   }
 }
 
+interface IShoppingListItem {
+  id: string
+  quantity?: number
+  unit?: {
+    name: string
+  }
+  ingredientRef: {
+    name: string
+  }
+}
+
 interface IStepOutputUseItem {
   id: string
   outputOfStep: {
@@ -45,31 +56,41 @@ const IngredientsItemsList = ({ items, listType }: IIngredientsItemsList) => {
             itemStore.setItemState(!selected)
           }
 
-          const itemInfo =
-            listType === 'recipeIngredients'
-              ? getIngredientItemInfo(item as IIngredientItem)
-              : getStepOutputUseItemInfo(item as IStepOutputUseItem)
+          const itemInfo = (() => {
+            switch (listType) {
+              case 'recipeIngredients':
+                return getIngredientItemInfo(item as IIngredientItem)
+              case 'stepOutputUses':
+                return getStepOutputUseItemInfo(item as IStepOutputUseItem)
+              case 'shoppingListItems':
+                return getShoppingListItemInfo(item as IShoppingListItem)
+            }
+          })()
 
-          const itemIcon =
-            listType === 'recipeIngredients' ? (
-              <BeakerIcon
-                className="mr-3 h-5 w-5 text-indigo-600"
-                aria-hidden="true"
-              />
-            ) : (
-              <Square2StackIcon
-                className="mr-3 h-5 w-5 text-indigo-600"
-                aria-hidden="true"
-              />
-            )
+          const iconProps = {
+            className: 'mr-3 h-5 w-5 text-indigo-600',
+            ariaHidden: true,
+          }
+
+          const itemIcon = (() => {
+            switch (listType) {
+              case 'recipeIngredients':
+                return <BeakerIcon {...iconProps} />
+              case 'stepOutputUses':
+                return <Square2StackIcon {...iconProps} />
+            }
+          })()
+
           return (
             <li key={itemInfo.key}>
               <button className="relative h-full w-full py-4" onClick={onCheck}>
                 {/* For crossing out and greying selected items */}
                 <span
-                  className={`absolute left-[1.8rem] bottom-0 z-10 flex h-full w-[calc(100%-3.5rem)] flex-col ${
-                    selected ? 'block' : 'hidden'
-                  }`}
+                  className={`absolute ${
+                    itemIcon ? 'left-[1.8rem]' : 'left-0'
+                  } bottom-0 z-10 flex h-full ${
+                    itemIcon ? 'w-[calc(100%-3.5rem)]' : 'w-[calc(100%-1.7rem)]'
+                  } flex-col ${selected ? 'block' : 'hidden'}`}
                 >
                   <span className="border-b-[1px]f absolute top-0 left-0 right-0 h-1/2 w-full border-gray-500 bg-white bg-opacity-50" />
                   <span className="absolute bottom-0 left-0 right-0 h-1/2 w-full border-t-[1px] border-gray-500 bg-white bg-opacity-50" />
@@ -113,6 +134,27 @@ const getIngredientItemInfo = (item: IIngredientItem) => {
           {' '}
           {quantity} {unit.name}{' '}
         </span>
+      </span>
+    ),
+  }
+}
+
+const getShoppingListItemInfo = (item: IShoppingListItem) => {
+  const { quantity, unit, ingredientRef, id } = item
+  return {
+    key: `${ingredientRef.name}`,
+    itemLabel: (
+      <span
+        id={`ingredient-${id}-label`}
+        className="flex select-none justify-between text-gray-700"
+      >
+        <span className="font-medium">{ingredientRef.name}</span>
+        {quantity && unit && (
+          <span className="font-normal">
+            {' '}
+            {quantity} {unit.name}{' '}
+          </span>
+        )}
       </span>
     ),
   }
