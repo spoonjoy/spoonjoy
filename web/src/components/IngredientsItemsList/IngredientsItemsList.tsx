@@ -47,8 +47,8 @@ const IngredientsItemsList = ({ items, listType }: IIngredientsItemsList) => {
 
           const itemInfo =
             listType === 'recipeIngredients'
-              ? getIngredientItemInfo(item as IIngredientItem, selected)
-              : getStepOutputUseItemInfo(item as IStepOutputUseItem, selected)
+              ? getIngredientItemInfo(item as IIngredientItem)
+              : getStepOutputUseItemInfo(item as IStepOutputUseItem)
 
           const itemIcon =
             listType === 'recipeIngredients' ? (
