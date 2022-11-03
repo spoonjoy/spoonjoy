@@ -16,31 +16,31 @@ export const stepOutputUse: QueryResolvers['stepOutputUse'] = ({ id }) => {
   })
 }
 
-export const createStepOutputUse: MutationResolvers['createStepOutputUse'] = ({
-  input,
-}) => {
-  return db.stepOutputUse.create({
-    data: input,
-  })
-}
+// export const createStepOutputUse: MutationResolvers['createStepOutputUse'] = ({
+//   input,
+// }) => {
+//   return db.stepOutputUse.create({
+//     data: input,
+//   })
+// }
 
-export const updateStepOutputUse: MutationResolvers['updateStepOutputUse'] = ({
-  id,
-  input,
-}) => {
-  return db.stepOutputUse.update({
-    data: input,
-    where: { id },
-  })
-}
+// export const updateStepOutputUse: MutationResolvers['updateStepOutputUse'] = ({
+//   id,
+//   input,
+// }) => {
+//   return db.stepOutputUse.update({
+//     data: input,
+//     where: { id },
+//   })
+// }
 
-export const deleteStepOutputUse: MutationResolvers['deleteStepOutputUse'] = ({
-  id,
-}) => {
-  return db.stepOutputUse.delete({
-    where: { id },
-  })
-}
+// export const deleteStepOutputUse: MutationResolvers['deleteStepOutputUse'] = ({
+//   id,
+// }) => {
+//   return db.stepOutputUse.delete({
+//     where: { id },
+//   })
+// }
 
 export const StepOutputUse: StepOutputUseRelationResolvers = {
   outputOfStep: (_obj, { root }) => {

@@ -1,4 +1,5 @@
 import type { Prisma, StepOutputUse } from '@prisma/client'
+
 import type { ScenarioData } from '@redwoodjs/testing/api'
 
 export const standard = defineScenario<Prisma.StepOutputUseCreateArgs>({
@@ -8,6 +9,7 @@ export const standard = defineScenario<Prisma.StepOutputUseCreateArgs>({
         outputOfStep: {
           create: {
             stepNum: 6325878,
+            description: 'String',
             recipe: {
               create: {
                 title: 'String',
@@ -26,6 +28,7 @@ export const standard = defineScenario<Prisma.StepOutputUseCreateArgs>({
         inputOfStep: {
           create: {
             stepNum: 1347324,
+            description: 'String',
             recipe: {
               create: {
                 title: 'String',
@@ -48,6 +51,7 @@ export const standard = defineScenario<Prisma.StepOutputUseCreateArgs>({
         outputOfStep: {
           create: {
             stepNum: 8235176,
+            description: 'String',
             recipe: {
               create: {
                 title: 'String',
@@ -66,6 +70,7 @@ export const standard = defineScenario<Prisma.StepOutputUseCreateArgs>({
         inputOfStep: {
           create: {
             stepNum: 5065817,
+            description: 'String',
             recipe: {
               create: {
                 title: 'String',
