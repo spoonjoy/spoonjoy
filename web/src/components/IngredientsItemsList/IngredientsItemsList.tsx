@@ -64,24 +64,32 @@ const IngredientsItemsList = ({ items, listType }: IIngredientsItemsList) => {
             )
           return (
             <li key={itemInfo.key}>
-              <button
-                className="relative flex h-full w-full items-start py-4"
-                onClick={onCheck}
-              >
-                {itemIcon}
-                <div className="min-w-0 flex-1 text-start text-sm">
-                  {itemInfo.itemLabel}
-                </div>
-                <div className="ml-3 flex h-5 items-center">
-                  <input
-                    id={`ingredient-${id}`}
-                    name={`ingredient-${id}`}
-                    type="checkbox"
-                    checked={selected}
-                    onChange={onCheck}
-                    className="h-4 w-4 cursor-pointer rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                  />
-                </div>
+              <button className="relative h-full w-full py-4" onClick={onCheck}>
+                {/* For crossing out and greying selected items */}
+                <span
+                  className={`absolute left-[1.8rem] bottom-0 z-10 flex h-full w-[calc(100%-3.5rem)] flex-col ${
+                    selected ? 'block' : 'hidden'
+                  }`}
+                >
+                  <span className="border-b-[1px]f absolute top-0 left-0 right-0 h-1/2 w-full border-gray-500 bg-white bg-opacity-50" />
+                  <span className="absolute bottom-0 left-0 right-0 h-1/2 w-full border-t-[1px] border-gray-500 bg-white bg-opacity-50" />
+                </span>
+                <span className="z-0 flex h-full w-full items-start">
+                  {itemIcon}
+                  <div className="min-w-0 flex-1 text-start text-sm">
+                    {itemInfo.itemLabel}
+                  </div>
+                  <div className="ml-3 flex h-5 items-center">
+                    <input
+                      id={`ingredient-${id}`}
+                      name={`ingredient-${id}`}
+                      type="checkbox"
+                      checked={selected}
+                      onChange={onCheck}
+                      className="h-4 w-4 cursor-pointer rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                    />
+                  </div>
+                </span>
               </button>
             </li>
           )
@@ -91,16 +99,14 @@ const IngredientsItemsList = ({ items, listType }: IIngredientsItemsList) => {
   )
 }
 
-const getIngredientItemInfo = (item: IIngredientItem, selected: boolean) => {
+const getIngredientItemInfo = (item: IIngredientItem) => {
   const { quantity, unit, ingredientRef, id } = item
   return {
     key: `${quantity}-${unit.name}-${ingredientRef.name}`,
     itemLabel: (
       <span
         id={`ingredient-${id}-label`}
-        className={`flex select-none justify-between ${
-          selected ? 'text-gray-400 line-through' : 'text-gray-700'
-        }`}
+        className="flex select-none justify-between text-gray-700"
       >
         <span className="font-medium">{ingredientRef.name}</span>
         <span className="font-normal">
@@ -112,19 +118,14 @@ const getIngredientItemInfo = (item: IIngredientItem, selected: boolean) => {
   }
 }
 
-const getStepOutputUseItemInfo = (
-  item: IStepOutputUseItem,
-  selected: boolean
-) => {
+const getStepOutputUseItemInfo = (item: IStepOutputUseItem) => {
   const { id, outputOfStep } = item
   return {
     key: `stepoutputusage-${outputOfStep.stepNum}-${id}`,
     itemLabel: (
       <span
         id={`stepoutputusage-${id}-label`}
-        className={`select-none ${
-          selected ? 'text-gray-400 line-through' : 'text-gray-700'
-        }`}
+        className="select-none text-gray-700"
       >
         <span className="font-normal">output of </span>
         <span className="font-medium">step {outputOfStep.stepNum}</span>
