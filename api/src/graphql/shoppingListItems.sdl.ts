@@ -1,12 +1,9 @@
 export const schema = gql`
   type ShoppingListItem {
     id: ID!
-    shoppingListId: String!
     shoppingList: ShoppingList!
-    quantity: Float!
-    unitId: String!
-    unit: Unit!
-    ingredientRefId: String!
+    quantity: Float
+    unit: Unit
     ingredientRef: IngredientRef!
   }
 
@@ -16,14 +13,14 @@ export const schema = gql`
   }
 
   input CreateShoppingListItemInput {
-    quantity: Float!
-    unitName: String!
+    quantity: Float
+    unitName: String
     ingredientName: String!
   }
 
   input UpdateShoppingListItemInput {
-    quantity: Float!
-    unitName: String!
+    quantity: Float
+    unitName: String
     ingredientName: String!
   }
 

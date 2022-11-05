@@ -124,12 +124,12 @@ model ShoppingList {
 }
 
 model ShoppingListItem {
-  id                String  @id @default(cuid())
+  id                String        @id @default(cuid())
   shoppingListId    String
   shoppingList      ShoppingList  @relation(fields: [shoppingListId], references: [id], onDelete: Cascade)
-  quantity          Float
-  unitId            String
-  unit              Unit          @relation(fields: [unitId], references: [id])
+  quantity          Float?
+  unitId            String?
+  unit              Unit?         @relation(fields: [unitId], references: [id])
   ingredientRefId   String
   ingredientRef     IngredientRef @relation(fields: [ingredientRefId], references: [id])
 
