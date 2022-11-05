@@ -144,9 +144,9 @@ const WelcomePage = () => {
               </main>
             </div>
           </div>
-          <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
+          <div className="absolute bottom-0 top-[30rem] left-0 right-0 lg:inset-y-0 lg:left-1/2 lg:w-1/2">
             <img
-              className="h-56 w-full object-cover sm:h-72 md:h-96 lg:h-full lg:w-full"
+              className="h-full w-full object-cover"
               src={WelcomeHeaderImg}
               alt="Home cooking, made easy"
             />
