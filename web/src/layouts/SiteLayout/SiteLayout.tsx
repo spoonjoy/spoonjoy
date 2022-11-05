@@ -44,7 +44,7 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
       current: useMatch(routes.welcome()).match,
     },
     {
-      name: 'Login',
+      name: 'Log In',
       href: routes.login(),
       current: useMatch(routes.login()).match,
     },

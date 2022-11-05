@@ -24,8 +24,8 @@ const Routes = () => {
           <Route path="/shopping-list" page={ShoppingListPage} name="shoppingList" />
         </Set>
       </Private>
+      <Route path="/" page={WelcomePage} name="welcome" />
       <Set wrap={SiteLayout}>
-        <Route path="/" page={WelcomePage} name="welcome" />
         <Route path="/login" page={AuthLoginPage} name="login" />
         <Route path="/signup" page={AuthSignupPage} name="signup" />
         <Route path="/forgot-password" page={AuthForgotPasswordPage} name="forgotPassword" />
