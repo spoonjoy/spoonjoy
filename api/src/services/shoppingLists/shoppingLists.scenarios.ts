@@ -70,13 +70,6 @@ export const getShoppingListScenarioData = (
         },
       },
       {
-        quantity: 912,
-        unit: {
-          connectOrCreate: {
-            where: { name: 'gram' },
-            create: { name: 'gram' },
-          },
-        },
         ingredientRef: {
           connectOrCreate: {
             where: { name: 'diced tomato' },
@@ -160,13 +153,6 @@ export const getShoppingListScenarioData = (
         },
       },
       {
-        quantity: 2892,
-        unit: {
-          connectOrCreate: {
-            where: { name: 'oz' },
-            create: { name: 'oz' },
-          },
-        },
         ingredientRef: {
           connectOrCreate: {
             where: { name: 'tahini' },
