@@ -116,8 +116,6 @@ describe('shoppingLists', () => {
     input: {
       items: [
         {
-          quantity: 500.2348,
-          unitName: 'grams',
           ingredientName: 'yumminess',
         },
         {
@@ -179,13 +177,13 @@ describe('shoppingLists', () => {
 
         // Because items will come back in a random order, we're sorting them by quantity. Please note that for this to work, we need to use unique quantities.
         const sortedResultItems = items.sort((a, b) => {
-          return a.quantity - b.quantity
+          return a.ingredientRef.name < b.ingredientRef.name ? -1 : 1
         })
         const sortedInputItems = input.items.sort((a, b) => {
-          return a!.quantity - b!.quantity
+          return a!.ingredientName! < b!.ingredientName! ? -1 : 1
         })
         sortedResultItems.forEach((item, idx) => {
-          expect(item.unit.name).toBe(sortedInputItems[idx]?.unitName)
+          expect(item.unit?.name).toBe(sortedInputItems[idx]?.unitName)
           expect(item.ingredientRef.name).toBe(
             sortedInputItems[idx]?.ingredientName
           )
@@ -317,15 +315,15 @@ describe('shoppingLists', () => {
         expect(author.username).toEqual(bob.username)
         expect(items.length).toEqual(input.items.length)
 
-        // Because items will come back in a random order, we're sorting them by quantity. Please note that for this to work, we need to use unique quantities.
+        // Because items will come back in a random order, we're sorting them by name. Please note that for this to work, we need to use unique quantities.
         const sortedResultItems = items.sort((a, b) => {
-          return a.quantity - b.quantity
+          return a.ingredientRef.name < b.ingredientRef.name ? -1 : 1
         })
         const sortedInputItems = input.items.sort((a, b) => {
-          return a!.quantity - b!.quantity
+          return a!.ingredientName! < b!.ingredientName! ? -1 : 1
         })
         sortedResultItems.forEach((item, idx) => {
-          expect(item.unit.name).toBe(sortedInputItems[idx]?.unitName)
+          expect(item.unit?.name).toBe(sortedInputItems[idx]?.unitName)
           expect(item.ingredientRef.name).toBe(
             sortedInputItems[idx]?.ingredientName
           )

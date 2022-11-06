@@ -53,13 +53,16 @@ export const mapItemsMutationInputToDbCreateInput = (
     create: items.map((item) => {
       const { quantity, unitName, ingredientName } = item!
       return {
-        quantity,
-        unit: {
-          connectOrCreate: {
-            where: { name: unitName.toLowerCase() },
-            create: { name: unitName.toLowerCase() },
-          },
-        },
+        ...(quantity &&
+          unitName && {
+            quantity,
+            unit: {
+              connectOrCreate: {
+                where: { name: unitName.toLowerCase() },
+                create: { name: unitName.toLowerCase() },
+              },
+            },
+          }),
         ingredientRef: {
           connectOrCreate: {
             where: { name: ingredientName.toLowerCase() },
@@ -72,8 +75,8 @@ export const mapItemsMutationInputToDbCreateInput = (
 }
 
 export interface IShoppingListItemsOutput {
-  quantity: number
-  unit: IUnitDbOutput
+  quantity?: number
+  unit?: IUnitDbOutput
   ingredientRef: IIngredientRefDbOutput
 }
 
@@ -83,8 +86,8 @@ export const mapShoppingListItemsDbResponseToUpdateMutationInput = (
   return items.map((item) => {
     const { quantity, unit, ingredientRef } = item
     return {
-      quantity,
-      unitName: unit.name,
+      quantity: quantity,
+      unitName: unit?.name,
       ingredientName: ingredientRef.name,
     }
   })
@@ -95,7 +98,7 @@ export type IShoppingListResponse = ShoppingList & {
   author: User
   items: (ShoppingListItem & {
     ingredientRef: IngredientRef
-    unit: Unit
+    unit?: Unit
   })[]
 }
 

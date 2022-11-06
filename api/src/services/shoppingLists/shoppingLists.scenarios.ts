@@ -32,13 +32,6 @@ export const getShoppingListScenarioData = (
   items: {
     create: [
       {
-        quantity: 8394.128,
-        unit: {
-          connectOrCreate: {
-            where: { name: 'oz' },
-            create: { name: 'oz' },
-          },
-        },
         ingredientRef: {
           connectOrCreate: {
             where: { name: 'cheese' },
