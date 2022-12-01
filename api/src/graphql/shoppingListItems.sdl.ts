@@ -30,7 +30,7 @@ export const schema = gql`
     addItemToShoppingList(
       shoppingListId: String!
       input: AddItemToShoppingListInput!
-    ): ShoppingList! @requireAuth
+    ): ShoppingListItem! @requireAuth
     deleteShoppingListItem(id: String!): ShoppingListItem! @requireAuth
   }
 `

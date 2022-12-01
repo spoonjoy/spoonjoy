@@ -47,7 +47,11 @@ export const addItemToShoppingList: MutationResolvers['addItemToShoppingList'] =
       if (similarShoppingListItem) {
         // If the new item has no quantity/unit, there's nothing to do
         if (!item.quantity || !item.unitName) {
-          return similarShoppingListItem
+          return db.shoppingListItem.findUniqueOrThrow!({
+            where: {
+              id: similarShoppingListItem.id,
+            },
+          })
         }
         // If the existing item has no quantity/unit, we want to set it to the new quantity/unit
         else if (
@@ -93,11 +97,12 @@ export const addItemToShoppingList: MutationResolvers['addItemToShoppingList'] =
           }
         }
       }
-    } else {
-      return db.shoppingListItem.create({
-        data: mapShoppingListItemInputToDbCreateInput(shoppingListId, item),
-      })
     }
+    // this *was* in an `else` block, but for some reason typescript thought this method could return `undefined` unless it was just here.
+    // in any case, if we get all the way down here, it's safe to create a new step from scratch
+    return db.shoppingListItem.create({
+      data: mapShoppingListItemInputToDbCreateInput(shoppingListId, item),
+    })
   }
 
 export const updateShoppingListItem: MutationResolvers['updateShoppingListItem'] =
