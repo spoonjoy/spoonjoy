@@ -25,20 +25,25 @@ export const mapItemsMutationInputToDbUpdateInput = (
     deleteMany: {}, // delete them all! TODO: delete only the ones *not* being updated
     create: items.map((item) => {
       const { quantity, unitName, ingredientName } = item!
+      const unitInput = unitName
+        ? {
+            unit: {
+              connectOrCreate: {
+                where: { name: unitName.toLowerCase() },
+                create: { name: unitName.toLowerCase() },
+              },
+            },
+          }
+        : undefined
       return {
         quantity,
-        unit: {
-          connectOrCreate: {
-            where: { name: unitName.toLowerCase() },
-            create: { name: unitName.toLowerCase() },
-          },
-        },
         ingredientRef: {
           connectOrCreate: {
             where: { name: ingredientName.toLowerCase() },
             create: { name: ingredientName.toLowerCase() },
           },
         },
+        ...unitInput,
       }
     }),
   }

@@ -3,7 +3,12 @@ import type {
   QueryResolvers,
   MutationResolvers,
   ShoppingListRelationResolvers,
+  RequiredResolverFn,
+  ResolversParentTypes,
+  ResolversTypes,
 } from 'types/graphql'
+
+import { RedwoodGraphQLContext } from '@redwoodjs/graphql-server/dist/functions/types'
 
 import { requireAuth, requireShoppingListAuth } from 'src/lib/auth'
 import { db } from 'src/lib/db'
@@ -78,12 +83,32 @@ export const deleteShoppingList: MutationResolvers['deleteShoppingList'] =
     })
   }
 
-export const ShoppingList: ShoppingListRelationResolvers = {
-  author: (_obj, { root }) => {
-    return db.shoppingList.findUnique({ where: { id: root?.id } }).author()
+type RequiredShoppingListRelationResolvers = ShoppingListRelationResolvers & {
+  author: RequiredResolverFn<
+    ResolversTypes['User'],
+    ResolversParentTypes['ShoppingList'],
+    RedwoodGraphQLContext
+  >
+  items: NonNullable<ShoppingListRelationResolvers['items']>
+}
+
+export const ShoppingList: RequiredShoppingListRelationResolvers = {
+  author: async (_obj, { root }) => {
+    const maybeAuthor = await db.shoppingList
+      .findUnique({ where: { id: root.id } })
+      .author()
+    if (!maybeAuthor) {
+      throw new Error('Could not resolve author')
+    }
+
+    return maybeAuthor
   },
 
-  items: (_obj, { root }) => {
-    return db.shoppingList.findUnique({ where: { id: root?.id } }).items()
+  items: async (_obj, { root }) => {
+    const maybeIngredients = await db.shoppingList
+      .findUnique({ where: { id: root.id } })
+      .items()
+
+    return maybeIngredients
   },
 }

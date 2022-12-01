@@ -1,4 +1,4 @@
-import { CreateShoppingListInput, ShoppingListItem, User } from 'types/graphql'
+import { CreateShoppingListInput, ShoppingListItem } from 'types/graphql'
 
 import { RedwoodGraphQLError } from '@redwoodjs/graphql-server'
 
@@ -58,23 +58,30 @@ describe('shoppingLists', () => {
         id: bobsList.id,
       })
 
-      await ShoppingList.author!({}, { root: result }).then((author: User) => {
-        expect(author).toEqual(bobsList.author)
-      })
+      const author = await ShoppingList.author!({}, { root: result })
+      expect(author).toEqual(bobsList.author)
 
-      await ShoppingList.items!({}, { root: result }).then(
-        (items: ShoppingListItem[]) => {
-          items.forEach((returnedItem, itemIdx) => {
-            const scenarioItem = bobsList.items[itemIdx]
+      const shoppingListItems = await ShoppingList.items!({}, { root: result })
 
-            expect(returnedItem.quantity).toEqual(scenarioItem!.quantity)
-            expect(returnedItem.ingredientRefId).toEqual(
-              scenarioItem!.ingredientRefId
-            )
-            expect(returnedItem.unitId).toEqual(scenarioItem!.unitId)
-          })
+      shoppingListItems.forEach((returnedItem, itemIdx) => {
+        const scenarioItem = bobsList.items[itemIdx]
+
+        if (!scenarioItem!.quantity) {
+          expect(returnedItem!.quantity).toBeNull()
+        } else {
+          expect(returnedItem.quantity).toEqual(scenarioItem!.quantity)
         }
-      )
+
+        if (!scenarioItem!.unit) {
+          expect(returnedItem.unitId).toBeNull()
+        } else {
+          expect(returnedItem.unitId).toEqual(scenarioItem!.unit.id)
+        }
+
+        expect(returnedItem!.ingredientRefId).toEqual(
+          scenarioItem!.ingredientRefId
+        )
+      })
     }
   )
 
