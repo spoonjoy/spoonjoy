@@ -133,6 +133,7 @@ model ShoppingListItem {
   ingredientRefId   String
   ingredientRef     IngredientRef @relation(fields: [ingredientRefId], references: [id])
 
+  @@unique([shoppingListId, ingredientRefId])
   @@unique([shoppingListId, unitId, ingredientRefId])
   @@index([shoppingListId])
   @@index([unitId])

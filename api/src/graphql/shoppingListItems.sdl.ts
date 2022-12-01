@@ -12,26 +12,25 @@ export const schema = gql`
     shoppingListItem(id: String!): ShoppingListItem @requireAuth
   }
 
-  input CreateShoppingListItemInput {
+  input CreateOrUpdateShoppingListItemInput {
     quantity: Float
     unitName: String
     ingredientName: String!
   }
 
-  input UpdateShoppingListItemInput {
-    quantity: Float
-    unitName: String
-    ingredientName: String!
+  input AddItemToShoppingListInput {
+    item: CreateOrUpdateShoppingListItemInput!
   }
 
   type Mutation {
-    createShoppingListItem(
-      input: CreateShoppingListItemInput!
-    ): ShoppingListItem! @requireAuth
     updateShoppingListItem(
       id: String!
-      input: UpdateShoppingListItemInput!
+      input: CreateOrUpdateShoppingListItemInput!
     ): ShoppingListItem! @requireAuth
+    addItemToShoppingList(
+      shoppingListId: String!
+      input: AddItemToShoppingListInput!
+    ): ShoppingList! @requireAuth
     deleteShoppingListItem(id: String!): ShoppingListItem! @requireAuth
   }
 `

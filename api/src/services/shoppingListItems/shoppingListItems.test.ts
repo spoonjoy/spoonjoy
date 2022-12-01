@@ -38,27 +38,6 @@ describe('shoppingListItems', () => {
     }
   )
 
-  // TODO fix this
-  // scenario('creates a shoppingListItem', async (scenario: StandardScenario) => {
-  //   const result = await createShoppingListItem({
-  //     input: {
-  //       shoppingListId: scenario.shoppingListItem.two.shoppingListId,
-  //       quantity: 8789577.911740763,
-  //       unitId: scenario.shoppingListItem.two.unitId,
-  //       ingredientRefId: scenario.shoppingListItem.two.ingredientRefId,
-  //     },
-  //   })
-
-  //   expect(result.shoppingListId).toEqual(
-  //     scenario.shoppingListItem.two.shoppingListId
-  //   )
-  //   expect(result.quantity).toEqual(8789577.911740763)
-  //   expect(result.unitId).toEqual(scenario.shoppingListItem.two.unitId)
-  //   expect(result.ingredientRefId).toEqual(
-  //     scenario.shoppingListItem.two.ingredientRefId
-  //   )
-  // })
-
   scenario('updates a shoppingListItem', async (scenario: StandardScenario) => {
     const original = (await shoppingListItem({
       id: scenario.shoppingListItem.one.id,
