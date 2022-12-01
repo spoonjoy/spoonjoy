@@ -7,7 +7,10 @@ import type {
 import { requireShoppingListAuth } from 'src/lib/auth'
 import { db } from 'src/lib/db'
 
-import { mapShoppingListItemInputToDbCreateInput } from './shoppingListItemUtilities'
+import {
+  mapShoppingListItemInputToDbCreateInput,
+  mapShoppingListItemInputToDbUpdateInput,
+} from './shoppingListItemUtilities'
 
 export const shoppingListItems: QueryResolvers['shoppingListItems'] = () => {
   return db.shoppingListItem.findMany()
@@ -108,7 +111,7 @@ export const addItemToShoppingList: MutationResolvers['addItemToShoppingList'] =
 export const updateShoppingListItem: MutationResolvers['updateShoppingListItem'] =
   ({ id, input }) => {
     return db.shoppingListItem.update({
-      data: input,
+      data: mapShoppingListItemInputToDbUpdateInput(input),
       where: { id },
     })
   }

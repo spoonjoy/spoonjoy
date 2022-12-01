@@ -1,5 +1,7 @@
 import type { ShoppingListItem } from '@prisma/client'
 
+import { db } from 'src/lib/db'
+
 import {
   shoppingListItems,
   shoppingListItem,
@@ -42,9 +44,20 @@ describe('shoppingListItems', () => {
     const original = (await shoppingListItem({
       id: scenario.shoppingListItem.one.id,
     })) as ShoppingListItem
+
+    const originalWithIngredientAndUnitInfo =
+      await db.shoppingListItem.findUniqueOrThrow({
+        where: { id: original.id },
+        include: { ingredientRef: true, unit: true },
+      })
+
     const result = await updateShoppingListItem({
       id: original.id,
-      input: { quantity: 8529529.203485327 },
+      input: {
+        ingredientName: originalWithIngredientAndUnitInfo.ingredientRef.name,
+        unitName: originalWithIngredientAndUnitInfo.unit?.name,
+        quantity: 8529529.203485327,
+      },
     })
 
     expect(result.quantity).toEqual(8529529.203485327)
