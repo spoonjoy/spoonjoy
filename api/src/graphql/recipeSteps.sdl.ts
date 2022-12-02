@@ -4,6 +4,7 @@ export const schema = gql`
     recipeId: String!
     recipe: Recipe!
     stepNum: Int!
+    stepTitle: String!
     description: String!
     ingredients: [Ingredient]!
     stepOutputUses: [StepOutputUse]!
@@ -16,6 +17,7 @@ export const schema = gql`
 
   input CreateRecipeStepInput {
     stepNum: Int!
+    stepTitle: String!
     description: String!
     ingredients: [CreateIngredientInput!]
     stepOutputUses: [CreateStepOutputUseInput!]
@@ -27,6 +29,7 @@ export const schema = gql`
   input UpdateRecipeStepInput {
     recipeId: String!
     stepNum: Int!
+    stepTitle: String!
     description: String!
     ingredients: [UpdateIngredientInput]
     stepOutputUses: [UpdateStepOutputUseInput!]

@@ -46,6 +46,7 @@ export const getPizzaScenarioData = (
     create: [
       {
         stepNum: 1,
+        stepTitle: 'First step',
         description: 'First step, do a thing',
         ingredients: {
           create: [
@@ -69,6 +70,7 @@ export const getPizzaScenarioData = (
       },
       {
         stepNum: 2,
+        stepTitle: 'Second step',
         description: 'Next, eat some toast!',
         ingredients: {
           create: [
@@ -121,6 +123,7 @@ export const getDeletedPizzaScenarioData = (
     create: [
       {
         stepNum: 1,
+        stepTitle: 'First step',
         description: 'First step, do a thing',
         ingredients: {
           create: [
@@ -144,6 +147,7 @@ export const getDeletedPizzaScenarioData = (
       },
       {
         stepNum: 2,
+        stepTitle: 'Second step',
         description: 'Next, eat some toast!',
         ingredients: {
           create: [
