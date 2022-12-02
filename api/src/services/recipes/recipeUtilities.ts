@@ -277,18 +277,18 @@ export const mapStepsMutationInputToDbUpdateInputNoStepOutputUses = (
         update: {
           stepNum,
           description,
-          ingredients:
-            ingredients &&
-            mapIngredientsMutationInputToDbUpdateInput(ingredients),
+          ingredients: ingredients
+            ? mapIngredientsMutationInputToDbUpdateInput(ingredients)
+            : undefined,
         },
         create: {
           stepNum,
           description,
-          ingredients:
-            ingredients &&
-            mapIngredientsMutationInputToDbCreateInput(
-              ingredients as CreateIngredientInput[] // these types overlap enough to do this
-            ),
+          ingredients: ingredients
+            ? mapIngredientsMutationInputToDbCreateInput(
+                ingredients as CreateIngredientInput[] // these types overlap enough to do this
+              )
+            : undefined,
         },
       }
     }),
