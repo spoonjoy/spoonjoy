@@ -36,12 +36,14 @@ model UserCredential {
   publicKey  Bytes
   transports String?
   counter    BigInt
+
+  @@index([userId])
 }
 
 model Recipe {
   id                  String  @id @default(cuid())
   title               String
-  description         String?
+  description         String? @db.VarChar(500)
   servings            Int?
   chefId              String
   chef                User      @relation(fields: [chefId], references: [id], onDelete: Cascade)
@@ -59,7 +61,7 @@ model RecipeStep {
   recipeId          String
   recipe            Recipe  @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   stepNum           Int
-  description       String
+  description       String  @db.VarChar(500)
   ingredients       Ingredient[]
   usingSteps        StepOutputUse[] @relation("input")
   usedBySteps       StepOutputUse[] @relation("output")
@@ -98,6 +100,8 @@ model Ingredient {
   @@index([recipeId, stepNum, unitId, ingredientRefId])
   @@index([recipeId, stepNum])
   @@index([recipeId])
+  @@index([unitId])
+  @@index([ingredientRefId])
 }
 
 model IngredientRef {
@@ -133,7 +137,6 @@ model ShoppingListItem {
   ingredientRefId   String
   ingredientRef     IngredientRef @relation(fields: [ingredientRefId], references: [id])
 
-  @@unique([shoppingListId, ingredientRefId])
   @@unique([shoppingListId, unitId, ingredientRefId])
   @@index([shoppingListId])
   @@index([unitId])
