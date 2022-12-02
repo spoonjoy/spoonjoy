@@ -31,7 +31,7 @@ export const schema = gql`
     stepNum: Int!
     stepTitle: String!
     description: String!
-    ingredients: [UpdateIngredientInput]
+    ingredients: [UpdateIngredientInput!]
     stepOutputUses: [UpdateStepOutputUseInput!]
   }
 
