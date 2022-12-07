@@ -24,7 +24,8 @@ type SiteLayoutProps = {
 interface INavigation {
   name: string
   href: string
-  current: boolean
+  current?: boolean
+  newTab?: boolean
 }
 
 interface IUserNavigation {
@@ -48,6 +49,11 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
       href: routes.login(),
       current: useMatch(routes.login()).match,
     },
+    {
+      name: 'Send Feedback',
+      href: 'https://bit.ly/spoonjoyfeedback',
+      newTab: true,
+    },
   ]
 
   const navigationLoggedIn: INavigation[] = [
@@ -56,15 +62,20 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
       href: routes.recipes(),
       current: useMatch(routes.recipes()).match,
     },
-    {
-      name: 'Shopping List',
-      href: routes.shoppingList(),
-      current: useMatch(routes.shoppingList()).match,
-    },
+    // {
+    //   name: 'Shopping List',
+    //   href: routes.shoppingList(),
+    //   current: useMatch(routes.shoppingList()).match,
+    // },
     {
       name: 'New Recipe',
       href: routes.newRecipe(),
       current: useMatch(routes.newRecipe()).match,
+    },
+    {
+      name: 'Send Feedback',
+      href: 'https://bit.ly/spoonjoyfeedback',
+      newTab: true,
     },
   ]
 
@@ -155,6 +166,8 @@ const Header = ({
                 </Link>
                 <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
                   {navigation.map((item) => (
+                    // This is here because it's conditionally added, which the linter isn't identifying
+                    // eslint-disable-next-line react/jsx-no-target-blank
                     <a
                       key={item.name}
                       href={item.href}
@@ -165,6 +178,8 @@ const Header = ({
                         'inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium'
                       )}
                       aria-current={item.current ? 'page' : undefined}
+                      target={item.newTab ? '_blank' : undefined}
+                      rel={item.newTab ? 'noopener' : undefined}
                     >
                       {item.name}
                     </a>
@@ -252,6 +267,8 @@ const Header = ({
                     'block border-l-4 py-2 pl-3 pr-4 text-base font-medium'
                   )}
                   aria-current={item.current ? 'page' : undefined}
+                  target={item.newTab ? '_blank' : undefined}
+                  rel={item.newTab ? 'noopener' : undefined}
                 >
                   {item.name}
                 </Disclosure.Button>
