@@ -30,6 +30,7 @@ const Routes = () => {
         <Route path="/signup" page={AuthSignupPage} name="signup" />
         <Route path="/forgot-password" page={AuthForgotPasswordPage} name="forgotPassword" />
         <Route path="/reset-password" page={AuthResetPasswordPage} name="resetPassword" />
+        <Route path="/example-recipes" page={RecipeExampleRecipesPage} name="exampleRecipes" />
         <Set wrap={BackgroundLayout}>
           <Route path="/recipes/{id}" page={RecipeRecipePage} name="recipe" />
         </Set>

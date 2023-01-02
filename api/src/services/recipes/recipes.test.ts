@@ -65,7 +65,9 @@ describe('recipes', () => {
   scenario(
     "returns all of a specific user's recipes that don't have 'deletedAt' set",
     async (scenario: RecipeScenario) => {
-      const result = await usersRecipes({ userId: scenario.user.bob.id })
+      const result = await usersRecipes({
+        username: scenario.user.bob.username,
+      })
       const numBobsNotDeletedRecipes = Object.keys(
         bobsRecipeScenarioData
       ).length

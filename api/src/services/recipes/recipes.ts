@@ -31,10 +31,10 @@ export const recipes: QueryResolvers['recipes'] = () => {
   })
 }
 
-export const usersRecipes: QueryResolvers['usersRecipes'] = ({ userId }) => {
+export const usersRecipes: QueryResolvers['usersRecipes'] = ({ username }) => {
   return db.recipe.findMany({
     where: {
-      chefId: userId,
+      chef: { username },
       AND: {
         deletedAt: null,
       },

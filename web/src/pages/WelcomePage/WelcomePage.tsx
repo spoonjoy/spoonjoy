@@ -143,7 +143,7 @@ const WelcomePage = () => {
                     </div>
                     <div className="mt-3">
                       <Link
-                        to={routes.login()}
+                        to={routes.exampleRecipes()}
                         className="flex w-full items-center justify-center rounded-md border-2 border-indigo-700 bg-white px-8 py-3 text-base font-medium text-indigo-700 hover:bg-indigo-200 md:py-4 md:px-10 md:text-lg"
                       >
                         View Example Recipes
