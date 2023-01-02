@@ -120,23 +120,33 @@ const WelcomePage = () => {
                   <p className="mt-3 text-base text-gray-500 sm:mx-auto sm:mt-5 sm:max-w-xl sm:text-lg md:mt-5 md:text-xl lg:mx-0">
                     Spoonjoy is the easiest way to save and follow your own
                     recipes. We also make it effortless to create grocery lists
-                    using your recipes as starting points.
+                    using your recipes as starting points (coming soon).
                   </p>
-                  <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
-                    <div className="rounded-md shadow">
-                      <Link
-                        to={routes.signup()}
-                        className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-4 md:px-10 md:text-lg"
-                      >
-                        Sign Up
-                      </Link>
+                  <div className="mt-5 sm:mx-auto sm:mt-8 sm:flex sm:w-80 sm:flex-col lg:mx-0">
+                    <div className="sm:flex">
+                      <div className="rounded-md shadow sm:w-1/2">
+                        <Link
+                          to={routes.signup()}
+                          className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-4 md:px-10 md:text-lg"
+                        >
+                          Sign Up
+                        </Link>
+                      </div>
+                      <div className="mt-3 sm:mt-0 sm:ml-3 sm:w-1/2">
+                        <Link
+                          to={routes.login()}
+                          className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-100 px-8 py-3 text-base font-medium text-indigo-700 hover:bg-indigo-200 md:py-4 md:px-10 md:text-lg"
+                        >
+                          Log In
+                        </Link>
+                      </div>
                     </div>
-                    <div className="mt-3 sm:mt-0 sm:ml-3">
+                    <div className="mt-3">
                       <Link
                         to={routes.login()}
-                        className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-100 px-8 py-3 text-base font-medium text-indigo-700 hover:bg-indigo-200 md:py-4 md:px-10 md:text-lg"
+                        className="flex w-full items-center justify-center rounded-md border-2 border-indigo-700 bg-white px-8 py-3 text-base font-medium text-indigo-700 hover:bg-indigo-200 md:py-4 md:px-10 md:text-lg"
                       >
-                        Log In
+                        View Example Recipes
                       </Link>
                     </div>
                   </div>
