@@ -16,6 +16,11 @@ import SiteLayout from './layouts/SiteLayout/SiteLayout'
 const Routes = () => {
   return (
     <Router>
+      <Private wrap={SiteLayout} unauthenticated="login">
+        <Set wrap={BackgroundLayout}>
+          <Route path="/recipes/new" page={RecipeNewRecipePage} name="newRecipe" />
+        </Set>
+      </Private>
       <Private wrap={SiteLayout} unauthenticated="welcome">
         <Route path="/recipes" page={RecipeRecipesPage} name="recipes" />
         <Set wrap={BackgroundLayout}>
