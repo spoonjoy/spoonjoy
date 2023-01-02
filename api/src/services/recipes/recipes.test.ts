@@ -21,8 +21,11 @@ import {
   deleteRecipe,
   Recipe,
   myRecipes,
+  usersRecipes,
 } from './recipes'
 import {
+  bobsRecipeScenarioData,
+  deletedBobsRecipeScenarioData,
   deletedRecipeScenarioData,
   lindasRecipeScenarioData,
   recipeIncludeAllRelations,
@@ -56,6 +59,18 @@ describe('recipes', () => {
         numDeletedRecipes + numNotDeletedRecipes
       )
       expect(result.length).toEqual(numNotDeletedRecipes)
+    }
+  )
+
+  scenario(
+    "returns all of a specific user's recipes that don't have 'deletedAt' set",
+    async (scenario: RecipeScenario) => {
+      const result = await usersRecipes({ userId: scenario.user.bob.id })
+      const numBobsNotDeletedRecipes = Object.keys(
+        bobsRecipeScenarioData
+      ).length
+      expect(numBobsNotDeletedRecipes > 0)
+      expect(result.length).toEqual(numBobsNotDeletedRecipes)
     }
   )
 

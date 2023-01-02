@@ -31,6 +31,17 @@ export const recipes: QueryResolvers['recipes'] = () => {
   })
 }
 
+export const usersRecipes: QueryResolvers['usersRecipes'] = ({ userId }) => {
+  return db.recipe.findMany({
+    where: {
+      chefId: userId,
+      AND: {
+        deletedAt: null,
+      },
+    },
+  })
+}
+
 export const myRecipes: QueryResolvers['myRecipes'] = () => {
   requireAuth()
 
