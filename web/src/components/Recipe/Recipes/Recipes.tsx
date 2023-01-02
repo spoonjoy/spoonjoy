@@ -1,7 +1,7 @@
+import { PlusIcon } from '@heroicons/react/20/solid'
 import type { FindMyRecipes } from 'types/graphql'
 
 import { Link, routes } from '@redwoodjs/router'
-import { PlusIcon } from '@heroicons/react/20/solid'
 
 interface CardBaseProps {
   children: JSX.Element
