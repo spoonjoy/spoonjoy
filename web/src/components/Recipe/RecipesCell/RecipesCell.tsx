@@ -8,7 +8,6 @@ import NoRecipes from '../Recipes/NoRecipes'
 
 export const QUERY = (props: any) => {
   const isExampleRecipe = !!props.variables.exampleRecipes
-  console.log('is example recipe', isExampleRecipe)
   if (isExampleRecipe) {
     return gql`
       query ExampleRecipes {
