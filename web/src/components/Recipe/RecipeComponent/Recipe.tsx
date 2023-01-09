@@ -79,7 +79,13 @@ const Recipe = ({ recipe }: Props) => {
           return (
             <div key={stepNum} className="mt-2">
               <h2 className="text-lg font-medium text-gray-900">
-                step {stepNum} {stepTitle && `: ${stepTitle}`}
+                step {stepNum}
+                {stepTitle && (
+                  <span>
+                    {': '}
+                    <span className="font-normal">{stepTitle}</span>
+                  </span>
+                )}
               </h2>
               {ingredients && (
                 <div className="m-5 grid max-w-xs gap-y-4">
