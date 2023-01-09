@@ -67,11 +67,17 @@ const Recipe = ({ recipe }: Props) => {
 
       <div>
         {recipe.steps.map((step) => {
-          const { stepNum, description, ingredients, stepOutputUses } = step!
+          const {
+            stepNum,
+            stepTitle,
+            description,
+            ingredients,
+            stepOutputUses,
+          } = step!
           return (
             <div key={stepNum} className="mt-2">
               <h2 className="text-lg font-medium text-gray-900">
-                step {stepNum}
+                step {stepNum} {stepTitle && `: ${stepTitle}`}
               </h2>
               {ingredients && (
                 <div className="m-5 grid max-w-xs gap-y-4">

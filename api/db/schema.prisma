@@ -61,7 +61,7 @@ model RecipeStep {
   recipeId          String
   recipe            Recipe  @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   stepNum           Int
-  stepTitle         String  @default("")
+  stepTitle         String?
   description       String  @db.VarChar(500)
   ingredients       Ingredient[]
   usingSteps        StepOutputUse[] @relation("input")

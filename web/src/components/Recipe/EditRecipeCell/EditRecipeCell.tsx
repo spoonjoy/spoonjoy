@@ -25,6 +25,7 @@ export const QUERY = gql`
       }
       steps {
         stepNum
+        stepTitle
         description
         ingredients {
           id
@@ -40,6 +41,7 @@ export const QUERY = gql`
           id
           outputOfStep {
             stepNum
+            stepTitle
           }
         }
       }

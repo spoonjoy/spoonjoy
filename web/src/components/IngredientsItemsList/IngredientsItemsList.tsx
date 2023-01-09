@@ -69,7 +69,7 @@ const IngredientsItemsList = ({ items, listType }: IIngredientsItemsList) => {
 
           const iconProps = {
             className: 'mr-3 h-5 w-5 text-indigo-600',
-            ariaHidden: true,
+            'aria-hidden': true,
           }
 
           const itemIcon = (() => {

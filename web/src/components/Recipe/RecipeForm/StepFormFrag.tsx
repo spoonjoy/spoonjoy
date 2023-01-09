@@ -4,6 +4,7 @@ import { FieldErrors, HiddenField } from '@redwoodjs/forms'
 
 import AddRemBtns from 'src/components/formComponents/AddRemBtns'
 import StyledTextAreaField from 'src/components/formComponents/StyledTextAreaField'
+import StyledTextField from 'src/components/formComponents/StyledTextField'
 import { IRecipeStepInputStore } from 'src/stores/RecipeInputStore'
 
 import IngredientFormFrag from './IngredientFormFrag'
@@ -28,6 +29,8 @@ const StepFormFrag = ({
 }: StepFormFragProps) => {
   const {
     stepNum,
+    stepTitle,
+    setStepTitle,
     description,
     ingredients,
     stepOutputUses,
@@ -41,6 +44,16 @@ const StepFormFrag = ({
         Step {stepNum}
       </h2>
       <div className="ml-3 mb-3">
+        <StyledTextField
+          fieldName={`steps.${stepNum - 1}.stepTitle`}
+          label={`Step ${stepNum} Title`}
+          defaultValue={stepTitle}
+          onChange={(e) => {
+            const { value } = e.target
+            setStepTitle(value)
+          }}
+          fieldErrors={errors.stepTitle}
+        />
         <legend className="block text-sm font-medium text-gray-700">
           Step {stepNum} Ingredients
         </legend>

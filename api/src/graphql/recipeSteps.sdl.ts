@@ -4,7 +4,7 @@ export const schema = gql`
     recipeId: String!
     recipe: Recipe!
     stepNum: Int!
-    stepTitle: String!
+    stepTitle: String
     description: String!
     ingredients: [Ingredient]!
     stepOutputUses: [StepOutputUse]!

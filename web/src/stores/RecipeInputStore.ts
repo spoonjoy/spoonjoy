@@ -47,6 +47,7 @@ const RecipeStepInputStore = types
   .model('RecipeStepStore')
   .props({
     stepNum: types.number,
+    stepTitle: types.maybeNull(types.string),
     description: types.string,
     ingredients: types.array(IngredientInputStore),
     stepOutputUses: types.array(StepUseInputStore),
@@ -54,6 +55,9 @@ const RecipeStepInputStore = types
   .actions((self) => ({
     setStepNum: (stepNum: number) => {
       self.stepNum = stepNum
+    },
+    setStepTitle: (stepTitle: string | null) => {
+      self.stepTitle = stepTitle
     },
     setDescription: (description: string) => {
       self.description = description
@@ -153,6 +157,7 @@ export const recipeQueryResponseToInputSnapshotIn = (
       }
       return {
         stepNum: step.stepNum,
+        stepTitle: step.stepTitle,
         description: step.description || '',
         ingredients: step.ingredients.map(
           (ingredient): IIngredientInputStoreSnapshotIn => {

@@ -36,6 +36,7 @@ export interface IIngredientsDbInput {
 export interface IStepsDbInput {
   create: Array<{
     stepNum: number
+    stepTitle: string | null
     description: string
     ingredients: IIngredientsDbInput
   }>
@@ -86,9 +87,10 @@ export const mapStepsDbInputToMutationInput = (
   steps: IStepsDbInput
 ): InputMaybe<CreateRecipeStepInput>[] => {
   return steps.create.map((step) => {
-    const { stepNum, description, ingredients } = step
+    const { stepNum, stepTitle, description, ingredients } = step
     return {
       stepNum,
+      stepTitle: stepTitle,
       description,
       ingredients: mapIngredientsDbInputToMutationInput(ingredients),
     }
@@ -193,9 +195,10 @@ export const mapStepsMutationInputToDbCreateInputNoStepOutputUses = (
 ): Prisma.RecipeStepUpdateManyWithoutRecipeNestedInput => {
   return {
     create: steps.map((step) => {
-      const { stepNum, description, ingredients } = step
+      const { stepNum, stepTitle, description, ingredients } = step
       return {
         stepNum,
+        stepTitle: stepTitle || null,
         description,
         ingredients: ingredients
           ? mapIngredientsMutationInputToDbCreateInput(ingredients)
@@ -266,7 +269,7 @@ export const mapStepsMutationInputToDbUpdateInputNoStepOutputUses = (
 ): Prisma.RecipeStepUpdateManyWithoutRecipeNestedInput | undefined => {
   return {
     upsert: steps.map((step) => {
-      const { stepNum, description, ingredients } = step
+      const { stepNum, stepTitle, description, ingredients } = step
       return {
         where: {
           recipeId_stepNum: {
@@ -276,6 +279,7 @@ export const mapStepsMutationInputToDbUpdateInputNoStepOutputUses = (
         },
         update: {
           stepNum,
+          stepTitle: stepTitle || null,
           description,
           ingredients: ingredients
             ? mapIngredientsMutationInputToDbUpdateInput(ingredients)
