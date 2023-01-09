@@ -89,7 +89,9 @@ const IngredientsItemsList = ({
           })()
 
           const iconProps = {
-            className: 'mr-3 h-5 w-5 text-indigo-600',
+            className: `mr-3 h-5 w-5 ${
+              selected ? 'text-indigo-400' : 'text-indigo-600'
+            }`,
             'aria-hidden': true,
           }
 
@@ -104,21 +106,16 @@ const IngredientsItemsList = ({
 
           return (
             <li key={itemInfo.key}>
-              <button className="relative h-full w-full py-4" onClick={onCheck}>
-                {/* For crossing out and greying selected items */}
-                <span
-                  className={`absolute ${
-                    itemIcon ? 'left-[1.8rem]' : 'left-0'
-                  } bottom-0 z-10 flex h-full ${
-                    itemIcon ? 'w-[calc(100%-3.5rem)]' : 'w-[calc(100%-1.7rem)]'
-                  } flex-col ${selected ? 'block' : 'hidden'}`}
-                >
-                  <span className="border-b-[1px]f absolute top-0 left-0 right-0 h-1/2 w-full border-gray-500 bg-white bg-opacity-50" />
-                  <span className="absolute bottom-0 left-0 right-0 h-1/2 w-full border-t-[1px] border-gray-500 bg-white bg-opacity-50" />
-                </span>
-                <span className="z-0 flex h-full w-full items-start">
+              <button className="h-full w-full py-4" onClick={onCheck}>
+                <span className="flex h-full w-full items-center">
                   {itemIcon}
-                  <div className="min-w-0 flex-1 text-start text-sm">
+                  <div
+                    className={`min-w-0 flex-1 text-start text-sm ${
+                      selected
+                        ? 'text-gray-400 line-through decoration-indigo-600 decoration-2'
+                        : 'text-gray-700'
+                    }`}
+                  >
                     {itemInfo.itemLabel}
                   </div>
                   <div className="ml-3 flex h-5 items-center">
@@ -148,7 +145,7 @@ const getIngredientItemInfo = (item: IIngredientItem) => {
     itemLabel: (
       <span
         id={`ingredient-${id}-label`}
-        className="flex select-none justify-between text-gray-700"
+        className="flex select-none justify-between"
       >
         <span className="font-medium">{ingredientRef.name}</span>
         <span className="font-normal">
@@ -167,7 +164,7 @@ const getShoppingListItemInfo = (item: IShoppingListItem) => {
     itemLabel: (
       <span
         id={`ingredient-${id}-label`}
-        className="flex select-none justify-between text-gray-700"
+        className="flex select-none justify-between"
       >
         <span className="font-medium">{ingredientRef.name}</span>
         {quantity && unit && (
@@ -191,10 +188,7 @@ const getStepOutputUseItemInfo = (
   return {
     key: `stepoutputusage-${stepNum}-${id}`,
     itemLabel: (
-      <span
-        id={`stepoutputusage-${id}-label`}
-        className="select-none text-gray-700"
-      >
+      <span id={`stepoutputusage-${id}-label`} className="select-none ">
         <span className="font-normal">output of </span>
         <span className="font-medium">step {stepNum}</span>
         {stepTitle && <span className="font-medium">: {stepTitle}</span>}
