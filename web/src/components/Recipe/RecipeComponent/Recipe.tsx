@@ -15,7 +15,7 @@ const TimeTag = ({ datetime }: { datetime: string }) => {
   console.log(datetime)
   return (
     <time dateTime={datetime} title={datetime}>
-      {new Date(datetime).toUTCString()}
+      {new Date(datetime).toDateString()}
     </time>
   )
 }
