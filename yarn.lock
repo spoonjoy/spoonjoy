@@ -6801,6 +6801,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vercel/analytics@npm:^0.1.6":
+  version: 0.1.6
+  resolution: "@vercel/analytics@npm:0.1.6"
+  peerDependencies:
+    react: ^16.8||^17||^18
+  checksum: e62c7dc11f9c219e9617e36f6d0908bde97f62bac4c9079f87483fc96a0c92d4ed4f4e72576f9f6627ea726c9a30812411fd21e76e44d31de31123f643426589
+  languageName: node
+  linkType: hard
+
 "@webassemblyjs/ast@npm:1.11.1":
   version: 1.11.1
   resolution: "@webassemblyjs/ast@npm:1.11.1"
@@ -23837,6 +23846,7 @@ __metadata:
     "@redwoodjs/router": ^3.8.0
     "@redwoodjs/web": ^3.8.0
     "@simplewebauthn/browser": ^6.0.0
+    "@vercel/analytics": ^0.1.6
     autoprefixer: ^10.4.12
     localforage: ^1.10.0
     mobx: ^6.6.2
