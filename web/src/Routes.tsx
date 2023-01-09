@@ -26,7 +26,6 @@ const Routes = () => {
       <Private wrap={SiteLayout} unauthenticated="welcome">
         <Route path="/recipes" page={RecipeRecipesPage} name="recipes" />
         <Set wrap={BackgroundLayout}>
-          <Route path="/recipes/new" page={RecipeNewRecipePage} name="newRecipe" />
           <Route path="/recipes/{id}/edit" page={RecipeEditRecipePage} name="editRecipe" />
           <Route path="/shopping-list" page={ShoppingListPage} name="shoppingList" />
         </Set>
