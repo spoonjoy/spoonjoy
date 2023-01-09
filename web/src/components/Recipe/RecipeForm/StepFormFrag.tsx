@@ -18,6 +18,7 @@ interface StepFormFragProps {
   removeStepOutputFields: (stepNum: number, outputUseIdx: number) => void
   errors: FieldErrors
   control: RecipeFormControl
+  getStepTitle: (stepNum: number) => string | null
 }
 
 const StepFormFrag = ({
@@ -26,6 +27,7 @@ const StepFormFrag = ({
   removeIngredientFields,
   errors,
   control,
+  getStepTitle,
 }: StepFormFragProps) => {
   const {
     stepNum,
@@ -47,7 +49,7 @@ const StepFormFrag = ({
         <StyledTextField
           fieldName={`steps.${stepNum - 1}.stepTitle`}
           label={`Step ${stepNum} Title`}
-          defaultValue={stepTitle}
+          defaultValue={stepTitle || undefined}
           onChange={(e) => {
             const { value } = e.target
             setStepTitle(value)
@@ -94,6 +96,7 @@ const StepFormFrag = ({
               stepNum={stepNum}
               name={`steps.${stepNum - 1}.stepOutputUses`}
               control={control}
+              getStepTitle={getStepTitle}
             />
           </>
         )}

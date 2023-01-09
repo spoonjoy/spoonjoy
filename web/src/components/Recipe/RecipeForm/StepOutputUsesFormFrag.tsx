@@ -17,6 +17,7 @@ interface StepOutputUsesFormFragProps {
   control: RecipeFormControl
   name: `steps.${number}.stepOutputUses`
   setStepOutputUses: (stepOutputUses: IStepUseInputStoreSnapshotIn[]) => void
+  getStepTitle: (stepNum: number) => string | null
 }
 const StepOutputUsesFormFrag = ({
   stepNum,
@@ -24,6 +25,7 @@ const StepOutputUsesFormFrag = ({
   setStepOutputUses,
   control,
   name,
+  getStepTitle,
 }: StepOutputUsesFormFragProps) => {
   const {
     field: { value, onChange: rhfOnChange },
@@ -59,7 +61,13 @@ const StepOutputUsesFormFrag = ({
               <span className="block truncate">
                 {stepOutputUses.length
                   ? stepOutputUses
-                      .map((outputUse) => `Step ${outputUse.outputOfStepNum}`)
+                      .map((outputUse) => {
+                        const { outputOfStepNum } = outputUse
+                        const stepTitle = getStepTitle(outputOfStepNum)
+                        return `Step ${outputOfStepNum}${
+                          stepTitle ? `: ${stepTitle}` : ''
+                        }`
+                      })
                       .join(', ')
                   : 'Select Steps'}
               </span>
@@ -90,6 +98,8 @@ const StepOutputUsesFormFrag = ({
                     }
                   >
                     {({ selected, active }) => {
+                      const { outputOfStepNum } = stepOutputUse
+                      const stepTitle = getStepTitle(outputOfStepNum)
                       return (
                         <>
                           <span
@@ -99,6 +109,7 @@ const StepOutputUsesFormFrag = ({
                             )}
                           >
                             Step {stepOutputUse.outputOfStepNum}
+                            {stepTitle && `: ${stepTitle}`}
                           </span>
 
                           {selected ? (

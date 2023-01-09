@@ -48,6 +48,7 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
   const {
     formState: { errors },
     control,
+    getValues,
     unregister,
     reset,
   } = formMethods
@@ -92,10 +93,12 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
     | `steps.${number}.recipeId`
     | `steps.${number}.description`
     | `steps.${number}.stepNum`
+    | `steps.${number}.stepTitle`
   > => {
     return [
       `steps.${stepNum - 1}.recipeId`,
       `steps.${stepNum - 1}.stepNum`,
+      `steps.${stepNum - 1}.stepTitle`,
       `steps.${stepNum - 1}.description`,
     ]
   }
@@ -119,6 +122,11 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
       removeStepOutputFields(stepNum)
     }
     unregister(getStepFieldsNames(stepNum))
+  }
+
+  /** For use by the stepOutputUse dropdown */
+  const getStepTitle = (stepNum: number): string | null => {
+    return recipeInputStore.steps[stepNum - 1].stepTitle
   }
 
   return (
@@ -151,6 +159,7 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
               removeStepOutputFields={removeStepOutputFields}
               errors={errors}
               control={control}
+              getStepTitle={getStepTitle}
             />
           )
         })}

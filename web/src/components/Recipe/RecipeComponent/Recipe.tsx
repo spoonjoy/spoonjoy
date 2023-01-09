@@ -3,7 +3,9 @@ import type { FindRecipeById } from 'types/graphql'
 import { useAuth } from '@redwoodjs/auth'
 import { MetaTags } from '@redwoodjs/web'
 
-import IngredientsItemsList from 'src/components/IngredientsItemsList/IngredientsItemsList'
+import IngredientsItemsList, {
+  IStepInfoForList,
+} from 'src/components/IngredientsItemsList/IngredientsItemsList'
 import ReloadIngredientsItemsList from 'src/components/IngredientsItemsList/ReloadIngredientsItemsList'
 import { HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
 
@@ -90,6 +92,7 @@ const Recipe = ({ recipe }: Props) => {
                   {stepOutputUses.length > 0 && (
                     <IngredientsItemsList
                       items={stepOutputUses}
+                      steps={recipe.steps as IStepInfoForList}
                       listType="stepOutputUses"
                     />
                   )}

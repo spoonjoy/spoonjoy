@@ -34,14 +34,32 @@ interface IStepOutputUseItem {
   }
 }
 
+/** This technically has more things but this is all we want it for here */
+interface IStepItem {
+  stepNum: number
+  stepTitle: string | null | undefined
+}
+
+/** For casting on input */
+export type IStepInfoForList = IStepItem[]
+
 interface IIngredientsItemsList {
   items: (IIngredientItem | IStepOutputUseItem | null)[]
+  /** This is used by stepOutputUses to get the step titles */
+  steps?: IStepInfoForList
   listType: 'recipeIngredients' | 'shoppingListItems' | 'stepOutputUses'
 }
 
 // For use both when listing ingredients in a recipe and items in a shopping list
-const IngredientsItemsList = ({ items, listType }: IIngredientsItemsList) => {
+const IngredientsItemsList = ({
+  items,
+  steps,
+  listType,
+}: IIngredientsItemsList) => {
   const { listItemsStore } = useStore()
+  const getStepTitle = (stepNum: number) => {
+    return steps && steps[stepNum - 1].stepTitle
+  }
   return (
     <fieldset className="border-t border-b border-gray-200">
       <ul className="divide-y divide-gray-200 ">
@@ -61,7 +79,10 @@ const IngredientsItemsList = ({ items, listType }: IIngredientsItemsList) => {
               case 'recipeIngredients':
                 return getIngredientItemInfo(item as IIngredientItem)
               case 'stepOutputUses':
-                return getStepOutputUseItemInfo(item as IStepOutputUseItem)
+                return getStepOutputUseItemInfo(
+                  item as IStepOutputUseItem,
+                  getStepTitle
+                )
               case 'shoppingListItems':
                 return getShoppingListItemInfo(item as IShoppingListItem)
             }
@@ -160,17 +181,23 @@ const getShoppingListItemInfo = (item: IShoppingListItem) => {
   }
 }
 
-const getStepOutputUseItemInfo = (item: IStepOutputUseItem) => {
+const getStepOutputUseItemInfo = (
+  item: IStepOutputUseItem,
+  getStepTitle: (stepNum: number) => string | null | undefined
+) => {
   const { id, outputOfStep } = item
+  const { stepNum } = outputOfStep
+  const stepTitle = getStepTitle(stepNum)
   return {
-    key: `stepoutputusage-${outputOfStep.stepNum}-${id}`,
+    key: `stepoutputusage-${stepNum}-${id}`,
     itemLabel: (
       <span
         id={`stepoutputusage-${id}-label`}
         className="select-none text-gray-700"
       >
         <span className="font-normal">output of </span>
-        <span className="font-medium">step {outputOfStep.stepNum}</span>
+        <span className="font-medium">step {stepNum}</span>
+        {stepTitle && <span className="font-medium">: {stepTitle}</span>}
       </span>
     ),
   }
