@@ -53,6 +53,9 @@ const Recipe = ({ recipe }: Props) => {
         title={recipe.title}
         description={recipe.description || `${recipe.title} page.`}
         ogUrl={`${website}/${recipe.id}`}
+        ogContentUrl={`https://images.spoonjoy.app/api/recipe?title=${encodeURIComponent(
+          recipe.title
+        )}&subtitle=${encodeURIComponent(recipe.description || '')}`}
       />
       <HeaderSlot.Plug id="recipe">
         <div className=" leading-[.8]">
