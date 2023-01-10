@@ -42,11 +42,17 @@ const Recipe = ({ recipe }: Props) => {
     return [...ingIds, ...stepUsageIds]
   })
 
+  const website =
+    process.env.NODE_ENV === 'development'
+      ? 'http://localhost'
+      : 'https://spoonjoy.app'
+
   return (
     <>
       <MetaTags
         title={recipe.title}
         description={recipe.description || `${recipe.title} page.`}
+        ogUrl={`${website}/${recipe.id}`}
       />
       <HeaderSlot.Plug id="recipe">
         <div className=" leading-[.8]">
