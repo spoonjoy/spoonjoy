@@ -1,14 +1,12 @@
 datasource db {
   provider             = "mysql"
   url                  = env("DATABASE_URL")
-  referentialIntegrity = "prisma" // needed for referentialIntegrity
+  relationMode         = "prisma"
 }
 
 generator client {
   provider        = "prisma-client-js"
   binaryTargets   = "native"
-  // referential integrity is needed for PlanetScale: https://www.prisma.io/docs/guides/database/using-prisma-with-planetscale#how-to-emulate-referential-integrity-in-prisma-client
-  previewFeatures = ["interactiveTransactions", "referentialIntegrity"]
 }
 
 // Define your own datamodels here and run `yarn redwood prisma migrate dev`
