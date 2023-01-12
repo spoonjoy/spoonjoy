@@ -110,7 +110,10 @@ const Recipe = ({ recipe }: Props) => {
             stepOutputUses,
           } = step!
           return (
-            <div key={stepNum} className="mt-2">
+            <div key={stepNum}>
+              {stepNum !== 1 && (
+                <div className="m-auto my-2 w-[100px] rounded-xl border-b-8 border-indigo-700" />
+              )}
               <h2 className="text-lg font-medium text-gray-900">
                 step {stepNum}
                 {stepTitle && (
