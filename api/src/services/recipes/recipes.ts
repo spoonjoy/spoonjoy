@@ -166,6 +166,11 @@ export const createRecipe: MutationResolvers['createRecipe'] = async ({
   })
 }
 
+/**
+ * Only update the recipe image if:
+ * - The title has changed, OR
+ * - The description has been changed AND to something that exists (aka, don't change if the description was simply removed)
+ */
 const shouldUpdateRecipeImage = async (
   recipeId: string,
   input: UpdateRecipeInput
