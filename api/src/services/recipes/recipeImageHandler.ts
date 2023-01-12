@@ -13,7 +13,7 @@ cloudinary.config({
 
 export const createRecipeImage = async (
   title: string,
-  description: string | null
+  description: string | null | undefined
 ) => {
   const imageResponse = await openai.createImage({
     prompt: `${title}${

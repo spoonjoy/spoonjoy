@@ -8,6 +8,7 @@ import type {
   ResolversTypes,
   ResolversParentTypes,
   RecipeRelationResolvers,
+  UpdateRecipeInput,
 } from 'types/graphql'
 
 import { validateWith } from '@redwoodjs/api'
@@ -135,6 +136,7 @@ export const createRecipe: MutationResolvers['createRecipe'] = async ({
   const recipeNoStepOutputUsesDbInput: Prisma.RecipeCreateInput = {
     title,
     description,
+    imageUrl: await createRecipeImage(title, description),
     servings,
     chef: {
       connect: {
@@ -164,6 +166,24 @@ export const createRecipe: MutationResolvers['createRecipe'] = async ({
   })
 }
 
+const shouldUpdateRecipeImage = async (
+  recipeId: string,
+  input: UpdateRecipeInput
+) => {
+  const recipeOldInfo = await db.recipe.findUnique({
+    where: { id: recipeId },
+  })
+
+  if (
+    input.title != recipeOldInfo?.title ||
+    (input.description && input.description !== recipeOldInfo.description)
+  ) {
+    return true
+  } else {
+    return false
+  }
+}
+
 export const updateRecipe: MutationResolvers['updateRecipe'] = async ({
   id,
   input,
@@ -179,11 +199,14 @@ export const updateRecipe: MutationResolvers['updateRecipe'] = async ({
     title,
     description,
     servings,
+    imageUrl: (await shouldUpdateRecipeImage(id, input))
+      ? await createRecipeImage(title, description)
+      : undefined,
     steps: mapStepsMutationInputToDbUpdateInputNoStepOutputUses(steps, id),
   }
 
   return await db.$transaction(async (tx) => {
-    // 1. Create the recipe
+    // 1. Update the recipe
     const updatedRecipeNoStepOutputUses = await tx.recipe.update({
       where: { id },
       data: recipeNoStepOutputUsesDbInput,
@@ -255,17 +278,5 @@ export const Recipe: RequiredRecipeRelationResolvers = {
     }
 
     return maybeSteps
-  },
-
-  imageUrl: async (_obj, { root }) => {
-    const maybeRecipe = await db.recipe.findUnique({
-      where: { id: root?.id },
-    })
-    if (!maybeRecipe) {
-      throw new Error('Could not resolve recipe')
-    }
-    const { title, description } = maybeRecipe
-
-    return await createRecipeImage(title, description)
   },
 }
