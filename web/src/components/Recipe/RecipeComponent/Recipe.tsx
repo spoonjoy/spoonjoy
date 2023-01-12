@@ -93,7 +93,7 @@ const Recipe = ({ recipe }: Props) => {
           </div>
         </div>
       </HeaderSlot.Plug>
-      <div className="mt-4 mb-2 flex justify-center">
+      <div className="my-6 flex justify-center">
         <ReloadIngredientsItemsList
           label={'Clear Progress'}
           itemIds={listItemIds}
@@ -112,9 +112,13 @@ const Recipe = ({ recipe }: Props) => {
           return (
             <div key={stepNum}>
               {stepNum !== 1 && (
-                <div className="m-auto my-2 w-[100px] rounded-xl border-b-8 border-indigo-700" />
+                <div className="my-6 flex justify-center gap-1">
+                  <div className="w-[8px] rounded-xl border-b-8 border-indigo-700" />
+                  <div className="w-[8px] rounded-xl border-b-8 border-indigo-700" />
+                  <div className="w-[8px] rounded-xl border-b-8 border-indigo-700" />
+                </div>
               )}
-              <h2 className="text-lg font-medium text-gray-900">
+              <h2 className="block text-lg font-medium leading-none text-gray-900">
                 step {stepNum}
                 {stepTitle && (
                   <span>
@@ -140,7 +144,7 @@ const Recipe = ({ recipe }: Props) => {
                   )}
                 </div>
               )}
-              <div className="pb-5 text-gray-800">
+              <div className="text-gray-800">
                 <p>{description}</p>
               </div>
             </div>
