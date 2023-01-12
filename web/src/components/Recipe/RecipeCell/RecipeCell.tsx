@@ -10,7 +10,7 @@ export const QUERY = gql`
       id
       title
       description
-      # imageUrl
+      imageUrl
       servings
       chef {
         id
