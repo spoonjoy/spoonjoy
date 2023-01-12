@@ -63,13 +63,13 @@ const Recipe = ({ recipe }: Props) => {
           style={{
             backgroundImage: `url('https://oaidalleapiprodscus.blob.core.windows.net/private/org-OyjtdZ3UHeEw66a4EVFUqy1L/user-nAoiHGhoeXS9W5jkLboCe7fD/img-g19WwNqR5V5jppbC2yDRiJhd.png?st=2023-01-12T04%3A45%3A33Z&se=2023-01-12T06%3A45%3A33Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-01-11T23%3A39%3A34Z&ske=2023-01-12T23%3A39%3A34Z&sks=b&skv=2021-08-06&sig=Tg8xAjnr333jXQRhU32U6SDARtyRT%2BwBUb1ZA2c41eY%3D')`,
           }}
-          className={`relative h-[350px] bg-cover`}
+          className={`relative h-[350px] bg-cover sm:h-[400px]`}
         >
           <div className="absolute bottom-0 w-full">
-            <div className="relative mx-auto mb-4 h-[140px] w-[350px] rounded-md p-4 text-white backdrop-blur backdrop-brightness-50">
+            <div className="relative mx-auto mb-4 h-[140px] w-[350px] rounded-md p-4 text-white backdrop-blur backdrop-brightness-50 sm:h-[150px] sm:w-[600px]">
               {/* Header text */}
               <div className="absolute top-4">
-                <span className="mb-2 block text-base font-bold leading-none tracking-normal opacity-[85%]">
+                <span className="mb-2 block text-base font-bold leading-none tracking-normal opacity-[85%] sm:text-lg">
                   {recipe.title}
                 </span>
                 <span className="block text-sm font-light leading-4 tracking-normal opacity-[85%]">
@@ -100,7 +100,7 @@ const Recipe = ({ recipe }: Props) => {
         />
       </div>
 
-      <div>
+      <div className="m-auto max-w-xl">
         {recipe.steps.map((step) => {
           const {
             stepNum,
