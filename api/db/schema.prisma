@@ -39,13 +39,14 @@ model UserCredential {
 }
 
 model Recipe {
-  id                  String  @id @default(cuid())
+  id                  String        @id @default(cuid())
   title               String
-  description         String? @db.VarChar(500)
+  description         String?       @db.VarChar(500)
+  imageUrl            String        @default("https://res.cloudinary.com/dpjmyc4uz/image/upload/v1673507051/img-ckHFQiOLECYrBFxLtV3oESNs.png.png")
   servings            Int?
   chefId              String
-  chef                User      @relation(fields: [chefId], references: [id], onDelete: Cascade)
-  createdAt           DateTime  @default(now())
+  chef                User          @relation(fields: [chefId], references: [id], onDelete: Cascade)
+  createdAt           DateTime      @default(now())
   deletedAt           DateTime?
   steps               RecipeStep[]
 
