@@ -18,6 +18,7 @@ import { db } from 'src/lib/db'
 
 import { mapStepsMutationInputToDbCreateManyStepOutputUsesInput } from '../stepOutputUses/stepOutputUsesUtilities'
 
+import { createRecipeImage } from './recipeImageHandler'
 import {
   mapStepsMutationInputToDbCreateInputNoStepOutputUses,
   mapStepsMutationInputToDbUpdateInputNoStepOutputUses,
@@ -254,5 +255,17 @@ export const Recipe: RequiredRecipeRelationResolvers = {
     }
 
     return maybeSteps
+  },
+
+  imageUrl: async (_obj, { root }) => {
+    const maybeRecipe = await db.recipe.findUnique({
+      where: { id: root?.id },
+    })
+    if (!maybeRecipe) {
+      throw new Error('Could not resolve recipe')
+    }
+    const { title, description } = maybeRecipe
+
+    return await createRecipeImage(title, description)
   },
 }

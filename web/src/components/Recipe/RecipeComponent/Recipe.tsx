@@ -60,6 +60,7 @@ const Recipe = ({ recipe }: Props) => {
       <HeaderSlot.Plug id="recipe">
         <div className=" leading-[.8]">
           <span>{recipe.title}</span>
+          {recipe.imageUrl && <img src={recipe.imageUrl} alt={recipe.title} />}
           <br />
           <span className="ml-2 text-sm font-normal">
             by <span className="font-bold">{recipe.chef.username}</span> on{' '}

@@ -8,6 +8,7 @@ export const schema = gql`
     createdAt: DateTime!
     deletedAt: DateTime
     steps: [RecipeStep!]!
+    imageUrl: String
   }
 
   type Query {
