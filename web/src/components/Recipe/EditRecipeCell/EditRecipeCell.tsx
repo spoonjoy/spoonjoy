@@ -8,7 +8,7 @@ import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import RecipeForm, { onUpdateRecipe } from 'src/components/Recipe/RecipeForm'
-import { HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
+import { DefaultHeader, HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
 import { recipeQueryResponseToInputSnapshotIn } from 'src/stores/RecipeInputStore'
 import { useStore } from 'src/stores/RootStore'
 
@@ -107,7 +107,9 @@ export const Success = observer(
           title={`Edit Recipe "${recipe.title}"`}
           description="Edit Recipe Page"
         />
-        <HeaderSlot.Plug id="edit-recipe">{`Edit Recipe "${recipe.title}"`}</HeaderSlot.Plug>
+        <HeaderSlot.Plug id="edit-recipe">
+          <DefaultHeader title={`Edit Recipe "${recipe.title}"`} />
+        </HeaderSlot.Plug>
         {/* only render the form once the store's id reflects the recipes id, aka the store has been set to the recipe that's being edited */}
         {recipeInputStore.id === recipe.id && (
           <RecipeForm

@@ -131,8 +131,8 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
 }
 
 /** Use DefaultHeader when you don't need a styled header  */
-export const DefaultHeader = (title: string) => (
-  <div className="pt-10 ">
+export const DefaultHeader = ({ title }: { title: string }) => (
+  <div className="pt-10 pb-5">
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{title}</div>
   </div>
 )

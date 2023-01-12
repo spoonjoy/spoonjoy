@@ -1,5 +1,5 @@
 import { PlusIcon } from '@heroicons/react/20/solid'
-import type { FindMyRecipes } from 'types/graphql'
+import type { MyRecipes } from 'types/graphql'
 
 import { Link, routes } from '@redwoodjs/router'
 
@@ -17,7 +17,7 @@ const CardBase = ({
 }: CardBaseProps) => {
   const containerClass = emptyState
     ? 'relative block w-full rounded-lg border-2 border-dashed border-gray-300 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 min-h-[130px] flex flex-center justify-center text-gray-500 hover:text-gray-700'
-    : 'relative block w-full rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 bg-white shadow hover:shadow-lg min-h-[130px] flex flex-center justify-center text-gray-500 hover:text-gray-700'
+    : 'relative block w-full rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 border border-gray-300 text-center hover:border-gray-400 bg-white min-h-[130px] flex flex-center justify-center text-gray-500 hover:text-gray-700'
   return (
     <li>
       <Link className={containerClass} to={linkTo} title={linkTitle}>
@@ -27,11 +27,7 @@ const CardBase = ({
   )
 }
 
-const RecipeCard = ({
-  recipe,
-}: {
-  recipe: Unpacked<FindMyRecipes['recipes']>
-}) => (
+const RecipeCard = ({ recipe }: { recipe: Unpacked<MyRecipes['recipes']> }) => (
   <CardBase
     linkTo={routes.recipe({ id: recipe.id })}
     linkTitle={'Show recipe ' + recipe.id + ' detail'}
@@ -48,7 +44,7 @@ const RecipeCard = ({
   </CardBase>
 )
 
-export default function RecipeList({ recipes }: FindMyRecipes) {
+export default function RecipeList({ recipes }: MyRecipes) {
   return (
     <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {recipes.map((recipe) => (
