@@ -6,6 +6,7 @@ import {
   // BellIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
+import ChefRJ from 'public/images/chef-rj.png'
 import { SlotProvider, createSlot } from 'react-view-slot'
 
 import { useAuth } from '@redwoodjs/auth'
@@ -14,7 +15,6 @@ import { toast, Toaster } from '@redwoodjs/web/toast'
 
 import { ICurrentUser } from 'src/lib/auth'
 
-import ChefRJ from './chef-rj.png'
 import LogoBlack from './sj_black.svg'
 
 type SiteLayoutProps = {
@@ -98,7 +98,7 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
     <>
       <Toaster toastOptions={{ className: 'rw-toast', duration: 6000 }} />
       <SlotProvider>
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen">
           <Header
             navigation={
               isAuthenticated ? navigationLoggedIn : navigationNotLoggedIn
@@ -108,9 +108,9 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
             currentUser={currentUser as ICurrentUser | null}
           />
 
-          <div className="py-10">
+          <div className="pb-10">
             <header>
-              <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <div className="w-screen">
                 <h1 className="text-3xl font-bold leading-tight tracking-tight text-gray-900">
                   <HeaderSlot />
                 </h1>
@@ -119,7 +119,7 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
             <main>
               <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 {/* Replace with your content */}
-                <div className="px-4 py-8 sm:px-0">{children}</div>
+                <div className="px-4 sm:px-0">{children}</div>
                 {/* /End replace */}
               </div>
             </main>
@@ -129,6 +129,13 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
     </>
   )
 }
+
+/** Use DefaultHeader when you don't need a styled header  */
+export const DefaultHeader = (title: string) => (
+  <div className="pt-10 ">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{title}</div>
+  </div>
+)
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')

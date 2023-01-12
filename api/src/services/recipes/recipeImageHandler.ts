@@ -11,8 +11,14 @@ export const createRecipeImage = async (
   description: string | null
 ) => {
   const imageResponse = await openai.createImage({
-    prompt: `${title}${description && ` - ${description}`}`,
+    prompt: `${title}${
+      description && ` - ${description}`
+    }, in the style of a professionally taken photo for a cookbook.`,
   })
 
-  return imageResponse.data.data[0].url
+  const imageUrl = imageResponse.data.data[0].url
+
+  console.log('image url:', imageResponse.data.data[0].url)
+
+  return imageUrl
 }
