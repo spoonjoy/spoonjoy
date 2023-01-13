@@ -100,7 +100,7 @@ const Recipe = ({ recipe }: Props) => {
         />
       </div>
 
-      <div className="m-auto max-w-xl">
+      <div className="m-auto mb-7 max-w-xl">
         {recipe.steps.map((step) => {
           const {
             stepNum,
