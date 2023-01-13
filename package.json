@@ -7,6 +7,10 @@
       "packages/*"
     ]
   },
+  "scripts": {
+    "ci:build": "yarn rw test && yarn rw build",
+    "ci:migrate": "DATABASE_URL=$MIGRATE_DATABASE yarn rw deploy vercel --no-build"
+  },
   "devDependencies": {
     "@redwoodjs/core": "^3.8.0",
     "prettier-plugin-tailwindcss": "^0.1.13"
