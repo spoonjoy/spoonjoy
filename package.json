@@ -9,7 +9,7 @@
   },
   "scripts": {
     "ci:build": "yarn rw test && yarn rw build",
-    "ci:migrate": "DATABASE_URL=$MIGRATE_DATABASE yarn rw deploy vercel --no-build"
+    "ci:migrate": "bash +x ./scripts/migrateIfRequired.sh"
   },
   "devDependencies": {
     "@redwoodjs/core": "^3.8.0",
