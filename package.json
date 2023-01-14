@@ -8,7 +8,7 @@
     ]
   },
   "scripts": {
-    "ci:build": "yarn rw test && yarn rw build",
+    "ci:build": "PRISMA_CLIENT_ENGINE_TYPE='dataproxy' yarn rw test && yarn rw build",
     "ci:migrate": "bash +x ./scripts/migrateIfRequired.sh"
   },
   "devDependencies": {
