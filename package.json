@@ -7,10 +7,6 @@
       "packages/*"
     ]
   },
-  "scripts": {
-    "ci:build": "PRISMA_CLIENT_ENGINE_TYPE='dataproxy' yarn rw test && yarn rw build",
-    "ci:migrate": "bash +x ./scripts/migrateIfRequired.sh"
-  },
   "devDependencies": {
     "@redwoodjs/core": "^3.8.0",
     "prettier-plugin-tailwindcss": "^0.1.13"
