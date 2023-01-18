@@ -16,8 +16,8 @@ const CardBase = ({
   emptyState = false,
 }: CardBaseProps) => {
   const containerClass = emptyState
-    ? 'relative block w-full rounded-lg border-2 border-dashed border-gray-300 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 min-h-[130px] flex flex-center justify-center text-gray-500 hover:text-gray-700'
-    : 'relative block w-full rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 border border-gray-300 text-center hover:border-gray-400 bg-white min-h-[130px] flex flex-center justify-center text-gray-500 hover:text-gray-700'
+    ? 'relative block w-full rounded-lg border-2 border-dashed border-gray-300 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 h-[200px] sm:h-[270px] flex flex-center justify-center text-gray-500 hover:text-gray-700'
+    : 'group relative block w-full text-center focus:outline-none focus:ring-indigo-500 text-center h-[200px] sm:h-[270px] flex flex-center justify-center'
   return (
     <li>
       <Link className={containerClass} to={linkTo} title={linkTitle}>
@@ -32,13 +32,29 @@ const RecipeCard = ({ recipe }: { recipe: Unpacked<MyRecipes['recipes']> }) => (
     linkTo={routes.recipe({ id: recipe.id })}
     linkTitle={'Show recipe ' + recipe.id + ' detail'}
   >
-    <div className="flex flex-col justify-center align-baseline">
-      <div>
-        <h3 className="text-xl font-medium text-gray-900">{recipe.title}</h3>
-        <dl className="mt-1 flex flex-grow flex-col justify-between">
-          <dt className="sr-only">Title</dt>
-          <dd className="text-sm text-gray-500">{recipe.description}</dd>
-        </dl>
+    <div
+      className={`relative w-full overflow-hidden rounded-lg group-focus:ring-2 group-focus:ring-indigo-700`}
+    >
+      <div
+        style={{
+          backgroundImage: `url('${recipe.imageUrl}')`,
+        }}
+        className={`absolute top-0 bottom-0 left-0 right-0 bg-cover bg-center contrast-50 saturate-50 group-hover:contrast-100 group-hover:saturate-100 group-focus:contrast-100 group-focus:saturate-100`}
+      />
+
+      <div className="absolute bottom-0 flex w-full justify-center">
+        <div className="mx-2 w-full">
+          <div className="relative mb-2 rounded-md p-4 text-white backdrop-blur backdrop-brightness-50">
+            <h3 className="text-xl font-medium text-white opacity-90">
+              {recipe.title}
+            </h3>
+            <dl className="mt-1 flex flex-grow flex-col justify-between">
+              <dd className="text-sm text-white opacity-70">
+                {recipe.description}
+              </dd>
+            </dl>
+          </div>
+        </div>
       </div>
     </div>
   </CardBase>
@@ -46,7 +62,7 @@ const RecipeCard = ({ recipe }: { recipe: Unpacked<MyRecipes['recipes']> }) => (
 
 export default function RecipeList({ recipes }: MyRecipes) {
   return (
-    <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+    <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {recipes.map((recipe) => (
         <RecipeCard key={recipe.id} recipe={recipe} />
       ))}

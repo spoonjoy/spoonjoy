@@ -15,6 +15,7 @@ export const QUERY = (props: any) => {
           id
           title
           description
+          imageUrl
         }
       }
     `
@@ -25,6 +26,7 @@ export const QUERY = (props: any) => {
           id
           title
           description
+          imageUrl
         }
       }
     `
