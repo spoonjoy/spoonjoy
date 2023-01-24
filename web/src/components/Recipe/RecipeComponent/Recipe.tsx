@@ -63,7 +63,7 @@ const Recipe = ({ recipe }: Props) => {
           style={{
             backgroundImage: `url('${recipe.imageUrl}')`,
           }}
-          className={`relative m-auto h-[350px] bg-cover sm:h-[400px] md:h-[500px] lg:w-[900px]`}
+          className={`relative m-auto h-[350px] bg-cover bg-bottom sm:h-[400px] md:h-[500px] lg:w-[900px]`}
         >
           <div className="absolute bottom-0 w-full">
             <div className="relative mx-auto mb-4 h-[140px] w-[350px] rounded-md p-4 text-white backdrop-blur backdrop-brightness-50 sm:h-[160px] sm:w-[600px] md:mb-6 md:h-[170px]">

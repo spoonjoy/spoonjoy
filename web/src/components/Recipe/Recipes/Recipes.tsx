@@ -39,7 +39,7 @@ const RecipeCard = ({ recipe }: { recipe: Unpacked<MyRecipes['recipes']> }) => (
         style={{
           backgroundImage: `url('${recipe.imageUrl}')`,
         }}
-        className={`absolute top-0 bottom-0 left-0 right-0 bg-cover bg-center contrast-50 saturate-50 group-hover:contrast-100 group-hover:saturate-100 group-focus:contrast-100 group-focus:saturate-100`}
+        className={`absolute top-0 bottom-0 left-0 right-0 bg-cover bg-bottom contrast-50 saturate-50 group-hover:contrast-100 group-hover:saturate-100 group-focus:contrast-100 group-focus:saturate-100`}
       />
 
       <div className="absolute bottom-0 flex w-full justify-center">
