@@ -136,7 +136,6 @@ export const createRecipe: MutationResolvers['createRecipe'] = async ({
   const recipeNoStepOutputUsesDbInput: Prisma.RecipeCreateInput = {
     title,
     description,
-    imageUrl: await createRecipeImage(title, description),
     servings,
     chef: {
       connect: {
@@ -146,24 +145,34 @@ export const createRecipe: MutationResolvers['createRecipe'] = async ({
     steps: mapStepsMutationInputToDbCreateInputNoStepOutputUses(steps),
   }
 
-  return await db.$transaction(async (tx) => {
-    // 1. Create the recipe
-    const newRecipeNoStepOutputUses = await tx.recipe.create({
-      data: recipeNoStepOutputUsesDbInput,
-    })
+  return await db.$transaction(
+    async (tx) => {
+      // 1. Create the recipe
+      const newRecipeNoStepOutputUses = await tx.recipe.create({
+        data: recipeNoStepOutputUsesDbInput,
+      })
 
-    const recipeId = newRecipeNoStepOutputUses.id
+      const recipeId = newRecipeNoStepOutputUses.id
 
-    // 2. Create the step output uses
-    await tx.stepOutputUse.createMany({
-      data: mapStepsMutationInputToDbCreateManyStepOutputUsesInput(
-        recipeId,
-        steps
-      ),
-    })
+      await tx.recipe.update({
+        where: { id: recipeId },
+        data: {
+          imageUrl: await createRecipeImage(title, description, recipeId),
+        },
+      })
 
-    return newRecipeNoStepOutputUses
-  })
+      // 2. Create the step output uses
+      await tx.stepOutputUse.createMany({
+        data: mapStepsMutationInputToDbCreateManyStepOutputUsesInput(
+          recipeId,
+          steps
+        ),
+      })
+
+      return newRecipeNoStepOutputUses
+    },
+    { timeout: 15000 }
+  )
 }
 
 /**
@@ -205,7 +214,7 @@ export const updateRecipe: MutationResolvers['updateRecipe'] = async ({
     description,
     servings,
     imageUrl: (await shouldUpdateRecipeImage(id, input))
-      ? await createRecipeImage(title, description)
+      ? await createRecipeImage(title, description, id)
       : undefined,
     steps: mapStepsMutationInputToDbUpdateInputNoStepOutputUses(steps, id),
   }
