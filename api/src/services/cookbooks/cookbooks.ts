@@ -15,6 +15,16 @@ export const cookbooks: QueryResolvers['cookbooks'] = () => {
   return db.cookbook.findMany()
 }
 
+export const usersCookbooks: QueryResolvers['usersCookbooks'] = ({
+  username,
+}) => {
+  return db.cookbook.findMany({
+    where: {
+      author: { username },
+    },
+  })
+}
+
 export const cookbook: QueryResolvers['cookbook'] = ({ id }) => {
   return db.cookbook.findUnique({
     where: { id },

@@ -1,13 +1,15 @@
 export const schema = gql`
   type Cookbook {
     id: String!
+    title: String
     authorId: String!
     author: User!
-    recipes: [Recipe]!
+    recipes: [RecipesInCookbooks]!
   }
 
   type Query {
     cookbooks: [Cookbook!]! @requireAuth
+    usersCookbooks(username: String!): [Cookbook!]! @skipAuth
     cookbook(id: String!): Cookbook @requireAuth
   }
 

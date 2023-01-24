@@ -123,6 +123,7 @@ model Unit {
 
 model Cookbook {
   id          String  @id @default(cuid())
+  title       String
   authorId    String
   author      User    @relation(fields: [authorId], references: [id], onDelete: Cascade)
   recipes     RecipesInCookbooks[]
