@@ -19,10 +19,10 @@ export const createRecipeImage = async (
   description: string | null | undefined,
   recipeId: string
 ) => {
+  // Written by ChatGPT ;)
+  const prompt = `Generate an image of ${title} professional food photography that looks as if it could be featured in a high-end cookbook. The dish should be presented on a plate with appropriate garnishes, and the overall image should have a visually pleasing composition and lighting. The dish should look delicious and appetizing.`
   const imageResponse = await openai.createImage({
-    prompt: `${title}${
-      description && ` - ${description}`
-    } - professional food photography.`,
+    prompt,
   })
 
   const openaiUrl = imageResponse.data.data[0].url
