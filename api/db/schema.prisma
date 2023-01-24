@@ -131,6 +131,7 @@ model Cookbook {
 }
 
 model RecipesInCookbooks {
+  id          String  @id @default(cuid())
   cookbookId  String
   cookbook    Cookbook  @relation(fields: [cookbookId], references: [id])
   recipeId    String
@@ -138,7 +139,7 @@ model RecipesInCookbooks {
   addedById   String
   addedBy     User      @relation(fields: [addedById], references: [id])
 
-  @@id([cookbookId, recipeId])
+  @@unique([cookbookId, recipeId])
   @@index([cookbookId])
   @@index([recipeId])
   @@index([addedById])

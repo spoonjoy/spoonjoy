@@ -2,7 +2,12 @@ import type {
   QueryResolvers,
   MutationResolvers,
   CookbookRelationResolvers,
+  RequiredResolverFn,
+  ResolversParentTypes,
+  ResolversTypes,
 } from 'types/graphql'
+
+import { RedwoodGraphQLContext } from '@redwoodjs/graphql-server/dist/functions/types'
 
 import { db } from 'src/lib/db'
 
@@ -40,11 +45,36 @@ export const deleteCookbook: MutationResolvers['deleteCookbook'] = ({ id }) => {
   })
 }
 
-export const Cookbook: CookbookRelationResolvers = {
-  author: (_obj, { root }) => {
-    return db.cookbook.findUnique({ where: { id: root?.id } }).author()
+type RequiredCookbookRelationResolvers = CookbookRelationResolvers & {
+  author: RequiredResolverFn<
+    ResolversTypes['User'],
+    ResolversParentTypes['Cookbook'],
+    RedwoodGraphQLContext
+  >
+  recipes: RequiredResolverFn<
+    Array<ResolversTypes['RecipesInCookbooks']>,
+    ResolversParentTypes['Cookbook'],
+    RedwoodGraphQLContext
+  >
+}
+
+export const Cookbook: RequiredCookbookRelationResolvers = {
+  author: async (_obj, { root }) => {
+    const maybeAuthor = await db.cookbook
+      .findUnique({ where: { id: root?.id } })
+      .author()
+    if (!maybeAuthor) {
+      throw new Error('Could not resolve cookbook author')
+    }
+    return maybeAuthor
   },
-  recipes: (_obj, { root }) => {
-    return db.cookbook.findUnique({ where: { id: root?.id } }).recipes()
+  recipes: async (_obj, { root }) => {
+    const maybeRecipes = await db.cookbook
+      .findUnique({ where: { id: root?.id } })
+      .recipes()
+    if (!maybeRecipes) {
+      throw new Error('Could not resolve cookbook recipes')
+    }
+    return maybeRecipes
   },
 }
