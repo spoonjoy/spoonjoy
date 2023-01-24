@@ -25,6 +25,8 @@ model User {
   createdAt           DateTime  @default(now())
   recipes             Recipe[]
   shoppingList        ShoppingList?
+  cookbooks           Cookbook[]
+  addedToCookbooks    RecipesInCookbooks[]
 }
 
 model UserCredential {
@@ -49,6 +51,7 @@ model Recipe {
   createdAt           DateTime      @default(now())
   deletedAt           DateTime?
   steps               RecipeStep[]
+  cookbooks           RecipesInCookbooks[]
 
   // Allow users to create a second recipe with the same title *if* the other one is deleted
   @@unique([chefId, title, deletedAt])
@@ -116,6 +119,29 @@ model Unit {
   name              String  @unique
   ingredients       Ingredient[]
   shoppingListIems  ShoppingListItem[]
+}
+
+model Cookbook {
+  id          String  @id @default(cuid())
+  authorId    String
+  author      User    @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  recipes     RecipesInCookbooks[]
+
+  @@index([authorId])
+}
+
+model RecipesInCookbooks {
+  cookbookId  String
+  cookbook    Cookbook  @relation(fields: [cookbookId], references: [id])
+  recipeId    String
+  recipe      Recipe    @relation(fields: [recipeId], references: [id])
+  addedById   String
+  addedBy     User      @relation(fields: [addedById], references: [id])
+
+  @@id([cookbookId, recipeId])
+  @@index([cookbookId])
+  @@index([recipeId])
+  @@index([addedById])
 }
 
 model ShoppingList {
