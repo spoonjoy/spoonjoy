@@ -131,9 +131,6 @@ export const requireRecipeAuth = async (recipeId: string) => {
 
   const recipeBasicInfo = await db.recipe.findUnique({
     where: { id: recipeId },
-    include: {
-      chef: true,
-    },
   })
 
   if (context.currentUser!.id !== recipeBasicInfo!.chefId) {
@@ -158,12 +155,33 @@ export const requireShoppingListAuth = async (shoppingListId: string) => {
 
   const shoppingListBasicInfo = await db.shoppingList.findUnique({
     where: { id: shoppingListId },
-    include: {
-      author: true,
-    },
   })
 
   if (context.currentUser!.id !== shoppingListBasicInfo!.authorId) {
     throw new ForbiddenError('You can only modify your own shoppingLists!')
+  }
+}
+
+/**
+ * Use requireCookbookAuth for checking that a user can modify/delete a cookbook
+ *
+ * @param cookbookId - The ID of the cookbook for which we are checking auth
+ *
+ * @returns - If the currentUser is authenticated (and allowed to make changes to the given cookbook)
+ *
+ * @throws {@link AuthenticationError} - If the currentUser is not authenticated
+ * @throws {@link ForbiddenError} If the currentUser is not allowed due to the cookbook not being theirs
+ */
+export const requireCookbookAuth = async (cookbookId: string) => {
+  if (!isAuthenticated()) {
+    throw new AuthenticationError('You are not logged in!')
+  }
+
+  const cookbookBasicInfo = await db.cookbook.findUnique({
+    where: { id: cookbookId },
+  })
+
+  if (context.currentUser!.id !== cookbookBasicInfo!.authorId) {
+    throw new ForbiddenError('You can only modify your own cookbooks!')
   }
 }

@@ -9,6 +9,7 @@ import type {
 
 import { RedwoodGraphQLContext } from '@redwoodjs/graphql-server/dist/functions/types'
 
+import { requireAuth, requireCookbookAuth } from 'src/lib/auth'
 import { db } from 'src/lib/db'
 
 export const cookbooks: QueryResolvers['cookbooks'] = () => {
@@ -34,8 +35,18 @@ export const cookbook: QueryResolvers['cookbook'] = ({ id }) => {
 export const createCookbook: MutationResolvers['createCookbook'] = ({
   input,
 }) => {
+  requireAuth()
+
+  const { title } = input
   return db.cookbook.create({
-    data: input,
+    data: {
+      title,
+      author: {
+        connect: {
+          id: context.currentUser!.id,
+        },
+      },
+    },
   })
 }
 
@@ -43,6 +54,7 @@ export const updateCookbook: MutationResolvers['updateCookbook'] = ({
   id,
   input,
 }) => {
+  requireCookbookAuth(id)
   return db.cookbook.update({
     data: input,
     where: { id },
@@ -50,6 +62,7 @@ export const updateCookbook: MutationResolvers['updateCookbook'] = ({
 }
 
 export const deleteCookbook: MutationResolvers['deleteCookbook'] = ({ id }) => {
+  requireCookbookAuth(id)
   return db.cookbook.delete({
     where: { id },
   })
