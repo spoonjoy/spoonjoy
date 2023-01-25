@@ -25,8 +25,10 @@ export const schema = gql`
     createCookbook(input: CreateCookbookInput!): Cookbook! @requireAuth
     updateCookbook(id: String!, input: UpdateCookbookInput!): Cookbook!
       @requireAuth
-    addToCookbook(id: String!, recipeId: String!): Cookbook! @requireAuth
-    removeFromCookbook(id: String!, recipeId: String!): Cookbook! @requireAuth
+    addToCookbook(id: String!, recipeId: String!): RecipesInCookbooks!
+      @requireAuth
+    removeFromCookbook(id: String!, recipeId: String!): RecipesInCookbooks!
+      @requireAuth
     deleteCookbook(id: String!): Cookbook! @requireAuth
   }
 `

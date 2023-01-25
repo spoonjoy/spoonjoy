@@ -66,7 +66,25 @@ export const addToCookbook: MutationResolvers['addToCookbook'] = ({
   recipeId,
 }) => {
   requireCookbookAuth(id)
-  // create new RecipesInCookbooks
+  return db.recipesInCookbooks.create({
+    data: {
+      cookbook: {
+        connect: {
+          id,
+        },
+      },
+      recipe: {
+        connect: {
+          id: recipeId,
+        },
+      },
+      addedBy: {
+        connect: {
+          id: context.currentUser!.id,
+        },
+      },
+    },
+  })
 }
 
 export const removeFromCookbook: MutationResolvers['removeFromCookbook'] = ({
@@ -74,7 +92,14 @@ export const removeFromCookbook: MutationResolvers['removeFromCookbook'] = ({
   recipeId,
 }) => {
   requireCookbookAuth(id)
-  // remove RecipesInCookbooks
+  return db.recipesInCookbooks.delete({
+    where: {
+      cookbookId_recipeId: {
+        cookbookId: id,
+        recipeId,
+      },
+    },
+  })
 }
 
 export const deleteCookbook: MutationResolvers['deleteCookbook'] = ({ id }) => {
