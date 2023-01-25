@@ -6,6 +6,7 @@ import { db } from 'src/lib/db'
 import { RecipeStep } from '../recipeSteps/recipeSteps'
 import { StandardScenario as UserScenario } from '../users/users.scenarios'
 
+// import * as recipeImageHandler from './recipeImageHandler'
 import {
   recipeMutationInputIngsAndStepUses,
   recipeMutationInputIngsOnly,
@@ -25,7 +26,6 @@ import {
 } from './recipes'
 import {
   bobsRecipeScenarioData,
-  deletedBobsRecipeScenarioData,
   deletedRecipeScenarioData,
   lindasRecipeScenarioData,
   recipeIncludeAllRelations,
@@ -41,6 +41,12 @@ import {
 //           Please refer to the RedwoodJS Testing Docs:
 //       https://redwoodjs.com/docs/testing#testing-services
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
+
+// recipeImageHandler.createRecipeImage = mockCreateRecipeImage
+
+jest.mock('./recipeImageHandler', () => ({
+  createRecipeImage: jest.fn(),
+}))
 
 describe('recipes', () => {
   beforeEach(() => {

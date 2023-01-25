@@ -1,33 +1,48 @@
 import type { Prisma, Cookbook } from '@prisma/client'
+
 import type { ScenarioData } from '@redwoodjs/testing/api'
 
-export const standard = defineScenario<Prisma.CookbookCreateArgs>({
-  cookbook: {
-    one: {
-      data: {
-        author: {
-          create: {
-            email: 'String6859389',
-            username: 'String7496370',
-            hashedPassword: 'String',
-            salt: 'String',
-          },
-        },
-      },
-    },
-    two: {
-      data: {
-        author: {
-          create: {
-            email: 'String4892640',
-            username: 'String2739524',
-            hashedPassword: 'String',
-            salt: 'String',
-          },
-        },
-      },
-    },
-  },
+import {
+  userScenarioData,
+  standard as userScenario,
+} from '../users/users.scenarios'
+
+// I believe this is necessary so that this scenario will exist for the cookbook tests, but there may be a better way to do this
+export const userOnlyScenario = userScenario
+
+const getBreakfastCookbookScenarioData = (
+  authorId: string
+): Prisma.CookbookCreateArgs['data'] => ({
+  authorId,
+  title: 'Breakfast',
 })
 
-export type StandardScenario = ScenarioData<Cookbook, 'cookbook'>
+const getLunchCookbookScenarioData = (
+  authorId: string
+): Prisma.CookbookCreateArgs['data'] => ({
+  authorId,
+  title: 'Breakfast',
+})
+
+export const bobsCookbooksScenarioData = {
+  bobsBreakfast: (scenario: StandardScenario): Prisma.CookbookCreateArgs => ({
+    data: getBreakfastCookbookScenarioData(scenario.user.bob.id),
+  }),
+  bobsLunch: (scenario: StandardScenario): Prisma.CookbookCreateArgs => ({
+    data: getLunchCookbookScenarioData(scenario.user.bob.id),
+  }),
+}
+
+export const cookbookScenarioData = {
+  ...bobsCookbooksScenarioData,
+}
+
+export const standard = {
+  user: userScenarioData,
+  cookbook: { ...cookbookScenarioData },
+}
+
+export type StandardScenario = {
+  user: Record<keyof typeof userScenarioData, User>
+  cookbook: Record<keyof typeof cookbookScenarioData, Cookbook>
+}
