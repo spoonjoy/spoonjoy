@@ -69,7 +69,7 @@ export const addToCookbook: MutationResolvers['addToCookbook'] = ({
   // create new RecipesInCookbooks
 }
 
-export const deleteFromCookbook: MutationResolvers['deleteFromCookbook'] = ({
+export const removeFromCookbook: MutationResolvers['removeFromCookbook'] = ({
   id,
   recipeId,
 }) => {
