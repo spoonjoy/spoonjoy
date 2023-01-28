@@ -1,14 +1,8 @@
 import type { Prisma, Cookbook } from '@prisma/client'
+import { Recipe, User } from 'types/graphql'
 
-import type { ScenarioData } from '@redwoodjs/testing/api'
-
-import {
-  userScenarioData,
-  standard as userScenario,
-} from '../users/users.scenarios'
-
-// I believe this is necessary so that this scenario will exist for the cookbook tests, but there may be a better way to do this
-export const userOnlyScenario = userScenario
+import { recipeScenarioData } from '../recipes/recipes.scenarios'
+import { userScenarioData } from '../users/users.scenarios'
 
 const getBreakfastCookbookScenarioData = (
   authorId: string
@@ -39,10 +33,12 @@ export const cookbookScenarioData = {
 
 export const standard = {
   user: userScenarioData,
+  recipe: recipeScenarioData,
   cookbook: { ...cookbookScenarioData },
 }
 
 export type StandardScenario = {
   user: Record<keyof typeof userScenarioData, User>
   cookbook: Record<keyof typeof cookbookScenarioData, Cookbook>
+  recipe: Record<keyof typeof recipeScenarioData, Recipe>
 }

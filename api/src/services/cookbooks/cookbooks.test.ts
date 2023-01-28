@@ -1,6 +1,9 @@
 import type { Cookbook } from '@prisma/client'
+import { RecipeInCookbook } from 'types/graphql'
 
 import { RedwoodGraphQLError } from '@redwoodjs/graphql-server'
+
+import { db } from 'src/lib/db'
 
 import {
   cookbooks,
@@ -8,8 +11,10 @@ import {
   createCookbook,
   updateCookbook,
   deleteCookbook,
+  addToCookbook,
+  removeFromCookbook,
 } from './cookbooks'
-import type { StandardScenario, userOnlyScenario } from './cookbooks.scenarios'
+import type { StandardScenario } from './cookbooks.scenarios'
 
 // Generated boilerplate tests do not account for all circumstances
 // and can fail without adjustments, e.g. Float.
@@ -176,6 +181,133 @@ describe('cookbooks', () => {
           new RedwoodGraphQLError('You are not logged in!')
         )
       }
+    }
+  )
+
+  scenario(
+    'adds and removes users own recipe from cookbook while logged in',
+    async (scenario: StandardScenario) => {
+      const currentUserId = scenario.user.bob.id
+      mockCurrentUser({
+        id: currentUserId,
+        username: scenario.user.bob.username,
+      })
+
+      const cookbookToUseToId = scenario.cookbook.bobsBreakfast.id
+      const recipeToUseId = scenario.recipe.bobsPizza.id
+
+      const cookbookInitial = await db.cookbook.findUnique({
+        where: {
+          id: cookbookToUseToId,
+        },
+        include: {
+          recipes: true,
+        },
+      })
+      expect(cookbookInitial!.recipes.length).toBe(0)
+
+      const recipeInCookbookAddResult = (await addToCookbook({
+        id: cookbookToUseToId,
+        recipeId: recipeToUseId,
+      })) as RecipeInCookbook
+      expect(recipeInCookbookAddResult.addedById).toBe(currentUserId)
+      expect(recipeInCookbookAddResult.cookbookId).toBe(cookbookToUseToId)
+      expect(recipeInCookbookAddResult.recipeId).toBe(recipeToUseId)
+
+      const cookbookAfterRecipeAdd = await db.cookbook.findUnique({
+        where: {
+          id: cookbookToUseToId,
+        },
+        include: {
+          recipes: true,
+        },
+      })
+      expect(cookbookAfterRecipeAdd!.recipes.length).toBe(1)
+      expect(cookbookAfterRecipeAdd!.recipes[0]).toStrictEqual(
+        recipeInCookbookAddResult
+      )
+
+      const recipeInCookbookRemoveResult = (await removeFromCookbook({
+        id: cookbookToUseToId,
+        recipeId: recipeToUseId,
+      })) as RecipeInCookbook
+      const removedResult = await db.recipeInCookbook.findUnique({
+        where: { id: recipeInCookbookRemoveResult.id },
+      })
+      expect(removedResult).toBe(null)
+      const cookbookAfterRecipeRemove = await db.cookbook.findUnique({
+        where: {
+          id: cookbookToUseToId,
+        },
+        include: {
+          recipes: true,
+        },
+      })
+      expect(cookbookAfterRecipeRemove!.recipes.length).toBe(0)
+    }
+  )
+
+  // TODO dedupe with the above test, which is basically the same
+  scenario(
+    'adds and removes another users recipe to cookbook while logged in',
+    async (scenario: StandardScenario) => {
+      const currentUserId = scenario.user.bob.id
+      mockCurrentUser({
+        id: currentUserId,
+        username: scenario.user.bob.username,
+      })
+
+      const cookbookToUseToId = scenario.cookbook.bobsBreakfast.id
+      const recipeToUseId = scenario.recipe.lindasPizza.id
+
+      const cookbookInitial = await db.cookbook.findUnique({
+        where: {
+          id: cookbookToUseToId,
+        },
+        include: {
+          recipes: true,
+        },
+      })
+      expect(cookbookInitial!.recipes.length).toBe(0)
+
+      const recipeInCookbookAddResult = (await addToCookbook({
+        id: cookbookToUseToId,
+        recipeId: recipeToUseId,
+      })) as RecipeInCookbook
+      expect(recipeInCookbookAddResult.addedById).toBe(currentUserId)
+      expect(recipeInCookbookAddResult.cookbookId).toBe(cookbookToUseToId)
+      expect(recipeInCookbookAddResult.recipeId).toBe(recipeToUseId)
+
+      const cookbookAfterRecipeAdd = await db.cookbook.findUnique({
+        where: {
+          id: cookbookToUseToId,
+        },
+        include: {
+          recipes: true,
+        },
+      })
+      expect(cookbookAfterRecipeAdd!.recipes.length).toBe(1)
+      expect(cookbookAfterRecipeAdd!.recipes[0]).toStrictEqual(
+        recipeInCookbookAddResult
+      )
+
+      const recipeInCookbookRemoveResult = (await removeFromCookbook({
+        id: cookbookToUseToId,
+        recipeId: recipeToUseId,
+      })) as RecipeInCookbook
+      const removedResult = await db.recipeInCookbook.findUnique({
+        where: { id: recipeInCookbookRemoveResult.id },
+      })
+      expect(removedResult).toBe(null)
+      const cookbookAfterRecipeRemove = await db.cookbook.findUnique({
+        where: {
+          id: cookbookToUseToId,
+        },
+        include: {
+          recipes: true,
+        },
+      })
+      expect(cookbookAfterRecipeRemove!.recipes.length).toBe(0)
     }
   )
 })
