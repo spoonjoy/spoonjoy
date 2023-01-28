@@ -1,5 +1,5 @@
 export const schema = gql`
-  type RecipesInCookbooks {
+  type RecipeInCookbook {
     id: String!
     cookbookId: String!
     cookbook: Cookbook!

@@ -4,7 +4,7 @@ export const schema = gql`
     title: String
     authorId: String!
     author: User!
-    recipes: [RecipesInCookbooks]!
+    recipes: [RecipeInCookbook]!
   }
 
   type Query {
@@ -25,9 +25,9 @@ export const schema = gql`
     createCookbook(input: CreateCookbookInput!): Cookbook! @requireAuth
     updateCookbook(id: String!, input: UpdateCookbookInput!): Cookbook!
       @requireAuth
-    addToCookbook(id: String!, recipeId: String!): RecipesInCookbooks!
+    addToCookbook(id: String!, recipeId: String!): RecipeInCookbook!
       @requireAuth
-    removeFromCookbook(id: String!, recipeId: String!): RecipesInCookbooks!
+    removeFromCookbook(id: String!, recipeId: String!): RecipeInCookbook!
       @requireAuth
     deleteCookbook(id: String!): Cookbook! @requireAuth
   }

@@ -66,7 +66,7 @@ export const addToCookbook: MutationResolvers['addToCookbook'] = ({
   recipeId,
 }) => {
   requireCookbookAuth(id)
-  return db.recipesInCookbooks.create({
+  return db.recipeInCookbook.create({
     data: {
       cookbook: {
         connect: {
@@ -92,7 +92,7 @@ export const removeFromCookbook: MutationResolvers['removeFromCookbook'] = ({
   recipeId,
 }) => {
   requireCookbookAuth(id)
-  return db.recipesInCookbooks.delete({
+  return db.recipeInCookbook.delete({
     where: {
       cookbookId_recipeId: {
         cookbookId: id,
@@ -116,7 +116,7 @@ type RequiredCookbookRelationResolvers = CookbookRelationResolvers & {
     RedwoodGraphQLContext
   >
   recipes: RequiredResolverFn<
-    Array<ResolversTypes['RecipesInCookbooks']>,
+    Array<ResolversTypes['RecipeInCookbook']>,
     ResolversParentTypes['Cookbook'],
     RedwoodGraphQLContext
   >
