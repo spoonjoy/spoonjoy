@@ -13,6 +13,7 @@ import { requireAuth, requireCookbookAuth } from 'src/lib/auth'
 import { db } from 'src/lib/db'
 
 export const cookbooks: QueryResolvers['cookbooks'] = () => {
+  requireAuth()
   return db.cookbook.findMany()
 }
 
@@ -50,22 +51,22 @@ export const createCookbook: MutationResolvers['createCookbook'] = ({
   })
 }
 
-export const updateCookbook: MutationResolvers['updateCookbook'] = ({
+export const updateCookbook: MutationResolvers['updateCookbook'] = async ({
   id,
   input,
 }) => {
-  requireCookbookAuth(id)
+  await requireCookbookAuth(id)
   return db.cookbook.update({
     data: input,
     where: { id },
   })
 }
 
-export const addToCookbook: MutationResolvers['addToCookbook'] = ({
+export const addToCookbook: MutationResolvers['addToCookbook'] = async ({
   id,
   recipeId,
 }) => {
-  requireCookbookAuth(id)
+  await requireCookbookAuth(id)
   return db.recipeInCookbook.create({
     data: {
       cookbook: {
@@ -87,23 +88,23 @@ export const addToCookbook: MutationResolvers['addToCookbook'] = ({
   })
 }
 
-export const removeFromCookbook: MutationResolvers['removeFromCookbook'] = ({
-  id,
-  recipeId,
-}) => {
-  requireCookbookAuth(id)
-  return db.recipeInCookbook.delete({
-    where: {
-      cookbookId_recipeId: {
-        cookbookId: id,
-        recipeId,
+export const removeFromCookbook: MutationResolvers['removeFromCookbook'] =
+  async ({ id, recipeId }) => {
+    await requireCookbookAuth(id)
+    return db.recipeInCookbook.delete({
+      where: {
+        cookbookId_recipeId: {
+          cookbookId: id,
+          recipeId,
+        },
       },
-    },
-  })
-}
+    })
+  }
 
-export const deleteCookbook: MutationResolvers['deleteCookbook'] = ({ id }) => {
-  requireCookbookAuth(id)
+export const deleteCookbook: MutationResolvers['deleteCookbook'] = async ({
+  id,
+}) => {
+  await requireCookbookAuth(id)
   return db.cookbook.delete({
     where: { id },
   })
