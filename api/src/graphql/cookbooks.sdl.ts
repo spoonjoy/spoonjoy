@@ -4,7 +4,7 @@ export const schema = gql`
     title: String
     authorId: String!
     author: User!
-    recipes: [RecipeInCookbook]!
+    recipes: [RecipeInCookbook!]!
   }
 
   type Query {

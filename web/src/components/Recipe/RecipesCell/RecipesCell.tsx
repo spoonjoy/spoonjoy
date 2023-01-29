@@ -6,27 +6,32 @@ import Recipes from 'src/components/Recipe/Recipes'
 
 import NoRecipes from '../Recipes/NoRecipes'
 
+export const RECIPE_SHORT_INFO = gql`
+  fragment RecipeShortInfo on Recipe {
+    id
+    title
+    description
+    imageUrl
+  }
+`
+
 export const QUERY = (props: any) => {
   const isExampleRecipe = !!props.variables.exampleRecipes
   if (isExampleRecipe) {
     return gql`
+      ${RECIPE_SHORT_INFO}
       query ExampleRecipes {
         recipes: usersRecipes(username: "ari") {
-          id
-          title
-          description
-          imageUrl
+          ...RecipeShortInfo
         }
       }
     `
   } else {
     return gql`
+      ${RECIPE_SHORT_INFO}
       query MyRecipes {
         recipes: myRecipes {
-          id
-          title
-          description
-          imageUrl
+          ...RecipeShortInfo
         }
       }
     `
