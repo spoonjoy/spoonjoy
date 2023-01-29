@@ -13,7 +13,7 @@ import WelcomeHeaderImg from './sj-welcome-header.jpg'
 
 const WelcomePage = () => {
   if (useAuth().isAuthenticated) {
-    return <Redirect to={routes.recipes()} />
+    return <Redirect to={routes.myRecipes()} />
   } else {
     const navigation = [
       { name: 'Sign Up', href: routes.signup() },

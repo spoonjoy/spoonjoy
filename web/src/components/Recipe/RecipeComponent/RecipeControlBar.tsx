@@ -28,7 +28,7 @@ const RecipeEditDeleteBtn = ({ recipeId }: RecipeEditDeleteBtnProps) => {
   const [deleteRecipe] = useMutation(DELETE_RECIPE_MUTATION, {
     onCompleted: () => {
       toast.success('Recipe deleted')
-      navigate(routes.recipes())
+      navigate(routes.myRecipes())
     },
     onError: (error) => {
       toast.error(error.message)
