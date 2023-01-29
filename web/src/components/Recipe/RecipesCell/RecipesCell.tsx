@@ -4,16 +4,8 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import Recipes from 'src/components/Recipe/Recipes'
 
+import { RECIPE_SHORT_INFO } from '../recipeFragments'
 import NoRecipes from '../Recipes/NoRecipes'
-
-export const RECIPE_SHORT_INFO = gql`
-  fragment RecipeShortInfo on Recipe {
-    id
-    title
-    description
-    imageUrl
-  }
-`
 
 export const QUERY = (props: any) => {
   const isExampleRecipe = !!props.variables.exampleRecipes

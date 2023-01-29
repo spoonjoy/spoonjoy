@@ -2,26 +2,28 @@ import type { FindCookbookById, FindCookbookByIdVariables } from 'types/graphql'
 
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
+import { RECIPE_SHORT_INFO } from '../Recipe/recipeFragments'
 import Recipes from '../Recipe/Recipes'
-import { RECIPE_SHORT_INFO } from '../Recipe/RecipesCell'
 
-export const QUERY = gql`
-  ${RECIPE_SHORT_INFO}
-  query FindCookbookById($id: String!) {
-    cookbook: cookbook(id: $id) {
-      id
-      author {
+export const QUERY = () => {
+  return gql`
+    ${RECIPE_SHORT_INFO}xw
+    query FindCookbookById($id: String!) {
+      cookbook: cookbook(id: $id) {
         id
-        username
-      }
-      recipes {
-        recipe {
-          ...RecipeShortInfo
+        author {
+          id
+          username
+        }
+        recipes {
+          recipe {
+            ...RecipeShortInfo
+          }
         }
       }
     }
-  }
-`
+  `
+}
 
 export const Loading = () => <div>Loading...</div>
 
