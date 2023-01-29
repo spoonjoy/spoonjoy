@@ -62,6 +62,11 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
       href: routes.myRecipes(),
       current: useMatch(routes.myRecipes()).match,
     },
+    {
+      name: 'Cookbooks',
+      href: routes.myCookbooks(),
+      current: useMatch(routes.myCookbooks()).match,
+    },
     // {
     //   name: 'Shopping List',
     //   href: routes.shoppingList(),
