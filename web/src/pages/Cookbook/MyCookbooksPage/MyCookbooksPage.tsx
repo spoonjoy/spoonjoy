@@ -12,6 +12,7 @@ const MyCookbooksPage = () => {
       <HeaderSlot.Plug id="cookbooks">
         <DefaultHeader title="My Cookbooks" />
       </HeaderSlot.Plug>
+      {/* Because this route is wrapped in Private (in Routes.tsx), currentUser shouldn't ever be null */}
       <CookbooksCell username={currentUser!.username} />
     </>
   )
