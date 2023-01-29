@@ -1,6 +1,9 @@
 import type { FindCookbooksByUser } from 'types/graphql'
 
+import { routes } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
+
+import EmptyState from 'src/components/shared/EmptyState'
 
 /*
   IMAGE GEN TEST:
@@ -24,7 +27,14 @@ export const QUERY = gql`
 
 export const Loading = () => <div>Loading...</div>
 
-export const Empty = () => <div>Empty</div>
+export const Empty = () => (
+  <EmptyState
+    header="No cookbooks yet"
+    subHeader="Get started by creating a new cookbook."
+    createRoute={routes.newCookbook()}
+    cta="New Cookbook"
+  />
+)
 
 export const Failure = ({ error }: CellFailureProps) => (
   <div style={{ color: 'red' }}>Error: {error?.message}</div>

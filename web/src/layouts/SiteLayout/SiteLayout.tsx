@@ -78,6 +78,11 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
       current: useMatch(routes.newRecipe()).match,
     },
     {
+      name: 'New Cookbook',
+      href: routes.newCookbook(),
+      current: useMatch(routes.newCookbook()).match,
+    },
+    {
       name: 'Send Feedback',
       href: 'https://bit.ly/spoonjoyfeedback',
       newTab: true,

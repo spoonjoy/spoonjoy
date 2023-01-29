@@ -20,6 +20,7 @@ const Routes = () => {
       <Private wrap={SiteLayout} unauthenticated="signup">
         <Set wrap={BackgroundLayout}>
           <Route path="/recipes/new" page={RecipeNewRecipePage} name="newRecipe" />
+          <Route path="/cookbooks/new" page={CookbookNewCookbookPage} name="newCookbook" />
         </Set>
       </Private>
       {/* Here we put things that should redirect to the welcome page */}
