@@ -7,7 +7,7 @@ import Recipes from '../Recipe/Recipes'
 
 export const QUERY = () => {
   return gql`
-    ${RECIPE_SHORT_INFO}xw
+    ${RECIPE_SHORT_INFO}
     query FindCookbookById($id: String!) {
       cookbook: cookbook(id: $id) {
         id
