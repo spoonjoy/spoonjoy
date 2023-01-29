@@ -3,7 +3,7 @@ import { MetaTags } from '@redwoodjs/web'
 import RecipesCell from 'src/components/Recipe/RecipesCell'
 import { DefaultHeader, HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
 
-const RecipesPage = () => {
+const MyRecipesPage = () => {
   return (
     <>
       <MetaTags title="Recipes" description="Recipes page" />
@@ -15,4 +15,4 @@ const RecipesPage = () => {
   )
 }
 
-export default RecipesPage
+export default MyRecipesPage
