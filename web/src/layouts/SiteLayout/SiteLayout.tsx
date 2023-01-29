@@ -59,8 +59,8 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
   const navigationLoggedIn: INavigation[] = [
     {
       name: 'Recipes',
-      href: routes.recipes(),
-      current: useMatch(routes.recipes()).match,
+      href: routes.myRecipes(),
+      current: useMatch(routes.myRecipes()).match,
     },
     // {
     //   name: 'Shopping List',
