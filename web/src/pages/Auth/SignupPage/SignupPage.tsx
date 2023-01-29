@@ -24,7 +24,7 @@ const SignupPage = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate(routes.recipes())
+      navigate(routes.myRecipes())
     }
   }, [isAuthenticated])
   const [loading, setLoading] = React.useState(false)

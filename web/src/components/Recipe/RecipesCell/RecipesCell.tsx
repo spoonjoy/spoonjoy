@@ -1,11 +1,12 @@
 import type { MyRecipes, ExampleRecipes } from 'types/graphql'
 
+import { routes } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import Recipes from 'src/components/Recipe/Recipes'
+import EmptyState from 'src/components/shared/EmptyState'
 
 import { RECIPE_SHORT_INFO } from '../recipeFragments'
-import NoRecipes from '../Recipes/NoRecipes'
 
 export const QUERY = (props: any) => {
   const isExampleRecipe = !!props.variables.exampleRecipes
@@ -34,13 +35,12 @@ export const Loading = () => <div>Loading...</div>
 
 export const Empty = () => {
   return (
-    <NoRecipes />
-    // <div className="rw-text-center">
-    //   {'No recipes yet. '}
-    //   <Link to={routes.newRecipe()} className="rw-link">
-    //     {'Create one?'}
-    //   </Link>
-    // </div>
+    <EmptyState
+      header="No recipes yet"
+      subHeader="Get started by creating a new recipe."
+      createRoute={routes.newRecipe()}
+      cta="New Recipe"
+    />
   )
 }
 

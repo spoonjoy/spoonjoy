@@ -27,7 +27,7 @@ const NewRecipe = () => {
     {
       onCompleted: () => {
         toast.success('Recipe created')
-        navigate(routes.recipes())
+        navigate(routes.myRecipes())
       },
       onError: (error) => {
         toast.error(error.message)
