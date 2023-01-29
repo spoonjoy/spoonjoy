@@ -1,4 +1,4 @@
-import type { CookbooksQuery } from 'types/graphql'
+import type { FindCookbooksByUser } from 'types/graphql'
 
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
@@ -30,7 +30,9 @@ export const Failure = ({ error }: CellFailureProps) => (
   <div style={{ color: 'red' }}>Error: {error?.message}</div>
 )
 
-export const Success = ({ cookbooks }: CellSuccessProps<CookbooksQuery>) => {
+export const Success = ({
+  cookbooks,
+}: CellSuccessProps<FindCookbooksByUser>) => {
   return (
     <ul>
       {cookbooks.map((item) => {

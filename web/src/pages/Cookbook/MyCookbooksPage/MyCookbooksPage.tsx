@@ -1,6 +1,6 @@
 import { MetaTags } from '@redwoodjs/web'
 
-import RecipesCell from 'src/components/Recipe/RecipesCell'
+import CookbooksCell from 'src/components/Recipe/RecipesCell'
 import { HeaderSlot, DefaultHeader } from 'src/layouts/SiteLayout/SiteLayout'
 
 const MyCookbooksPage = () => {
@@ -10,7 +10,7 @@ const MyCookbooksPage = () => {
       <HeaderSlot.Plug id="cookbooks">
         <DefaultHeader title="My Cookbooks" />
       </HeaderSlot.Plug>
-      <RecipesCell />
+      <CookbooksCell />
     </>
   )
 }
