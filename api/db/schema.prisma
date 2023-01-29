@@ -54,6 +54,7 @@ model Recipe {
   cookbooks           RecipeInCookbook[]
 
   // Allow users to create a second recipe with the same title *if* the other one is deleted
+  // TODO this is currently broken, see here: https://github.com/spoonjoy/spoonjoy-requests-issues/issues/1
   @@unique([chefId, title, deletedAt])
   @@index([chefId])
 }
