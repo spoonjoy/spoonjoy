@@ -310,4 +310,54 @@ describe('cookbooks', () => {
       expect(cookbookAfterRecipeRemove!.recipes.length).toBe(0)
     }
   )
+
+  scenario(
+    'fails to add a recipe to another users cookbook',
+    async (scenario: StandardScenario) => {
+      const currentUserId = scenario.user.linda.id
+      mockCurrentUser({
+        id: currentUserId,
+        username: scenario.user.bob.username,
+      })
+
+      const cookbookToUseToId = scenario.cookbook.bobsBreakfast.id
+      const recipeToUseId = scenario.recipe.lindasPizza.id
+
+      try {
+        await addToCookbook({
+          id: cookbookToUseToId,
+          recipeId: recipeToUseId,
+        })
+      } catch (e) {
+        expect(e).toMatchObject(
+          new RedwoodGraphQLError('You can only modify your own cookbooks!')
+        )
+      }
+    }
+  )
+
+  scenario(
+    'fails to remove a recipe from another users cookbook',
+    async (scenario: StandardScenario) => {
+      const currentUserId = scenario.user.linda.id
+      mockCurrentUser({
+        id: currentUserId,
+        username: scenario.user.bob.username,
+      })
+
+      const cookbookToUseToId = scenario.cookbook.bobsBreakfast.id
+      const recipeToUseId = scenario.recipe.lindasPizza.id
+
+      try {
+        await removeFromCookbook({
+          id: cookbookToUseToId,
+          recipeId: recipeToUseId,
+        })
+      } catch (e) {
+        expect(e).toMatchObject(
+          new RedwoodGraphQLError('You can only modify your own cookbooks!')
+        )
+      }
+    }
+  )
 })
