@@ -1,4 +1,4 @@
-import type { CreateRecipeInput } from 'types/graphql'
+import type { CreateRecipeInput, CreateRecipeMutation } from 'types/graphql'
 
 import { navigate, routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
@@ -22,12 +22,12 @@ const NewRecipe = () => {
     recipeInputStore.clear()
   }
 
-  const [createRecipe, { loading, error }] = useMutation(
+  const [createRecipe, { loading, error }] = useMutation<CreateRecipeMutation>(
     CREATE_RECIPE_MUTATION,
     {
-      onCompleted: () => {
+      onCompleted: (data) => {
         toast.success('Recipe created')
-        navigate(routes.myRecipes())
+        navigate(routes.recipe({ id: data.createRecipe.id }))
       },
       onError: (error) => {
         toast.error(error.message)

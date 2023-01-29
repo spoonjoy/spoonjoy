@@ -189,8 +189,8 @@ const shouldUpdateRecipeImage = async (
   })
 
   if (
-    input.title != recipeOldInfo?.title ||
-    (input.description && input.description !== recipeOldInfo.description)
+    input.title != recipeOldInfo?.title
+    //  || (input.description && input.description !== recipeOldInfo.description)
   ) {
     return true
   } else {

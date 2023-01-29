@@ -121,6 +121,9 @@ const StepFormFrag = ({
           step.setDescription(value)
         }}
         fieldErrors={errors.description}
+        validation={{
+          required: { value: true, message: 'description is required.' },
+        }}
       />
     </div>
   )

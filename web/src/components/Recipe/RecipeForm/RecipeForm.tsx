@@ -48,7 +48,6 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
   const {
     formState: { errors },
     control,
-    getValues,
     unregister,
     reset,
   } = formMethods
