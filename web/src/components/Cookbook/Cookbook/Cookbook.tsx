@@ -1,11 +1,11 @@
+import type {
+  DeleteCookbookMutationVariables,
+  FindCookbookById,
+} from 'types/graphql'
 
 import { Link, routes, navigate } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
-
-import {  } from 'src/lib/formatters'
-
-import type { DeleteCookbookMutationVariables, FindCookbookById } from 'types/graphql'
 
 const DELETE_COOKBOOK_MUTATION = gql`
   mutation DeleteCookbookMutation($id: String!) {
@@ -49,10 +49,12 @@ const Cookbook = ({ cookbook }: Props) => {
             <tr>
               <th>Id</th>
               <td>{cookbook.id}</td>
-            </tr><tr>
+            </tr>
+            <tr>
               <th>Title</th>
               <td>{cookbook.title}</td>
-            </tr><tr>
+            </tr>
+            <tr>
               <th>Author id</th>
               <td>{cookbook.authorId}</td>
             </tr>

@@ -18,7 +18,7 @@ const DELETE_COOKBOOK_MUTATION = gql`
   }
 `
 
-const CookbooksList = ({ cookbooks }: FindCookbooks) => {
+const Cookbooks = ({ cookbooks }: FindCookbooks) => {
   const [deleteCookbook] = useMutation(DELETE_COOKBOOK_MUTATION, {
     onCompleted: () => {
       toast.success('Cookbook deleted')
@@ -90,4 +90,4 @@ const CookbooksList = ({ cookbooks }: FindCookbooks) => {
   )
 }
 
-export default CookbooksList
+export default Cookbooks

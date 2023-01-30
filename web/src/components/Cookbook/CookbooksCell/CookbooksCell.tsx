@@ -5,7 +5,7 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import EmptyState from 'src/components/shared/EmptyState'
 
-import CookbooksList from '../Cookbooks/Cookbooks'
+import Cookbooks from '../Cookbooks/Cookbooks'
 
 /*
   IMAGE GEN TEST:
@@ -46,5 +46,5 @@ export const Failure = ({ error }: CellFailureProps) => (
 export const Success = ({
   cookbooks,
 }: CellSuccessProps<FindCookbooksByUser>) => {
-  return <CookbooksList cookbooks={cookbooks} />
+  return <Cookbooks cookbooks={cookbooks} />
 }
