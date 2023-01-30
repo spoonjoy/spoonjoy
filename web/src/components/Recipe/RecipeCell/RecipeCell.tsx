@@ -43,6 +43,9 @@ export const QUERY = gql`
       }
       createdAt
       deletedAt
+      inMyCookbooks {
+        cookbookId
+      }
     }
   }
 `
