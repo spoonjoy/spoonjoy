@@ -24160,6 +24160,7 @@ __metadata:
     "@simplewebauthn/browser": ^6.0.0
     "@vercel/analytics": ^0.1.6
     autoprefixer: ^10.4.12
+    humanize-string: 2.1.0
     localforage: ^1.10.0
     mobx: ^6.6.2
     mobx-devtools-mst: ^0.9.30

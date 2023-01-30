@@ -21,6 +21,7 @@
     "@redwoodjs/web": "^3.8.0",
     "@simplewebauthn/browser": "^6.0.0",
     "@vercel/analytics": "^0.1.6",
+    "humanize-string": "2.1.0",
     "localforage": "^1.10.0",
     "mobx": "^6.6.2",
     "mobx-react-lite": "^3.4.0",
