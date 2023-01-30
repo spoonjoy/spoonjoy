@@ -142,4 +142,22 @@ export const Cookbook: RequiredCookbookRelationResolvers = {
     }
     return maybeRecipes
   },
+  imageUrl: async (_obj, { root }) => {
+    // The cookbook image is up to 4 recipe images in a grid
+
+    const maybeRecipes = await db.cookbook
+      .findUnique({ where: { id: root?.id } })
+      .recipes({ take: 4 })
+
+    const recipeIds = []
+    maybeRecipes?.forEach((recipe) => {
+      recipeIds.push(recipe.recipeId)
+    })
+    // Fill up any remaining spots with a transparent box
+    while (recipeIds?.length < 4) {
+      recipeIds.push('transparent_box')
+    }
+
+    return `https://res.cloudinary.com/dpjmyc4uz/image/upload/w_250,h_250,c_fill/l_${recipeIds[1]},w_250,h_250,c_fill,x_250/l_${recipeIds[2]},w_250,h_250,c_fill,y_250,x_-125/l_${recipeIds[3]},w_250,h_250,c_fill,y_125,x_125/${recipeIds[0]}`
+  },
 }

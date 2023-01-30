@@ -5,6 +5,7 @@ export const schema = gql`
     authorId: String!
     author: User!
     recipes: [RecipeInCookbook!]!
+    imageUrl: String!
   }
 
   type Query {
