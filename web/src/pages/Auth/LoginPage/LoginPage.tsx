@@ -178,13 +178,11 @@ const LoginPage = ({ type }) => {
           <StyledTextField
             label="Username"
             fieldName="username"
-            fieldErrors={errors.username}
             validation={{ required: true }}
           />
           <StyledPasswordField
             label="Password"
             fieldName="password"
-            fieldErrors={errors.password}
             validation={{ required: true }}
           />
 

@@ -39,7 +39,6 @@ const RecipeBasicInfoFormFrag = ({
           setTitle(value)
         }}
         validation={{ required: true, maxLength: MAX_TITLE_LENGTH }}
-        fieldErrors={errors.title}
         maxLength={MAX_TITLE_LENGTH}
         currentLength={title.length}
       />
@@ -52,7 +51,6 @@ const RecipeBasicInfoFormFrag = ({
           setDescription(value)
         }}
         validation={{ maxLength: MAX_DESCRIPTION_LENGTH }}
-        fieldErrors={errors.description}
         maxLength={MAX_DESCRIPTION_LENGTH}
         currentLength={description?.length || 0}
       />
@@ -64,7 +62,6 @@ const RecipeBasicInfoFormFrag = ({
           const { value } = e.target
           setServings(Number(value))
         }}
-        fieldErrors={errors.servings}
         validation={{ valueAsNumber: true }}
       />
     </>

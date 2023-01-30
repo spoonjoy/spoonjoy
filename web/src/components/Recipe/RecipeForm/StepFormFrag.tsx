@@ -54,7 +54,6 @@ const StepFormFrag = ({
             const { value } = e.target
             setStepTitle(value)
           }}
-          fieldErrors={errors.stepTitle}
         />
         <legend className="block text-sm font-medium text-gray-700">
           Step {stepNum} Ingredients
@@ -120,7 +119,6 @@ const StepFormFrag = ({
           const { value } = e.target
           step.setDescription(value)
         }}
-        fieldErrors={errors.description}
         validation={{
           required: { value: true, message: 'description is required.' },
         }}

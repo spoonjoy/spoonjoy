@@ -10,14 +10,9 @@ const StyledNumberField = ({
   defaultValue,
   onChange,
   validation,
-  fieldErrors,
 }: StyledFieldProps<HTMLInputElement>) => {
   return (
-    <StyledFieldWrapper
-      label={label}
-      fieldName={fieldName}
-      fieldErrors={fieldErrors}
-    >
+    <StyledFieldWrapper label={label} fieldName={fieldName}>
       <NumberField
         name={fieldName}
         defaultValue={defaultValue}

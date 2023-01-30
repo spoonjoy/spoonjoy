@@ -10,7 +10,6 @@ const StyledTextField = ({
   defaultValue,
   onChange,
   validation,
-  fieldErrors,
   ref,
   maxLength,
   currentLength,
@@ -19,7 +18,6 @@ const StyledTextField = ({
     <StyledFieldWrapper
       label={label}
       fieldName={fieldName}
-      fieldErrors={fieldErrors}
       maxLength={maxLength}
       currentLength={currentLength}
     >

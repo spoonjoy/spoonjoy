@@ -59,20 +59,17 @@ const SignupPage = () => {
             <StyledTextField
               label="Username"
               fieldName="username"
-              fieldErrors={errors.username}
               validation={{ required: true }}
             />
             <StyledTextField
               label="Email"
               fieldName="email"
-              fieldErrors={errors.email}
               validation={{ required: true }}
             />
 
             <StyledPasswordField
               label="Password"
               fieldName="password"
-              fieldErrors={errors.password}
               validation={{ required: true }}
             />
 

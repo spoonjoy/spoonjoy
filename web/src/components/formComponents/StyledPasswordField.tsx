@@ -10,14 +10,9 @@ const StyledTextField = ({
   defaultValue,
   onChange,
   validation,
-  fieldErrors,
 }: StyledFieldProps<HTMLInputElement>) => {
   return (
-    <StyledFieldWrapper
-      label={label}
-      fieldName={fieldName}
-      fieldErrors={fieldErrors}
-    >
+    <StyledFieldWrapper label={label} fieldName={fieldName}>
       <PasswordField
         name={fieldName}
         defaultValue={defaultValue}

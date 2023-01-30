@@ -10,7 +10,6 @@ const StyledTextAreaField = ({
   defaultValue,
   onChange,
   validation,
-  fieldErrors,
   maxLength,
   currentLength,
 }: StyledFieldProps<HTMLTextAreaElement>) => {
@@ -18,7 +17,6 @@ const StyledTextAreaField = ({
     <StyledFieldWrapper
       label={label}
       fieldName={fieldName}
-      fieldErrors={fieldErrors}
       maxLength={maxLength}
       currentLength={currentLength}
     >
