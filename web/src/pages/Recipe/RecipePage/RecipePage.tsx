@@ -1,10 +1,10 @@
 import RecipeCell from 'src/components/Recipe/RecipeCell'
 
-type RecipePageProps = {
+interface IRecipePageProps {
   id: string
 }
 
-const RecipePage = ({ id }: RecipePageProps) => {
+const RecipePage = ({ id }: IRecipePageProps) => {
   return <RecipeCell id={id} />
 }
 
