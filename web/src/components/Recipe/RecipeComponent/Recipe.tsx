@@ -92,7 +92,7 @@ const Recipe = ({ recipe }: Props) => {
                   </div>
                 </div>
                 {/* Cookbook dropdown */}
-                <div>
+                <div className="mt-2 mr-2">
                   {/*
                    * Three scenarios:
                    * - Stuff in array -> user has added recipes to their cookbooks

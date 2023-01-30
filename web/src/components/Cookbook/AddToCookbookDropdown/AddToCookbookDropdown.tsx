@@ -4,13 +4,13 @@ import { Menu, Transition } from '@headlessui/react'
 import {
   ArchiveBoxIcon,
   ArrowRightCircleIcon,
-  ChevronDownIcon,
   DocumentDuplicateIcon,
   HeartIcon,
   PencilSquareIcon,
   TrashIcon,
   UserPlusIcon,
 } from '@heroicons/react/20/solid'
+import { BookmarkIcon } from '@heroicons/react/24/outline'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -20,9 +20,8 @@ export default function AddToCookbookDropdown() {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100">
-          Add to Cookbook
-          <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
+        <Menu.Button className="inline-flex w-full justify-center text-sm font-medium text-white shadow-sm hover:text-gray-300 ">
+          <BookmarkIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
         </Menu.Button>
       </div>
 
