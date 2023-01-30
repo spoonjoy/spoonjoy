@@ -16,8 +16,8 @@ const CardBase = ({
   emptyState = false,
 }: CardBaseProps) => {
   const containerClass = emptyState
-    ? 'relative block w-full rounded-lg border-2 border-dashed border-gray-300 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 h-[200px] sm:h-[270px] flex flex-center justify-center text-gray-500 hover:text-gray-700'
-    : 'group relative block w-full text-center focus:outline-none focus:ring-indigo-500 text-center h-[200px] sm:h-[270px] flex flex-center justify-center'
+    ? 'relative block w-full rounded-lg border-2 border-dashed border-gray-300 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 h-[250px] sm:h-[270px] flex flex-center justify-center text-gray-500 hover:text-gray-700'
+    : 'group relative block w-full text-center focus:outline-none focus:ring-indigo-500 text-center h-[250px] sm:h-[270px] flex flex-center justify-center'
   return (
     <li>
       <Link className={containerClass} to={linkTo} title={linkTitle}>
