@@ -51,7 +51,7 @@ const RecipeBasicInfoFormFrag = ({
           const { value } = e.target
           setDescription(value)
         }}
-        validation={{ maxLength: MAX_TITLE_LENGTH }}
+        validation={{ maxLength: MAX_DESCRIPTION_LENGTH }}
         fieldErrors={errors.description}
         maxLength={MAX_DESCRIPTION_LENGTH}
         currentLength={description?.length || 0}
