@@ -23,6 +23,11 @@ const RecipeBasicInfoFormFrag = ({
     servings,
     setServings,
   } = recipeInputStore
+
+  // Update the following based on prisma schema - default `string` is 191
+  const MAX_TITLE_LENGTH = 75
+  const MAX_DESCRIPTION_LENGTH = 191
+
   return (
     <>
       <StyledTextField
@@ -33,8 +38,10 @@ const RecipeBasicInfoFormFrag = ({
           const { value } = e.target
           setTitle(value)
         }}
-        validation={{ required: true }}
+        validation={{ required: true, maxLength: MAX_TITLE_LENGTH }}
         fieldErrors={errors.title}
+        maxLength={MAX_TITLE_LENGTH}
+        currentLength={title.length}
       />
       <StyledTextAreaField
         fieldName="description"
@@ -44,7 +51,10 @@ const RecipeBasicInfoFormFrag = ({
           const { value } = e.target
           setDescription(value)
         }}
+        validation={{ maxLength: MAX_TITLE_LENGTH }}
         fieldErrors={errors.description}
+        maxLength={MAX_DESCRIPTION_LENGTH}
+        currentLength={description?.length || 0}
       />
       <StyledNumberField
         fieldName="servings"

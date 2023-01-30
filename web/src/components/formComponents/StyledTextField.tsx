@@ -12,12 +12,16 @@ const StyledTextField = ({
   validation,
   fieldErrors,
   ref,
+  maxLength,
+  currentLength,
 }: StyledFieldProps<HTMLInputElement>) => {
   return (
     <StyledFieldWrapper
       label={label}
       fieldName={fieldName}
       fieldErrors={fieldErrors}
+      maxLength={maxLength}
+      currentLength={currentLength}
     >
       <TextField
         name={fieldName}

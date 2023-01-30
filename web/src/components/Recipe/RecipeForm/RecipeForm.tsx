@@ -44,7 +44,9 @@ interface RecipeFormProps {
 
 const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
   const { recipeInputStore } = useStore()
-  const formMethods = useForm<FormUpdateRecipe | FormCreateRecipe>()
+  const formMethods = useForm<FormUpdateRecipe | FormCreateRecipe>({
+    mode: 'onTouched',
+  })
   const {
     formState: { errors },
     control,
@@ -134,7 +136,6 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
         formMethods={formMethods}
         onSubmit={onSubmit}
         error={error}
-        config={{ mode: 'onBlur' }}
       >
         <FormError
           error={error}

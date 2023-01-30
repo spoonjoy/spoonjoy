@@ -8,6 +8,7 @@ import {
 
 import { FieldError, Label, RegisterOptions } from '@redwoodjs/forms'
 
+/** Use this to type any props that are children of `StyledFieldWrapper` */
 export interface StyledFieldProps<T = Element>
   extends Omit<StyledFieldWrapperProps, 'children'> {
   defaultValue?: string | number | readonly string[]
@@ -27,12 +28,16 @@ export interface StyledFieldWrapperProps {
     | FieldErrorType
     | Merge<FieldErrorType, FieldErrorsImpl<any>>
     | undefined
+  maxLength?: number
+  currentLength?: number
 }
 const StyledFieldWrapper = ({
   children,
   fieldName,
   label,
   fieldErrors,
+  maxLength,
+  currentLength,
 }: StyledFieldWrapperProps) => {
   return (
     <div className="mb-3">
@@ -45,6 +50,11 @@ const StyledFieldWrapper = ({
       </Label>
       <div className="relative mt-1 rounded-md shadow-sm">
         {children}
+        {maxLength !== undefined && currentLength !== undefined && (
+          <div className="pointer-events-none absolute -inset-y-0 -right-4 flex w-2 items-center text-left text-sm text-gray-400">
+            {maxLength - currentLength}
+          </div>
+        )}
         {fieldErrors && (
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
             <ExclamationCircleIcon
