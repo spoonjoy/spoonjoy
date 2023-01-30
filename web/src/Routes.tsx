@@ -29,6 +29,7 @@ const Routes = () => {
         <Route path="/my-cookbooks" page={CookbookMyCookbooksPage} name="myCookbooks" />
         <Set wrap={BackgroundLayout}>
           <Route path="/recipes/{id}/edit" page={RecipeEditRecipePage} name="editRecipe" />
+          <Route path="/cookbooks/{id}/edit" page={CookbookEditCookbookPage} name="editCookbook" />
           <Route path="/shopping-list" page={ShoppingListPage} name="shoppingList" />
         </Set>
       </Private>

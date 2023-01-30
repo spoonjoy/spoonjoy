@@ -5,6 +5,8 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import EmptyState from 'src/components/shared/EmptyState'
 
+import CookbooksList from '../Cookbooks/Cookbooks'
+
 /*
   IMAGE GEN TEST:
   - Take 4 recipe IDs:
@@ -43,11 +45,5 @@ export const Failure = ({ error }: CellFailureProps) => (
 export const Success = ({
   cookbooks,
 }: CellSuccessProps<FindCookbooksByUser>) => {
-  return (
-    <ul>
-      {cookbooks.map((item) => {
-        return <li key={item.id}>{JSON.stringify(item)}</li>
-      })}
-    </ul>
-  )
+  return <CookbooksList cookbooks={cookbooks} />
 }
