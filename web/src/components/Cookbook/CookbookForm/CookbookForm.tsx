@@ -4,14 +4,7 @@ import type {
   UpdateCookbookInput,
 } from 'types/graphql'
 
-import {
-  Form,
-  FormError,
-  FieldError,
-  Label,
-  TextField,
-  Submit,
-} from '@redwoodjs/forms'
+import { Form, FormError, Submit, useForm } from '@redwoodjs/forms'
 import type { RWGqlError } from '@redwoodjs/forms'
 
 import StyledTextField from 'src/components/formComponents/StyledTextField'
@@ -38,6 +31,10 @@ const CookbookForm = ({
   error,
   loading,
 }: CookbookFormProps) => {
+  const formMethods = useForm<FormUpdateCookbook | FormCreateCookbook>({
+    mode: 'onTouched',
+  })
+  const { watch } = formMethods
   const onSubmit = (data: FormUpdateCookbook | FormCreateCookbook) => {
     console.log('onSubmit data:', data)
     if (cookbook) {
@@ -48,14 +45,14 @@ const CookbookForm = ({
   }
 
   // Update based on Prisma schema
-  const MAX_TITLE_LENGTH = 191
+  const MAX_TITLE_LENGTH = 75
 
   return (
     <div className="p-5">
       <Form<FormUpdateCookbook | FormCreateCookbook>
+        formMethods={formMethods}
         onSubmit={onSubmit}
         error={error}
-        config={{ mode: 'onTouched' }}
       >
         <FormError
           error={error}
@@ -69,8 +66,8 @@ const CookbookForm = ({
           label="Title"
           defaultValue={cookbook?.title || undefined}
           validation={{ required: true, maxLength: MAX_TITLE_LENGTH }}
-          // maxLength={MAX_TITLE_LENGTH}
-          // currentLength={title.length}
+          maxLength={MAX_TITLE_LENGTH}
+          currentLength={watch().title?.length || 0}
         />
 
         <div className="flex justify-center sm:justify-end">

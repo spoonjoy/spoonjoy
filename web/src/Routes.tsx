@@ -41,6 +41,7 @@ const Routes = () => {
         <Route path="/example-recipes" page={RecipeExampleRecipesPage} name="exampleRecipes" />
         <Set wrap={BackgroundLayout}>
           <Route path="/recipes/{id}" page={RecipeRecipePage} name="recipe" />
+          <Route path="/cookbook/{id}" page={CookbookCookbookPage} name="cookbook" />
         </Set>
       </Set>
       <Route notfound page={NotFoundPage} />
