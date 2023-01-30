@@ -66,9 +66,9 @@ const Recipe = ({ recipe }: Props) => {
           className={`relative m-auto h-[350px] bg-cover bg-bottom sm:h-[400px] md:h-[500px] lg:w-[900px]`}
         >
           <div className="absolute bottom-0 w-full">
-            <div className="relative mx-auto mb-4 h-[140px] w-[350px] rounded-md p-4 text-white backdrop-blur backdrop-brightness-50 sm:h-[160px] sm:w-[600px] md:mb-6 md:h-[170px]">
+            <div className="relative mx-auto mb-4 flex min-h-[140px] w-[350px] flex-col justify-between rounded-md p-4 text-white backdrop-blur backdrop-brightness-50 sm:min-h-[160px] sm:w-[600px] md:mb-6 md:min-h-[170px]">
               {/* Header text */}
-              <div className="absolute top-4">
+              <div>
                 <span className="mb-2 block text-base font-bold leading-none tracking-normal opacity-[85%] sm:text-lg md:text-xl md:tracking-wide">
                   {recipe.title}
                 </span>
@@ -77,7 +77,7 @@ const Recipe = ({ recipe }: Props) => {
                 </span>
               </div>
               {/* Chef info */}
-              <div className="absolute bottom-4 ml-2 flex">
+              <div className="mt-2 ml-2 flex">
                 <img className="h-8 w-8 rounded-full" src={ChefRJ} alt="" />
                 <div className="pl-2">
                   <span className="block text-xs font-thin opacity-[80%]">
@@ -88,7 +88,6 @@ const Recipe = ({ recipe }: Props) => {
                   </span>
                 </div>
               </div>
-              <div />
             </div>
           </div>
         </div>
