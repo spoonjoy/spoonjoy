@@ -23,6 +23,7 @@ export const QUERY = gql`
     cookbooks: usersCookbooks(username: $username) {
       id
       title
+      imageUrl
     }
   }
 `
