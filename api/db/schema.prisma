@@ -146,6 +146,7 @@ model RecipeInCookbook {
   @@index([recipeId])
   @@index([addedById])
   @@index([cookbookId, recipeId])
+  @@index([addedById, recipeId])
 }
 
 model ShoppingList {

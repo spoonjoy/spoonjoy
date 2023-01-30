@@ -270,6 +270,11 @@ type RequiredRecipeRelationResolvers = RecipeRelationResolvers & {
     ResolversParentTypes['Recipe'],
     RedwoodGraphQLContext
   >
+  inMyCookbooks: RequiredResolverFn<
+    Array<ResolversTypes['RecipeInCookbook']> | undefined,
+    ResolversParentTypes['Recipe'],
+    RedwoodGraphQLContext
+  >
 }
 
 export const Recipe: RequiredRecipeRelationResolvers = {
@@ -292,5 +297,17 @@ export const Recipe: RequiredRecipeRelationResolvers = {
     }
 
     return maybeSteps
+  },
+  inMyCookbooks: async (_obj, { root }) => {
+    const { currentUser } = context
+    if (!currentUser) {
+      return undefined
+    }
+
+    const recipeInCookbooks = await db.recipeInCookbook.findMany({
+      where: { addedById: currentUser.id, recipeId: root.id },
+    })
+
+    return recipeInCookbooks
   },
 }

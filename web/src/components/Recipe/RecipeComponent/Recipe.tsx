@@ -87,6 +87,7 @@ const Recipe = ({ recipe }: Props) => {
                     {recipe.chef.username}
                   </span>
                 </div>
+                <div>Add to cookbook</div>
               </div>
             </div>
           </div>
