@@ -1,3 +1,9 @@
+import type {
+  CreateCookbookInput,
+  EditCookbookById,
+  UpdateCookbookInput,
+} from 'types/graphql'
+
 import {
   Form,
   FormError,
@@ -6,88 +12,70 @@ import {
   TextField,
   Submit,
 } from '@redwoodjs/forms'
-
-import type { EditCookbookById, UpdateCookbookInput } from 'types/graphql'
 import type { RWGqlError } from '@redwoodjs/forms'
 
+import StyledTextField from 'src/components/formComponents/StyledTextField'
 
+type FormUpdateCookbook = NonNullable<UpdateCookbookInput>
+type FormCreateCookbook = NonNullable<CreateCookbookInput>
 
-
-type FormCookbook = NonNullable<EditCookbookById['cookbook']>
+export type onCreateCookbook = (data: CreateCookbookInput) => void
+export type onUpdateCookbook = (
+  recipeId: string,
+  data: UpdateCookbookInput
+) => void
 
 interface CookbookFormProps {
   cookbook?: EditCookbookById['cookbook']
-  onSave: (data: UpdateCookbookInput, id?: FormCookbook['id']) => void
-  error: RWGqlError
+  onSave: onCreateCookbook | onUpdateCookbook
+  error?: RWGqlError
   loading: boolean
 }
 
-const CookbookForm = (props: CookbookFormProps) => {
-  const onSubmit = (data: FormCookbook) => {
-  
-    
-    
-  
-    
-    
-  
-    props.onSave(data, props?.cookbook?.id)
+const CookbookForm = ({
+  cookbook,
+  onSave,
+  error,
+  loading,
+}: CookbookFormProps) => {
+  const onSubmit = (data: FormUpdateCookbook | FormCreateCookbook) => {
+    console.log('onSubmit data:', data)
+    if (cookbook) {
+      ;(onSave as onUpdateCookbook)(cookbook.id, data as FormUpdateCookbook)
+    } else {
+      ;(onSave as onCreateCookbook)(data as FormCreateCookbook)
+    }
   }
 
+  // Update based on Prisma schema
+  const MAX_TITLE_LENGTH = 191
+
   return (
-    <div className="rw-form-wrapper">
-      <Form<FormCookbook> onSubmit={onSubmit} error={props.error}>
+    <div className="p-5">
+      <Form<FormUpdateCookbook | FormCreateCookbook>
+        onSubmit={onSubmit}
+        error={error}
+        config={{ mode: 'onTouched' }}
+      >
         <FormError
-          error={props.error}
+          error={error}
           wrapperClassName="rw-form-error-wrapper"
           titleClassName="rw-form-error-title"
           listClassName="rw-form-error-list"
         />
-      
-        <Label
-          name="title"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Title
-        </Label>
-        
-          <TextField
-            name="title"
-            defaultValue={props.cookbook?.title}
-            className="rw-input"
-            errorClassName="rw-input rw-input-error"
-            validation={{ required: true }}
-          />
-        
 
-        <FieldError name="title" className="rw-field-error" />
+        <StyledTextField
+          fieldName="title"
+          label="Title"
+          defaultValue={cookbook?.title || undefined}
+          validation={{ required: true, maxLength: MAX_TITLE_LENGTH }}
+          // maxLength={MAX_TITLE_LENGTH}
+          // currentLength={title.length}
+        />
 
-        <Label
-          name="authorId"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Author id
-        </Label>
-        
-          <TextField
-            name="authorId"
-            defaultValue={props.cookbook?.authorId}
-            className="rw-input"
-            errorClassName="rw-input rw-input-error"
-            validation={{ required: true }}
-          />
-        
-
-        <FieldError name="authorId" className="rw-field-error" />
-
-        <div className="rw-button-group">
-          <Submit
-            disabled={props.loading}
-            className="rw-button rw-button-blue"
-          >
-            Save
+        <div className="flex justify-center sm:justify-end">
+          <Submit disabled={loading} className="btn-submit-primary">
+            {cookbook ? 'Update Cookbook' : 'Create New Cookbook'}
           </Submit>
         </div>
       </Form>
