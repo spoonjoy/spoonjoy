@@ -77,30 +77,36 @@ const Recipe = ({ recipe }: Props) => {
                   {recipe.description}
                 </span>
               </div>
-              {/* Chef info */}
-              <div className="mt-2 ml-2 flex">
-                <img className="h-8 w-8 rounded-full" src={ChefRJ} alt="" />
-                <div className="pl-2">
-                  <span className="block text-xs font-thin opacity-[80%]">
-                    Recipe by:
-                  </span>
-                  <span className="block text-sm font-normal leading-none">
-                    {recipe.chef.username}
-                  </span>
+              {/* Chef info and cookbook dropdown */}
+              <div className="flex justify-between">
+                {/* Chef info */}
+                <div className="mt-2 ml-2 flex">
+                  <img className="h-8 w-8 rounded-full" src={ChefRJ} alt="" />
+                  <div className="pl-2">
+                    <span className="block text-xs font-thin opacity-[80%]">
+                      Recipe by:
+                    </span>
+                    <span className="block text-sm font-normal leading-none">
+                      {recipe.chef.username}
+                    </span>
+                  </div>
                 </div>
-                {/*
-                 * Three scenarios:
-                 * - Stuff in array -> user has added recipes to their cookbooks
-                 * - Nothing in array -> user has not yet added recipes to their cookbooks
-                 * - Null or undefined -> user is not logged in
-                 *  - TODO This should updated whenever I figure out if it should be null OR undefined (cuz I feel like it's weird to have both, but it shouldn't hurt)
-                 */}
-                {recipe.inMyCookbooks && currentUser?.username && (
-                  <MyCookbooksDropdownCell
-                    inMyCookbooks={recipe.inMyCookbooks}
-                    username={currentUser.username}
-                  />
-                )}
+                {/* Cookbook dropdown */}
+                <div>
+                  {/*
+                   * Three scenarios:
+                   * - Stuff in array -> user has added recipes to their cookbooks
+                   * - Nothing in array -> user has not yet added recipes to their cookbooks
+                   * - Null or undefined -> user is not logged in
+                   *  - TODO This should updated whenever I figure out if it should be null OR undefined (cuz I feel like it's weird to have both, but it shouldn't hurt)
+                   */}
+                  {recipe.inMyCookbooks && currentUser?.username && (
+                    <MyCookbooksDropdownCell
+                      inMyCookbooks={recipe.inMyCookbooks}
+                      username={currentUser.username}
+                    />
+                  )}
+                </div>
               </div>
             </div>
           </div>

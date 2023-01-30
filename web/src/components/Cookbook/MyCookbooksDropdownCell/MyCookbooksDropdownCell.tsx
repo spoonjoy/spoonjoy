@@ -6,6 +6,8 @@ import type {
 
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
+import AddToCookbookDropdown from '../AddToCookbookDropdown/AddToCookbookDropdown'
+
 export const QUERY = gql`
   query FindCookbooksForDropdown($username: String!) {
     myCookbooks: usersCookbooks(username: $username) {
@@ -39,10 +41,5 @@ export const Success = ({
   FindCookbooksForDropdownVariables
 > &
   ICookbooksDropdownProps) => {
-  return (
-    <>
-      <div>{JSON.stringify(myCookbooks)}</div>
-      <div>{JSON.stringify(inMyCookbooks)}</div>
-    </>
-  )
+  return <AddToCookbookDropdown />
 }
