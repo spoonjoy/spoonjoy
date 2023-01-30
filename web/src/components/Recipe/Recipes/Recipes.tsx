@@ -1,5 +1,5 @@
 import { PlusIcon } from '@heroicons/react/20/solid'
-import type { MyRecipes, RecipeShortInfo } from 'types/graphql'
+import type { RecipeShortInfo } from 'types/graphql'
 
 import { Link, routes } from '@redwoodjs/router'
 
@@ -60,11 +60,7 @@ const RecipeCard = ({ recipe }: { recipe: RecipeShortInfo }) => (
   </CardBase>
 )
 
-export default function RecipeList({
-  recipes,
-}: {
-  recipes: RecipeShortInfo[]
-}) {
+export default function Recipes({ recipes }: { recipes: RecipeShortInfo[] }) {
   return (
     <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {recipes.map((recipe) => (
