@@ -1,11 +1,14 @@
+import type {
+  DeleteCookbookMutationVariables,
+  FindCookbooks,
+} from 'types/graphql'
+
 import { Link, routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import { QUERY } from 'src/components/Cookbook/CookbooksCell'
 import { truncate } from 'src/lib/formatters'
-
-import type { DeleteCookbookMutationVariables, FindCookbooks } from 'types/graphql'
 
 const DELETE_COOKBOOK_MUTATION = gql`
   mutation DeleteCookbookMutation($id: String!) {
