@@ -64,7 +64,11 @@ export default function AddToCookbookButton({
 
   return (
     <>
-      <DialogBase openState={isDialogOpen} onClose={dismissDialog}>
+      <DialogBase
+        openState={isDialogOpen}
+        onClose={dismissDialog}
+        withCloseButton
+      >
         <ul>
           {myCookbooks.map((cookbook) => (
             <li key={cookbook.id}>{cookbook.title}</li>
