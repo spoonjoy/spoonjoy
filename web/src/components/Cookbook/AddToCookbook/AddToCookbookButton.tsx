@@ -1,3 +1,4 @@
+import { Dialog } from '@headlessui/react'
 import { BookmarkIcon } from '@heroicons/react/24/outline'
 import { AddToCookbookMutation, FindCookbooksForDropdown } from 'types/graphql'
 
@@ -69,10 +70,37 @@ export default function AddToCookbookButton({
         onClose={dismissDialog}
         withCloseButton
       >
-        <ul>
-          {myCookbooks.map((cookbook) => (
-            <li key={cookbook.id}>{cookbook.title}</li>
-          ))}
+        <Dialog.Title
+          as="h3"
+          className="text-lg font-medium leading-6 text-gray-900"
+        >
+          Add to cookbook
+        </Dialog.Title>
+        <ul className=" min-w-[300px] divide-y divide-gray-200">
+          {myCookbooks.map((cookbook) => {
+            const alreadyInCookbook = inMyCookbooks.includes({
+              cookbookId: cookbook.id,
+            })
+            return (
+              <li key={cookbook.id} className="py-4">
+                <div className="flex items-center space-x-4">
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-medium text-gray-900">
+                      {cookbook.title}
+                    </p>
+                  </div>
+                  <div>
+                    <button
+                      onClick={getOnAddRecipe(cookbook.id)}
+                      className="inline-flex items-center rounded-full border border-gray-300 bg-white px-2.5 py-0.5 text-sm font-medium leading-5 text-gray-700 shadow-sm hover:bg-gray-50"
+                    >
+                      {alreadyInCookbook ? 'Saved' : 'Save'}
+                    </button>
+                  </div>
+                </div>
+              </li>
+            )
+          })}
         </ul>
       </DialogBase>
       <div className="relative inline-block text-left">
