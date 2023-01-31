@@ -12,9 +12,9 @@ import { RedwoodGraphQLContext } from '@redwoodjs/graphql-server/dist/functions/
 import { requireAuth, requireCookbookAuth } from 'src/lib/auth'
 import { db } from 'src/lib/db'
 
-export const cookbooks: QueryResolvers['cookbooks'] = () => {
+export const cookbooks: QueryResolvers['cookbooks'] = async () => {
   requireAuth()
-  return db.cookbook.findMany()
+  return await db.cookbook.findMany()
 }
 
 export const usersCookbooks: QueryResolvers['usersCookbooks'] = ({
@@ -141,23 +141,5 @@ export const Cookbook: RequiredCookbookRelationResolvers = {
       throw new Error('Could not resolve cookbook recipes')
     }
     return maybeRecipes
-  },
-  imageUrl: async (_obj, { root }) => {
-    // The cookbook image is up to 4 recipe images in a grid
-
-    const maybeRecipes = await db.cookbook
-      .findUnique({ where: { id: root?.id } })
-      .recipes({ take: 4 })
-
-    const recipeIds = []
-    maybeRecipes?.forEach((recipe) => {
-      recipeIds.push(recipe.recipeId)
-    })
-    // Fill up any remaining spots with a transparent box
-    while (recipeIds?.length < 4) {
-      recipeIds.push('transparent_box')
-    }
-
-    return `https://res.cloudinary.com/dpjmyc4uz/image/upload/w_250,h_250,c_fill/l_${recipeIds[1]},w_250,h_250,c_fill,x_250/l_${recipeIds[2]},w_250,h_250,c_fill,y_250,x_-125/l_${recipeIds[3]},w_250,h_250,c_fill,y_125,x_125/${recipeIds[0]}`
   },
 }
