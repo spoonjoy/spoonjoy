@@ -16,7 +16,7 @@ const ADD_TO_COOKBOOK_MUTATION = gql`
   mutation AddToCookbookMutation($id: String!, $recipeId: String!) {
     addToCookbook(id: $id, recipeId: $recipeId) {
       cookbook {
-        title
+        id
       }
     }
   }
@@ -25,7 +25,9 @@ const ADD_TO_COOKBOOK_MUTATION = gql`
 const REMOVE_FROM_COOKBOOK_MUTATION = gql`
   mutation RemoveFromCookbookMutation($id: String!, $recipeId: String!) {
     removeFromCookbook(id: $id, recipeId: $recipeId) {
-      id
+      cookbook {
+        id
+      }
     }
   }
 `
@@ -48,14 +50,21 @@ export default function AddToCookbookButton({
 }: IAddToCookbookButton) {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false)
 
+  const [recipeInCookbooks, setRecipeInCookbooks] =
+    React.useState(inMyCookbooks)
+
   const [addToCookbook, { loading: loadingAdd }] =
     useMutation<AddToCookbookMutation>(ADD_TO_COOKBOOK_MUTATION, {
       onCompleted: (data) => {
-        const cookbookTitle = data.addToCookbook.cookbook.title
-        toast.success(
-          `Added to cookbook${cookbookTitle ? `: ${cookbookTitle}` : undefined}`
-        )
+        toast.success(`Added to cookbook`)
         setIsDialogOpen(false)
+        const newRecipeInCookbook: IInMyCookbook = {
+          cookbookId: data.addToCookbook.cookbook.id,
+          __typename: 'RecipeInCookbook',
+        }
+        const newRecipeInCookbooks = [...recipeInCookbooks, newRecipeInCookbook]
+
+        setRecipeInCookbooks(newRecipeInCookbooks)
       },
       onError: (error) => {
         toast.error(error.message)
@@ -64,8 +73,14 @@ export default function AddToCookbookButton({
 
   const [removeFromCookbook, { loading: loadingRemove }] =
     useMutation<RemoveFromCookbookMutation>(REMOVE_FROM_COOKBOOK_MUTATION, {
-      onCompleted: () => {
+      onCompleted: (data) => {
         toast.success(`Removed from cookbook`)
+        setRecipeInCookbooks((current) =>
+          current.filter(
+            (inMyCookbook) =>
+              inMyCookbook.cookbookId !== data.removeFromCookbook.cookbook.id
+          )
+        )
       },
       onError: (error) => {
         toast.error(error.message)
@@ -107,7 +122,7 @@ export default function AddToCookbookButton({
         </Dialog.Title>
         <ul className=" min-w-[300px] divide-y divide-gray-200">
           {myCookbooks.map((cookbook) => {
-            const alreadyInCookbook = !!inMyCookbooks.find(
+            const alreadyInCookbook = recipeInCookbooks.find(
               (e) => e.cookbookId === cookbook.id
             )
             return (
@@ -122,7 +137,7 @@ export default function AddToCookbookButton({
                     <button
                       onClick={getOnToggleRecipe(
                         cookbook.id,
-                        alreadyInCookbook
+                        !!alreadyInCookbook
                       )}
                       disabled={loadingAdd || loadingRemove}
                       className={classNames(

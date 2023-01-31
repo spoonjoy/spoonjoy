@@ -107,6 +107,9 @@ export const removeFromCookbook: MutationResolvers['removeFromCookbook'] =
           recipeId,
         },
       },
+      include: {
+        cookbook: true,
+      },
     })
   }
 
