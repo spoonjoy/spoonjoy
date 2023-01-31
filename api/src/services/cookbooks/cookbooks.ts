@@ -5,6 +5,7 @@ import type {
   RequiredResolverFn,
   ResolversParentTypes,
   ResolversTypes,
+  Cookbook as CookbookModel,
 } from 'types/graphql'
 
 import { RedwoodGraphQLContext } from '@redwoodjs/graphql-server/dist/functions/types'
@@ -12,9 +13,17 @@ import { RedwoodGraphQLContext } from '@redwoodjs/graphql-server/dist/functions/
 import { requireAuth, requireCookbookAuth } from 'src/lib/auth'
 import { db } from 'src/lib/db'
 
+/**
+ * TODO: Figure out if there's a better way to fix these incorrect type errors than putting `as unknown as CookbookModel[]` etc
+ * - The reason it's needed is that the imageUrl attribute is generated in an async function, which is fine, but Typescript
+ * is getting caught up on the return type (it thinks it's `Promise<string>` when it's really just `string`)
+ */
+
 export const cookbooks: QueryResolvers['cookbooks'] = async () => {
   requireAuth()
-  return await db.cookbook.findMany({ select: { imageUrl: true } })
+  return (await db.cookbook.findMany({
+    select: { imageUrl: true },
+  })) as unknown as CookbookModel[]
 }
 
 export const usersCookbooks: QueryResolvers['usersCookbooks'] = ({
@@ -24,13 +33,13 @@ export const usersCookbooks: QueryResolvers['usersCookbooks'] = ({
     where: {
       author: { username },
     },
-  })
+  }) as unknown as CookbookModel[]
 }
 
 export const cookbook: QueryResolvers['cookbook'] = ({ id }) => {
   return db.cookbook.findUnique({
     where: { id },
-  })
+  }) as unknown as CookbookModel
 }
 
 export const createCookbook: MutationResolvers['createCookbook'] = ({
@@ -48,7 +57,7 @@ export const createCookbook: MutationResolvers['createCookbook'] = ({
         },
       },
     },
-  })
+  }) as unknown as CookbookModel
 }
 
 export const updateCookbook: MutationResolvers['updateCookbook'] = async ({
@@ -59,7 +68,7 @@ export const updateCookbook: MutationResolvers['updateCookbook'] = async ({
   return db.cookbook.update({
     data: input,
     where: { id },
-  })
+  }) as unknown as CookbookModel
 }
 
 export const addToCookbook: MutationResolvers['addToCookbook'] = async ({
@@ -107,7 +116,7 @@ export const deleteCookbook: MutationResolvers['deleteCookbook'] = async ({
   await requireCookbookAuth(id)
   return db.cookbook.delete({
     where: { id },
-  })
+  }) as unknown as CookbookModel
 }
 
 type RequiredCookbookRelationResolvers = CookbookRelationResolvers & {

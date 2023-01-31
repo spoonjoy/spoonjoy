@@ -20,6 +20,7 @@ const ADD_TO_COOKBOOK_MUTATION = gql`
 
 export interface IInMyCookbook {
   cookbookId: string
+  __typename?: 'RecipeInCookbook' | undefined
 }
 
 interface IAddToCookbookButton {
@@ -79,9 +80,9 @@ export default function AddToCookbookButton({
         </Dialog.Title>
         <ul className=" min-w-[300px] divide-y divide-gray-200">
           {myCookbooks.map((cookbook) => {
-            const alreadyInCookbook = inMyCookbooks.includes({
-              cookbookId: cookbook.id,
-            })
+            const alreadyInCookbook = !!inMyCookbooks.find(
+              (e) => e.cookbookId === cookbook.id
+            )
             return (
               <li key={cookbook.id} className="py-4">
                 <div className="flex items-center space-x-4">
