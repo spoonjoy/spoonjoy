@@ -1,6 +1,10 @@
 import { Dialog } from '@headlessui/react'
 import { BookmarkIcon } from '@heroicons/react/24/outline'
-import { AddToCookbookMutation, FindCookbooksForDropdown } from 'types/graphql'
+import {
+  AddToCookbookMutation,
+  RemoveFromCookbookMutation,
+  FindCookbooksForDropdown,
+} from 'types/graphql'
 
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/dist/toast'
@@ -14,6 +18,14 @@ const ADD_TO_COOKBOOK_MUTATION = gql`
       cookbook {
         title
       }
+    }
+  }
+`
+
+const REMOVE_FROM_COOKBOOK_MUTATION = gql`
+  mutation RemoveFromCookbookMutation($id: String!, $recipeId: String!) {
+    removeFromCookbook(id: $id, recipeId: $recipeId) {
+      id
     }
   }
 `
@@ -36,9 +48,8 @@ export default function AddToCookbookButton({
 }: IAddToCookbookButton) {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false)
 
-  const [addToCookbook, { loading }] = useMutation<AddToCookbookMutation>(
-    ADD_TO_COOKBOOK_MUTATION,
-    {
+  const [addToCookbook, { loading: loadingAdd }] =
+    useMutation<AddToCookbookMutation>(ADD_TO_COOKBOOK_MUTATION, {
       onCompleted: (data) => {
         const cookbookTitle = data.addToCookbook.cookbook.title
         toast.success(
@@ -49,8 +60,17 @@ export default function AddToCookbookButton({
       onError: (error) => {
         toast.error(error.message)
       },
-    }
-  )
+    })
+
+  const [removeFromCookbook, { loading: loadingRemove }] =
+    useMutation<RemoveFromCookbookMutation>(REMOVE_FROM_COOKBOOK_MUTATION, {
+      onCompleted: () => {
+        toast.success(`Removed from cookbook`)
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    })
 
   const openDialog = () => {
     setIsDialogOpen(true)
@@ -59,11 +79,18 @@ export default function AddToCookbookButton({
     setIsDialogOpen(false)
   }
 
-  const getOnAddRecipe = (cookbookId: string) => () => {
-    addToCookbook({
-      variables: { id: cookbookId, recipeId: currentRecipeId },
-    })
-  }
+  const getOnToggleRecipe =
+    (cookbookId: string, alreadyInCookbook: boolean) => () => {
+      if (alreadyInCookbook) {
+        removeFromCookbook({
+          variables: { id: cookbookId, recipeId: currentRecipeId },
+        })
+      } else {
+        addToCookbook({
+          variables: { id: cookbookId, recipeId: currentRecipeId },
+        })
+      }
+    }
 
   return (
     <>
@@ -93,8 +120,11 @@ export default function AddToCookbookButton({
                   </div>
                   <div>
                     <button
-                      onClick={getOnAddRecipe(cookbook.id)}
-                      disabled={alreadyInCookbook || loading}
+                      onClick={getOnToggleRecipe(
+                        cookbook.id,
+                        alreadyInCookbook
+                      )}
+                      disabled={loadingAdd || loadingRemove}
                       className={classNames(
                         alreadyInCookbook
                           ? 'border-white bg-indigo-700 text-white'
