@@ -1,12 +1,13 @@
 import type {
   FindCookbooksForDropdown,
   FindCookbooksForDropdownVariables,
-  RecipeInCookbook,
 } from 'types/graphql'
 
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
-import AddToCookbookDropdown from '../AddToCookbookDropdown/AddToCookbookDropdown'
+import AddToCookbookDropdown, {
+  IInMyCookbook,
+} from '../AddToCookbookDropdown/AddToCookbookDropdown'
 
 export const QUERY = gql`
   query FindCookbooksForDropdown($username: String!) {
@@ -28,9 +29,7 @@ export const Failure = ({
 )
 
 interface ICookbooksDropdownProps {
-  inMyCookbooks: {
-    cookbookId: string
-  }[]
+  inMyCookbooks: IInMyCookbook[]
 }
 
 export const Success = ({
@@ -41,5 +40,10 @@ export const Success = ({
   FindCookbooksForDropdownVariables
 > &
   ICookbooksDropdownProps) => {
-  return <AddToCookbookDropdown />
+  return (
+    <AddToCookbookDropdown
+      myCookbooks={myCookbooks}
+      inMyCookbooks={inMyCookbooks}
+    />
+  )
 }
