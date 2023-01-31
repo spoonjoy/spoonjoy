@@ -70,10 +70,10 @@ const Recipe = ({ recipe }: Props) => {
             <div className="relative mx-auto mb-4 flex min-h-[140px] w-[350px] flex-col justify-between rounded-md p-4 text-white backdrop-blur backdrop-brightness-50 sm:min-h-[160px] sm:w-[600px] md:mb-6 md:min-h-[170px]">
               {/* Header text */}
               <div>
-                <span className="mb-2 block text-base font-bold leading-none tracking-normal opacity-[85%] sm:text-lg md:text-xl md:tracking-wide">
+                <span className="mb-2 block text-base font-medium leading-snug tracking-wide opacity-[95%]">
                   {recipe.title}
                 </span>
-                <span className="block text-sm font-light leading-4 tracking-normal opacity-[85%] sm:text-base md:text-lg">
+                <span className="block text-sm font-normal leading-snug tracking-wide opacity-[85%]">
                   {recipe.description}
                 </span>
               </div>
@@ -83,10 +83,10 @@ const Recipe = ({ recipe }: Props) => {
                 <div className="mt-2 ml-2 flex">
                   <img className="h-8 w-8 rounded-full" src={ChefRJ} alt="" />
                   <div className="pl-2">
-                    <span className="block text-xs font-thin opacity-[80%]">
+                    <span className="block text-xs font-light tracking-normal opacity-[80%]">
                       Recipe by:
                     </span>
-                    <span className="block text-sm font-normal leading-none">
+                    <span className="block text-sm font-normal leading-none tracking-wide">
                       {recipe.chef.username}
                     </span>
                   </div>
