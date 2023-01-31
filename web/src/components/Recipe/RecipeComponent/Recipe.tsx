@@ -102,6 +102,7 @@ const Recipe = ({ recipe }: Props) => {
                    */}
                   {recipe.inMyCookbooks && currentUser?.username && (
                     <MyCookbooksDropdownCell
+                      currentRecipeId={recipe.id}
                       inMyCookbooks={recipe.inMyCookbooks}
                       username={currentUser.username}
                     />

@@ -5,9 +5,9 @@ import type {
 
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
-import AddToCookbookDropdown, {
+import AddToCookbookButton, {
   IInMyCookbook,
-} from '../AddToCookbookDropdown/AddToCookbookDropdown'
+} from '../AddToCookbook/AddToCookbookButton'
 
 export const QUERY = gql`
   query FindCookbooksForDropdown($username: String!) {
@@ -29,10 +29,12 @@ export const Failure = ({
 )
 
 interface ICookbooksDropdownProps {
+  currentRecipeId: string
   inMyCookbooks: IInMyCookbook[]
 }
 
 export const Success = ({
+  currentRecipeId,
   myCookbooks,
   inMyCookbooks,
 }: CellSuccessProps<
@@ -41,7 +43,8 @@ export const Success = ({
 > &
   ICookbooksDropdownProps) => {
   return (
-    <AddToCookbookDropdown
+    <AddToCookbookButton
+      currentRecipeId={currentRecipeId}
       myCookbooks={myCookbooks}
       inMyCookbooks={inMyCookbooks}
     />
