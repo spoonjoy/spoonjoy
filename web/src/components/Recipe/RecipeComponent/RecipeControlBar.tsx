@@ -8,7 +8,7 @@ import { Link, navigate, routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/dist/toast'
 
-import Alert from 'src/components/ConfirmationDialogs/Alert'
+import Alert from 'src/components/Dialogs/ConfirmationDialogs/Alert'
 import { classNames } from 'src/helpers/css'
 
 const DELETE_RECIPE_MUTATION = gql`
