@@ -15,9 +15,7 @@ import { classNames } from 'src/helpers/css'
 const ADD_TO_COOKBOOK_MUTATION = gql`
   mutation AddToCookbookMutation($id: String!, $recipeId: String!) {
     addToCookbook(id: $id, recipeId: $recipeId) {
-      cookbook {
-        id
-      }
+      cookbookId
     }
   }
 `
@@ -25,9 +23,7 @@ const ADD_TO_COOKBOOK_MUTATION = gql`
 const REMOVE_FROM_COOKBOOK_MUTATION = gql`
   mutation RemoveFromCookbookMutation($id: String!, $recipeId: String!) {
     removeFromCookbook(id: $id, recipeId: $recipeId) {
-      cookbook {
-        id
-      }
+      cookbookId
     }
   }
 `
@@ -59,7 +55,7 @@ export default function AddToCookbookButton({
         toast.success(`Added to cookbook`)
         setIsDialogOpen(false)
         const newRecipeInCookbook: IInMyCookbook = {
-          cookbookId: data.addToCookbook.cookbook.id,
+          cookbookId: data.addToCookbook.cookbookId,
           __typename: 'RecipeInCookbook',
         }
         const newRecipeInCookbooks = [...recipeInCookbooks, newRecipeInCookbook]
@@ -78,7 +74,7 @@ export default function AddToCookbookButton({
         setRecipeInCookbooks((current) =>
           current.filter(
             (inMyCookbook) =>
-              inMyCookbook.cookbookId !== data.removeFromCookbook.cookbook.id
+              inMyCookbook.cookbookId !== data.removeFromCookbook.cookbookId
           )
         )
       },
