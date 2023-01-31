@@ -14,7 +14,7 @@ import { db } from 'src/lib/db'
 
 export const cookbooks: QueryResolvers['cookbooks'] = async () => {
   requireAuth()
-  return await db.cookbook.findMany()
+  return await db.cookbook.findMany({ select: { imageUrl: true } })
 }
 
 export const usersCookbooks: QueryResolvers['usersCookbooks'] = ({

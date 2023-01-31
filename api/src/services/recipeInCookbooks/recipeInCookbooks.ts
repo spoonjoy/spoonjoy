@@ -6,7 +6,7 @@ export const RecipeInCookbook: RecipeInCookbookRelationResolvers = {
   cookbook: (_obj, { root }) => {
     return db.recipeInCookbook
       .findUnique({ where: { id: root?.id } })
-      .cookbook()
+      .cookbook({ select: { imageUrl: true } })
   },
   recipe: (_obj, { root }) => {
     return db.recipeInCookbook.findUnique({ where: { id: root?.id } }).recipe()
