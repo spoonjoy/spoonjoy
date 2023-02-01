@@ -37,6 +37,11 @@ const CookbookForm = ({
   const formMethods = useForm<FormUpdateCookbook | FormCreateCookbook>({
     mode: 'onTouched',
   })
+  const fieldRef = React.useRef<HTMLInputElement>(null)
+  React.useEffect(() => {
+    fieldRef.current?.focus()
+  }, [fieldRef])
+
   const { watch } = formMethods
   const onSubmit = (data: FormUpdateCookbook | FormCreateCookbook) => {
     console.log('onSubmit data:', data)
@@ -71,6 +76,7 @@ const CookbookForm = ({
           validation={{ required: true, maxLength: MAX_TITLE_LENGTH }}
           maxLength={MAX_TITLE_LENGTH}
           currentLength={watch().title?.length || 0}
+          ref={fieldRef}
         />
 
         <div className="mt-10 flex justify-center">
