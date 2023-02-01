@@ -4,7 +4,13 @@ interface IListCardContentWithImageBackgroundProps {
   cardSubtitle?: string | null
 }
 
-/** This is designed to be wrapped in ListCardBase */
+/**
+ * This is designed to be wrapped in ListCardBase. It is a card with an image
+ * background and a title and (optional) subtitle.
+ * @param imageUrl The URL of the image to use as the background
+ * @param cardTitle The title of the card
+ * @param cardSubtitle The optional subtitle of the card
+ */
 const ListCardContentWithImageBackground = ({
   imageUrl,
   cardTitle,

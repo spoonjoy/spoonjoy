@@ -28,12 +28,15 @@ export const db = new PrismaClient({
           maybeRecipes?.forEach((recipe) => {
             recipeIds.push(recipe.recipeId)
           })
-          // Fill up any remaining spots with a transparent box
-          while (recipeIds?.length < 4) {
-            recipeIds.push('transparent_box')
+          // // Fill up any remaining spots with a transparent box
+          // while (recipeIds?.length < 4) {
+          //   recipeIds.push('transparent_box')
+          // }
+          if (recipeIds.length < 4) {
+            return 'https://res.cloudinary.com/dpjmyc4uz/image/upload/w_500,h_500,c_fill/cookbook_no_recipes'
+          } else {
+            return `https://res.cloudinary.com/dpjmyc4uz/image/upload/w_250,h_250,c_fill/l_${recipeIds[1]},w_250,h_250,c_fill,x_250/l_${recipeIds[2]},w_250,h_250,c_fill,y_250,x_-125/l_${recipeIds[3]},w_250,h_250,c_fill,y_125,x_125/${recipeIds[0]}`
           }
-
-          return `https://res.cloudinary.com/dpjmyc4uz/image/upload/w_250,h_250,c_fill/l_${recipeIds[1]},w_250,h_250,c_fill,x_250/l_${recipeIds[2]},w_250,h_250,c_fill,y_250,x_-125/l_${recipeIds[3]},w_250,h_250,c_fill,y_125,x_125/${recipeIds[0]}`
         },
       },
     },

@@ -5,10 +5,11 @@ import { routes } from '@redwoodjs/router'
 import ListCardBase from 'src/components/shared/ListCard/ListCardBase'
 import ListCardContentWithImageBackground from 'src/components/shared/ListCard/ListCardContentWithImageBackground'
 
-const RecipeCard = ({ cookbook }: { cookbook: CookbookInfo }) => (
+const CookbookCard = ({ cookbook }: { cookbook: CookbookInfo }) => (
   <ListCardBase
     linkTo={routes.cookbook({ id: cookbook.id })}
     linkTitle={'Show cookbook ' + cookbook.id + ' detail'}
+    smallSquare
   >
     <ListCardContentWithImageBackground
       imageUrl={cookbook.imageUrl}
@@ -17,4 +18,4 @@ const RecipeCard = ({ cookbook }: { cookbook: CookbookInfo }) => (
   </ListCardBase>
 )
 
-export default RecipeCard
+export default CookbookCard
