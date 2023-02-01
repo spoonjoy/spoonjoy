@@ -4,12 +4,15 @@ import Recipes from 'web/src/components/Recipe/Recipes/Recipes'
 
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
+import Cookbook from '../Cookbook/Cookbook'
+
 export const QUERY = () => {
   return gql`
     ${RECIPE_SHORT_INFO}
     query FindCookbookById($id: String!) {
       cookbook: cookbook(id: $id) {
         id
+        title
         author {
           id
           username
@@ -37,8 +40,5 @@ export const Failure = ({
 export const Success = ({
   cookbook,
 }: CellSuccessProps<FindCookbookById, FindCookbookByIdVariables>) => {
-  const recipes = cookbook.recipes.map((recipeInCookbook) => {
-    return recipeInCookbook?.recipe
-  })
-  return <Recipes recipes={recipes} />
+  return <Cookbook cookbook={cookbook} />
 }
