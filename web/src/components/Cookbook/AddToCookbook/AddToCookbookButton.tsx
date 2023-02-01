@@ -50,6 +50,8 @@ export default function AddToCookbookButton({
   const [recipeInCookbooks, setRecipeInCookbooks] =
     React.useState(inMyCookbooks)
 
+  const addButtonRef = React.useRef(null)
+
   const [addToCookbook, { loading: loadingAdd }] =
     useMutation<AddToCookbookMutation>(ADD_TO_COOKBOOK_MUTATION, {
       onCompleted: (data) => {
@@ -109,6 +111,7 @@ export default function AddToCookbookButton({
       <DialogBase
         openState={isDialogOpen}
         onClose={dismissDialog}
+        initialFocusRef={addButtonRef}
         withCloseButton
       >
         <Dialog.Title
@@ -118,7 +121,7 @@ export default function AddToCookbookButton({
           Add to cookbook
         </Dialog.Title>
         <ul className=" min-w-[300px] divide-y divide-gray-200">
-          {myCookbooks.map((cookbook) => {
+          {myCookbooks.map((cookbook, idx) => {
             const alreadyInCookbook = recipeInCookbooks.find(
               (e) => e.cookbookId === cookbook.id
             )
@@ -143,6 +146,7 @@ export default function AddToCookbookButton({
                           : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:bg-gray-50 disabled:text-gray-500',
                         't inline-flex items-center rounded-full  border px-2.5 py-0.5 text-sm font-medium leading-5 shadow-sm'
                       )}
+                      ref={idx === 0 ? addButtonRef : undefined}
                     >
                       {alreadyInCookbook ? 'Saved' : 'Save'}
                     </button>
