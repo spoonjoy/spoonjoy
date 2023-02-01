@@ -9,6 +9,7 @@ export interface StyledFieldProps<T = Element>
   onChange?: (e: React.ChangeEvent<T>) => void
   validation?: RegisterOptions
   ref?: React.RefObject<HTMLInputElement> | null | undefined
+  placeholder?: string
 }
 
 export interface StyledFieldWrapperProps {
@@ -16,8 +17,10 @@ export interface StyledFieldWrapperProps {
   /** Identifier name for this field */
   fieldName: string
   /** Visual name for this field */
-  label: string
+  label?: string
+  /** Maximum length of the text in the field */
   maxLength?: number
+  /** Current length of the text in the field. Must include if using maxLength */
   currentLength?: number
 }
 const StyledFieldWrapper = ({
@@ -29,13 +32,15 @@ const StyledFieldWrapper = ({
 }: StyledFieldWrapperProps) => {
   return (
     <div className="mb-3">
-      <Label
-        name={fieldName}
-        className="block text-sm font-medium text-gray-700"
-        errorClassName="block text-sm font-medium text-red-600"
-      >
-        {label}
-      </Label>
+      {label && (
+        <Label
+          name={fieldName}
+          className="block text-sm font-medium text-gray-700"
+          errorClassName="block text-sm font-medium text-red-600"
+        >
+          {label}
+        </Label>
+      )}
       <div className="relative mt-1 rounded-md shadow-sm">
         {children}
         {maxLength !== undefined && currentLength !== undefined && (

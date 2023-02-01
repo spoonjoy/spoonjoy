@@ -38,8 +38,7 @@ const Cookbooks = ({ cookbooks }: { cookbooks: CookbookInfo[] }) => {
             smallSquare
           >
             <div className="inline-flex items-center">
-              <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-              Add new Cookbook!
+              <PlusIcon className="-ml-1 mr-2 h-10 w-10" aria-hidden="true" />
             </div>
           </ListCardBase>
         </ul>

@@ -25,6 +25,9 @@ interface CookbookFormProps {
   loading: boolean
 }
 
+/**
+ * This form is designed for use in a modal dialog.
+ */
 const CookbookForm = ({
   cookbook,
   onSave,
@@ -63,14 +66,14 @@ const CookbookForm = ({
 
         <StyledTextField
           fieldName="title"
-          label="Title"
+          placeholder="My Favorite Recipes"
           defaultValue={cookbook?.title || undefined}
           validation={{ required: true, maxLength: MAX_TITLE_LENGTH }}
           maxLength={MAX_TITLE_LENGTH}
           currentLength={watch().title?.length || 0}
         />
 
-        <div className="flex justify-center sm:justify-end">
+        <div className="mt-10 flex justify-center">
           <Submit disabled={loading} className="btn-submit-primary">
             {cookbook ? 'Update Cookbook' : 'Create New Cookbook'}
           </Submit>
