@@ -11,18 +11,12 @@ import CookbookCard from './CookbookCard'
 
 const Cookbooks = ({ cookbooks }: { cookbooks: CookbookInfo[] }) => {
   const { newCookbook } = useParams()
-  const [dialogOpen, setDialogOpen] = React.useState(newCookbook === 'true')
-
-  React.useEffect(() => {
-    newCookbook === 'true' ? setDialogOpen(true) : setDialogOpen(false)
-  }, [newCookbook])
 
   return (
     <>
       <CreateEditCookbookDialog
-        dialogOpen={dialogOpen}
+        dialogOpen={newCookbook === 'true'}
         onClose={() => {
-          setDialogOpen(false)
           navigate(routes.myCookbooks({ newCookbook: false }))
         }}
       />

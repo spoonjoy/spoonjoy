@@ -142,9 +142,8 @@ export default function AddToCookbookButton({
                       disabled={loadingAdd || loadingRemove}
                       className={classNames(
                         alreadyInCookbook
-                          ? 'border-white bg-indigo-700 text-white'
-                          : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:bg-gray-50 disabled:text-gray-500',
-                        't inline-flex items-center rounded-full  border px-2.5 py-0.5 text-sm font-medium leading-5 shadow-sm'
+                          ? 'btn-small-rounded-secondary'
+                          : 'btn-small-rounded-primary'
                       )}
                       ref={idx === 0 ? addButtonRef : undefined}
                     >

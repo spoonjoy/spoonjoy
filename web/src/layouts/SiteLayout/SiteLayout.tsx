@@ -140,10 +140,17 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
   )
 }
 
-/** Use DefaultHeader when you don't need a styled header  */
-export const DefaultHeader = ({ title }: { title: string }) => (
-  <div className="pt-10 pb-5">
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{title}</div>
+/** Use DefaultHeader when you don't need a specifically styled header  */
+export const DefaultHeader = ({
+  title,
+  endChild,
+}: {
+  title: string
+  endChild?: JSX.Element
+}) => (
+  <div className="mx-auto flex max-w-7xl items-center justify-between space-x-5 px-4 pt-10 pb-5 sm:px-6 lg:justify-start lg:px-8">
+    <span>{title}</span>
+    {endChild}
   </div>
 )
 

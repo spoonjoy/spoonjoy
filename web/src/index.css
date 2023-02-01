@@ -25,4 +25,13 @@
   .btn-submit-primary {
     @apply btn px-6 py-3 text-base font-medium text-white focus:ring-indigo-500 enabled:bg-indigo-600 enabled:hover:bg-indigo-700 disabled:bg-gray-400;
   }
+  .btn-small-rounded {
+    @apply inline-flex items-center rounded-full  border px-2.5 py-0.5 text-sm font-medium leading-5 shadow-sm
+  }
+  .btn-small-rounded-primary {
+    @apply btn-small-rounded border-white bg-indigo-700 text-white disabled:bg-indigo-500 disabled:text-gray-300
+  }
+  .btn-small-rounded-secondary {
+    @apply btn-small-rounded border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:bg-gray-50 disabled:text-gray-500
+  }
 }

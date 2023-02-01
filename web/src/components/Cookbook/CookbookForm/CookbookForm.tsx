@@ -35,7 +35,7 @@ const CookbookForm = ({
   loading,
 }: CookbookFormProps) => {
   const formMethods = useForm<FormUpdateCookbook | FormCreateCookbook>({
-    mode: 'onTouched',
+    mode: 'onBlur',
   })
   const fieldRef = React.useRef<HTMLInputElement>(null)
   React.useEffect(() => {
