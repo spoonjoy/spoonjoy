@@ -1,34 +1,12 @@
 import { PlusIcon } from '@heroicons/react/20/solid'
 import type { RecipeShortInfo } from 'types/graphql'
 
-import { Link, routes } from '@redwoodjs/router'
+import { routes } from '@redwoodjs/router'
 
-interface CardBaseProps {
-  children: JSX.Element
-  linkTo: string
-  linkTitle: string
-  emptyState?: boolean
-}
-const CardBase = ({
-  children,
-  linkTo,
-  linkTitle,
-  emptyState = false,
-}: CardBaseProps) => {
-  const containerClass = emptyState
-    ? 'relative block w-full rounded-lg border-2 border-dashed border-gray-300 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 h-[250px] sm:h-[270px] flex flex-center justify-center text-gray-500 hover:text-gray-700'
-    : 'group relative block w-full text-center focus:outline-none focus:ring-indigo-500 text-center h-[250px] sm:h-[270px] flex flex-center justify-center'
-  return (
-    <li>
-      <Link className={containerClass} to={linkTo} title={linkTitle}>
-        {children}
-      </Link>
-    </li>
-  )
-}
+import ListCardBase from 'src/components/shared/ListCardBase'
 
 const RecipeCard = ({ recipe }: { recipe: RecipeShortInfo }) => (
-  <CardBase
+  <ListCardBase
     linkTo={routes.recipe({ id: recipe.id })}
     linkTitle={'Show recipe ' + recipe.id + ' detail'}
   >
@@ -57,7 +35,7 @@ const RecipeCard = ({ recipe }: { recipe: RecipeShortInfo }) => (
         </div>
       </div>
     </div>
-  </CardBase>
+  </ListCardBase>
 )
 
 export default function Recipes({ recipes }: { recipes: RecipeShortInfo[] }) {
@@ -66,7 +44,7 @@ export default function Recipes({ recipes }: { recipes: RecipeShortInfo[] }) {
       {recipes.map((recipe) => (
         <RecipeCard key={recipe.id} recipe={recipe} />
       ))}
-      <CardBase
+      <ListCardBase
         emptyState
         linkTo={routes.newRecipe()}
         linkTitle="Create a new recipe"
@@ -75,7 +53,7 @@ export default function Recipes({ recipes }: { recipes: RecipeShortInfo[] }) {
           <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
           Add new recipe!
         </div>
-      </CardBase>
+      </ListCardBase>
     </ul>
   )
 }
