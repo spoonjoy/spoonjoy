@@ -79,7 +79,7 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
     },
     {
       name: 'New Cookbook',
-      href: routes.newCookbook(),
+      href: routes.myCookbooks({ newCookbook: true }),
       current: useMatch(routes.newCookbook()).match,
     },
     {
