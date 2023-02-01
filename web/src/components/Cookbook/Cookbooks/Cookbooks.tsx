@@ -5,7 +5,7 @@ import { navigate, routes, useParams } from '@redwoodjs/router'
 
 import ListCardBase from 'src/components/shared/ListCard/ListCardBase'
 
-import CreateEditCookbookDialog from '../CreateEditCookbookDialog/CreateEditCookbookDialog'
+import CreateEditCookbookDialog from '../CreateEditCookbook/CreateEditCookbookDialog'
 
 import CookbookCard from './CookbookCard'
 
