@@ -3,10 +3,9 @@ import type { CookbookInfo } from 'types/graphql'
 
 import { navigate, routes, useParams } from '@redwoodjs/router'
 
-import DialogBase from 'src/components/Dialogs/DialogBase'
 import ListCardBase from 'src/components/shared/ListCard/ListCardBase'
 
-import NewCookbook from '../NewCookbook'
+import CreateEditCookbookDialog from '../CreateEditCookbookDialog/CreateEditCookbookDialog'
 
 import CookbookCard from './CookbookCard'
 
@@ -20,16 +19,13 @@ const Cookbooks = ({ cookbooks }: { cookbooks: CookbookInfo[] }) => {
 
   return (
     <>
-      <DialogBase
-        openState={dialogOpen}
+      <CreateEditCookbookDialog
+        dialogOpen={dialogOpen}
         onClose={() => {
           setDialogOpen(false)
           navigate(routes.myCookbooks({ newCookbook: false }))
         }}
-        withCloseButton
-      >
-        <NewCookbook />
-      </DialogBase>
+      />
       <div className="align-center flex justify-center">
         <ul className="inline-grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
           {cookbooks.map((cookbook) => (
