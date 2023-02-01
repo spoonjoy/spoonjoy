@@ -1,7 +1,7 @@
 interface IListCardContentWithImageBackgroundProps {
   imageUrl: string
   cardTitle: string
-  cardSubtitle: string | null | undefined
+  cardSubtitle?: string | null
 }
 
 /** This is designed to be wrapped in ListCardBase */
