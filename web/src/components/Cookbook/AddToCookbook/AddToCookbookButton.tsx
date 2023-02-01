@@ -158,19 +158,16 @@ export default function AddToCookbookButton({
         </ul>
       </DialogBase>
       <div className="relative inline-block text-left">
-        <button
-          onClick={openDialog}
-          className="inline-flex w-full justify-center text-sm font-medium text-white shadow-sm hover:text-gray-300"
-        >
+        <button onClick={openDialog} className="text-white">
           <span className="sr-only">Add to cookbook</span>
           {recipeInCookbooks.length > 0 ? (
             <BookmarkIconSolid
-              className="-mr-1 ml-2 h-5 w-5"
+              className="h-5 w-5 hover:text-gray-300"
               aria-hidden="true"
             />
           ) : (
             <BookmarkIconOutline
-              className="-mr-1 ml-2 h-5 w-5"
+              className="h-5 w-5 hover:text-gray-300"
               aria-hidden="true"
             />
           )}
