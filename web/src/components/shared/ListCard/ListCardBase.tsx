@@ -3,7 +3,7 @@ import { Link } from '@redwoodjs/router'
 import { classNames } from 'src/helpers/css'
 
 interface IListCardBaseProps {
-  children: JSX.Element
+  children: React.ReactNode
   linkTo: string
   linkTitle: string
   emptyState?: boolean

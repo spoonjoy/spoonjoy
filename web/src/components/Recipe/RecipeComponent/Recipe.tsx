@@ -1,4 +1,3 @@
-import ChefRJ from 'public/images/chef-rj.png'
 import type { FindRecipeById } from 'types/graphql'
 
 import { useAuth } from '@redwoodjs/auth'
@@ -9,6 +8,7 @@ import IngredientsItemsList, {
   IStepInfoForList,
 } from 'src/components/IngredientsItemsList/IngredientsItemsList'
 import ReloadIngredientsItemsList from 'src/components/IngredientsItemsList/ReloadIngredientsItemsList'
+import UserInfo from 'src/components/shared/UserInfo/UserInfo'
 import { HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
 
 import RecipeControlBar from './RecipeControlBar'
@@ -80,17 +80,7 @@ const Recipe = ({ recipe }: Props) => {
               {/* Chef info and cookbook dropdown */}
               <div className="flex justify-between">
                 {/* Chef info */}
-                <div className="mt-2 ml-2 flex">
-                  <img className="h-8 w-8 rounded-full" src={ChefRJ} alt="" />
-                  <div className="pl-2">
-                    <span className="block text-xs font-light tracking-normal opacity-[80%]">
-                      Recipe by:
-                    </span>
-                    <span className="block text-sm font-normal leading-none tracking-wide">
-                      {recipe.chef.username}
-                    </span>
-                  </div>
-                </div>
+                <UserInfo username={recipe.chef.username} />
                 {/* Cookbook dropdown */}
                 <div className="mt-2 mr-2">
                   {/*

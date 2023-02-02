@@ -4,5 +4,9 @@ export const RECIPE_SHORT_INFO = gql`
     title
     description
     imageUrl
+    chef {
+      id
+      username
+    }
   }
 `
