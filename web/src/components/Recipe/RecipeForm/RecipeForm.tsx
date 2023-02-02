@@ -166,7 +166,7 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
 
         <AddRemBtns
           id="add-rem-steps-btns"
-          itemName="Step"
+          itemName="step"
           onAdd={() => {
             recipeInputStore.addStep()
           }}
@@ -182,14 +182,14 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
           <div className="flex flex-col">
             {recipeInputStore.steps.length < 1 && (
               <span className="mb-2 text-sm text-red-600">
-                You need to add at least 1 step.
+                you need to add at least 1 step.
               </span>
             )}
             <Submit
               disabled={loading || recipeInputStore.steps.length < 1}
               className="btn-submit-primary"
             >
-              {recipe ? 'Update Recipe' : 'Create New Recipe'}
+              {recipe ? 'update recipe' : 'create new recipe'}
             </Submit>
             <button
               onClick={(e) => {
@@ -202,14 +202,14 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
                 })
                 if (recipe) {
                   navigate(routes.recipe({ id: recipe.id }))
-                  toast('Recipe changes have been discarded')
+                  toast('recipe changes have been discarded')
                 } else {
-                  toast('Recipe form has been reset')
+                  toast('recipe form has been reset')
                 }
               }}
               className="mt-4 rounded-md border border-transparent px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 enabled:bg-red-600"
             >
-              {recipe ? 'Discard Changes' : 'Reset'}
+              {recipe ? 'discard changes' : 'reset'}
             </button>
           </div>
         </div>

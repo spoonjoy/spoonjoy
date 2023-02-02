@@ -32,7 +32,7 @@ const RecipeBasicInfoFormFrag = ({
     <>
       <StyledTextField
         fieldName="title"
-        label="Title"
+        label="title"
         defaultValue={title}
         onChange={(e) => {
           const { value } = e.target
@@ -44,7 +44,7 @@ const RecipeBasicInfoFormFrag = ({
       />
       <StyledTextAreaField
         fieldName="description"
-        label="Description"
+        label="description"
         defaultValue={description}
         onChange={(e) => {
           const { value } = e.target
@@ -56,7 +56,7 @@ const RecipeBasicInfoFormFrag = ({
       />
       <StyledNumberField
         fieldName="servings"
-        label="Servings"
+        label="servings"
         defaultValue={servings}
         onChange={(e) => {
           const { value } = e.target

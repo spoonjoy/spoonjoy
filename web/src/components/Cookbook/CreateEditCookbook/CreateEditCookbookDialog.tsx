@@ -23,7 +23,7 @@ const CreateEditCookbookDialog = ({
           as="h3"
           className="text-lg font-medium leading-6 text-gray-900"
         >
-          {editCookbookId ? 'Edit' : 'Create'} Cookbook
+          {editCookbookId ? 'edit' : 'create'} cookbook
         </Dialog.Title>
         {editCookbookId ? (
           <EditCookbookCell id={editCookbookId} />

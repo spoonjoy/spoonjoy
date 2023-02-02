@@ -6,9 +6,9 @@ import { DefaultHeader, HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
 const NewRecipePage = () => {
   return (
     <>
-      <MetaTags title="New Recipe" description="New Recipe Page" />
+      <MetaTags title="new recipe" description="New recipe page" />
       <HeaderSlot.Plug id="new-recipe">
-        <DefaultHeader title="New Recipe" />
+        <DefaultHeader title="new recipe" />
       </HeaderSlot.Plug>
       <NewRecipe />
     </>

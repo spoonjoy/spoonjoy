@@ -43,12 +43,12 @@ const StepFormFrag = ({
   return (
     <div className="mb-3">
       <h2 className="block text-lg font-medium text-gray-700">
-        Step {stepNum}
+        step {stepNum}
       </h2>
       <div className="ml-3 mb-3">
         <StyledTextField
           fieldName={`steps.${stepNum - 1}.stepTitle`}
-          label={`Step ${stepNum} Title`}
+          label={`step ${stepNum} title`}
           defaultValue={stepTitle || undefined}
           onChange={(e) => {
             const { value } = e.target
@@ -56,7 +56,7 @@ const StepFormFrag = ({
           }}
         />
         <legend className="block text-sm font-medium text-gray-700">
-          Step {stepNum} Ingredients
+          step {stepNum} ingredients
         </legend>
         {ingredients.map((ingredient, ingIdx) => {
           return (
@@ -70,7 +70,7 @@ const StepFormFrag = ({
         })}
         <AddRemBtns
           id="add-rem-ings-btns"
-          itemName="Ingredient"
+          itemName="ingredient"
           onAdd={() => {
             addIngredient()
           }}
@@ -87,7 +87,7 @@ const StepFormFrag = ({
         {stepNum > 1 && (
           <>
             <legend className="mt-2 block text-sm font-medium text-gray-700">
-              In step {stepNum}, use the output of the following steps:
+              in step {stepNum}, use the output of the following steps:
             </legend>
             <StepOutputUsesFormFrag
               stepOutputUses={stepOutputUses}
@@ -113,7 +113,7 @@ const StepFormFrag = ({
       />
       <StyledTextAreaField
         fieldName={`steps.${stepNum - 1}.description`}
-        label={`Step ${step.stepNum} Description`}
+        label={`step ${step.stepNum} description`}
         defaultValue={description}
         onChange={(e) => {
           const { value } = e.target
