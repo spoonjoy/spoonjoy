@@ -1,6 +1,7 @@
 import { PencilIcon } from '@heroicons/react/24/outline'
 import type { FindCookbookById } from 'types/graphql'
 
+import { useAuth } from '@redwoodjs/auth'
 import { navigate, routes, useParams } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
@@ -15,6 +16,7 @@ interface Props {
 }
 
 const Cookbook = ({ cookbook }: Props) => {
+  const { currentUser } = useAuth()
   const { edit } = useParams()
 
   const { title, author } = cookbook
@@ -38,15 +40,17 @@ const Cookbook = ({ cookbook }: Props) => {
         <DefaultHeader
           title={title}
           endChild={
-            <button
-              onClick={() =>
-                navigate(routes.cookbook({ id: cookbook.id, edit: true }))
-              }
-              className="btn-small-rounded-secondary"
-            >
-              <span className="sr-only">Edit</span>
-              <PencilIcon className="h-4 w-4" />
-            </button>
+            currentUser?.id === author.id ? (
+              <button
+                onClick={() =>
+                  navigate(routes.cookbook({ id: cookbook.id, edit: true }))
+                }
+                className="btn-small-rounded-secondary"
+              >
+                <span className="sr-only">Edit</span>
+                <PencilIcon className="h-4 w-4" />
+              </button>
+            ) : undefined
           }
         />
       </HeaderSlot.Plug>
