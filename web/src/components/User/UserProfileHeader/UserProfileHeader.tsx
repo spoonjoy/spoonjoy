@@ -23,7 +23,7 @@ const UserProfileHeader = ({ username }: { username: string }) => {
             */}
         <div className="pt-1.5">
           <h1 className="text-2xl font-bold text-gray-900">
-            {isOwnProfile ? 'My Pantry' : username}
+            {isOwnProfile ? 'my pantry' : username}
           </h1>
           {/* <p className="text-sm font-medium text-gray-500">
             Applied for{' '}

@@ -11,7 +11,7 @@ interface IUserProfileProps {
 }
 
 const UserProfile = ({ username }: IUserProfileProps) => {
-  const tabNames = ['Cookbooks', 'Recipes']
+  const tabNames = ['cookbooks', 'recipes']
   return (
     <>
       <UserProfileHeader username={username} />
