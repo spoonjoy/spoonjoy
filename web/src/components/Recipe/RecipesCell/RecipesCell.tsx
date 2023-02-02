@@ -41,8 +41,6 @@ export const Empty = (props: { variables: FindCookbooksByUserVariables }) => {
     <EmptyState
       header="No recipes yet"
       subHeader={`${props.variables.username} hasn't created any recipes yet.`}
-      ctaRoute={routes.newRecipe()}
-      cta="New Recipe"
     />
   )
 }

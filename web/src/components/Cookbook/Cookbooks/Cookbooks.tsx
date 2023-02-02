@@ -44,8 +44,6 @@ const Cookbooks = ({
           <EmptyState
             header="No cookbooks yet"
             subHeader={`${ownerUsername} hasn't created any cookbooks yet.`}
-            ctaRoute={routes.myCookbooks({ newCookbook: true })}
-            cta="New Cookbook"
           />
         )
       ) : (
