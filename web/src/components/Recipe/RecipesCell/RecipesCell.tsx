@@ -8,27 +8,15 @@ import EmptyState from 'src/components/shared/EmptyState'
 
 import { RECIPE_SHORT_INFO } from '../recipeFragments'
 
-export const QUERY = (props: any) => {
-  const isExampleRecipe = !!props.variables.exampleRecipes
-  if (isExampleRecipe) {
-    return gql`
-      ${RECIPE_SHORT_INFO}
-      query ExampleRecipes {
-        recipes: usersRecipes(username: "ari") {
-          ...RecipeShortInfo
-        }
+export const QUERY = () => {
+  return gql`
+    ${RECIPE_SHORT_INFO}
+    query FindRecipesByUser($username: String!) {
+      recipes: usersRecipes(username: $username) {
+        ...RecipeShortInfo
       }
-    `
-  } else {
-    return gql`
-      ${RECIPE_SHORT_INFO}
-      query MyRecipes {
-        recipes: myRecipes {
-          ...RecipeShortInfo
-        }
-      }
-    `
-  }
+    }
+  `
 }
 
 export const Loading = () => <div>Loading...</div>

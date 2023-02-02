@@ -10,7 +10,7 @@ const ExampleRecipesPage = () => {
       <HeaderSlot.Plug id="recipes">
         <DefaultHeader title="Example Recipes" />
       </HeaderSlot.Plug>
-      <RecipesCell exampleRecipes />
+      <RecipesCell username="ari" />
     </>
   )
 }

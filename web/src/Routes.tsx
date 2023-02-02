@@ -40,6 +40,7 @@ const Routes = () => {
         <Route path="/forgot-password" page={AuthForgotPasswordPage} name="forgotPassword" />
         <Route path="/reset-password" page={AuthResetPasswordPage} name="resetPassword" />
         <Route path="/example-recipes" page={RecipeExampleRecipesPage} name="exampleRecipes" />
+        <Route path="/users/{username}" page={UserUserProfilePage} name="user" />
         <Set wrap={BackgroundLayout}>
           <Route path="/recipes/{id}" page={RecipeRecipePage} name="recipe" />
           <Route path="/cookbook/{id}" page={CookbookCookbookPage} name="cookbook" />
