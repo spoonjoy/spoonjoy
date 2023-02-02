@@ -131,6 +131,7 @@ model Cookbook {
   recipes     RecipeInCookbook[]
 
   @@index([authorId])
+  @@unique([authorId, title])
 }
 
 model RecipeInCookbook {
