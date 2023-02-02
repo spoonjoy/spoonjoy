@@ -4,6 +4,7 @@ import { navigate, routes, useParams } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import Recipes from 'src/components/Recipe/Recipes'
+import EmptyState from 'src/components/shared/EmptyState'
 import { HeaderSlot, DefaultHeader } from 'src/layouts/SiteLayout/SiteLayout'
 
 import CreateEditCookbookDialog from '../CreateEditCookbook/CreateEditCookbookDialog'
@@ -47,7 +48,16 @@ const Cookbook = ({ cookbook }: Props) => {
           }
         />
       </HeaderSlot.Plug>
-      <Recipes recipes={recipes} />
+      {recipes.length ? (
+        <Recipes recipes={recipes} />
+      ) : (
+        <EmptyState
+          header="No recipes in this cookbook yet"
+          subHeader="Get started by adding some recipes to this cookbook. You can do that by clicking the 'bookmark' button on any recipe page."
+          ctaRoute={routes.myRecipes()}
+          cta="My Recipes"
+        />
+      )}
     </>
   )
 }

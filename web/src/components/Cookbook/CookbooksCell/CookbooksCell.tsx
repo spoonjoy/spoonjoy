@@ -34,7 +34,7 @@ export const Empty = () => (
   <EmptyState
     header="No cookbooks yet"
     subHeader="Get started by creating a new cookbook."
-    createRoute={routes.newCookbook()}
+    ctaRoute={routes.myCookbooks({ newCookbook: true })}
     cta="New Cookbook"
   />
 )

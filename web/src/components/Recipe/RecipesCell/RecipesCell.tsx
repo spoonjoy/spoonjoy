@@ -38,8 +38,9 @@ export const Empty = () => {
     <EmptyState
       header="No recipes yet"
       subHeader="Get started by creating a new recipe."
-      createRoute={routes.newRecipe()}
+      ctaRoute={routes.newRecipe()}
       cta="New Recipe"
+      withPlusIcon
     />
   )
 }
@@ -51,5 +52,5 @@ export const Failure = ({ error }: CellFailureProps) => (
 export const Success = ({
   recipes,
 }: CellSuccessProps<MyRecipes | ExampleRecipes>) => {
-  return <Recipes recipes={recipes} />
+  return <Recipes recipes={recipes} withAddRecipeButton />
 }
