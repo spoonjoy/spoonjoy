@@ -1,4 +1,7 @@
-import type { FindCookbooksByUser } from 'types/graphql'
+import type {
+  FindCookbooksByUser,
+  FindCookbooksByUserVariables,
+} from 'types/graphql'
 
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
@@ -16,7 +19,9 @@ export const QUERY = () => gql`
 
 export const Loading = () => <div>Loading...</div>
 
-export const Empty = () => <Cookbooks cookbooks={[]} />
+export const Empty = (props: { variables: FindCookbooksByUserVariables }) => (
+  <Cookbooks cookbooks={[]} ownerUsername={props.variables.username} />
+)
 
 export const Failure = ({ error }: CellFailureProps) => (
   <div style={{ color: 'red' }}>Error: {error?.message}</div>
@@ -24,6 +29,7 @@ export const Failure = ({ error }: CellFailureProps) => (
 
 export const Success = ({
   cookbooks,
-}: CellSuccessProps<FindCookbooksByUser>) => {
-  return <Cookbooks cookbooks={cookbooks} />
+  variables,
+}: CellSuccessProps<FindCookbooksByUser, FindCookbooksByUserVariables>) => {
+  return <Cookbooks cookbooks={cookbooks} ownerUsername={variables!.username} />
 }

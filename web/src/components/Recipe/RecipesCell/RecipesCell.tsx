@@ -1,5 +1,9 @@
-import type { MyRecipes, ExampleRecipes } from 'types/graphql'
+import type {
+  FindRecipesByUser,
+  FindCookbooksByUserVariables,
+} from 'types/graphql'
 
+import { useAuth } from '@redwoodjs/auth'
 import { routes } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
@@ -21,14 +25,24 @@ export const QUERY = () => {
 
 export const Loading = () => <div>Loading...</div>
 
-export const Empty = () => {
-  return (
+export const Empty = (props: { variables: FindCookbooksByUserVariables }) => {
+  const { currentUser } = useAuth()
+  const isOwner = currentUser?.username === props.variables.username
+  return isOwner ? (
     <EmptyState
       header="No recipes yet"
       subHeader="Get started by creating a new recipe."
       ctaRoute={routes.newRecipe()}
       cta="New Recipe"
       withPlusIcon
+      isOwner
+    />
+  ) : (
+    <EmptyState
+      header="No recipes yet"
+      subHeader={`${props.variables.username} hasn't created any recipes yet.`}
+      ctaRoute={routes.newRecipe()}
+      cta="New Recipe"
     />
   )
 }
@@ -39,6 +53,13 @@ export const Failure = ({ error }: CellFailureProps) => (
 
 export const Success = ({
   recipes,
-}: CellSuccessProps<MyRecipes | ExampleRecipes>) => {
-  return <Recipes recipes={recipes} withAddRecipeButton />
+  variables,
+}: CellSuccessProps<FindRecipesByUser, FindCookbooksByUserVariables>) => {
+  const { currentUser } = useAuth()
+  return (
+    <Recipes
+      recipes={recipes}
+      withAddRecipeButton={currentUser?.username === variables?.username}
+    />
+  )
 }
