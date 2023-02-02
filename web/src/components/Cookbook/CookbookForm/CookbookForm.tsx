@@ -14,7 +14,7 @@ type FormCreateCookbook = NonNullable<CreateCookbookInput>
 
 export type onCreateCookbook = (data: CreateCookbookInput) => void
 export type onUpdateCookbook = (
-  recipeId: string,
+  cookbookId: string,
   data: UpdateCookbookInput
 ) => void
 

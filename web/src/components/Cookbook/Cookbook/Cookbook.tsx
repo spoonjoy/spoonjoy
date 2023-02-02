@@ -15,10 +15,13 @@ interface Props {
 const Cookbook = ({ cookbook }: Props) => {
   const { edit } = useParams()
 
+  const { title, author } = cookbook
+
   const recipes = cookbook.recipes.map((recipeInCookbook) => {
     return recipeInCookbook?.recipe
   })
-  const description = `${cookbook.author.username}'s ${cookbook.title} Cookbook`
+  const description = `${author.username}'s ${title} Cookbook`
+
   return (
     <>
       <CreateEditCookbookDialog
@@ -26,11 +29,12 @@ const Cookbook = ({ cookbook }: Props) => {
         onClose={() => {
           navigate(routes.cookbook({ id: cookbook.id, edit: false }))
         }}
+        editCookbookId={cookbook.id}
       />
       <MetaTags title={`${description} | Spoonjoy`} description={description} />
-      <HeaderSlot.Plug id="cookbooks">
+      <HeaderSlot.Plug id="cookbooks" deps={[title]}>
         <DefaultHeader
-          title={cookbook.title}
+          title={title}
           endChild={
             <button
               onClick={() =>

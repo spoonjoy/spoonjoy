@@ -5,7 +5,10 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
-import CookbookForm from 'src/components/Cookbook/CookbookForm'
+import { QUERY as CookbookQuery } from 'src/components/Cookbook/CookbookCell/CookbookCell'
+import CookbookForm, {
+  onUpdateCookbook,
+} from 'src/components/Cookbook/CookbookForm'
 
 export const QUERY = gql`
   query EditCookbookById($id: String!) {
@@ -26,6 +29,14 @@ const UPDATE_COOKBOOK_MUTATION = gql`
   }
 `
 
+const REFETCH_COOKBOOK_TITLE = gql`
+  query QueryCookbookTitle($id: String!) {
+    cookbook: cookbook(id: $id) {
+      title
+    }
+  }
+`
+
 export const Loading = () => <div>Loading...</div>
 
 export const Failure = ({ error }: CellFailureProps) => (
@@ -38,29 +49,27 @@ export const Success = ({ cookbook }: CellSuccessProps<EditCookbookById>) => {
     {
       onCompleted: () => {
         toast.success('Cookbook updated')
-        navigate(routes.cookbooks())
+        navigate(routes.cookbook({ id: cookbook.id }))
       },
       onError: (error) => {
         toast.error(error.message)
       },
+      refetchQueries: [
+        { query: REFETCH_COOKBOOK_TITLE, variables: { id: cookbook.id } },
+      ],
     }
   )
 
-  const onSave = (
-    input: UpdateCookbookInput,
-    id: EditCookbookById['cookbook']['id']
-  ) => {
+  const onSave: onUpdateCookbook = (id: string, input: UpdateCookbookInput) => {
     updateCookbook({ variables: { id, input } })
   }
 
   return (
-    <div className="rw-segment">
-      <header className="rw-segment-header">
-        <h2 className="rw-heading rw-heading-secondary">Edit Cookbook {cookbook?.id}</h2>
-      </header>
-      <div className="rw-segment-main">
-        <CookbookForm cookbook={cookbook} onSave={onSave} error={error} loading={loading} />
-      </div>
-    </div>
+    <CookbookForm
+      cookbook={cookbook}
+      onSave={onSave}
+      error={error}
+      loading={loading}
+    />
   )
 }

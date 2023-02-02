@@ -1,6 +1,5 @@
 import type { FindCookbookById, FindCookbookByIdVariables } from 'types/graphql'
 import { RECIPE_SHORT_INFO } from 'web/src/components/Recipe/recipeFragments'
-import Recipes from 'web/src/components/Recipe/Recipes/Recipes'
 
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
