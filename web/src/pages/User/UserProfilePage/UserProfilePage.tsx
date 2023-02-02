@@ -10,7 +10,7 @@ const UsersProfilePage = ({ username }: IUsersProfilePageProps) => {
   return (
     <>
       <MetaTags
-        title={`${username} | Spoonjoy`}
+        title={`${username}`}
         description={`${username}'s Spoonjoy profile.`}
       />
       <RecipesCell username={username} />

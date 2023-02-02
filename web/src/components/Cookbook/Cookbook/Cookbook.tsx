@@ -35,7 +35,7 @@ const Cookbook = ({ cookbook }: Props) => {
         }}
         editCookbookId={cookbook.id}
       />
-      <MetaTags title={`${description} | Spoonjoy`} description={description} />
+      <MetaTags title={`${description}`} description={description} />
       <HeaderSlot.Plug id="cookbooks" deps={[title]}>
         <DefaultHeader
           title={title}
