@@ -33,7 +33,6 @@ export const usersCookbooks: QueryResolvers['usersCookbooks'] = ({
     where: {
       author: { username },
     },
-    select: { imageUrl: true },
     orderBy: { title: 'asc' },
   }) as unknown as CookbookModel[]
 }
