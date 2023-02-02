@@ -1,3 +1,4 @@
+import { PencilIcon } from '@heroicons/react/24/outline'
 import type { FindCookbookById } from 'types/graphql'
 
 import { navigate, routes, useParams } from '@redwoodjs/router'
@@ -43,7 +44,8 @@ const Cookbook = ({ cookbook }: Props) => {
               }
               className="btn-small-rounded-secondary"
             >
-              Edit
+              <span className="sr-only">Edit</span>
+              <PencilIcon className="h-4 w-4" />
             </button>
           }
         />
