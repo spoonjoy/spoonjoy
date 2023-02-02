@@ -249,6 +249,8 @@ export const deleteRecipe: MutationResolvers['deleteRecipe'] = async ({
 }) => {
   await requireRecipeAuth(id)
 
+  await db.recipeInCookbook.deleteMany({ where: { recipeId: id } })
+
   return db.recipe.update({
     where: { id },
     data: { deletedAt: new Date() },
