@@ -1,8 +1,10 @@
+import { BookmarkIcon as BookmarkIconOutline } from '@heroicons/react/24/outline'
 import type {
   FindCookbooksForDropdown,
   FindCookbooksForDropdownVariables,
 } from 'types/graphql'
 
+import { Link, routes } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import AddToCookbookButton, {
@@ -18,9 +20,15 @@ export const QUERY = gql`
   }
 `
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => (
+  <BookmarkIconOutline className="h-5 w-5 text-gray-300" aria-hidden="true" />
+)
 
-export const Empty = () => <div>Empty</div>
+export const Empty = () => (
+  <Link to={routes.myCookbooks({ newCookbook: true })}>
+    <BookmarkIconOutline className="h-5 w-5 text-white" aria-hidden="true" />
+  </Link>
+)
 
 export const Failure = ({
   error,
