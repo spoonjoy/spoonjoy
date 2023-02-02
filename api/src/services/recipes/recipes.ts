@@ -41,6 +41,7 @@ export const usersRecipes: QueryResolvers['usersRecipes'] = ({ username }) => {
         deletedAt: null,
       },
     },
+    orderBy: { title: 'asc' },
   })
 }
 
@@ -54,6 +55,7 @@ export const myRecipes: QueryResolvers['myRecipes'] = () => {
         deletedAt: null,
       },
     },
+    orderBy: { title: 'asc' },
   })
 }
 
