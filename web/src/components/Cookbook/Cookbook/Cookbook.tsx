@@ -26,6 +26,8 @@ const Cookbook = ({ cookbook }: Props) => {
   })
   const description = `${author.username}'s ${title} Cookbook`
 
+  const isOwner = currentUser?.id === author.id
+
   return (
     <>
       <CreateEditCookbookDialog
@@ -40,7 +42,7 @@ const Cookbook = ({ cookbook }: Props) => {
         <DefaultHeader
           title={title}
           endChild={
-            currentUser?.id === author.id ? (
+            isOwner ? (
               <button
                 onClick={() =>
                   navigate(routes.cookbook({ id: cookbook.id, edit: true }))
@@ -56,12 +58,18 @@ const Cookbook = ({ cookbook }: Props) => {
       </HeaderSlot.Plug>
       {recipes.length ? (
         <Recipes recipes={recipes} />
-      ) : (
+      ) : isOwner ? (
         <EmptyState
           header="No recipes in this cookbook yet"
           subHeader="Get started by adding some recipes to this cookbook. You can do that by clicking the 'bookmark' button on any recipe page."
           ctaRoute={routes.myRecipes()}
           cta="My Recipes"
+          isOwner
+        />
+      ) : (
+        <EmptyState
+          header="No recipes in this cookbook yet"
+          subHeader={`${author.username} hasn't added any recipes to this cookbook yet.`}
         />
       )}
     </>
