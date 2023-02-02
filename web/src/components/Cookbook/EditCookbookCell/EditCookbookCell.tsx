@@ -5,7 +5,6 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
-import { QUERY as CookbookQuery } from 'src/components/Cookbook/CookbookCell/CookbookCell'
 import CookbookForm, {
   onUpdateCookbook,
 } from 'src/components/Cookbook/CookbookForm'
