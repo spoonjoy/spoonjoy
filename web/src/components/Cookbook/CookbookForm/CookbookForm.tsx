@@ -71,7 +71,7 @@ const CookbookForm = ({
 
         <StyledTextField
           fieldName="title"
-          placeholder="My Favorite Recipes"
+          placeholder="my favorite recipes"
           defaultValue={cookbook?.title || undefined}
           validation={{ required: true, maxLength: MAX_TITLE_LENGTH }}
           maxLength={MAX_TITLE_LENGTH}
@@ -81,7 +81,7 @@ const CookbookForm = ({
 
         <div className="mt-10 flex justify-center">
           <Submit disabled={loading} className="btn-submit-primary">
-            {cookbook ? 'Update Cookbook' : 'Create New Cookbook'}
+            {cookbook ? 'update cookbook' : 'create new cookbook'}
           </Submit>
         </div>
       </Form>
