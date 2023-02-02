@@ -39,13 +39,13 @@ const SignupPage = () => {
       toast.error(response.error)
     } else {
       // user is signed in automatically
-      toast.success('Welcome to Spoonjoy!')
+      toast.success('Welcome to spoonjoy!')
     }
   }
 
   return (
     <>
-      <MetaTags title="Signup" />
+      <MetaTags title="signup" />
 
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <AuthHeader location="signup" />
@@ -57,25 +57,25 @@ const SignupPage = () => {
             className="space-y-6"
           >
             <StyledTextField
-              label="Username"
+              label="username"
               fieldName="username"
               validation={{ required: true }}
             />
             <StyledTextField
-              label="Email"
+              label="email"
               fieldName="email"
               validation={{ required: true }}
             />
 
             <StyledPasswordField
-              label="Password"
+              label="password"
               fieldName="password"
               validation={{ required: true }}
             />
 
             <div className="flex justify-center">
               <Submit disabled={loading} className="btn-submit-primary">
-                Sign Up
+                sign up
               </Submit>
             </div>
           </Form>

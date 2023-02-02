@@ -17,7 +17,7 @@ import StyledTextField from 'src/components/formComponents/StyledTextField'
 import AuthFormWrapper from '../shared/AuthFormWrapper'
 import AuthHeader from '../shared/AuthHeader'
 
-const WELCOME_MESSAGE = 'Welcome back!'
+const WELCOME_MESSAGE = 'welcome back!'
 const REDIRECT = routes.welcome()
 
 const LoginPage = ({ type }) => {
@@ -176,12 +176,12 @@ const LoginPage = ({ type }) => {
           className="space-y-6"
         >
           <StyledTextField
-            label="Username"
+            label="username"
             fieldName="username"
             validation={{ required: true }}
           />
           <StyledPasswordField
-            label="Password"
+            label="password"
             fieldName="password"
             validation={{ required: true }}
           />
@@ -191,9 +191,9 @@ const LoginPage = ({ type }) => {
             <Link to={routes.forgotPassword()}>Forgot Password?</Link>
           </div> */}
 
-          <div className="pt-2">
-            <Submit disabled={loading} className="btn-primary w-full">
-              Sign In
+          <div className="flex justify-center">
+            <Submit disabled={loading} className="btn-submit-primary">
+              sign In
             </Submit>
           </div>
         </Form>

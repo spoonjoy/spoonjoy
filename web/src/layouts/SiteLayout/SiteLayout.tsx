@@ -40,17 +40,17 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
 
   const navigationNotLoggedIn: INavigation[] = [
     {
-      name: 'Welcome',
+      name: 'welcome',
       href: routes.welcome(),
       current: useMatch(routes.welcome()).match,
     },
     {
-      name: 'Log In',
+      name: 'log in',
       href: routes.login(),
       current: useMatch(routes.login()).match,
     },
     {
-      name: 'Send Feedback',
+      name: 'send feedback',
       href: 'https://bit.ly/spoonjoyfeedback',
       newTab: true,
     },
@@ -58,14 +58,9 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
 
   const navigationLoggedIn: INavigation[] = [
     {
-      name: 'My Recipes',
-      href: routes.myRecipes(),
+      name: 'my pantry',
+      href: routes.user({ username: currentUser?.username || '' }),
       current: useMatch(routes.myRecipes()).match,
-    },
-    {
-      name: 'My Cookbooks',
-      href: routes.myCookbooks(),
-      current: useMatch(routes.myCookbooks()).match,
     },
     // {
     //   name: 'Shopping List',
@@ -73,17 +68,17 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
     //   current: useMatch(routes.shoppingList()).match,
     // },
     {
-      name: 'New Recipe',
+      name: 'new recipe',
       href: routes.newRecipe(),
       current: useMatch(routes.newRecipe()).match,
     },
     {
-      name: 'New Cookbook',
+      name: 'new cookbook',
       href: routes.myCookbooks({ newCookbook: true }),
       current: useMatch(routes.newCookbook()).match,
     },
     {
-      name: 'Send Feedback',
+      name: 'send feedback',
       href: 'https://bit.ly/spoonjoyfeedback',
       newTab: true,
     },

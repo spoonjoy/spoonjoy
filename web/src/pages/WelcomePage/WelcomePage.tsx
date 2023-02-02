@@ -16,13 +16,16 @@ const WelcomePage = () => {
     return <Redirect to={routes.myRecipes()} />
   } else {
     const navigation = [
-      { name: 'Sign Up', href: routes.signup() },
-      { name: 'Log In', href: routes.login() },
+      { name: 'sign up', href: routes.signup() },
+      { name: 'log in', href: routes.login() },
     ]
 
     return (
       <>
-        <MetaTags title="Welcome to Spoonjoy" description="Welcome page" />
+        <MetaTags
+          title="welcome to spoonjoy"
+          description="spoonjoy welcome page"
+        />
         <div className="relative h-screen overflow-hidden bg-white">
           <div className="mx-auto max-w-7xl lg:h-full">
             <div className="relative z-10 h-full bg-white pb-8 sm:pb-16 md:pb-20 lg:w-full lg:max-w-2xl lg:pb-28 xl:pb-32">
@@ -114,13 +117,13 @@ const WelcomePage = () => {
               <main className="mx-auto mt-10 max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
                 <div className="sm:text-center lg:text-left">
                   <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
-                    <span className="block">Home cooking,</span>
+                    <span className="block">home cooking,</span>
                     <span className="block text-indigo-600">made easy</span>
                   </h1>
                   <p className="mt-3 text-base text-gray-500 sm:mx-auto sm:mt-5 sm:max-w-xl sm:text-lg md:mt-5 md:text-xl lg:mx-0">
-                    Spoonjoy is the easiest way to save and follow your own
-                    recipes. We also make it effortless to create grocery lists
-                    using your recipes as starting points (coming soon).
+                    spoonjoy is the easiest way to save, follow, and share your
+                    own recipes. we also make it effortless to create grocery
+                    lists using your recipes as starting points (coming soon).
                   </p>
                   <div className="mt-5 sm:mx-auto sm:mt-8 sm:flex sm:w-80 sm:flex-col lg:mx-0">
                     <div className="sm:flex">
@@ -129,7 +132,7 @@ const WelcomePage = () => {
                           to={routes.signup()}
                           className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-4 md:px-10 md:text-lg"
                         >
-                          Sign Up
+                          sign up
                         </Link>
                       </div>
                       <div className="mt-3 sm:mt-0 sm:ml-3 sm:w-1/2">
@@ -137,7 +140,7 @@ const WelcomePage = () => {
                           to={routes.login()}
                           className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-100 px-8 py-3 text-base font-medium text-indigo-700 hover:bg-indigo-200 md:py-4 md:px-10 md:text-lg"
                         >
-                          Log In
+                          log in
                         </Link>
                       </div>
                     </div>
@@ -146,7 +149,7 @@ const WelcomePage = () => {
                         to={routes.exampleRecipes()}
                         className="flex w-full items-center justify-center rounded-md border-2 border-indigo-700 bg-white px-8 py-3 text-base font-medium text-indigo-700 hover:bg-indigo-200 md:py-4 md:px-10 md:text-lg"
                       >
-                        View Example Recipes
+                        view example recipes
                       </Link>
                     </div>
                   </div>
