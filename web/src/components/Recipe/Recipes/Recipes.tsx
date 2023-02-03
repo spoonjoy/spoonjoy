@@ -28,7 +28,7 @@ export default function Recipes({
         >
           <div className="inline-flex items-center">
             <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-            Add new recipe!
+            add new recipe!
           </div>
         </ListCardBase>
       )}
