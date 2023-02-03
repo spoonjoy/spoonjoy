@@ -62,7 +62,7 @@ const Cookbook = ({ cookbook }: Props) => {
         <EmptyState
           header="No recipes in this cookbook yet"
           subHeader="Get started by adding some recipes to this cookbook. You can do that by clicking the 'bookmark' button on any recipe page."
-          ctaRoute={routes.myRecipes()}
+          ctaRoute={routes.user({ username: author.username, page: 'recipes' })}
           cta="My Recipes"
           isOwner
         />
