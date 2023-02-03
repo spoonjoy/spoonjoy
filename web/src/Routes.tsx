@@ -25,8 +25,6 @@ const Routes = () => {
       </Private>
       {/* Here we put things that should redirect to the welcome page */}
       <Private wrap={SiteLayout} unauthenticated="welcome">
-        <Route path="/my-recipes" page={RecipeMyRecipesPage} name="myRecipes" />
-        <Route path="/my-cookbooks" page={CookbookMyCookbooksPage} name="myCookbooks" />
         <Set wrap={BackgroundLayout}>
           <Route path="/recipes/{id}/edit" page={RecipeEditRecipePage} name="editRecipe" />
           <Route path="/cookbooks/{id}/edit" page={CookbookEditCookbookPage} name="editCookbook" />

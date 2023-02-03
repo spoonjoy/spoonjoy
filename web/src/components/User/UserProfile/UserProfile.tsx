@@ -1,6 +1,10 @@
 import { Tab } from '@headlessui/react'
 
+import { useAuth } from '@redwoodjs/auth'
+import { navigate, routes, useParams } from '@redwoodjs/router'
+
 import CookbooksCell from 'src/components/Cookbook/CookbooksCell'
+import CreateEditCookbookDialog from 'src/components/Cookbook/CreateEditCookbook/CreateEditCookbookDialog'
 import RecipesCell from 'src/components/Recipe/RecipesCell'
 import { classNames } from 'src/helpers/css'
 
@@ -11,11 +15,37 @@ interface IUserProfileProps {
 }
 
 const UserProfile = ({ username }: IUserProfileProps) => {
+  const { currentUser } = useAuth()
+  const isOwner = currentUser?.username === username
+
+  const { page, newCookbook } = useParams()
+
+  const [selectedTabNum, setSelectedTabNum] = React.useState(
+    page === 'cookbook' ? 0 : page === 'recipes' ? 1 : 0
+  )
+  const onTabChange = (tabNum: number) => {
+    setSelectedTabNum(tabNum)
+    navigate(
+      routes.user({
+        username,
+        page: tabNum === 0 ? 'cookbooks' : 'recipes',
+      })
+    )
+  }
   const tabNames = ['cookbooks', 'recipes']
+
   return (
     <>
+      <CreateEditCookbookDialog
+        dialogOpen={page === 'cookbooks' && newCookbook === 'true' && isOwner}
+        onClose={() => {
+          navigate(
+            routes.user({ username, page: 'cookbooks', newCookbook: false })
+          )
+        }}
+      />
       <UserProfileHeader username={username} />
-      <Tab.Group>
+      <Tab.Group selectedIndex={selectedTabNum} onChange={onTabChange}>
         <div className="w-full pt-8 pb-5">
           <Tab.List className="flex justify-center space-x-1 sm:ml-10 sm:justify-start">
             {tabNames.map((tabName) => (

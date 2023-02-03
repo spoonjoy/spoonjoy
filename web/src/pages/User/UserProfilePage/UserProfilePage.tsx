@@ -4,6 +4,7 @@ import UserProfile from 'src/components/User/UserProfile/UserProfile'
 
 interface IUsersProfilePageProps {
   username: string
+  tab?: 'recipes' | 'cookbooks'
 }
 const UsersProfilePage = ({ username }: IUsersProfilePageProps) => {
   return (

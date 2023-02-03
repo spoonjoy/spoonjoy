@@ -60,7 +60,8 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
     {
       name: 'my pantry',
       href: routes.user({ username: currentUser?.username || '' }),
-      current: useMatch(routes.myRecipes()).match,
+      current: useMatch(routes.user({ username: currentUser?.username || '' }))
+        .match,
     },
     // {
     //   name: 'Shopping List',
@@ -74,8 +75,12 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
     },
     {
       name: 'new cookbook',
-      href: routes.myCookbooks({ newCookbook: true }),
-      current: useMatch(routes.newCookbook()).match,
+      href: routes.user({
+        username: currentUser?.username || '',
+        page: 'cookbooks',
+        newCookbook: true,
+      }),
+      current: false, // This is on the user pantry page, so that'll be the current page
     },
     {
       name: 'send feedback',
