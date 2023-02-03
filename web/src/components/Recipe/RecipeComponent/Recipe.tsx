@@ -13,15 +13,6 @@ import { HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
 
 import RecipeControlBar from './RecipeControlBar'
 
-const TimeTag = ({ datetime }: { datetime: string }) => {
-  console.log(datetime)
-  return (
-    <time dateTime={datetime} title={datetime}>
-      {new Date(datetime).toDateString()}
-    </time>
-  )
-}
-
 interface Props {
   recipe: NonNullable<FindRecipeById['recipe']>
 }
