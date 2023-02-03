@@ -146,7 +146,7 @@ export const Cookbook: RequiredCookbookRelationResolvers = {
   recipes: async (_obj, { root }) => {
     const maybeRecipes = await db.cookbook
       .findUnique({ where: { id: root?.id } })
-      .recipes()
+      .recipes({ orderBy: { recipe: { title: 'asc' } } })
     if (!maybeRecipes) {
       throw new Error('Could not resolve cookbook recipes')
     }
