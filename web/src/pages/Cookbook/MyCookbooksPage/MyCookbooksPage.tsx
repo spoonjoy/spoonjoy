@@ -8,9 +8,9 @@ const MyCookbooksPage = () => {
   const { currentUser } = useAuth()
   return (
     <>
-      <MetaTags title="My Cookbooks" description="My cookbooks page" />
+      <MetaTags title="my cookbooks" description="My cookbooks page" />
       <HeaderSlot.Plug id="cookbooks">
-        <DefaultHeader title="My Cookbooks" />
+        <DefaultHeader title="my cookbooks" />
       </HeaderSlot.Plug>
       {/* Because this route is wrapped in Private (in Routes.tsx), currentUser shouldn't ever be null */}
       <CookbooksCell username={currentUser!.username} />

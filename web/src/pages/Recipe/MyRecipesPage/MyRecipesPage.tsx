@@ -8,9 +8,9 @@ const MyRecipesPage = () => {
   const { currentUser } = useAuth()
   return (
     <>
-      <MetaTags title="Recipes" description="Recipes page" />
+      <MetaTags title="recipes" description="Recipes page" />
       <HeaderSlot.Plug id="recipes">
-        <DefaultHeader title="My Recipes" />
+        <DefaultHeader title="my recipes" />
       </HeaderSlot.Plug>
       {/* This page is in a protected route so currentUser should never be null */}
       <RecipesCell username={currentUser!.username} />

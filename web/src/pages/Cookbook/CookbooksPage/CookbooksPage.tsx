@@ -11,11 +11,11 @@ const CookbooksPage = ({ username }: ICookbooksPageProps) => {
   return (
     <>
       <MetaTags
-        title={`${username}'s Cookbooks`}
-        description={`${username}'s Cookbooks page`}
+        title={`${username}'s cookbooks`}
+        description={`${username}'s cookbooks page`}
       />
       <HeaderSlot.Plug id="cookbooks">
-        <DefaultHeader title={`${username}'s Cookbooks`} />
+        <DefaultHeader title={`${username}'s cookbooks`} />
       </HeaderSlot.Plug>
       <CookbooksCell username={username} />
     </>

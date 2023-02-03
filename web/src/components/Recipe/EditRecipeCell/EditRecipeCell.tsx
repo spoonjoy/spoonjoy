@@ -108,7 +108,7 @@ export const Success = observer(
           description="Edit Recipe Page"
         />
         <HeaderSlot.Plug id="edit-recipe">
-          <DefaultHeader title={`Edit Recipe "${recipe.title}"`} />
+          <DefaultHeader title={`edit recipe "${recipe.title}"`} />
         </HeaderSlot.Plug>
         {/* only render the form once the store's id reflects the recipes id, aka the store has been set to the recipe that's being edited */}
         {recipeInputStore.id === recipe.id && (
