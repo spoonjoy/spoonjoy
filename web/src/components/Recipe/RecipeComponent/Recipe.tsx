@@ -161,7 +161,12 @@ const Recipe = ({ recipe }: Props) => {
           )
         })}
       </div>
-      {isOwnRecipe && <RecipeControlBar recipeId={recipe.id} />}
+      {isOwnRecipe && (
+        <RecipeControlBar
+          recipeId={recipe.id}
+          ownerUsername={recipe.chef.username}
+        />
+      )}
     </>
   )
 }

@@ -21,14 +21,18 @@ const DELETE_RECIPE_MUTATION = gql`
 
 interface RecipeEditDeleteBtnProps {
   recipeId: DeleteRecipeMutationVariables['id']
+  ownerUsername: string
 }
-const RecipeEditDeleteBtn = ({ recipeId }: RecipeEditDeleteBtnProps) => {
+const RecipeEditDeleteBtn = ({
+  recipeId,
+  ownerUsername,
+}: RecipeEditDeleteBtnProps) => {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false)
 
   const [deleteRecipe] = useMutation(DELETE_RECIPE_MUTATION, {
     onCompleted: () => {
       toast.success('Recipe deleted')
-      navigate(routes.myRecipes())
+      navigate(routes.recipes({ username: ownerUsername }))
     },
     onError: (error) => {
       toast.error(error.message)

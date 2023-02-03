@@ -12,8 +12,9 @@ import LogoBlack from 'src/layouts/SiteLayout/sj_black.svg'
 import WelcomeHeaderImg from './sj-welcome-header.jpg'
 
 const WelcomePage = () => {
-  if (useAuth().isAuthenticated) {
-    return <Redirect to={routes.myRecipes()} />
+  const { currentUser } = useAuth()
+  if (currentUser) {
+    return <Redirect to={routes.user({ username: currentUser.username })} />
   } else {
     const navigation = [
       { name: 'sign up', href: routes.signup() },

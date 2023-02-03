@@ -15,7 +15,7 @@ import AuthFormWrapper from '../shared/AuthFormWrapper'
 import AuthHeader from '../shared/AuthHeader'
 
 const SignupPage = () => {
-  const { isAuthenticated, signUp } = useAuth()
+  const { currentUser, signUp } = useAuth()
   const formMethods = useForm<IFormSignup>()
 
   const {
@@ -23,10 +23,10 @@ const SignupPage = () => {
   } = formMethods
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate(routes.myRecipes())
+    if (currentUser) {
+      navigate(routes.user({ username: currentUser.username }))
     }
-  }, [isAuthenticated])
+  }, [currentUser])
   const [loading, setLoading] = React.useState(false)
   const onSubmit = async (data: IFormSignup) => {
     setLoading(true)
