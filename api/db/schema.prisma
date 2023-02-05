@@ -43,8 +43,8 @@ model UserCredential {
 
 model Recipe {
   id                  String        @id @default(cuid())
-  title               String        @db.VarChar(75)
-  description         String?
+  title               String        @db.VarChar(60)
+  description         String?       @db.VarChar(140)
   imageUrl            String        @default("https://res.cloudinary.com/dpjmyc4uz/image/upload/v1673507051/img-ckHFQiOLECYrBFxLtV3oESNs.png.png")
   servings            Int?
   chefId              String
@@ -125,7 +125,7 @@ model Unit {
 
 model Cookbook {
   id          String  @id @default(cuid())
-  title       String  @db.VarChar(75)
+  title       String  @db.VarChar(60)
   authorId    String
   author      User    @relation(fields: [authorId], references: [id], onDelete: Cascade)
   recipes     RecipeInCookbook[]
