@@ -9,7 +9,10 @@ interface IUsersProfilePageProps {
 const UsersProfilePage = ({ username }: IUsersProfilePageProps) => {
   return (
     <>
-      <MetaTags title={`${username}`} description={`${username}'s pantry.`} />
+      <MetaTags
+        title={`${username}'s pantry`}
+        description={`${username}'s pantry.`}
+      />
       <UserProfile username={username} />
     </>
   )
