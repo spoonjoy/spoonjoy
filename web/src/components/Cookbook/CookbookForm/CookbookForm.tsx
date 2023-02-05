@@ -53,7 +53,7 @@ const CookbookForm = ({
   }
 
   // Update based on Prisma schema
-  const MAX_TITLE_LENGTH = 75
+  const MAX_TITLE_LENGTH = 60
 
   return (
     <div className="p-5">

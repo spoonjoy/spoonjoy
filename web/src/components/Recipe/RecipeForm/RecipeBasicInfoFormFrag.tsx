@@ -24,9 +24,9 @@ const RecipeBasicInfoFormFrag = ({
     setServings,
   } = recipeInputStore
 
-  // Update the following based on prisma schema - default `string` is 191
-  const MAX_TITLE_LENGTH = 75
-  const MAX_DESCRIPTION_LENGTH = 191
+  // Update based on Prisma schema
+  const MAX_TITLE_LENGTH = 60
+  const MAX_DESCRIPTION_LENGTH = 140
 
   return (
     <>
