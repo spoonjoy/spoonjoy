@@ -39,9 +39,13 @@ const ListCardContentWithImageBackground = ({
           </h3>
           <dl className="mt-1 flex flex-grow flex-col justify-between">
             {byline && (
-              <dd className="mb-1 text-xs font-medium leading-none">
-                <span className="opacity-70">by</span> {byline}
-              </dd>
+              <div className="mb-1 flex items-center justify-center gap-1">
+                <div className="h-1 w-[4px] border-b-[1px] border-white opacity-50" />
+                <dd className="text-xs font-medium leading-none">
+                  <span className="opacity-70">by</span> {byline}
+                </dd>
+                <div className="h-1 w-[4px] border-b-[1px] border-white opacity-50" />
+              </div>
             )}
             <dd className="text-sm text-white opacity-80">{cardSubtitle}</dd>
             {extraInfo && extraInfo}
