@@ -1,6 +1,7 @@
 interface IListCardContentWithImageBackgroundProps {
   imageUrl: string
   cardTitle: string
+  byline?: string | null
   cardSubtitle?: string | null
   extraInfo?: React.ReactElement<HTMLDataListElement> | null
 }
@@ -10,11 +11,13 @@ interface IListCardContentWithImageBackgroundProps {
  * background and a title and (optional) subtitle.
  * @param imageUrl The URL of the image to use as the background
  * @param cardTitle The title of the card
+ * @param byline The optional author of the card - will be rendered as a byline underneath the card's title
  * @param cardSubtitle The optional subtitle of the card
  */
 const ListCardContentWithImageBackground = ({
   imageUrl,
   cardTitle,
+  byline,
   cardSubtitle,
   extraInfo,
 }: IListCardContentWithImageBackgroundProps) => (
@@ -35,7 +38,12 @@ const ListCardContentWithImageBackground = ({
             {cardTitle}
           </h3>
           <dl className="mt-1 flex flex-grow flex-col justify-between">
-            <dd className="text-sm text-white opacity-70">{cardSubtitle}</dd>
+            {byline && (
+              <dd className="mb-1 text-xs font-medium leading-none">
+                <span className="opacity-70">by</span> {byline}
+              </dd>
+            )}
+            <dd className="text-sm text-white opacity-80">{cardSubtitle}</dd>
             {extraInfo && extraInfo}
           </dl>
         </div>
