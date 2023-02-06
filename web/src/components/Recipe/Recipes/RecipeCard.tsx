@@ -12,7 +12,7 @@ const RecipeCard = ({ recipe }: { recipe: RecipeShortInfo }) => {
   const { currentUser } = useAuth()
   const isNotOwnRecipe = currentUser?.id !== recipe.chef.id
   const addToCookbookBtnWrapper = (
-    <div className="absolute top-3 right-3 z-20">
+    <div className="absolute top-5 right-4 z-20">
       {recipe.inMyCookbooks && currentUser?.username && (
         <AddToCookbookButtonCell
           currentRecipeId={recipe.id}
