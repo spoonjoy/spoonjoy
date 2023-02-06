@@ -10,7 +10,7 @@ import ChefRJ from 'public/images/chef-rj.png'
 import { SlotProvider, createSlot } from 'react-view-slot'
 
 import { useAuth } from '@redwoodjs/auth'
-import { Link, routes, useMatch } from '@redwoodjs/router'
+import { Link, navigate, routes, useMatch } from '@redwoodjs/router'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 
 import { ICurrentUser } from 'src/lib/auth'
@@ -96,6 +96,7 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
         logOut()
           .then(() => {
             toast('You have been signed out')
+            navigate(routes.welcome())
           })
           .catch(() => {
             toast.error('There was a problem with signing you out')
