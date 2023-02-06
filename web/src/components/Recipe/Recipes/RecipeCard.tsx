@@ -11,10 +11,22 @@ import UserInfo from 'src/components/shared/UserInfo/UserInfo'
 const RecipeCard = ({ recipe }: { recipe: RecipeShortInfo }) => {
   const { currentUser } = useAuth()
   const isNotOwnRecipe = currentUser?.id !== recipe.chef.id
+  const addToCookbookBtnWrapper = (
+    <div className="absolute top-3 right-3 z-20">
+      {recipe.inMyCookbooks && currentUser?.username && (
+        <AddToCookbookButtonCell
+          currentRecipeId={recipe.id}
+          inMyCookbooks={recipe.inMyCookbooks}
+          username={currentUser.username}
+        />
+      )}
+    </div>
+  )
   return (
     <ListCardBase
       linkTo={routes.recipe({ id: recipe.id })}
       linkTitle={'Show recipe ' + recipe.id + ' detail'}
+      childrenOutsideLink={addToCookbookBtnWrapper}
     >
       {isNotOwnRecipe && (
         <>
@@ -24,13 +36,6 @@ const RecipeCard = ({ recipe }: { recipe: RecipeShortInfo }) => {
               withPhoto={false}
               onOneLine={true}
             />
-            {recipe.inMyCookbooks && currentUser?.username && (
-              <AddToCookbookButtonCell
-                currentRecipeId={recipe.id}
-                inMyCookbooks={recipe.inMyCookbooks}
-                username={currentUser.username}
-              />
-            )}
           </div>
         </>
       )}
