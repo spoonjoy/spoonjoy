@@ -3007,7 +3007,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@headlessui/react@npm:^1.7.9":
+"@headlessui/react@npm:^1.7.2":
   version: 1.7.9
   resolution: "@headlessui/react@npm:1.7.9"
   dependencies:
@@ -24159,7 +24159,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "web@workspace:web"
   dependencies:
-    "@headlessui/react": ^1.7.9
+    "@headlessui/react": ^1.7.2
     "@heroicons/react": ^2.0.11
     "@hookform/devtools": ^4.2.2
     "@redwoodjs/auth": ^3.8.0
