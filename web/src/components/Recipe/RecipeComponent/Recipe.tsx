@@ -3,7 +3,7 @@ import type { FindRecipeById } from 'types/graphql'
 import { useAuth } from '@redwoodjs/auth'
 import { MetaTags } from '@redwoodjs/web'
 
-import MyCookbooksDropdownCell from 'src/components/Cookbook/MyCookbooksDropdownCell'
+import AddToCookbookButtonCell from 'src/components/Cookbook/AddToCookbookButtonCell'
 import IngredientsItemsList, {
   IStepInfoForList,
 } from 'src/components/IngredientsItemsList/IngredientsItemsList'
@@ -75,14 +75,14 @@ const Recipe = ({ recipe }: Props) => {
                 {/* Cookbook dropdown */}
                 <div className="mt-2 mr-2">
                   {/*
-                   * Three scenarios:
+                   * Three inMyCookbooks scenarios:
                    * - Stuff in array -> user has added recipes to their cookbooks
                    * - Nothing in array -> user has not yet added recipes to their cookbooks
                    * - Null or undefined -> user is not logged in
                    *  - TODO This should updated whenever I figure out if it should be null OR undefined (cuz I feel like it's weird to have both, but it shouldn't hurt)
                    */}
                   {recipe.inMyCookbooks && currentUser?.username && (
-                    <MyCookbooksDropdownCell
+                    <AddToCookbookButtonCell
                       currentRecipeId={recipe.id}
                       inMyCookbooks={recipe.inMyCookbooks}
                       username={currentUser.username}

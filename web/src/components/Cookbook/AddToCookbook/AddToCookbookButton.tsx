@@ -157,7 +157,16 @@ export default function AddToCookbookButton({
         </ul>
       </DialogBase>
       <div className="relative inline-block text-left">
-        <button onClick={openDialog} className="text-white">
+        <button
+          onClick={(e) => {
+            // We don't want the click to bubble up and trigger the Link, in case it's wrapped in one.
+            e.stopPropagation()
+            e.preventDefault()
+
+            openDialog()
+          }}
+          className="text-white"
+        >
           <span className="sr-only">Add to cookbook</span>
           {recipeInCookbooks.length > 0 ? (
             <BookmarkIconSolid

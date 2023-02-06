@@ -8,5 +8,8 @@ export const RECIPE_SHORT_INFO = gql`
       id
       username
     }
+    inMyCookbooks {
+      cookbookId
+    }
   }
 `

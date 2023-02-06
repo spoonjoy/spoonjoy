@@ -2,6 +2,7 @@ interface IListCardContentWithImageBackgroundProps {
   imageUrl: string
   cardTitle: string
   cardSubtitle?: string | null
+  extraInfo?: React.ReactElement<HTMLDataListElement> | null
 }
 
 /**
@@ -15,6 +16,7 @@ const ListCardContentWithImageBackground = ({
   imageUrl,
   cardTitle,
   cardSubtitle,
+  extraInfo,
 }: IListCardContentWithImageBackgroundProps) => (
   <div
     className={`relative w-full overflow-hidden rounded-lg group-focus:ring-2 group-focus:ring-indigo-700`}
@@ -34,6 +36,7 @@ const ListCardContentWithImageBackground = ({
           </h3>
           <dl className="mt-1 flex flex-grow flex-col justify-between">
             <dd className="text-sm text-white opacity-70">{cardSubtitle}</dd>
+            {extraInfo && extraInfo}
           </dl>
         </div>
       </div>

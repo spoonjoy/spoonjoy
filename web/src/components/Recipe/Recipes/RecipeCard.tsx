@@ -3,6 +3,7 @@ import { RecipeShortInfo } from 'types/graphql'
 import { useAuth } from '@redwoodjs/auth'
 import { routes } from '@redwoodjs/router'
 
+import AddToCookbookButtonCell from 'src/components/Cookbook/AddToCookbookButtonCell'
 import ListCardBase from 'src/components/shared/ListCard/ListCardBase'
 import ListCardContentWithImageBackground from 'src/components/shared/ListCard/ListCardContentWithImageBackground'
 import UserInfo from 'src/components/shared/UserInfo/UserInfo'
@@ -17,8 +18,19 @@ const RecipeCard = ({ recipe }: { recipe: RecipeShortInfo }) => {
     >
       {isNotOwnRecipe && (
         <>
-          <div className="absolute left-0 top-0 right-0 z-10 h-16 rounded-t-lg bg-gradient-to-b from-black to-transparent text-white">
-            <UserInfo username={recipe.chef.username} />
+          <div className="absolute left-0 top-0 right-0 z-10 flex h-16 items-center rounded-t-lg bg-gradient-to-b from-black to-transparent text-white">
+            <UserInfo
+              username={recipe.chef.username}
+              withPhoto={false}
+              onOneLine={true}
+            />
+            {recipe.inMyCookbooks && currentUser?.username && (
+              <AddToCookbookButtonCell
+                currentRecipeId={recipe.id}
+                inMyCookbooks={recipe.inMyCookbooks}
+                username={currentUser.username}
+              />
+            )}
           </div>
         </>
       )}
