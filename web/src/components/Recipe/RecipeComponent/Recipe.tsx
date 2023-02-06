@@ -45,7 +45,7 @@ const Recipe = ({ recipe }: Props) => {
       <MetaTags
         title={`${recipe.title}`}
         description={recipe.description || `${recipe.title} page.`}
-        ogUrl={`${website}/${recipe.id}`}
+        ogUrl={`${website}/recipes/${recipe.id}`}
         ogContentUrl={`https://images.spoonjoy.app/api/recipe?title=${encodeURIComponent(
           recipe.title
         )}&subtitle=${encodeURIComponent(recipe.description || '')}`}
