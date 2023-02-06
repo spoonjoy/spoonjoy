@@ -11,7 +11,7 @@ import { SlotProvider, createSlot } from 'react-view-slot'
 
 import { useAuth } from '@redwoodjs/auth'
 import { Link, navigate, routes, useMatch } from '@redwoodjs/router'
-import { toast, Toaster } from '@redwoodjs/web/toast'
+import { toast } from '@redwoodjs/web/toast'
 
 import { ICurrentUser } from 'src/lib/auth'
 
@@ -95,8 +95,8 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
       onClick: () => {
         logOut()
           .then(() => {
-            toast('You have been signed out')
             navigate(routes.welcome())
+            toast.success('You have been signed out')
           })
           .catch(() => {
             toast.error('There was a problem with signing you out')
@@ -107,7 +107,6 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
 
   return (
     <>
-      <Toaster toastOptions={{ className: 'rw-toast', duration: 6000 }} />
       <SlotProvider>
         <div className="min-h-screen">
           <Header

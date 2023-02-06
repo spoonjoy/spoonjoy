@@ -4,6 +4,7 @@ import { AuthProvider } from '@redwoodjs/auth'
 import WebAuthnClient from '@redwoodjs/auth/webAuthn'
 import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
+import { Toaster } from '@redwoodjs/web/dist/toast'
 
 import FatalErrorPage from 'src/pages/FatalErrorPage'
 import Routes from 'src/Routes'
@@ -19,6 +20,9 @@ const App = () => {
           <AuthProvider type="dbAuth" client={WebAuthnClient}>
             <RedwoodApolloProvider>
               <StoreProvider value={store}>
+                <Toaster
+                  toastOptions={{ className: 'rw-toast', duration: 6000 }}
+                />
                 <Routes />
               </StoreProvider>
             </RedwoodApolloProvider>
