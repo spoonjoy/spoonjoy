@@ -1,5 +1,7 @@
 import ChefRJ from 'public/images/chef-rj.png'
 
+import { Link, routes } from '@redwoodjs/router'
+
 import { classNames } from 'src/helpers/css'
 
 interface IUserInfoProps {
@@ -14,7 +16,14 @@ const UserInfo = ({
   onOneLine = false,
 }: IUserInfoProps) => {
   return (
-    <div className={classNames(onOneLine ? '' : 'mx-2 mt-2', 'flex text-left')}>
+    <Link
+      to={routes.user({ username })}
+      className={classNames(
+        onOneLine ? '' : 'mx-2 mt-2',
+        'flex text-left',
+        'text-white hover:underline'
+      )}
+    >
       {withPhoto && (
         <img className="h-8 w-8 rounded-full" src={ChefRJ} alt="" />
       )}
@@ -36,7 +45,7 @@ const UserInfo = ({
           {username}
         </span>
       </div>
-    </div>
+    </Link>
   )
 }
 
