@@ -3,6 +3,7 @@ import { BookmarkIcon as BookmarkIconSolid } from '@heroicons/react/24/solid'
 import { FindCookbooksForDropdown } from 'types/graphql'
 
 import AddToCookbookDialog from './AddToCookbookDialog'
+import SignUpAndAddToCookbookDialog from './SignUpAndAddToCookbookDialog'
 
 export interface IInMyCookbook {
   cookbookId: string
@@ -22,16 +23,46 @@ export default function AddToCookbookButton({
   inMyCookbooks,
   currentRecipeId,
 }: IAddToCookbookButton) {
-  const [isDialogOpen, setIsDialogOpen] = React.useState(false)
+  const [openDialog, setOpenDialog] = React.useState<'add' | 'signup' | 'none'>(
+    'none'
+  )
   const [recipeInCookbooks, setRecipeInCookbooks] = React.useState(
     inMyCookbooks || []
   )
 
-  const openDialog = () => {
-    setIsDialogOpen(true)
+  const openAddDialog = () => {
+    setOpenDialog('add')
   }
+  const openSignupDialog = () => {
+    setOpenDialog('signup')
+  }
+
+  const onOpenDialog = () => {
+    if (myCookbooks && inMyCookbooks) {
+      openAddDialog()
+    } else {
+      openSignupDialog()
+    }
+  }
+
+  const setIsAddDialogOpen = (state: boolean) => {
+    if (state) {
+      openAddDialog()
+    } else {
+      setOpenDialog('none')
+    }
+  }
+
+  const setIsSignupDialogOpen = (state: boolean) => {
+    if (state) {
+      openSignupDialog()
+    } else {
+      setOpenDialog('none')
+    }
+  }
+
   const dismissDialog = () => {
-    setIsDialogOpen(false)
+    setOpenDialog('none')
   }
 
   return (
@@ -41,8 +72,13 @@ export default function AddToCookbookButton({
         recipeInCookbooks={recipeInCookbooks}
         setRecipeInCookbooks={setRecipeInCookbooks}
         currentRecipeId={currentRecipeId}
-        isDialogOpen={isDialogOpen}
-        setIsDialogOpen={setIsDialogOpen}
+        isDialogOpen={openDialog === 'add'}
+        setIsDialogOpen={setIsAddDialogOpen}
+        dismissDialog={dismissDialog}
+      />
+      <SignUpAndAddToCookbookDialog
+        isDialogOpen={openDialog === 'signup'}
+        setIsDialogOpen={setIsSignupDialogOpen}
         dismissDialog={dismissDialog}
       />
       <div className="relative inline-block text-left">
@@ -52,7 +88,7 @@ export default function AddToCookbookButton({
             e.stopPropagation()
             e.preventDefault()
 
-            openDialog()
+            onOpenDialog()
           }}
           className="text-white"
         >
