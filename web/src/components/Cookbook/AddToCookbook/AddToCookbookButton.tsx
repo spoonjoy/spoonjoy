@@ -10,8 +10,10 @@ export interface IInMyCookbook {
 }
 
 interface IAddToCookbookButton {
-  myCookbooks: FindCookbooksForDropdown['myCookbooks']
-  inMyCookbooks: IInMyCookbook[]
+  /** If this is null or undefined, it's because the user isn't logged in */
+  myCookbooks?: FindCookbooksForDropdown['myCookbooks'] | null
+  /** If this is null or undefined, it's because the user isn't logged in */
+  inMyCookbooks?: IInMyCookbook[] | null
   currentRecipeId: string
 }
 
@@ -21,8 +23,9 @@ export default function AddToCookbookButton({
   currentRecipeId,
 }: IAddToCookbookButton) {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false)
-  const [recipeInCookbooks, setRecipeInCookbooks] =
-    React.useState(inMyCookbooks)
+  const [recipeInCookbooks, setRecipeInCookbooks] = React.useState(
+    inMyCookbooks || []
+  )
 
   const openDialog = () => {
     setIsDialogOpen(true)
@@ -34,7 +37,7 @@ export default function AddToCookbookButton({
   return (
     <>
       <AddToCookbookDialog
-        myCookbooks={myCookbooks}
+        myCookbooks={myCookbooks || []}
         recipeInCookbooks={recipeInCookbooks}
         setRecipeInCookbooks={setRecipeInCookbooks}
         currentRecipeId={currentRecipeId}
@@ -54,7 +57,7 @@ export default function AddToCookbookButton({
           className="text-white"
         >
           <span className="sr-only">Add to cookbook</span>
-          {recipeInCookbooks.length > 0 ? (
+          {inMyCookbooks && recipeInCookbooks.length > 0 ? (
             <BookmarkIconSolid
               className="h-5 w-5 hover:text-gray-300"
               aria-hidden="true"

@@ -3,6 +3,7 @@ import { RecipeShortInfo } from 'types/graphql'
 import { useAuth } from '@redwoodjs/auth'
 import { routes } from '@redwoodjs/router'
 
+import AddToCookbookButton from 'src/components/Cookbook/AddToCookbook/AddToCookbookButton'
 import AddToCookbookButtonCell from 'src/components/Cookbook/AddToCookbookButtonCell'
 import ListCardBase from 'src/components/shared/ListCard/ListCardBase'
 import ListCardContentWithImageBackground from 'src/components/shared/ListCard/ListCardContentWithImageBackground'
@@ -11,12 +12,14 @@ const RecipeCard = ({ recipe }: { recipe: RecipeShortInfo }) => {
   const { currentUser } = useAuth()
   const addToCookbookBtnWrapper = (
     <div className="absolute top-5 right-4 z-20">
-      {recipe.inMyCookbooks && currentUser?.username && (
+      {currentUser ? (
         <AddToCookbookButtonCell
           currentRecipeId={recipe.id}
           inMyCookbooks={recipe.inMyCookbooks}
           username={currentUser.username}
         />
+      ) : (
+        <AddToCookbookButton currentRecipeId={recipe.id} inMyCookbooks={null} />
       )}
     </div>
   )

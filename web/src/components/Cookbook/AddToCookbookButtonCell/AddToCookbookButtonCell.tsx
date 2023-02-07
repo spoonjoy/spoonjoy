@@ -38,13 +38,13 @@ export const Failure = ({
 
 interface ICookbooksDropdownProps {
   currentRecipeId: string
-  inMyCookbooks: IInMyCookbook[]
+  inMyCookbooks?: IInMyCookbook[] | null
 }
 
 export const Success = ({
   currentRecipeId,
-  myCookbooks,
   inMyCookbooks,
+  myCookbooks,
 }: CellSuccessProps<
   FindCookbooksForDropdown,
   FindCookbooksForDropdownVariables
