@@ -45,22 +45,6 @@ export default function AddToCookbookButton({
     }
   }
 
-  const setIsAddDialogOpen = (state: boolean) => {
-    if (state) {
-      openAddDialog()
-    } else {
-      setOpenDialog('none')
-    }
-  }
-
-  const setIsSignupDialogOpen = (state: boolean) => {
-    if (state) {
-      openSignupDialog()
-    } else {
-      setOpenDialog('none')
-    }
-  }
-
   const dismissDialog = () => {
     setOpenDialog('none')
   }
@@ -73,12 +57,10 @@ export default function AddToCookbookButton({
         setRecipeInCookbooks={setRecipeInCookbooks}
         currentRecipeId={currentRecipeId}
         isDialogOpen={openDialog === 'add'}
-        setIsDialogOpen={setIsAddDialogOpen}
         dismissDialog={dismissDialog}
       />
       <SignUpAndAddToCookbookDialog
         isDialogOpen={openDialog === 'signup'}
-        setIsDialogOpen={setIsSignupDialogOpen}
         dismissDialog={dismissDialog}
       />
       <div className="relative inline-block text-left">

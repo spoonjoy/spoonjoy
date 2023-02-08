@@ -4,13 +4,11 @@ import DialogBase from 'src/components/Dialogs/DialogBase'
 
 interface ISignUpAndAddToCookbookDialogProps {
   isDialogOpen: boolean
-  setIsDialogOpen: (isOpen: boolean) => void
   dismissDialog: () => void
 }
 
 const SignUpAndAddToCookbookDialog = ({
   isDialogOpen,
-  setIsDialogOpen,
   dismissDialog,
 }: ISignUpAndAddToCookbookDialogProps) => {
   return (

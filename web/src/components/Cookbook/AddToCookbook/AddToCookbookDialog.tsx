@@ -35,7 +35,6 @@ interface IAddToCookbookDialogProps {
   setRecipeInCookbooks: React.Dispatch<React.SetStateAction<IInMyCookbook[]>>
   currentRecipeId: string
   isDialogOpen: boolean
-  setIsDialogOpen: (isOpen: boolean) => void
   dismissDialog: () => void
 }
 
@@ -45,7 +44,6 @@ const AddToCookbookDialog = ({
   setRecipeInCookbooks,
   currentRecipeId,
   isDialogOpen,
-  setIsDialogOpen,
   dismissDialog,
 }: IAddToCookbookDialogProps) => {
   const addButtonRef = React.useRef(null)
@@ -54,7 +52,7 @@ const AddToCookbookDialog = ({
     useMutation<AddToCookbookMutation>(ADD_TO_COOKBOOK_MUTATION, {
       onCompleted: (data) => {
         toast.success(`Added to cookbook`)
-        setIsDialogOpen(false)
+        dismissDialog()
         const newRecipeInCookbook: IInMyCookbook = {
           cookbookId: data.addToCookbook.cookbookId,
           __typename: 'RecipeInCookbook',
