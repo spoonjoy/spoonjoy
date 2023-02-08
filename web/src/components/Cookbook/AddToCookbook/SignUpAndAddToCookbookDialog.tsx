@@ -1,5 +1,6 @@
 import { Dialog } from '@headlessui/react'
 
+import SignupForm from 'src/components/Auth/SignupForm'
 import DialogBase from 'src/components/Dialogs/DialogBase'
 
 interface ISignUpAndAddToCookbookDialogProps {
@@ -22,7 +23,7 @@ const SignUpAndAddToCookbookDialog = ({
         as="h3"
         className="text-lg font-medium leading-6 text-gray-900"
       >
-        Sign up and add to cookbook
+        <SignupForm />
       </Dialog.Title>
     </DialogBase>
   )

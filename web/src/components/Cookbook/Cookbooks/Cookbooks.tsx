@@ -29,7 +29,7 @@ const Cookbooks = ({
             ctaRoute={routes.user({
               username: ownerUsername,
               page: 'cookbooks',
-              newCookbook: false,
+              newCookbook: true,
             })}
             cta="New Cookbook"
             isOwner

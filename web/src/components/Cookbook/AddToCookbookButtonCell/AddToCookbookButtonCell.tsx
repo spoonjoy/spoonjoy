@@ -24,8 +24,16 @@ export const Loading = () => (
   <BookmarkIconOutline className="h-5 w-5 text-gray-300" aria-hidden="true" />
 )
 
-export const Empty = () => (
-  <Link to={routes.myCookbooks({ newCookbook: true })}>
+export const Empty = (props: {
+  variables: FindCookbooksForDropdownVariables
+}) => (
+  <Link
+    to={routes.user({
+      username: props.variables.username,
+      page: 'cookbooks',
+      newCookbook: true,
+    })}
+  >
     <BookmarkIconOutline className="h-5 w-5 text-white" aria-hidden="true" />
   </Link>
 )

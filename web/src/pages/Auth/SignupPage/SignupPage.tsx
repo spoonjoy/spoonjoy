@@ -1,47 +1,21 @@
 import { useEffect } from 'react'
 
-import { IFormSignup } from 'types/auth'
-
 import { useAuth } from '@redwoodjs/auth'
-import { Form, useForm, Submit } from '@redwoodjs/forms'
 import { navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/toast'
 
-import StyledPasswordField from 'src/components/formComponents/StyledPasswordField'
-import StyledTextField from 'src/components/formComponents/StyledTextField'
+import SignupForm from 'src/components/Auth/SignupForm'
 
-import AuthFormWrapper from '../shared/AuthFormWrapper'
 import AuthHeader from '../shared/AuthHeader'
 
 const SignupPage = () => {
-  const { currentUser, signUp } = useAuth()
-  const formMethods = useForm<IFormSignup>()
-
-  const {
-    formState: { errors },
-  } = formMethods
+  const { currentUser } = useAuth()
 
   useEffect(() => {
     if (currentUser) {
       navigate(routes.user({ username: currentUser.username }))
     }
   }, [currentUser])
-  const [loading, setLoading] = React.useState(false)
-  const onSubmit = async (data: IFormSignup) => {
-    setLoading(true)
-    const response = await signUp({ ...data })
-    setLoading(false)
-
-    if (response.message) {
-      toast(response.message)
-    } else if (response.error) {
-      toast.error(response.error)
-    } else {
-      // user is signed in automatically
-      toast.success('Welcome to spoonjoy!')
-    }
-  }
 
   return (
     <>
@@ -49,37 +23,7 @@ const SignupPage = () => {
 
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <AuthHeader location="signup" />
-
-        <AuthFormWrapper>
-          <Form<IFormSignup>
-            formMethods={formMethods}
-            onSubmit={onSubmit}
-            className="space-y-6"
-          >
-            <StyledTextField
-              label="username"
-              fieldName="username"
-              validation={{ required: true }}
-            />
-            <StyledTextField
-              label="email"
-              fieldName="email"
-              validation={{ required: true }}
-            />
-
-            <StyledPasswordField
-              label="password"
-              fieldName="password"
-              validation={{ required: true }}
-            />
-
-            <div className="flex justify-center">
-              <Submit disabled={loading} className="btn-submit-primary">
-                sign up
-              </Submit>
-            </div>
-          </Form>
-        </AuthFormWrapper>
+        <SignupForm />
       </div>
     </>
   )
