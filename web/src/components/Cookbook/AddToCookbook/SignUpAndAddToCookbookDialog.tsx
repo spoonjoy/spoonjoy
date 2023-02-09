@@ -19,12 +19,15 @@ const SignUpAndAddToCookbookDialog = ({
       // initialFocusRef={addButtonRef}
       withCloseButton
     >
-      <Dialog.Title
-        as="h3"
-        className="text-lg font-medium leading-6 text-gray-900"
-      >
+      <div className=" min-w-[300px]">
+        <Dialog.Title
+          as="h3"
+          className="text-lg font-medium leading-6 text-gray-900"
+        >
+          create cookbook and sign up
+        </Dialog.Title>
         <SignupForm />
-      </Dialog.Title>
+      </div>
     </DialogBase>
   )
 }
