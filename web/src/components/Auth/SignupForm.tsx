@@ -4,8 +4,6 @@ import { useAuth } from '@redwoodjs/auth'
 import { Form, Submit } from '@redwoodjs/forms'
 import { toast } from '@redwoodjs/web/dist/toast'
 
-import AuthFormWrapper from 'src/pages/Auth/shared/AuthFormWrapper'
-
 import StyledPasswordField from '../formComponents/StyledPasswordField'
 import StyledTextField from '../formComponents/StyledTextField'
 
@@ -29,32 +27,30 @@ const SignupForm = () => {
   }
 
   return (
-    <AuthFormWrapper>
-      <Form<IFormSignup> onSubmit={onSubmit} className="space-y-6">
-        <StyledTextField
-          label="username"
-          fieldName="username"
-          validation={{ required: true }}
-        />
-        <StyledTextField
-          label="email"
-          fieldName="email"
-          validation={{ required: true }}
-        />
+    <Form<IFormSignup> onSubmit={onSubmit} className="space-y-6">
+      <StyledTextField
+        label="username"
+        fieldName="username"
+        validation={{ required: true }}
+      />
+      <StyledTextField
+        label="email"
+        fieldName="email"
+        validation={{ required: true }}
+      />
 
-        <StyledPasswordField
-          label="password"
-          fieldName="password"
-          validation={{ required: true }}
-        />
+      <StyledPasswordField
+        label="password"
+        fieldName="password"
+        validation={{ required: true }}
+      />
 
-        <div className="flex justify-center">
-          <Submit disabled={loading} className="btn-submit-primary">
-            sign up
-          </Submit>
-        </div>
-      </Form>
-    </AuthFormWrapper>
+      <div className="flex justify-center">
+        <Submit disabled={loading} className="btn-submit-primary">
+          sign up
+        </Submit>
+      </div>
+    </Form>
   )
 }
 

@@ -6,6 +6,7 @@ import { MetaTags } from '@redwoodjs/web'
 
 import SignupForm from 'src/components/Auth/SignupForm'
 
+import AuthFormWrapper from '../shared/AuthFormWrapper'
 import AuthHeader from '../shared/AuthHeader'
 
 const SignupPage = () => {
@@ -23,7 +24,9 @@ const SignupPage = () => {
 
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <AuthHeader location="signup" />
-        <SignupForm />
+        <AuthFormWrapper>
+          <SignupForm />
+        </AuthFormWrapper>
       </div>
     </>
   )
