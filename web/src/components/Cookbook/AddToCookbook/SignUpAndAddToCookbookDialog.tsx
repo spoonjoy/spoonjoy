@@ -24,7 +24,7 @@ const SignUpAndAddToCookbookDialog = ({
           as="h3"
           className="text-lg font-medium leading-6 text-gray-900"
         >
-          create cookbook and sign up
+          <span className="line-through">create cookbook and</span> sign up
         </Dialog.Title>
         <SignupForm />
       </div>
