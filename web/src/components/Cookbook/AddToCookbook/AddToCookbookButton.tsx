@@ -2,6 +2,8 @@ import { BookmarkIcon as BookmarkIconOutline } from '@heroicons/react/24/outline
 import { BookmarkIcon as BookmarkIconSolid } from '@heroicons/react/24/solid'
 import { FindCookbooksForDropdown } from 'types/graphql'
 
+import { navigate, routes } from '@redwoodjs/router'
+
 import AddToCookbookDialog from './AddToCookbookDialog'
 import SignUpAndAddToCookbookDialog from './SignUpAndAddToCookbookDialog'
 
@@ -41,7 +43,7 @@ export default function AddToCookbookButton({
     if (myCookbooks && inMyCookbooks) {
       openAddDialog()
     } else {
-      openSignupDialog()
+      navigate(routes.signupAndCreateCookbook({ recipeId: currentRecipeId }))
     }
   }
 

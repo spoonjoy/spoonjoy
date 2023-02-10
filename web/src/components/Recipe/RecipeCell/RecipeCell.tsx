@@ -1,54 +1,75 @@
-import type { FindRecipeById } from 'types/graphql'
+import type { FindRecipeById, FindRecipeByIdVariables } from 'types/graphql'
 
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import Recipe from 'src/components/Recipe/RecipeComponent/Recipe'
 
-export const QUERY = gql`
-  query FindRecipeById($id: String!) {
-    recipe: recipe(id: $id) {
-      id
-      title
-      description
-      imageUrl
-      servings
-      chef {
-        id
-        username
+import { RECIPE_SHORT_INFO } from '../recipeFragments'
+import Recipes from '../Recipes'
+
+interface IRecipeCellExtraProps {
+  shortRecipe?: boolean
+}
+
+export const QUERY = (props: {
+  variables: FindRecipeByIdVariables & IRecipeCellExtraProps
+}) => {
+  if (props.variables.shortRecipe) {
+    return gql`
+      ${RECIPE_SHORT_INFO}
+      query FindShortRecipeById($id: String!) {
+        recipe: recipe(id: $id) {
+          ...RecipeShortInfo
+        }
       }
-      steps {
+    `
+  }
+  return gql`
+    query FindRecipeById($id: String!) {
+      recipe: recipe(id: $id) {
         id
-        stepNum
-        stepTitle
+        title
         description
-        ingredients {
+        imageUrl
+        servings
+        chef {
           id
-          quantity
-          ingredientRef {
+          username
+        }
+        steps {
+          id
+          stepNum
+          stepTitle
+          description
+          ingredients {
             id
-            name
+            quantity
+            ingredientRef {
+              id
+              name
+            }
+            unit {
+              id
+              name
+            }
           }
-          unit {
+          stepOutputUses {
             id
-            name
+            outputOfStep {
+              id
+              stepNum
+            }
           }
         }
-        stepOutputUses {
-          id
-          outputOfStep {
-            id
-            stepNum
-          }
+        createdAt
+        deletedAt
+        inMyCookbooks {
+          cookbookId
         }
-      }
-      createdAt
-      deletedAt
-      inMyCookbooks {
-        cookbookId
       }
     }
-  }
-`
+  `
+}
 
 export const Loading = () => <div>Loading...</div>
 
@@ -58,6 +79,14 @@ export const Failure = ({ error }: CellFailureProps) => (
   <div className="rw-cell-error">{error?.message}</div>
 )
 
-export const Success = ({ recipe }: CellSuccessProps<FindRecipeById>) => {
-  return <Recipe recipe={recipe} />
+export const Success = ({
+  recipe,
+  shortRecipe = false,
+}: CellSuccessProps<FindRecipeById> & IRecipeCellExtraProps) => {
+  switch (shortRecipe) {
+    case true:
+      return <Recipes recipes={[recipe]} />
+    default:
+      return <Recipe recipe={recipe} />
+  }
 }
