@@ -29,16 +29,19 @@ const SignupAndCreateCookbookPage = ({
   return (
     <>
       <MetaTags title="signup and create cookbook" />
+      <div className="absolute top-0 left-0 right-0 z-50 shadow-inner">
+        <div className="h-[300px] bg-gray-900 opacity-30" />
+        <div className="flex min-h-full flex-col justify-center bg-white py-12 sm:px-6 lg:px-8">
+          <AuthHeader location="signup" />
+          <AuthFormWrapper>
+            <SignupForm />
+          </AuthFormWrapper>
+        </div>
+      </div>
       <HeaderSlot.Plug id="cookbooks">
         <DefaultHeader title={'My First Cookbook'} />
       </HeaderSlot.Plug>
       <RecipeCell shortRecipe id={recipeId} />
-      <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
-        <AuthHeader location="signup" />
-        <AuthFormWrapper>
-          <SignupForm />
-        </AuthFormWrapper>
-      </div>
     </>
   )
 }

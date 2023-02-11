@@ -85,7 +85,7 @@ export const Success = ({
 }: CellSuccessProps<FindRecipeById> & IRecipeCellExtraProps) => {
   switch (shortRecipe) {
     case true:
-      return <Recipes recipes={[recipe]} />
+      return <Recipes recipes={[recipe]} withAddRecipeButton />
     default:
       return <Recipe recipe={recipe} />
   }
