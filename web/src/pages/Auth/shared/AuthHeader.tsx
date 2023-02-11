@@ -21,7 +21,7 @@ const AuthHeader = ({ location }: IAuthHeaderProps) => (
       {location === 'signup'
         ? 'sign up for spoonjoy'
         : location === 'new-cookbook'
-        ? 'sign up to save this recipe!'
+        ? 'sign up to save this recipe'
         : 'sign in to spoonjoy'}
     </h2>
     <p className="mt-2 text-center text-sm text-gray-600">

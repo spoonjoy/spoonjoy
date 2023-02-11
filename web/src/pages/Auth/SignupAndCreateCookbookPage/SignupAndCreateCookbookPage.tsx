@@ -32,7 +32,7 @@ const SignupAndCreateCookbookPage = ({
         <div className="min-h-[250px] bg-gray-900 opacity-30" />
         <div className="flex flex-col justify-center bg-white pb-20 sm:px-6 lg:px-8 ">
           <AuthHeader location="new-cookbook" />
-          <div className="px-10 pt-5">
+          <div className="mx-8 mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <SignupForm />
           </div>
         </div>
