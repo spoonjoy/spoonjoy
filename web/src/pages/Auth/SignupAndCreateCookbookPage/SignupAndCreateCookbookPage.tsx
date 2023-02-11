@@ -31,8 +31,8 @@ const SignupAndCreateCookbookPage = ({
       <MetaTags title="signup and create cookbook" />
       <div className="absolute top-0 left-0 right-0 z-50 shadow-inner">
         <div className="h-[300px] bg-gray-900 opacity-30" />
-        <div className="flex min-h-full flex-col justify-center bg-white py-12 sm:px-6 lg:px-8">
-          <AuthHeader location="signup" />
+        <div className="flex min-h-full flex-col justify-center bg-white sm:px-6 lg:px-8">
+          <AuthHeader location="new-cookbook" />
           <AuthFormWrapper>
             <SignupForm />
           </AuthFormWrapper>
