@@ -9,10 +9,11 @@ import type { RWGqlError } from '@redwoodjs/forms'
 
 import StyledTextField from 'src/components/formComponents/StyledTextField'
 
+import { onCreateCookbook } from '../withNewCookbookMutation/withNewCookbookMutation'
+
 type FormUpdateCookbook = NonNullable<UpdateCookbookInput>
 type FormCreateCookbook = NonNullable<CreateCookbookInput>
 
-export type onCreateCookbook = (data: CreateCookbookInput) => void
 export type onUpdateCookbook = (
   cookbookId: string,
   data: UpdateCookbookInput

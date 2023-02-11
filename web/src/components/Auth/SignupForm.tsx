@@ -7,7 +7,11 @@ import { toast } from '@redwoodjs/web/dist/toast'
 import StyledPasswordField from '../formComponents/StyledPasswordField'
 import StyledTextField from '../formComponents/StyledTextField'
 
-const SignupForm = () => {
+interface ISignupFormProps {
+  onComplete?: () => void
+}
+
+const SignupForm = ({ onComplete }: ISignupFormProps) => {
   const { signUp } = useAuth()
 
   const [loading, setLoading] = React.useState(false)
@@ -23,6 +27,7 @@ const SignupForm = () => {
     } else {
       // user is signed in automatically
       toast.success('welcome to spoonjoy!')
+      onComplete && onComplete()
     }
   }
 
