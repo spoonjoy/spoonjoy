@@ -14,17 +14,21 @@ const CREATE_COOKBOOK_MUTATION = gql`
 `
 export type onCreateCookbook = (data: CreateCookbookInput) => void
 
-interface IWithNewCookbookMutationChildProps {
+export interface IWithNewCookbookMutationChildProps {
   onSave: onCreateCookbook
   loading: boolean
   error?: RWGqlError
 }
 
-interface IWithNewCookbookMutationProps {
-  child: React.FC<IWithNewCookbookMutationChildProps>
+interface IWithNewCookbookMutationProps<T> {
+  child: React.FC<IWithNewCookbookMutationChildProps & T>
+  outerProps: T
 }
 
-const withNewCookbookMutation = ({ child }: IWithNewCookbookMutationProps) => {
+const withNewCookbookMutation = <T extends object>({
+  child,
+  outerProps,
+}: IWithNewCookbookMutationProps<T>) => {
   const WithNewCookbookMutationComponent = () => {
     const [createCookbook, { loading, error }] =
       useMutation<CreateCookbookMutation>(CREATE_COOKBOOK_MUTATION, {
@@ -46,7 +50,9 @@ const withNewCookbookMutation = ({ child }: IWithNewCookbookMutationProps) => {
       })
     }
 
-    return child({ onSave, loading, error })
+    const innerProps = { onSave, loading, error }
+
+    return child({ ...innerProps, ...outerProps })
   }
   return WithNewCookbookMutationComponent
 }

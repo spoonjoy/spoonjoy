@@ -5,6 +5,9 @@ import { navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import SignupForm from 'src/components/Auth/SignupForm'
+import withNewCookbookMutation, {
+  IWithNewCookbookMutationChildProps,
+} from 'src/components/Cookbook/withNewCookbookMutation/withNewCookbookMutation'
 import RecipeCell from 'src/components/Recipe/RecipeCell'
 import { HeaderSlot, DefaultHeader } from 'src/layouts/SiteLayout/SiteLayout'
 
@@ -14,9 +17,12 @@ interface ISignupAndCreateCookbookPageProps {
   recipeId: string
 }
 
-const SignupAndCreateCookbookPage = ({
-  recipeId,
-}: ISignupAndCreateCookbookPageProps) => {
+const SignupAndCreateCookbookPageRenderer = ({
+  recipeId, // this is the recipeId that will be added to the new cookbook
+  onSave: createCookbook,
+  loading: createCookbookLoading,
+  error: createCookbookError,
+}: ISignupAndCreateCookbookPageProps & IWithNewCookbookMutationChildProps) => {
   const { currentUser } = useAuth()
 
   useEffect(() => {
@@ -45,4 +51,16 @@ const SignupAndCreateCookbookPage = ({
   )
 }
 
-export default SignupAndCreateCookbookPage
+const SignupAndCreateCookbookPageContainer = ({
+  recipeId,
+}: ISignupAndCreateCookbookPageProps) => {
+  const ChildComponent =
+    withNewCookbookMutation<ISignupAndCreateCookbookPageProps>({
+      child: SignupAndCreateCookbookPageRenderer,
+      outerProps: { recipeId },
+    })
+
+  return <ChildComponent />
+}
+
+export default SignupAndCreateCookbookPageContainer
