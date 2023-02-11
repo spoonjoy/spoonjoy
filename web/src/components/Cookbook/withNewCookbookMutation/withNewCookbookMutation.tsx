@@ -20,7 +20,7 @@ export interface IWithNewCookbookMutationChildProps {
   error?: RWGqlError
 }
 
-interface IWithNewCookbookMutationProps<T> {
+interface IWithNewCookbookMutationProps<T extends object = object> {
   child: React.FC<IWithNewCookbookMutationChildProps & T>
   outerProps: T
 }
@@ -50,7 +50,11 @@ const withNewCookbookMutation = <T extends object>({
       })
     }
 
-    const innerProps = { onSave, loading, error }
+    const innerProps = {
+      onSave,
+      loading,
+      error,
+    }
 
     return child({ ...innerProps, ...outerProps })
   }

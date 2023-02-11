@@ -31,6 +31,10 @@ const SignupAndCreateCookbookPageRenderer = ({
     }
   }, [currentUser])
 
+  const onSignupComplete = () => {
+    createCookbook({ title: 'My first cookbook!' })
+  }
+
   return (
     <>
       <MetaTags title="signup and create cookbook" />
@@ -39,7 +43,7 @@ const SignupAndCreateCookbookPageRenderer = ({
         <div className="flex flex-col justify-center bg-white pb-20 md:pt-5">
           <AuthHeader location="new-cookbook" />
           <div className="mx-8 mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-            <SignupForm />
+            <SignupForm onComplete={onSignupComplete} />
           </div>
         </div>
       </div>
@@ -54,11 +58,10 @@ const SignupAndCreateCookbookPageRenderer = ({
 const SignupAndCreateCookbookPageContainer = ({
   recipeId,
 }: ISignupAndCreateCookbookPageProps) => {
-  const ChildComponent =
-    withNewCookbookMutation<ISignupAndCreateCookbookPageProps>({
-      child: SignupAndCreateCookbookPageRenderer,
-      outerProps: { recipeId },
-    })
+  const ChildComponent = withNewCookbookMutation({
+    child: SignupAndCreateCookbookPageRenderer,
+    outerProps: { recipeId },
+  })
 
   return <ChildComponent />
 }
