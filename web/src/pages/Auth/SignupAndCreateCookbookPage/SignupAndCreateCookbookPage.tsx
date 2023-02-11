@@ -8,7 +8,6 @@ import SignupForm from 'src/components/Auth/SignupForm'
 import RecipeCell from 'src/components/Recipe/RecipeCell'
 import { HeaderSlot, DefaultHeader } from 'src/layouts/SiteLayout/SiteLayout'
 
-import AuthFormWrapper from '../shared/AuthFormWrapper'
 import AuthHeader from '../shared/AuthHeader'
 
 interface ISignupAndCreateCookbookPageProps {
@@ -29,13 +28,13 @@ const SignupAndCreateCookbookPage = ({
   return (
     <>
       <MetaTags title="signup and create cookbook" />
-      <div className="absolute top-0 left-0 right-0 z-50 shadow-inner">
-        <div className="h-[300px] bg-gray-900 opacity-30" />
-        <div className="flex min-h-full flex-col justify-center bg-white sm:px-6 lg:px-8">
+      <div className="absolute top-0 left-0 right-0 bottom-0 z-50">
+        <div className="min-h-[250px] bg-gray-900 opacity-30" />
+        <div className="flex flex-col justify-center bg-white pb-20 sm:px-6 lg:px-8 ">
           <AuthHeader location="new-cookbook" />
-          <AuthFormWrapper>
+          <div className="px-10 pt-5">
             <SignupForm />
-          </AuthFormWrapper>
+          </div>
         </div>
       </div>
       <HeaderSlot.Plug id="cookbooks">

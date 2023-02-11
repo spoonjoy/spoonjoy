@@ -1,5 +1,6 @@
 import { Link, routes } from '@redwoodjs/router'
 
+import { classNames } from 'src/helpers/css'
 import LogoBlack from 'src/layouts/SiteLayout/sj_black.svg'
 
 interface IAuthHeaderProps {
@@ -12,7 +13,11 @@ const AuthHeader = ({ location }: IAuthHeaderProps) => (
       <LogoBlack className="mx-auto h-12 w-auto" />
     )}
 
-    <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+    <h2
+      className={classNames(
+        'mt-6 text-center text-3xl font-bold tracking-tight text-gray-900'
+      )}
+    >
       {location === 'signup'
         ? 'sign up for spoonjoy'
         : location === 'new-cookbook'
