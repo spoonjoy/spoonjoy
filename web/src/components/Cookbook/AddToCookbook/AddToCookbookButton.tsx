@@ -61,6 +61,10 @@ export default function AddToCookbookButton({
         isDialogOpen={openDialog === 'add'}
         dismissDialog={dismissDialog}
       />
+      {/*
+      Currently, this is unused as there's a whole page for handling this. Leaving this
+      component here in case I want to test the dialog flow as an alternative to a whole page
+      */}
       <SignUpAndAddToCookbookDialog
         isDialogOpen={openDialog === 'signup'}
         dismissDialog={dismissDialog}
