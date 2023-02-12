@@ -122,9 +122,9 @@ const WelcomePage = () => {
                     <span className="block text-indigo-600">made easy</span>
                   </h1>
                   <p className="mt-3 text-base text-gray-500 sm:mx-auto sm:mt-5 sm:max-w-xl sm:text-lg md:mt-5 md:text-xl lg:mx-0">
-                    spoonjoy is the easiest way to save, follow, and share your
-                    own recipes. we also make it effortless to create grocery
-                    lists using your recipes as starting points (coming soon).
+                    spoonjoy is the easiest way to save, follow, and share
+                    recipes. we also make it effortless to create grocery lists
+                    using your recipes as starting points (coming soon).
                   </p>
                   <div className="mt-5 sm:mx-auto sm:mt-8 sm:flex sm:w-80 sm:flex-col lg:mx-0">
                     <div className="sm:flex">
