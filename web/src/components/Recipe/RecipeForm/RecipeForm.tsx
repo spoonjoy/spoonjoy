@@ -25,15 +25,8 @@ export type RecipeFormControl = Control<
   any
 >
 
-export type onCreateRecipe = (
-  data: CreateRecipeInput,
-  onSaveComplete?: () => void
-) => void
-export type onUpdateRecipe = (
-  recipeId: string,
-  data: UpdateRecipeInput,
-  onSaveComplete?: () => void
-) => void
+export type onCreateRecipe = (data: CreateRecipeInput) => void
+export type onUpdateRecipe = (recipeId: string, data: UpdateRecipeInput) => void
 
 interface RecipeFormProps {
   recipe?: EditRecipeById['recipe']
@@ -57,13 +50,9 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
   const onSubmit = (data: FormUpdateRecipe | FormCreateRecipe) => {
     console.log('onSubmit data:', data)
     if (recipe) {
-      ;(onSave as onUpdateRecipe)(recipe.id, data as FormUpdateRecipe, () => {
-        recipeInputStore.clear()
-      })
+      ;(onSave as onUpdateRecipe)(recipe.id, data as FormUpdateRecipe)
     } else {
-      ;(onSave as onCreateRecipe)(data as FormCreateRecipe, () => {
-        recipeInputStore.clear()
-      })
+      ;(onSave as onCreateRecipe)(data as FormCreateRecipe)
     }
   }
 

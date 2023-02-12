@@ -26,8 +26,9 @@ const NewRecipe = () => {
     CREATE_RECIPE_MUTATION,
     {
       onCompleted: (data) => {
-        toast.success('Recipe created')
+        toast.success('recipe created')
         navigate(routes.recipe({ id: data.createRecipe.id }))
+        recipeInputStore.clear()
       },
       onError: (error) => {
         toast.error(error.message)

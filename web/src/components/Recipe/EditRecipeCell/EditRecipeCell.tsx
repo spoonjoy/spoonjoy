@@ -82,8 +82,9 @@ export const Success = observer(
       UPDATE_RECIPE_MUTATION,
       {
         onCompleted: () => {
-          toast.success('Recipe updated!')
+          toast.success('recipe updated!')
           navigate(routes.recipe({ id: recipe.id }))
+          recipeInputStore.clear()
         },
         onError: (error) => {
           toast.error(error.message)

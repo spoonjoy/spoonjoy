@@ -50,13 +50,8 @@ const withNewCookbookMutation = <T extends object>({
         },
       })
 
-    const onSave: onCreateCookbook = (
-      input: CreateCookbookInput,
-      onSaveComplete?: () => void
-    ) => {
-      createCookbook({ variables: { input } }).then((response) => {
-        !response.errors && onSaveComplete && onSaveComplete()
-      })
+    const onSave: onCreateCookbook = (input: CreateCookbookInput) => {
+      createCookbook({ variables: { input } })
     }
 
     const innerProps = {
