@@ -22,19 +22,19 @@ export interface IWithNewCookbookMutationChildProps {
 
 interface IWithNewCookbookMutationProps<T extends object = object> {
   child: React.FC<IWithNewCookbookMutationChildProps & T>
-  onComplete?: (newCookbookId: string) => void
+  onCreateCookbook?: (newCookbookId: string) => void
   outerProps: T
 }
 
 /**
  * This was split out from the NewCookbook component into a HOC to make it reusable for SignupAndCreateCookbook
  * @param child - the component that will be wrapped
- * @param onComplete - a callback that will be called when the new cookbook has been created
+ * @param onCreateCookbook - a callback that will be called when the new cookbook has been created
  * @param outerProps - any props that will be passed to the child component
  */
 const withNewCookbookMutation = <T extends object>({
   child,
-  onComplete,
+  onCreateCookbook,
   outerProps,
 }: IWithNewCookbookMutationProps<T>) => {
   const WithNewCookbookMutationComponent = () => {
@@ -43,7 +43,7 @@ const withNewCookbookMutation = <T extends object>({
         onCompleted: (data) => {
           toast.success('Cookbook created')
           navigate(routes.cookbook({ id: data.cookbook.id }))
-          onComplete && onComplete(data.cookbook.id)
+          onCreateCookbook && onCreateCookbook(data.cookbook.id)
         },
         onError: (error) => {
           toast.error(error.message)
