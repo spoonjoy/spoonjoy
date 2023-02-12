@@ -19,9 +19,10 @@ interface ISignupAndCreateCookbookPageProps {
 
 const SignupAndCreateCookbookPageRenderer = ({
   recipeId, // this is the recipeId that will be added to the new cookbook
+  // Commented these out as I couldn't think of a way to use them yet - the error should already by toasted by the useMutation's onError
+  // loading: createCookbookLoading,
+  // error: createCookbookError,
   onSave: createCookbook,
-  loading: createCookbookLoading,
-  error: createCookbookError,
 }: ISignupAndCreateCookbookPageProps & IWithNewCookbookMutationChildProps) => {
   const { currentUser } = useAuth()
 
