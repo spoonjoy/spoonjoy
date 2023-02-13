@@ -58,10 +58,7 @@ const Cookbooks = ({
                 smallSquare
               >
                 <div className="inline-flex items-center">
-                  <PlusIcon
-                    className="-ml-1 mr-2 h-10 w-10"
-                    aria-hidden="true"
-                  />
+                  <PlusIcon className="h-10 w-10" aria-hidden="true" />
                 </div>
               </ListCardBase>
             )}
