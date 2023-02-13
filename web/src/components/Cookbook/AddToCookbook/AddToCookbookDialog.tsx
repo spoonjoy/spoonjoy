@@ -104,26 +104,28 @@ const AddToCookbookDialogContainer = ({
   isDialogOpen,
   dismissDialog,
 }: IAddToCookbookDialogContainerProps & IAddToCookbookDialogProps) => {
+  const onAddToCookbookComplete = (cookbookId: string) => {
+    dismissDialog()
+    const newRecipeInCookbook: IInMyCookbook = {
+      cookbookId,
+      __typename: 'RecipeInCookbook',
+    }
+    const newRecipeInCookbooks = [...recipeInCookbooks, newRecipeInCookbook]
+
+    setRecipeInCookbooks(newRecipeInCookbooks)
+  }
+
+  const onRemoveFromCookbookComplete = (cookbookId: string) => {
+    setRecipeInCookbooks((current) =>
+      current.filter((inMyCookbook) => inMyCookbook.cookbookId !== cookbookId)
+    )
+  }
+
   const ChildComponent =
     withAddRemoveCookbookMutations<IAddToCookbookDialogProps>({
       child: AddToCookbookDialogRenderer,
-      onAddToCookbookComplete: (cookbookId) => {
-        dismissDialog()
-        const newRecipeInCookbook: IInMyCookbook = {
-          cookbookId,
-          __typename: 'RecipeInCookbook',
-        }
-        const newRecipeInCookbooks = [...recipeInCookbooks, newRecipeInCookbook]
-
-        setRecipeInCookbooks(newRecipeInCookbooks)
-      },
-      onRemoveFromCookbookComplete: (cookbookId) => {
-        setRecipeInCookbooks((current) =>
-          current.filter(
-            (inMyCookbook) => inMyCookbook.cookbookId !== cookbookId
-          )
-        )
-      },
+      onAddToCookbookComplete,
+      onRemoveFromCookbookComplete,
       outerProps: {
         myCookbooks,
         recipeInCookbooks,
