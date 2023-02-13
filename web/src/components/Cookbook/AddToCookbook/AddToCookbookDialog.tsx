@@ -1,47 +1,42 @@
 import { Dialog } from '@headlessui/react'
-import {
-  AddToCookbookMutation,
-  RemoveFromCookbookMutation,
-  FindCookbooksForDropdown,
-} from 'types/graphql'
-
-import { useMutation } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/dist/toast'
+import { FindCookbooksForDropdown } from 'types/graphql'
 
 import DialogBase from 'src/components/Dialogs/DialogBase'
 import { classNames } from 'src/helpers/css'
+
+import withAddRemoveCookbookMutations, {
+  IWithAddRemoveCookbookMutationsChildProps,
+} from '../withAddRemoveCookbookMutations/withAddRemoveCookbookMutations'
 
 import { IInMyCookbook } from './AddToCookbookButton'
 
 interface IAddToCookbookDialogProps {
   myCookbooks: FindCookbooksForDropdown['myCookbooks']
   recipeInCookbooks: IInMyCookbook[]
-  setRecipeInCookbooks: React.Dispatch<React.SetStateAction<IInMyCookbook[]>>
   currentRecipeId: string
   isDialogOpen: boolean
   dismissDialog: () => void
 }
 
-const AddToCookbookDialog = ({
+const AddToCookbookDialogRenderer = ({
   myCookbooks,
   recipeInCookbooks,
-  setRecipeInCookbooks,
   currentRecipeId,
   isDialogOpen,
   dismissDialog,
-}: IAddToCookbookDialogProps) => {
+  onAddToCookbook,
+  onRemoveFromCookbook,
+  loadingAdd,
+  loadingRemove,
+}: IAddToCookbookDialogProps & IWithAddRemoveCookbookMutationsChildProps) => {
   const addButtonRef = React.useRef(null)
 
   const getOnToggleRecipe =
     (cookbookId: string, alreadyInCookbook: boolean) => () => {
       if (alreadyInCookbook) {
-        removeFromCookbook({
-          variables: { id: cookbookId, recipeId: currentRecipeId },
-        })
+        onRemoveFromCookbook(cookbookId, currentRecipeId)
       } else {
-        addToCookbook({
-          variables: { id: cookbookId, recipeId: currentRecipeId },
-        })
+        onAddToCookbook(cookbookId, currentRecipeId)
       }
     }
 
@@ -97,4 +92,48 @@ const AddToCookbookDialog = ({
   )
 }
 
-export default AddToCookbookDialog
+interface IAddToCookbookDialogContainerProps {
+  setRecipeInCookbooks: React.Dispatch<React.SetStateAction<IInMyCookbook[]>>
+}
+
+const AddToCookbookDialogContainer = ({
+  setRecipeInCookbooks,
+  myCookbooks,
+  recipeInCookbooks,
+  currentRecipeId,
+  isDialogOpen,
+  dismissDialog,
+}: IAddToCookbookDialogContainerProps & IAddToCookbookDialogProps) => {
+  const ChildComponent =
+    withAddRemoveCookbookMutations<IAddToCookbookDialogProps>({
+      child: AddToCookbookDialogRenderer,
+      onAddToCookbookComplete: (cookbookId) => {
+        dismissDialog()
+        const newRecipeInCookbook: IInMyCookbook = {
+          cookbookId,
+          __typename: 'RecipeInCookbook',
+        }
+        const newRecipeInCookbooks = [...recipeInCookbooks, newRecipeInCookbook]
+
+        setRecipeInCookbooks(newRecipeInCookbooks)
+      },
+      onRemoveFromCookbookComplete: (cookbookId) => {
+        setRecipeInCookbooks((current) =>
+          current.filter(
+            (inMyCookbook) => inMyCookbook.cookbookId !== cookbookId
+          )
+        )
+      },
+      outerProps: {
+        myCookbooks,
+        recipeInCookbooks,
+        currentRecipeId,
+        isDialogOpen,
+        dismissDialog,
+      },
+    })
+
+  return <ChildComponent />
+}
+
+export default AddToCookbookDialogContainer

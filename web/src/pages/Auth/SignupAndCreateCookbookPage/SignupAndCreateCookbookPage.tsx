@@ -59,10 +59,11 @@ const SignupAndCreateCookbookPageRenderer = ({
 const SignupAndCreateCookbookPageContainer = ({
   recipeId,
 }: ISignupAndCreateCookbookPageProps) => {
-  const ChildComponent = withNewCookbookMutation({
-    child: SignupAndCreateCookbookPageRenderer,
-    outerProps: { recipeId },
-  })
+  const ChildComponent =
+    withNewCookbookMutation<ISignupAndCreateCookbookPageProps>({
+      child: SignupAndCreateCookbookPageRenderer,
+      outerProps: { recipeId },
+    })
 
   return <ChildComponent />
 }
