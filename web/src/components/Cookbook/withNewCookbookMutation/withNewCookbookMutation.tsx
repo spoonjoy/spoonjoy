@@ -1,7 +1,6 @@
 import type { CreateCookbookInput, CreateCookbookMutation } from 'types/graphql'
 
 import { RWGqlError } from '@redwoodjs/forms'
-import { navigate, routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/dist/toast'
 
@@ -22,7 +21,7 @@ export interface IWithNewCookbookMutationChildProps {
 
 interface IWithNewCookbookMutationProps<T extends object = object> {
   child: React.FC<IWithNewCookbookMutationChildProps & T>
-  onCreateCookbook?: (newCookbookId: string) => void
+  onCreateCookbookComplete?: (newCookbookId: string) => void
   outerProps: T
 }
 
@@ -34,7 +33,7 @@ interface IWithNewCookbookMutationProps<T extends object = object> {
  */
 const withNewCookbookMutation = <T extends object>({
   child,
-  onCreateCookbook,
+  onCreateCookbookComplete,
   outerProps,
 }: IWithNewCookbookMutationProps<T>) => {
   const WithNewCookbookMutationComponent = () => {
@@ -42,8 +41,7 @@ const withNewCookbookMutation = <T extends object>({
       useMutation<CreateCookbookMutation>(CREATE_COOKBOOK_MUTATION, {
         onCompleted: (data) => {
           toast.success('Cookbook created')
-          navigate(routes.cookbook({ id: data.cookbook.id }))
-          onCreateCookbook && onCreateCookbook(data.cookbook.id)
+          onCreateCookbookComplete && onCreateCookbookComplete(data.cookbook.id)
         },
         onError: (error) => {
           toast.error(error.message)

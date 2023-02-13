@@ -5,6 +5,9 @@ import { navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import SignupForm from 'src/components/Auth/SignupForm'
+import withAddRemoveCookbookMutations, {
+  IWithAddRemoveCookbookMutationsChildProps,
+} from 'src/components/Cookbook/withAddRemoveCookbookMutations/withAddRemoveCookbookMutations'
 import withNewCookbookMutation, {
   IWithNewCookbookMutationChildProps,
 } from 'src/components/Cookbook/withNewCookbookMutation/withNewCookbookMutation'
@@ -56,15 +59,36 @@ const SignupAndCreateCookbookPageRenderer = ({
   )
 }
 
-const SignupAndCreateCookbookPageContainer = ({
+const SignupAndCreateCookbookPageSubContainer = ({
   recipeId,
-}: ISignupAndCreateCookbookPageProps) => {
+  onAddToCookbook,
+}: ISignupAndCreateCookbookPageProps &
+  IWithAddRemoveCookbookMutationsChildProps) => {
+  const onCreateCookbookComplete = (newCookbookId: string) => {
+    onAddToCookbook(newCookbookId, recipeId)
+  }
   const ChildComponent =
     withNewCookbookMutation<ISignupAndCreateCookbookPageProps>({
       child: SignupAndCreateCookbookPageRenderer,
+      onCreateCookbookComplete,
       outerProps: { recipeId },
     })
 
+  return <ChildComponent />
+}
+
+const SignupAndCreateCookbookPageContainer = ({
+  recipeId,
+}: ISignupAndCreateCookbookPageProps) => {
+  const onAddToCookbookComplete = (cookbookId: string) => {
+    navigate(routes.cookbook({ id: cookbookId }))
+  }
+  const ChildComponent =
+    withAddRemoveCookbookMutations<ISignupAndCreateCookbookPageProps>({
+      child: SignupAndCreateCookbookPageSubContainer,
+      onAddToCookbookComplete,
+      outerProps: { recipeId },
+    })
   return <ChildComponent />
 }
 
