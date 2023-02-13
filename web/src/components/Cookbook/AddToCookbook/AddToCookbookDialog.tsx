@@ -13,22 +13,6 @@ import { classNames } from 'src/helpers/css'
 
 import { IInMyCookbook } from './AddToCookbookButton'
 
-const ADD_TO_COOKBOOK_MUTATION = gql`
-  mutation AddToCookbookMutation($id: String!, $recipeId: String!) {
-    addToCookbook(id: $id, recipeId: $recipeId) {
-      cookbookId
-    }
-  }
-`
-
-const REMOVE_FROM_COOKBOOK_MUTATION = gql`
-  mutation RemoveFromCookbookMutation($id: String!, $recipeId: String!) {
-    removeFromCookbook(id: $id, recipeId: $recipeId) {
-      cookbookId
-    }
-  }
-`
-
 interface IAddToCookbookDialogProps {
   myCookbooks: FindCookbooksForDropdown['myCookbooks']
   recipeInCookbooks: IInMyCookbook[]
@@ -47,40 +31,6 @@ const AddToCookbookDialog = ({
   dismissDialog,
 }: IAddToCookbookDialogProps) => {
   const addButtonRef = React.useRef(null)
-
-  const [addToCookbook, { loading: loadingAdd }] =
-    useMutation<AddToCookbookMutation>(ADD_TO_COOKBOOK_MUTATION, {
-      onCompleted: (data) => {
-        toast.success(`Added to cookbook`)
-        dismissDialog()
-        const newRecipeInCookbook: IInMyCookbook = {
-          cookbookId: data.addToCookbook.cookbookId,
-          __typename: 'RecipeInCookbook',
-        }
-        const newRecipeInCookbooks = [...recipeInCookbooks, newRecipeInCookbook]
-
-        setRecipeInCookbooks(newRecipeInCookbooks)
-      },
-      onError: (error) => {
-        toast.error(error.message)
-      },
-    })
-
-  const [removeFromCookbook, { loading: loadingRemove }] =
-    useMutation<RemoveFromCookbookMutation>(REMOVE_FROM_COOKBOOK_MUTATION, {
-      onCompleted: (data) => {
-        toast.success(`Removed from cookbook`)
-        setRecipeInCookbooks((current) =>
-          current.filter(
-            (inMyCookbook) =>
-              inMyCookbook.cookbookId !== data.removeFromCookbook.cookbookId
-          )
-        )
-      },
-      onError: (error) => {
-        toast.error(error.message)
-      },
-    })
 
   const getOnToggleRecipe =
     (cookbookId: string, alreadyInCookbook: boolean) => () => {
