@@ -3,6 +3,11 @@ import { AuthenticationError, ForbiddenError } from '@redwoodjs/graphql-server'
 
 import { db } from './db'
 
+export interface ICurrentUser {
+  id: string
+  username: string
+}
+
 /**
  * The session object sent in as the first argument to getCurrentUser() will
  * have a single key `id` containing the unique ID of the logged in user
@@ -20,15 +25,18 @@ import { db } from './db'
  * fields to the `select` object below once you've decided they are safe to be
  * seen if someone were to open the Web Inspector in their browser.
  */
+
 export const getCurrentUser = async (session: Decoded) => {
-  if (!session || typeof session.id !== 'number') {
+  if (!session || typeof session.id !== 'string') {
     throw new Error('Invalid session')
   }
 
-  return await db.user.findUnique({
+  const user = await db.user.findUnique({
     where: { id: session.id },
-    select: { id: true },
+    select: { id: true, username: true },
   })
+  if (!user) throw new AuthenticationError('You are not logged in.')
+  else return user
 }
 
 /**
@@ -108,5 +116,77 @@ export const requireAuth = ({ roles }: { roles?: AllowedRoles } = {}) => {
 
   if (roles && !hasRole(roles)) {
     throw new ForbiddenError("You don't have access to do that.")
+  }
+}
+
+/**
+ * Use requireRecipeAuth for checking that a user can modify/delete a recipe
+ *
+ * @param recipeId - The ID of the recipe for which we are checking auth
+ *
+ * @returns - If the currentUser is authenticated (and allowed to make changes to the given recipe)
+ *
+ * @throws {@link AuthenticationError} - If the currentUser is not authenticated
+ * @throws {@link ForbiddenError} If the currentUser is not allowed due to the recipe not being theirs
+ */
+export const requireRecipeAuth = async (recipeId: string) => {
+  if (!isAuthenticated()) {
+    throw new AuthenticationError('You are not logged in!')
+  }
+
+  const recipeBasicInfo = await db.recipe.findUnique({
+    where: { id: recipeId },
+  })
+
+  if (context.currentUser!.id !== recipeBasicInfo!.chefId) {
+    throw new ForbiddenError('You can only modify your own recipes!')
+  }
+}
+
+/**
+ * Use requireShoppingListAuth for checking that a user can modify/delete a shoppingList
+ *
+ * @param shoppingListId - The ID of the shoppingList for which we are checking auth
+ *
+ * @returns - If the currentUser is authenticated (and allowed to make changes to the given shoppingList)
+ *
+ * @throws {@link AuthenticationError} - If the currentUser is not authenticated
+ * @throws {@link ForbiddenError} If the currentUser is not allowed due to the shoppingList not being theirs
+ */
+export const requireShoppingListAuth = async (shoppingListId: string) => {
+  if (!isAuthenticated()) {
+    throw new AuthenticationError('You are not logged in!')
+  }
+
+  const shoppingListBasicInfo = await db.shoppingList.findUnique({
+    where: { id: shoppingListId },
+  })
+
+  if (context.currentUser!.id !== shoppingListBasicInfo!.authorId) {
+    throw new ForbiddenError('You can only modify your own shoppingLists!')
+  }
+}
+
+/**
+ * Use requireCookbookAuth for checking that a user can modify/delete a cookbook
+ *
+ * @param cookbookId - The ID of the cookbook for which we are checking auth
+ *
+ * @returns - If the currentUser is authenticated (and allowed to make changes to the given cookbook)
+ *
+ * @throws {@link AuthenticationError} - If the currentUser is not authenticated
+ * @throws {@link ForbiddenError} If the currentUser is not allowed due to the cookbook not being theirs
+ */
+export const requireCookbookAuth = async (cookbookId: string) => {
+  if (!isAuthenticated()) {
+    throw new AuthenticationError('You are not logged in!')
+  }
+
+  const cookbookBasicInfo = await db.cookbook.findUnique({
+    where: { id: cookbookId },
+  })
+
+  if (context.currentUser!.id !== cookbookBasicInfo!.authorId) {
+    throw new ForbiddenError('You can only modify your own cookbooks!')
   }
 }
