@@ -26,7 +26,9 @@ export interface ICurrentUser {
  * seen if someone were to open the Web Inspector in their browser.
  */
 
-export const getCurrentUser = async (session: Decoded) => {
+export const getCurrentUser = async (
+  session: Decoded
+): Promise<ICurrentUser | null> => {
   if (!session || typeof session.id !== 'string') {
     throw new Error('Invalid session')
   }
@@ -111,7 +113,7 @@ export const hasRole = (roles: AllowedRoles): boolean => {
  */
 export const requireAuth = ({ roles }: { roles?: AllowedRoles } = {}) => {
   if (!isAuthenticated()) {
-    throw new AuthenticationError("You don't have permission to do that.")
+    throw new AuthenticationError('You are not logged in!')
   }
 
   if (roles && !hasRole(roles)) {

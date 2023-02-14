@@ -15,7 +15,7 @@ const getLunchCookbookScenarioData = (
   authorId: string
 ): Prisma.CookbookCreateArgs['data'] => ({
   authorId,
-  title: 'Breakfast',
+  title: 'Lunch',
 })
 
 export const bobsCookbooksScenarioData = {

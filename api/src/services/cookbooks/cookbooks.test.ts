@@ -52,7 +52,9 @@ describe('cookbooks', () => {
   scenario('returns a single cookbook', async (scenario: StandardScenario) => {
     const result = await cookbook({ id: scenario.cookbook.bobsBreakfast.id })
 
-    expect(result).toEqual(scenario.cookbook.bobsBreakfast)
+    expect(JSON.stringify(result)).toEqual(
+      JSON.stringify(scenario.cookbook.bobsBreakfast)
+    )
   })
 
   scenario('creates a cookbook', async (scenario: StandardScenario) => {
