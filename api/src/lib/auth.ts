@@ -28,7 +28,7 @@ export interface ICurrentUser {
 
 export const getCurrentUser = async (
   session: Decoded
-): Promise<ICurrentUser | null> => {
+): Promise<ICurrentUser> => {
   if (!session || typeof session.id !== 'string') {
     throw new Error('Invalid session')
   }
