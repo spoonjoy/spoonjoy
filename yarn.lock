@@ -4498,6 +4498,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@redwoodjs/auth-dbauth-web@patch:@redwoodjs/auth-dbauth-web@npm%3A4.1.3#./.yarn/patches/@redwoodjs-auth-dbauth-web-npm-4.1.3-d343e30aa6.patch::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 4.1.3
+  resolution: "@redwoodjs/auth-dbauth-web@patch:@redwoodjs/auth-dbauth-web@npm%3A4.1.3#./.yarn/patches/@redwoodjs-auth-dbauth-web-npm-4.1.3-d343e30aa6.patch::version=4.1.3&hash=64add2&locator=root-workspace-0b6124%40workspace%3A."
+  dependencies:
+    "@babel/runtime-corejs3": 7.20.13
+    "@redwoodjs/auth": 4.1.3
+    "@simplewebauthn/browser": 6.2.2
+    core-js: 3.27.2
+  checksum: 190912d7bd8748314dafa9de15f6a5df38d899e7b93429786fbbfff73948712325667d8fad30aec1084b0acd873b4ce7df21a167fd2201f13eaf192c76838f06
+  languageName: node
+  linkType: hard
+
 "@redwoodjs/auth@npm:4.1.3":
   version: 4.1.3
   resolution: "@redwoodjs/auth@npm:4.1.3"
