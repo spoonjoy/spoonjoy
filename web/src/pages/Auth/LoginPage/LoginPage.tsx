@@ -4,13 +4,13 @@ import { useEffect } from 'react'
 import { FingerPrintIcon } from '@heroicons/react//24/solid'
 import { IFormSignin } from 'types/auth'
 
-import { useAuth } from '@redwoodjs/auth'
 import WebAuthnClient from '@redwoodjs/auth/dist/webAuthn'
 import { Form, Submit, useForm } from '@redwoodjs/forms'
 import { navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
+import { useAuth } from 'src/auth'
 import StyledPasswordField from 'src/components/formComponents/StyledPasswordField'
 import StyledTextField from 'src/components/formComponents/StyledTextField'
 

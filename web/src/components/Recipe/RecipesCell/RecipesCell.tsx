@@ -3,10 +3,10 @@ import type {
   FindCookbooksByUserVariables,
 } from 'types/graphql'
 
-import { useAuth } from '@redwoodjs/auth'
 import { routes } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
+import { useAuth } from 'src/auth'
 import Recipes from 'src/components/Recipe/Recipes'
 import EmptyState from 'src/components/shared/EmptyState'
 

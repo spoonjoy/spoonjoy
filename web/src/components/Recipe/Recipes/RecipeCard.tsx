@@ -1,8 +1,8 @@
 import { RecipeShortInfo } from 'types/graphql'
 
-import { useAuth } from '@redwoodjs/auth'
 import { routes } from '@redwoodjs/router'
 
+import { useAuth } from 'src/auth'
 import AddToCookbookButton from 'src/components/Cookbook/AddToCookbook/AddToCookbookButton'
 import AddToCookbookButtonCell from 'src/components/Cookbook/AddToCookbookButtonCell'
 import ListCardBase from 'src/components/shared/ListCard/ListCardBase'

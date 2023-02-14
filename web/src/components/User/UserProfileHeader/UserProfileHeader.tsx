@@ -1,6 +1,6 @@
 import ChefRJ from 'public/images/chef-rj.png'
 
-import { useAuth } from '@redwoodjs/auth'
+import { useAuth } from 'src/auth'
 
 const UserProfileHeader = ({ username }: { username: string }) => {
   const { currentUser } = useAuth()

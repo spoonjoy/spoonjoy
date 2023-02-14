@@ -9,13 +9,14 @@
 
 import { Router, Route, Set, Private } from '@redwoodjs/router'
 
+import { useAuth } from 'src/auth'
 import BackgroundLayout from 'src/layouts/BackgroundLayout/BackgroundLayout'
 
 import SiteLayout from './layouts/SiteLayout/SiteLayout'
 
 const Routes = () => {
   return (
-    <Router>
+    <Router useAuth={useAuth}>
       {/* Here we put things that should redirect to the sign up page */}
       <Private wrap={SiteLayout} unauthenticated="signup">
         <Set wrap={BackgroundLayout}>

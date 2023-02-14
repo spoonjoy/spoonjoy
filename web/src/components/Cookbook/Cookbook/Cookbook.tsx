@@ -1,10 +1,10 @@
 import { PencilIcon } from '@heroicons/react/24/outline'
 import type { FindCookbookById } from 'types/graphql'
 
-import { useAuth } from '@redwoodjs/auth'
 import { navigate, routes, useParams } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
+import { useAuth } from 'src/auth'
 import Recipes from 'src/components/Recipe/Recipes'
 import EmptyState from 'src/components/shared/EmptyState'
 import { HeaderSlot, DefaultHeader } from 'src/layouts/SiteLayout/SiteLayout'

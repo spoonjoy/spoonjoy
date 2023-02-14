@@ -1,9 +1,9 @@
 import { PlusIcon } from '@heroicons/react/24/outline'
 import type { CookbookInfo } from 'types/graphql'
 
-import { useAuth } from '@redwoodjs/auth'
 import { routes } from '@redwoodjs/router'
 
+import { useAuth } from 'src/auth'
 import EmptyState from 'src/components/shared/EmptyState'
 import ListCardBase from 'src/components/shared/ListCard/ListCardBase'
 

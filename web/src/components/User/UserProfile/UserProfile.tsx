@@ -1,8 +1,8 @@
 import { Tab } from '@headlessui/react'
 
-import { useAuth } from '@redwoodjs/auth'
 import { navigate, routes, useParams } from '@redwoodjs/router'
 
+import { useAuth } from 'src/auth'
 import CookbooksCell from 'src/components/Cookbook/CookbooksCell'
 import CreateEditCookbookDialog from 'src/components/Cookbook/CreateEditCookbook/CreateEditCookbookDialog'
 import RecipesCell from 'src/components/Recipe/RecipesCell'

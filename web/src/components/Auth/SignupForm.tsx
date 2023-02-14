@@ -1,8 +1,9 @@
 import { IFormSignup } from 'types/auth'
 
-import { useAuth } from '@redwoodjs/auth'
 import { Form, Submit } from '@redwoodjs/forms'
 import { toast } from '@redwoodjs/web/dist/toast'
+
+import { useAuth } from 'src/auth'
 
 import StyledPasswordField from '../formComponents/StyledPasswordField'
 import StyledTextField from '../formComponents/StyledTextField'

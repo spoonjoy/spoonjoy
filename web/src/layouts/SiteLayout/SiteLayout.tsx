@@ -9,7 +9,7 @@ import {
 import ChefRJ from 'public/images/chef-rj.png'
 import { SlotProvider, createSlot } from 'react-view-slot'
 
-import { useAuth } from '@redwoodjs/auth'
+import { useAuth } from 'src/auth'
 import { Link, navigate, routes, useMatch } from '@redwoodjs/router'
 import { toast } from '@redwoodjs/web/toast'
 

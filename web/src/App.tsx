@@ -1,11 +1,10 @@
 import { Analytics } from '@vercel/analytics/react'
 
-import { AuthProvider } from '@redwoodjs/auth'
-import WebAuthnClient from '@redwoodjs/auth/webAuthn'
 import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 import { Toaster } from '@redwoodjs/web/dist/toast'
 
+import { AuthProvider, useAuth } from 'src/auth'
 import FatalErrorPage from 'src/pages/FatalErrorPage'
 import Routes from 'src/Routes'
 import './scaffold.css'
@@ -17,8 +16,8 @@ const App = () => {
     <>
       <FatalErrorBoundary page={FatalErrorPage}>
         <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
-          <AuthProvider type="dbAuth" client={WebAuthnClient}>
-            <RedwoodApolloProvider>
+          <AuthProvider>
+            <RedwoodApolloProvider useAuth={useAuth}>
               <StoreProvider value={store}>
                 <Toaster
                   toastOptions={{ className: 'rw-toast', duration: 6000 }}

@@ -1,8 +1,8 @@
 import type { FindRecipeById } from 'types/graphql'
 
-import { useAuth } from '@redwoodjs/auth'
 import { MetaTags } from '@redwoodjs/web'
 
+import { useAuth } from 'src/auth'
 import AddToCookbookButton from 'src/components/Cookbook/AddToCookbook/AddToCookbookButton'
 import AddToCookbookButtonCell from 'src/components/Cookbook/AddToCookbookButtonCell'
 import IngredientsItemsList, {
