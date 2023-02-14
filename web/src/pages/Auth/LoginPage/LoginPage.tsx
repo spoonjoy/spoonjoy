@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useEffect } from 'react'
 
 import { FingerPrintIcon } from '@heroicons/react//24/solid'
@@ -20,51 +20,37 @@ const WELCOME_MESSAGE = 'welcome back!'
 const REDIRECT = routes.welcome()
 
 const LoginPage = ({ type }) => {
-  const { isAuthenticated, loading, logIn, reauthenticate } = useAuth()
-  const { client: webAuthn } = useAuth()
-
-  const formMethods = useForm<IFormSignin>()
-
   const {
-    formState: { errors },
-  } = formMethods
-
+    isAuthenticated,
+    client: webAuthn,
+    loading,
+    logIn,
+    reauthenticate,
+  } = useAuth()
   const [shouldShowWebAuthn, setShouldShowWebAuthn] = useState(false)
   const [showWebAuthn, setShowWebAuthn] = useState(
-    webAuthn?.isEnabled() && type !== 'password'
+    webAuthn.isEnabled() && type !== 'password'
   )
-
-  const onAuthenticate = React.useCallback(async () => {
-    try {
-      await webAuthn?.authenticate()
-      await reauthenticate()
-      toast.success(WELCOME_MESSAGE)
-      navigate(REDIRECT)
-    } catch (e) {
-      if (e.name === 'WebAuthnDeviceNotFoundError') {
-        toast.error(
-          'Device not found, log in with username/password to continue'
-        )
-        setShowWebAuthn(false)
-      } else {
-        toast.error(e.message)
-      }
-    }
-  }, [webAuthn, reauthenticate])
 
   // should redirect right after login or wait to show the webAuthn prompts?
   useEffect(() => {
-    if (isAuthenticated && (!shouldShowWebAuthn || webAuthn?.isEnabled())) {
+    if (isAuthenticated && (!shouldShowWebAuthn || webAuthn.isEnabled())) {
       navigate(REDIRECT)
     }
-  }, [isAuthenticated, shouldShowWebAuthn, webAuthn])
+  }, [isAuthenticated, shouldShowWebAuthn])
 
   // if WebAuthn is enabled, show the prompt as soon as the page loads
   useEffect(() => {
     if (!loading && !isAuthenticated && showWebAuthn) {
       onAuthenticate()
     }
-  }, [loading, isAuthenticated, showWebAuthn, onAuthenticate])
+  }, [loading, isAuthenticated])
+
+  // focus on the username field as soon as the page loads
+  const usernameRef = useRef()
+  useEffect(() => {
+    usernameRef.current && usernameRef.current.focus()
+  }, [])
 
   const onSubmit = async (data: IFormSignin) => {
     const webAuthnSupported = await webAuthn?.isSupported()
@@ -72,7 +58,10 @@ const LoginPage = ({ type }) => {
     if (webAuthnSupported) {
       setShouldShowWebAuthn(true)
     }
-    const response = await logIn({ ...data })
+    const response = await logIn({
+      username: data.username,
+      password: data.password,
+    })
 
     if (response.message) {
       // auth details good, but user not logged in
@@ -89,6 +78,24 @@ const LoginPage = ({ type }) => {
       }
     }
   }
+
+  const onAuthenticate = React.useCallback(async () => {
+    try {
+      await webAuthn?.authenticate()
+      await reauthenticate()
+      toast.success(WELCOME_MESSAGE)
+      navigate(REDIRECT)
+    } catch (e: any) {
+      if (e.name === 'WebAuthnDeviceNotFoundError') {
+        toast.error(
+          'Device not found, log in with username/password to continue'
+        )
+        setShowWebAuthn(false)
+      } else {
+        toast.error(e.message)
+      }
+    }
+  }, [webAuthn, reauthenticate])
 
   const onRegister = async () => {
     try {
@@ -169,11 +176,7 @@ const LoginPage = ({ type }) => {
       <AuthHeader location="login" />
 
       <AuthFormWrapper>
-        <Form<IFormSignin>
-          formMethods={formMethods}
-          onSubmit={onSubmit}
-          className="space-y-6"
-        >
+        <Form<IFormSignin> onSubmit={onSubmit} className="space-y-6">
           <StyledTextField
             label="username"
             fieldName="username"
