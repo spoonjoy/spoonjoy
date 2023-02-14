@@ -1,0 +1,226 @@
+diff --git a/dist/webAuthn.js b/dist/webAuthn.js
+index 0b8eadcba5d9dcd48ee19c6e184bb6d0544bd4a9..5cbbc336004db99b6a659b3c4b8ab9c2972a52eb 100644
+--- a/dist/webAuthn.js
++++ b/dist/webAuthn.js
+@@ -1,49 +1,54 @@
+ "use strict";
+ 
+ var _Object$defineProperty = require("@babel/runtime-corejs3/core-js/object/define-property");
+-var _interopRequireDefault = require("@babel/runtime-corejs3/helpers/interopRequireDefault").default;
++var _interopRequireDefault =
++  require("@babel/runtime-corejs3/helpers/interopRequireDefault").default;
+ _Object$defineProperty(exports, "__esModule", {
+-  value: true
++  value: true,
+ });
+ exports.default = void 0;
+-var _stringify = _interopRequireDefault(require("@babel/runtime-corejs3/core-js/json/stringify"));
++var _stringify = _interopRequireDefault(
++  require("@babel/runtime-corejs3/core-js/json/stringify")
++);
+ var _browser = require("@simplewebauthn/browser");
+ class WebAuthnRegistrationError extends Error {
+   constructor(message) {
+     super(message);
+-    this.name = 'WebAuthnRegistrationError';
++    this.name = "WebAuthnRegistrationError";
+   }
+ }
+ class WebAuthnAuthenticationError extends Error {
+   constructor(message) {
+     super(message);
+-    this.name = 'WebAuthnAuthenticationError';
++    this.name = "WebAuthnAuthenticationError";
+   }
+ }
+ class WebAuthnAlreadyRegisteredError extends WebAuthnRegistrationError {
+   constructor() {
+-    super('This device is already registered');
+-    this.name = 'WebAuthnAlreadyRegisteredError';
++    super("This device is already registered");
++    this.name = "WebAuthnAlreadyRegisteredError";
+   }
+ }
+ class WebAuthnDeviceNotFoundError extends WebAuthnAuthenticationError {
+   constructor() {
+-    super('WebAuthn device not found');
+-    this.name = 'WebAuthnDeviceNotFoundError';
++    super("WebAuthn device not found");
++    this.name = "WebAuthnDeviceNotFoundError";
+   }
+ }
+ class WebAuthnNoAuthenticatorError extends WebAuthnAuthenticationError {
+   constructor() {
+-    super("This device was not recognized. Use username/password login, or if you're using iOS you can try reloading this page");
+-    this.name = 'WebAuthnNoAuthenticatorError';
++    super(
++      "This device was not recognized. Use username/password login, or if you're using iOS you can try reloading this page"
++    );
++    this.name = "WebAuthnNoAuthenticatorError";
+   }
+ }
+ class WebAuthnClient {
+   constructor() {
+-    this.authApiUrl = '';
++    this.authApiUrl = "";
+   }
+   getAuthApiUrl() {
+-    return this.authApiUrl || `${process.env.RWJS_API_URL}/auth`;
++    return this.authApiUrl || `${RWJS_API_URL}/auth`;
+   }
+   setAuthApiUrl(authApiUrl) {
+     if (authApiUrl) {
+@@ -61,44 +66,64 @@ class WebAuthnClient {
+     try {
+       const xhr = new XMLHttpRequest();
+       xhr.withCredentials = true;
+-      xhr.open('GET', `${this.getAuthApiUrl()}?method=webAuthnAuthOptions`, false);
+-      xhr.setRequestHeader('content-type', 'application/json');
++      xhr.open(
++        "GET",
++        `${this.getAuthApiUrl()}?method=webAuthnAuthOptions`,
++        false
++      );
++      xhr.setRequestHeader("content-type", "application/json");
+       xhr.send(null);
+       options = JSON.parse(xhr.responseText);
+       if (xhr.status !== 200) {
+         if (options.error?.match(/username and password/)) {
+           throw new WebAuthnDeviceNotFoundError();
+         } else {
+-          throw new WebAuthnAuthenticationError(`Could not start authentication: ${options.error}`);
++          throw new WebAuthnAuthenticationError(
++            `Could not start authentication: ${options.error}`
++          );
+         }
+       }
+     } catch (e) {
+       console.error(e.message);
+-      throw new WebAuthnAuthenticationError(`Could not start authentication: ${e.message}`);
++      throw new WebAuthnAuthenticationError(
++        `Could not start authentication: ${e.message}`
++      );
+     }
+     return options;
+   }
+   async authenticate() {
+     const authOptions = await this.authenticationOptions();
+     try {
+-      const browserResponse = await (0, _browser.startAuthentication)(authOptions);
++      const browserResponse = await (0, _browser.startAuthentication)(
++        authOptions
++      );
+       const xhr = new XMLHttpRequest();
+       xhr.withCredentials = true;
+-      xhr.open('POST', this.getAuthApiUrl(), false);
+-      xhr.setRequestHeader('content-type', 'application/json');
+-      xhr.send((0, _stringify.default)({
+-        method: 'webAuthnAuthenticate',
+-        ...browserResponse
+-      }));
++      xhr.open("POST", this.getAuthApiUrl(), false);
++      xhr.setRequestHeader("content-type", "application/json");
++      xhr.send(
++        (0, _stringify.default)({
++          method: "webAuthnAuthenticate",
++          ...browserResponse,
++        })
++      );
+       const options = JSON.parse(xhr.responseText);
+       if (xhr.status !== 200) {
+-        throw new WebAuthnAuthenticationError(`Could not complete authentication: ${options.error}`);
++        throw new WebAuthnAuthenticationError(
++          `Could not complete authentication: ${options.error}`
++        );
+       }
+     } catch (e) {
+-      if (e.message.match(/No available authenticator recognized any of the allowed credentials/)) {
++      if (
++        e.message.match(
++          /No available authenticator recognized any of the allowed credentials/
++        )
++      ) {
+         throw new WebAuthnNoAuthenticatorError();
+       } else {
+-        throw new WebAuthnAuthenticationError(`Error while authenticating: ${e.message}`);
++        throw new WebAuthnAuthenticationError(
++          `Error while authenticating: ${e.message}`
++        );
+       }
+     }
+     return true;
+@@ -108,16 +133,24 @@ class WebAuthnClient {
+     try {
+       const xhr = new XMLHttpRequest();
+       xhr.withCredentials = true;
+-      xhr.open('GET', `${this.getAuthApiUrl()}?method=webAuthnRegOptions`, false);
+-      xhr.setRequestHeader('content-type', 'application/json');
++      xhr.open(
++        "GET",
++        `${this.getAuthApiUrl()}?method=webAuthnRegOptions`,
++        false
++      );
++      xhr.setRequestHeader("content-type", "application/json");
+       xhr.send(null);
+       options = JSON.parse(xhr.responseText);
+       if (xhr.status !== 200) {
+-        throw new WebAuthnRegistrationError(`Could not start registration: ${options.error}`);
++        throw new WebAuthnRegistrationError(
++          `Could not start registration: ${options.error}`
++        );
+       }
+     } catch (e) {
+       console.error(e);
+-      throw new WebAuthnRegistrationError(`Could not start registration: ${e.message}`);
++      throw new WebAuthnRegistrationError(
++        `Could not start registration: ${e.message}`
++      );
+     }
+     return options;
+   }
+@@ -127,27 +160,35 @@ class WebAuthnClient {
+     try {
+       regResponse = await (0, _browser.startRegistration)(options);
+     } catch (e) {
+-      if (e.name === 'InvalidStateError') {
++      if (e.name === "InvalidStateError") {
+         throw new WebAuthnAlreadyRegisteredError();
+       } else {
+-        throw new WebAuthnRegistrationError(`Error while registering: ${e.message}`);
++        throw new WebAuthnRegistrationError(
++          `Error while registering: ${e.message}`
++        );
+       }
+     }
+     try {
+       const xhr = new XMLHttpRequest();
+       xhr.withCredentials = true;
+-      xhr.open('POST', this.getAuthApiUrl(), false);
+-      xhr.setRequestHeader('content-type', 'application/json');
+-      xhr.send((0, _stringify.default)({
+-        method: 'webAuthnRegister',
+-        ...regResponse
+-      }));
++      xhr.open("POST", this.getAuthApiUrl(), false);
++      xhr.setRequestHeader("content-type", "application/json");
++      xhr.send(
++        (0, _stringify.default)({
++          method: "webAuthnRegister",
++          ...regResponse,
++        })
++      );
+       const options = JSON.parse(xhr.responseText);
+       if (xhr.status !== 200) {
+-        throw new WebAuthnRegistrationError(`Could not complete registration: ${options.error}`);
++        throw new WebAuthnRegistrationError(
++          `Could not complete registration: ${options.error}`
++        );
+       }
+     } catch (e) {
+-      throw new WebAuthnRegistrationError(`Error while registering: ${e.message}`);
++      throw new WebAuthnRegistrationError(
++        `Error while registering: ${e.message}`
++      );
+     }
+     return true;
+   }
