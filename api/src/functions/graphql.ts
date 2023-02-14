@@ -16,6 +16,7 @@ export const handler = createGraphQLHandler({
   directives,
   sdls,
   services,
+  armorConfig: { maxDepth: { n: 10 } },
   onException: () => {
     // Disconnect from your database with an unhandled exception.
     db.$disconnect()

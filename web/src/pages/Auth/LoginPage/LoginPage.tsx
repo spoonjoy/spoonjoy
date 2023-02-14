@@ -4,7 +4,6 @@ import { useEffect } from 'react'
 import { FingerPrintIcon } from '@heroicons/react//24/solid'
 import { IFormSignin } from 'types/auth'
 
-import WebAuthnClient from '@redwoodjs/auth/dist/webAuthn'
 import { Form, Submit, useForm } from '@redwoodjs/forms'
 import { navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
@@ -22,7 +21,7 @@ const REDIRECT = routes.welcome()
 
 const LoginPage = ({ type }) => {
   const { isAuthenticated, loading, logIn, reauthenticate } = useAuth()
-  const { client: webAuthn }: { client?: typeof WebAuthnClient } = useAuth()
+  const { client: webAuthn } = useAuth()
 
   const formMethods = useForm<IFormSignin>()
 
