@@ -32,7 +32,7 @@ const RecipeEditDeleteBtn = ({
   const [deleteRecipe] = useMutation(DELETE_RECIPE_MUTATION, {
     onCompleted: () => {
       toast.success('Recipe deleted')
-      navigate(routes.recipes({ username: ownerUsername }))
+      navigate(routes.user({ username: ownerUsername }))
     },
     onError: (error) => {
       toast.error(error.message)
