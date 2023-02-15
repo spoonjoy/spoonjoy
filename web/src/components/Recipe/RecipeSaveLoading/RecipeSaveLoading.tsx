@@ -1,7 +1,17 @@
 import { useState, useEffect } from 'react'
 
+const TAKING_PHOTO = 'taking a photo'
+const WHIPPING_UP_MAGIC = 'whipping up some magic'
+const BAKING_TO_PERFECTION = 'baking to perfection'
+const SEASONING_TO_TASTE = 'seasoning to taste'
+const HEATING_THINGS_UP = 'heating things up'
+const STIRRING_THE_POT = 'stirring the pot'
+const BRINGING_IT_ALL_TOGETHER = 'bringing it all together'
+const ALMOST_READY_TO_SERVE = 'almost ready to serve'
+const PLATE_IT_UP = 'plate it up!'
+
 const RecipeSaveLoading = () => {
-  const [subText, setSubText] = useState('Please wait...')
+  const [subText, setSubText] = useState(TAKING_PHOTO)
   const [showSubText, setShowSubText] = useState(false)
 
   useEffect(() => {
@@ -10,18 +20,26 @@ const RecipeSaveLoading = () => {
       setTimeout(() => {
         setSubText((prevSubText) => {
           switch (prevSubText) {
-            case 'Please wait...':
-              return 'This may take a moment.'
-            case 'This may take a moment.':
-              return 'Thanks for your patience!'
-            case 'Thanks for your patience!':
-              return 'Almost done...'
-            case 'Almost done...':
-              return 'Finishing up!'
-            case 'Finishing up!':
-              return 'Please wait...'
+            case TAKING_PHOTO:
+              return WHIPPING_UP_MAGIC
+            case WHIPPING_UP_MAGIC:
+              return BAKING_TO_PERFECTION
+            case BAKING_TO_PERFECTION:
+              return SEASONING_TO_TASTE
+            case SEASONING_TO_TASTE:
+              return HEATING_THINGS_UP
+            case HEATING_THINGS_UP:
+              return STIRRING_THE_POT
+            case STIRRING_THE_POT:
+              return BRINGING_IT_ALL_TOGETHER
+            case BRINGING_IT_ALL_TOGETHER:
+              return ALMOST_READY_TO_SERVE
+            case ALMOST_READY_TO_SERVE:
+              return PLATE_IT_UP
+            case PLATE_IT_UP:
+              return TAKING_PHOTO
             default:
-              return 'Please wait...'
+              return TAKING_PHOTO
           }
         })
         setShowSubText(true)
