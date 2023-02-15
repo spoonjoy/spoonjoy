@@ -25,7 +25,6 @@
   },
   "packageManager": "yarn@3.2.4",
   "resolutions": {
-    "@hookform/devtools@^4.2.2": "patch:@hookform/devtools@npm%3A4.2.2#./.yarn/patches/@hookform-devtools-npm-4.2.2-aafab2382b.patch",
-    "@redwoodjs/auth-dbauth-web@4.1.3": "patch:@redwoodjs/auth-dbauth-web@npm%3A4.1.3#./.yarn/patches/@redwoodjs-auth-dbauth-web-npm-4.1.3-d343e30aa6.patch"
+    "@hookform/devtools@^4.2.2": "patch:@hookform/devtools@npm%3A4.2.2#./.yarn/patches/@hookform-devtools-npm-4.2.2-aafab2382b.patch"
   }
 }
