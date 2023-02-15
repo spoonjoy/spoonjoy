@@ -34,4 +34,36 @@
   .btn-small-rounded-secondary {
     @apply btn-small-rounded border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:bg-gray-50 disabled:text-gray-500
   }
+
 }
+
+@keyframes fade-in-out {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.animate-sub-text {
+  animation-name: fade-in-out;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+.animate-sub-text.opacity-0 {
+  animation-name: fade-out;
+}
+
