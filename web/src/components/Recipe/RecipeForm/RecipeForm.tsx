@@ -129,9 +129,11 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
       setTimeout(() => {
         setShowLoadingScreen(true)
       }, 1000)
-    } else {
-      setShowLoadingScreen(false)
     }
+    // can reenable this if necessary but it causes a flash of the form before redirect when saving is complete
+    // else {
+    //   setShowLoadingScreen(false)
+    // }
   }, [loading])
 
   return (
