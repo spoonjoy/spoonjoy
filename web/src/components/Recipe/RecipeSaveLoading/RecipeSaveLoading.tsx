@@ -52,7 +52,7 @@ const RecipeSaveLoading = () => {
   }, [])
 
   return (
-    <div className="flex h-screen flex-col items-center justify-center bg-white">
+    <div className="absolute top-0 left-0 right-0 bottom-0 z-50 flex h-screen flex-col items-center justify-center bg-white">
       <div className="flex flex-col items-center justify-center gap-2">
         <LogoBlack className="h-12 w-auto animate-pulse" />
         {/* Loading spinner that we can use instead of the pulsing SJ logo */}

@@ -12,7 +12,10 @@ import { navigate, routes } from '@redwoodjs/router'
 import { toast } from '@redwoodjs/web/dist/toast'
 
 import AddRemBtns from 'src/components/formComponents/AddRemBtns'
+import { classNames } from 'src/helpers/css'
 import { useStore } from 'src/stores/RootStore'
+
+import RecipeSaveLoading from '../RecipeSaveLoading/RecipeSaveLoading'
 
 import RecipeBasicInfoFormFrag from './RecipeBasicInfoFormFrag'
 import StepFormFrag from './StepFormFrag'
@@ -119,92 +122,112 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
     return recipeInputStore.steps[stepNum - 1].stepTitle
   }
 
+  const [showLoadingScreen, setShowLoadingScreen] = React.useState(false)
+
+  React.useEffect(() => {
+    if (loading) {
+      setTimeout(() => {
+        setShowLoadingScreen(true)
+      }, 1000)
+    } else {
+      setShowLoadingScreen(false)
+    }
+  }, [loading])
+
   return (
-    <div className="p-5">
-      <Form<FormUpdateRecipe | FormCreateRecipe>
-        formMethods={formMethods}
-        onSubmit={onSubmit}
-        error={error}
+    <>
+      {showLoadingScreen && <RecipeSaveLoading />}
+      <div
+        className={classNames(
+          showLoadingScreen && 'h-0 overflow-hidden',
+          'p-5'
+        )}
       >
-        <FormError
+        <Form<FormUpdateRecipe | FormCreateRecipe>
+          formMethods={formMethods}
+          onSubmit={onSubmit}
           error={error}
-          wrapperClassName="rw-form-error-wrapper"
-          titleClassName="rw-form-error-title"
-          listClassName="rw-form-error-list"
-        />
+        >
+          <FormError
+            error={error}
+            wrapperClassName="rw-form-error-wrapper"
+            titleClassName="rw-form-error-title"
+            listClassName="rw-form-error-list"
+          />
 
-        <RecipeBasicInfoFormFrag
-          recipeInputStore={recipeInputStore}
-          errors={errors}
-        />
+          <RecipeBasicInfoFormFrag
+            recipeInputStore={recipeInputStore}
+            errors={errors}
+          />
 
-        {recipeInputStore.steps.map((step) => {
-          return (
-            <StepFormFrag
-              key={`step-${step.stepNum}`}
-              recipeId={recipeInputStore.id}
-              step={step}
-              removeIngredientFields={removeIngredientFields}
-              removeStepOutputFields={removeStepOutputFields}
-              errors={errors}
-              control={control}
-              getStepTitle={getStepTitle}
-            />
-          )
-        })}
+          {recipeInputStore.steps.map((step) => {
+            return (
+              <StepFormFrag
+                key={`step-${step.stepNum}`}
+                recipeId={recipeInputStore.id}
+                step={step}
+                removeIngredientFields={removeIngredientFields}
+                removeStepOutputFields={removeStepOutputFields}
+                errors={errors}
+                control={control}
+                getStepTitle={getStepTitle}
+              />
+            )
+          })}
 
-        <AddRemBtns
-          id="add-rem-steps-btns"
-          itemName="step"
-          onAdd={() => {
-            recipeInputStore.addStep()
-          }}
-          onRem={() => {
-            removeStepFields(recipeInputStore.steps.length)
-            recipeInputStore.removeStep()
-          }}
-          canRem={recipeInputStore.steps.length > 0}
-          containerClassName="flex items-center justify-center p-8"
-        />
+          <AddRemBtns
+            id="add-rem-steps-btns"
+            itemName="step"
+            onAdd={() => {
+              recipeInputStore.addStep()
+            }}
+            onRem={() => {
+              removeStepFields(recipeInputStore.steps.length)
+              recipeInputStore.removeStep()
+            }}
+            canRem={recipeInputStore.steps.length > 0}
+            containerClassName="flex items-center justify-center p-8"
+          />
 
-        <div className="flex justify-center sm:justify-end">
-          <div className="flex flex-col">
-            {recipeInputStore.steps.length < 1 && (
-              <span className="mb-2 text-sm text-red-600">
-                you need to add at least 1 step.
-              </span>
-            )}
-            <Submit
-              disabled={loading || recipeInputStore.steps.length < 1}
-              className="btn-submit-primary"
-            >
-              {recipe ? 'update recipe' : 'create new recipe'}
-            </Submit>
-            <button
-              onClick={(e) => {
-                e.preventDefault() // needed so that this button doesn't try to submit the form
-                recipeInputStore.clear()
-                reset({
-                  title: '',
-                  description: '',
-                  servings: null,
-                })
-                if (recipe) {
-                  navigate(routes.recipe({ id: recipe.id }))
-                  toast('recipe changes have been discarded')
-                } else {
-                  toast('recipe form has been reset')
-                }
-              }}
-              className="mt-4 rounded-md border border-transparent px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 enabled:bg-red-600"
-            >
-              {recipe ? 'discard changes' : 'reset'}
-            </button>
+          <div className="flex justify-center sm:justify-end">
+            <div className="flex flex-col">
+              {recipeInputStore.steps.length < 1 && (
+                <span className="mb-2 text-sm text-red-600">
+                  you need to add at least 1 step.
+                </span>
+              )}
+              <Submit
+                disabled={loading || recipeInputStore.steps.length < 1}
+                className="btn-submit-primary"
+              >
+                {recipe ? 'update recipe' : 'create new recipe'}
+              </Submit>
+              <button
+                onClick={(e) => {
+                  e.preventDefault() // needed so that this button doesn't try to submit the form
+                  recipeInputStore.clear()
+                  reset({
+                    title: '',
+                    description: '',
+                    servings: null,
+                  })
+                  if (recipe) {
+                    navigate(routes.recipe({ id: recipe.id }))
+                    toast('recipe changes have been discarded')
+                  } else {
+                    toast('recipe form has been reset')
+                  }
+                }}
+                className="mt-4 rounded-md border border-transparent px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 enabled:bg-red-600"
+              >
+                {recipe ? 'discard changes' : 'reset'}
+              </button>
+            </div>
           </div>
-        </div>
-      </Form>
-      <DevTool control={control} />
-    </div>
+        </Form>
+        <DevTool control={control} />
+      </div>
+    </>
   )
 }
 
