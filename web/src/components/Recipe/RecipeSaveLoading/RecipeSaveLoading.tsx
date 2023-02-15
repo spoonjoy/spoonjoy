@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 
+import LogoBlack from 'public/logos/sj_black.svg'
+
 const TAKING_PHOTO = 'taking a photo'
 const WHIPPING_UP_MAGIC = 'whipping up some magic'
 const BAKING_TO_PERFECTION = 'baking to perfection'
@@ -8,7 +10,7 @@ const HEATING_THINGS_UP = 'heating things up'
 const STIRRING_THE_POT = 'stirring the pot'
 const BRINGING_IT_ALL_TOGETHER = 'bringing it all together'
 const ALMOST_READY_TO_SERVE = 'almost ready to serve'
-const PLATE_IT_UP = 'plate it up!'
+const PLATING_IT = 'plating it'
 
 const RecipeSaveLoading = () => {
   const [subText, setSubText] = useState(TAKING_PHOTO)
@@ -35,16 +37,16 @@ const RecipeSaveLoading = () => {
             case BRINGING_IT_ALL_TOGETHER:
               return ALMOST_READY_TO_SERVE
             case ALMOST_READY_TO_SERVE:
-              return PLATE_IT_UP
-            case PLATE_IT_UP:
+              return PLATING_IT
+            case PLATING_IT:
               return TAKING_PHOTO
             default:
               return TAKING_PHOTO
           }
         })
         setShowSubText(true)
-      }, 500)
-    }, 2500)
+      }, 1000)
+    }, 2000)
 
     return () => clearInterval(subTextIntervalId)
   }, [])
@@ -52,7 +54,9 @@ const RecipeSaveLoading = () => {
   return (
     <div className="flex h-screen flex-col items-center justify-center bg-white">
       <div className="flex flex-col items-center justify-center gap-2">
-        <svg
+        <LogoBlack className="h-12 w-auto animate-pulse" />
+        {/* Loading spinner that we can use instead of the pulsing SJ logo */}
+        {/* <svg
           className="mr-3 h-8 w-8 animate-spin text-indigo-700"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -71,23 +75,22 @@ const RecipeSaveLoading = () => {
             fill="currentColor"
             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
           ></path>
-        </svg>
-        <p className="text-lg text-gray-600">saving recipe...</p>
-      </div>
-      <div className="mt-4">
-        <span
-          className={`text-gray-500 ${
-            showSubText ? 'opacity-100' : 'opacity-0'
-          } animate-sub-text`}
-          key={subText}
-          onAnimationEnd={() => {
-            if (!showSubText) {
-              setShowSubText(true)
-            }
-          }}
-        >
-          {subText}
-        </span>
+        </svg> */}
+        <div>
+          <span
+            className={`text-gray-500 ${
+              showSubText ? 'opacity-100' : 'opacity-0'
+            } animate-sub-text`}
+            key={subText}
+            onAnimationEnd={() => {
+              if (!showSubText) {
+                setShowSubText(true)
+              }
+            }}
+          >
+            {subText}
+          </span>
+        </div>
       </div>
     </div>
   )

@@ -2,12 +2,12 @@ import { Fragment } from 'react'
 
 import { Popover, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import LogoBlack from 'public/logos/sj_black.svg'
 
 import { Link, Redirect, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
-import LogoBlack from 'src/layouts/SiteLayout/sj_black.svg'
 
 import WelcomeHeaderImg from './sj-welcome-header.jpg'
 

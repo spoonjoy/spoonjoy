@@ -1,7 +1,8 @@
+import LogoBlack from 'public/logos/sj_black.svg'
+
 import { Link, routes } from '@redwoodjs/router'
 
 import { classNames } from 'src/helpers/css'
-import LogoBlack from 'src/layouts/SiteLayout/sj_black.svg'
 
 interface IAuthHeaderProps {
   location: 'login' | 'signup' | 'new-cookbook'

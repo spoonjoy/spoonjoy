@@ -1,15 +1,16 @@
 import { Analytics } from '@vercel/analytics/react'
 
 import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
-import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
+import { RedwoodApolloProvider } from '@redwoodjs/web/dist/apollo'
 import { Toaster } from '@redwoodjs/web/dist/toast'
 
 import { AuthProvider, useAuth } from 'src/auth'
-import FatalErrorPage from 'src/pages/FatalErrorPage'
 import Routes from 'src/Routes'
 import './scaffold.css'
 import './index.css'
 import { store, StoreProvider } from 'src/stores/RootStore'
+
+import FatalErrorPage from './pages/FatalErrorPage/FatalErrorPage'
 
 const App = () => {
   return (

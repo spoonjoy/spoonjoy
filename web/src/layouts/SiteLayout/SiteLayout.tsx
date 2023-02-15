@@ -7,15 +7,14 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import ChefRJ from 'public/images/chef-rj.png'
+import LogoBlack from 'public/logos/sj_black.svg'
 import { SlotProvider, createSlot } from 'react-view-slot'
 
-import { useAuth } from 'src/auth'
 import { Link, navigate, routes, useMatch } from '@redwoodjs/router'
-import { toast } from '@redwoodjs/web/toast'
+import { toast } from '@redwoodjs/web/dist/toast'
 
+import { useAuth } from 'src/auth'
 import { ICurrentUser } from 'src/lib/auth'
-
-import LogoBlack from './sj_black.svg'
 
 type SiteLayoutProps = {
   children?: React.ReactNode
@@ -59,9 +58,10 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
   const navigationLoggedIn: INavigation[] = [
     {
       name: 'my pantry',
-      href: routes.user({ username: currentUser?.username || '' }),
-      current: useMatch(routes.user({ username: currentUser?.username || '' }))
-        .match,
+      href: routes.user({ username: (currentUser?.username as string) || '' }),
+      current: useMatch(
+        routes.user({ username: (currentUser?.username as string) || '' })
+      ).match,
     },
     // {
     //   name: 'Shopping List',
@@ -76,7 +76,7 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
     {
       name: 'new cookbook',
       href: routes.user({
-        username: currentUser?.username || '',
+        username: (currentUser?.username as string) || '',
         page: 'cookbooks',
         newCookbook: true,
       }),
