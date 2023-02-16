@@ -3,7 +3,7 @@ import { db } from 'api/src/lib/db'
 import { getPizzaScenarioData } from 'api/src/services/recipes/recipes.scenarios'
 import { getShoppingListScenarioData } from 'api/src/services/shoppingLists/shoppingLists.scenarios'
 
-import { hashPassword } from '@redwoodjs/api'
+import { hashPassword } from '@redwoodjs/auth-dbauth-api'
 
 export default async () => {
   try {
