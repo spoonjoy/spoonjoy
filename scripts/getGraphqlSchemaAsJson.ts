@@ -15,20 +15,20 @@ import {
 const nativeScalarsToFilter = ['String', 'Int', 'Boolean']
 
 const inputSDL = `
-  type CreateStepOutputUseInput {
+  input CreateStepOutputUseInput {
     "The step who's output is being used"
     outputOfStepNum: Int!
     "The step who's doing the using. Can be left out if creating steps output uses at the same time as the recipeSteps"
     inputOfStepNum: Int
   }
 
-  type CreateIngredientInput {
+  input CreateIngredientInput {
     quantity: Float!
     unitName: String!
     ingredientName: String!
   }
 
-  type CreateRecipeStepInput {
+  input CreateRecipeStepInput {
     stepNum: Int!
     stepTitle: String
     description: String!
@@ -36,12 +36,15 @@ const inputSDL = `
     stepOutputUses: [CreateStepOutputUseInput!]
   }
 
-  type CreateRecipeInput {
+  input CreateRecipeInput {
     title: String!
     description: String
     servings: Int
     steps: [CreateRecipeStepInput!]!
   }
+
+  type Query {placeholder(id: ID!): String}
+  type Mutation {createRecipe(input: CreateRecipeInput!): String}
 `
 
 const readmeSchema = buildSchema(inputSDL)
