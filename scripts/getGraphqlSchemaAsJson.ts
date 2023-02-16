@@ -14,6 +14,8 @@ import {
 
 const nativeScalarsToFilter = ['String', 'Int', 'Boolean']
 
+// This was copied from the SDL.
+// TODO: get this from the SDL directly
 const inputSDL = `
   input CreateStepOutputUseInput {
     "The step who's output is being used"
