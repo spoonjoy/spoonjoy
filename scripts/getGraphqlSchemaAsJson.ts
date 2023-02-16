@@ -7,86 +7,64 @@ import {
   IntrospectionQuery,
   getIntrospectionQuery,
 } from 'graphql'
-import { fromIntrospectionQuery } from 'graphql-2-json-schema'
+import {
+  fromIntrospectionQuery,
+  FromIntrospectionQueryOptions,
+} from 'graphql-2-json-schema'
 
 const nativeScalarsToFilter = ['String', 'Int', 'Boolean']
 
-const readmeSDL = `
-  type Todo {
-      id: ID!
-      name: String!
-      completed: Boolean
-      color: Color
-
-      "A field that requires an argument"
-      colors(
-        filter: [Color!]!
-      ): [Color!]!
+const inputSDL = `
+  type CreateStepOutputUseInput {
+    "The step who's output is being used"
+    outputOfStepNum: Int!
+    "The step who's doing the using. Can be left out if creating steps output uses at the same time as the recipeSteps"
+    inputOfStepNum: Int
   }
 
-  type SimpleTodo {
-    id: ID!
-    name: String!
+  type CreateIngredientInput {
+    quantity: Float!
+    unitName: String!
+    ingredientName: String!
   }
 
-  union TodoUnion = Todo | SimpleTodo
-
-  input TodoInputType {
-      name: String!
-      completed: Boolean
-      color: Color=RED
+  type CreateRecipeStepInput {
+    stepNum: Int!
+    stepTitle: String
+    description: String!
+    ingredients: [CreateIngredientInput!]
+    stepOutputUses: [CreateStepOutputUseInput!]
   }
 
-  enum Color {
-      "Red color"
-      RED
-      "Green color"
-      GREEN
-  }
-
-  type Query {
-      "A Query with 1 required argument and 1 optional argument"
-      todo(
-        id: ID!,
-        "A default value of false"
-        isCompleted: Boolean=false
-      ): Todo
-
-      "Returns a list (or null) that can contain null values"
-      todos(
-        "Required argument that is a list that cannot contain null values"
-        ids: [String!]!
-      ): [Todo]
-  }
-
-  type Mutation {
-      "A Mutation with 1 required argument"
-      create_todo(
-        todo: TodoInputType!
-      ): Todo!
-
-      "A Mutation with 2 required arguments"
-      update_todo(
-        id: ID!,
-        data: TodoInputType!
-      ): Todo!
-
-      "Returns a list (or null) that can contain null values"
-      update_todos(
-        ids: [String!]!
-        data: TodoInputType!
-      ): [Todo]
+  type CreateRecipeInput {
+    title: String!
+    description: String
+    servings: Int
+    steps: [CreateRecipeStepInput!]!
   }
 `
 
-const readmeSchema = buildSchema(readmeSDL)
-const introspectionQueryJSON = graphqlSync(
-  readmeSchema,
-  getIntrospectionQuery()
-).data as unknown as IntrospectionQuery
+const readmeSchema = buildSchema(inputSDL)
+const introspectionQueryJSON = graphqlSync({
+  schema: readmeSchema,
+  source: getIntrospectionQuery(),
+}).data as unknown as IntrospectionQuery
 
-const options = {
+const options: FromIntrospectionQueryOptions = {
+  // Whether or not to ignore GraphQL internals that are probably not relevant
+  // to documentation generation.
+  // Defaults to `true`
+  ignoreInternals: true,
+  // Whether or not to properly represent GraphQL Lists with Nullable elements
+  // as type "array" with items being an "anyOf" that includes the possible
+  // type and a "null" type.
+  // Defaults to `false` for backwards compatibility, but in future versions
+  // the effect of `true` is likely going to be the default and only way. It is
+  // highly recommended that new implementations set this value to `true`.
   nullableArrayItems: true,
+  // Indicates how to define the `ID` scalar as part of a JSON Schema. Valid options
+  // are `string`, `number`, or `both`. Defaults to `string`
+  idTypeMapping: 'string',
 }
 
 const readmeResult = fromIntrospectionQuery(introspectionQueryJSON, options)
@@ -125,7 +103,7 @@ const keyComparator = (a: string, b: string) => {
 
 const output = `### Input
 
-\`\`\`graphql${readmeSDL}\`\`\`
+\`\`\`graphql${inputSDL}\`\`\`
 
 ### Output
 
