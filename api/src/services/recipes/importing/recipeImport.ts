@@ -1,5 +1,6 @@
 import { fetch } from '@whatwg-node/fetch'
 import * as cheerio from 'cheerio'
+import JSZip from 'jszip'
 import puppeteer from 'puppeteer'
 import { Recipe } from 'schema-dts'
 import { QueryResolvers } from 'types/graphql'
@@ -19,12 +20,26 @@ export const importRecipe: QueryResolvers['importRecipe'] = async ({
     }
   } else if (source === 'CROUTON') {
     if (!fileUrl) throw new RedwoodError('No file URL provided')
+    const recipe = await parseCroutonData(fileUrl)
     return {
       returned: fileUrl,
     }
   } else {
     throw new RedwoodError('Invalid source')
   }
+}
+
+const parseCroutonData = async (fileUrl: string) => {
+  const response = await fetch(fileUrl)
+  const croutons = await JSZip.loadAsync(await response.arrayBuffer())
+  const jsonPromises = Object.values(croutons.files).map(async (file) => {
+    const fileContent = await file.async('string')
+    const contentAsJson = JSON.parse(fileContent)
+    return contentAsJson
+  })
+
+  const jsons = await Promise.all(jsonPromises)
+  console.log(jsons)
 }
 
 const getRecipeStructuredData = async (url: string): Promise<Recipe> => {
