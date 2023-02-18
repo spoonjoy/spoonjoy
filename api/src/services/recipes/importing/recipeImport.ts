@@ -45,8 +45,8 @@ const getRecipeStructuredData = async (url: string): Promise<Recipe> => {
     // if fetch fails, try to get the website with puppeteer
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
-    // await page.goto(url, { waitUntil: 'networkidle0' })
-    await page.goto(url)
+    await page.goto(url, { waitUntil: 'domcontentloaded' })
+    // await page.goto(url)
     await page.waitForSelector('script[type="application/ld+json"]')
     // const innerText = await page.$eval(
     //   'script[type="application/ld+json"]',
