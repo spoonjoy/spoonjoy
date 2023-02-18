@@ -7,6 +7,8 @@ import { QueryResolvers } from 'types/graphql'
 
 import { RedwoodError } from '@redwoodjs/api'
 
+import { CroutonRecipe } from './importedDataTypes'
+
 export const importRecipe: QueryResolvers['importRecipe'] = async ({
   input,
 }) => {
@@ -14,7 +16,7 @@ export const importRecipe: QueryResolvers['importRecipe'] = async ({
 
   if (source === 'WEBSITE') {
     if (!url) throw new RedwoodError('No URL provided')
-    const recipe = await getRecipeStructuredData(url)
+    const recipe = await getRecipeStructuredDataFromWebsite(url)
     return {
       returned: recipe.name?.toString() || 'No name',
     }
@@ -30,19 +32,25 @@ export const importRecipe: QueryResolvers['importRecipe'] = async ({
 }
 
 const parseCroutonData = async (fileUrl: string) => {
+  const jsons = await getJsonsFromZipFileUrl<CroutonRecipe>(fileUrl)
+  console.log(jsons)
+}
+
+const getJsonsFromZipFileUrl = async <T>(fileUrl: string) => {
   const response = await fetch(fileUrl)
   const croutons = await JSZip.loadAsync(await response.arrayBuffer())
   const jsonPromises = Object.values(croutons.files).map(async (file) => {
     const fileContent = await file.async('string')
-    const contentAsJson = JSON.parse(fileContent)
+    const contentAsJson = JSON.parse(fileContent) as T
     return contentAsJson
   })
 
-  const jsons = await Promise.all(jsonPromises)
-  console.log(jsons)
+  return await Promise.all(jsonPromises)
 }
 
-const getRecipeStructuredData = async (url: string): Promise<Recipe> => {
+const getRecipeStructuredDataFromWebsite = async (
+  url: string
+): Promise<Recipe> => {
   let webPageString: string | null | undefined
   try {
     // first, try to get the website with fetch
