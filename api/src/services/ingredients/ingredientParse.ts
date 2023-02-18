@@ -13,12 +13,10 @@ export const parseIngredient: QueryResolvers['parseIngredient'] = async ({
   input,
 }) => {
   const response = await openai.createCompletion({
-    // model: 'ada:ft-spoonjoy:ingredient-inputs-2023-02-17-18-15-07',
-    model:
-      'ada:ft-spoonjoy:ingredient-inputs-from-generated-2023-02-17-23-40-47',
+    model: 'davinci:ft-spoonjoy:ingredient-inputs-2023-02-18-16-21-57',
     prompt: `${input} ->`,
-    temperature: 0.7,
-    max_tokens: 256,
+    temperature: 0,
+    max_tokens: 100,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
@@ -28,7 +26,7 @@ export const parseIngredient: QueryResolvers['parseIngredient'] = async ({
   const jsonStr = response.data.choices[0].text || '{}'
 
   try {
-    const asJson = JSON.parse(jsonStr.replace(/'/g, '"'))
+    const asJson = JSON.parse(jsonStr)
     try {
       return {
         ingredientName: asJson.ingredientName || '',
