@@ -3,7 +3,7 @@ import * as cheerio from 'cheerio'
 import JSZip from 'jszip'
 import puppeteer from 'puppeteer'
 import { Recipe } from 'schema-dts'
-import { QueryResolvers } from 'types/graphql'
+import { CreateRecipeInput, QueryResolvers } from 'types/graphql'
 
 import { RedwoodError } from '@redwoodjs/api'
 
@@ -34,6 +34,25 @@ export const importRecipe: QueryResolvers['importRecipe'] = async ({
 const parseCroutonData = async (fileUrl: string) => {
   const jsons = await getJsonsFromZipFileUrl<CroutonRecipe>(fileUrl)
   console.log(jsons)
+}
+
+const croutonRecipesToSJRecipeInputs = (
+  croutonRecipes: CroutonRecipe[]
+): CreateRecipeInput[] => {
+  const sjRecipeInputs = croutonRecipes.map((croutonRecipe) => {
+    const croutonRecipeIngredientsAsStrings = croutonRecipe.ingredients.map(
+      (ing) => {
+        return `${ing.quantity.amount} ${ing.quantity.quantityType} ${ing.ingredient.name}`
+      }
+    )
+
+    const sjRecipeInput: CreateRecipeInput = {
+      title: croutonRecipe.name,
+      servings: croutonRecipe.serves,
+      description: croutonRecipe.notes,
+    }
+    return sjRecipeInput
+  })
 }
 
 const getJsonsFromZipFileUrl = async <T>(fileUrl: string) => {
