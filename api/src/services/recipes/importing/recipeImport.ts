@@ -19,6 +19,7 @@ const getRecipeStructuredData = async (url: string): Recipe => {
   try {
     // first, try to get the website with fetch
     webPageString = await fetch(url).then((res) => res.text())
+    if (!webPageString) throw new RedwoodError("Couldn't fetch")
   } catch (error) {
     console.error('Could not get the website using fetch, error:', error)
 
@@ -40,6 +41,7 @@ const getRecipeStructuredData = async (url: string): Recipe => {
 
   const webPageHTML = cheerio.load(webPageString)
   const structuredData = webPageHTML('script[type="application/ld+json"]')
-  const recipeLDJSON = JSON.parse(structuredData[0].children[0].data) as Recipe
+  const recipeLdJsonString = structuredData[0].children[0].data
+  const recipeLDJSON = JSON.parse(recipeLdJsonString) as Recipe
   return recipeLDJSON
 }
