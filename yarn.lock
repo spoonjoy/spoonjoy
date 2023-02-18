@@ -8471,7 +8471,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"api@workspace:api":
+"api@workspace:^, api@workspace:api":
   version: 0.0.0-use.local
   resolution: "api@workspace:api"
   dependencies:
@@ -10362,7 +10362,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cheerio@npm:1.0.0-rc.12":
+"cheerio@npm:1.0.0-rc.12, cheerio@npm:^1.0.0-rc.12":
   version: 1.0.0-rc.12
   resolution: "cheerio@npm:1.0.0-rc.12"
   dependencies:
@@ -22271,8 +22271,11 @@ __metadata:
   dependencies:
     "@redwoodjs/auth-dbauth-setup": 4.1.4
     "@redwoodjs/core": 4.1.4
+    api: "workspace:^"
+    cheerio: ^1.0.0-rc.12
     graphql-2-json-schema: ^0.10.0
     prettier-plugin-tailwindcss: ^0.1.13
+    schema-dts: ^1.1.0
   languageName: unknown
   linkType: soft
 
@@ -22415,6 +22418,15 @@ __metadata:
   dependencies:
     loose-envify: ^1.1.0
   checksum: b777f7ca0115e6d93e126ac490dbd82642d14983b3079f58f35519d992fa46260be7d6e6cede433a92db70306310c6f5f06e144f0e40c484199e09c1f7be53dd
+  languageName: node
+  linkType: hard
+
+"schema-dts@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "schema-dts@npm:1.1.0"
+  peerDependencies:
+    typescript: ">=4.1.0"
+  checksum: d79d62fa8fadad0e285232d4c310240462507a5130435dd0d42266c46712a09402bc18f97c32de299b69e1122d4ca487d3a2557cff92822db61d0db25d478323
   languageName: node
   linkType: hard
 
