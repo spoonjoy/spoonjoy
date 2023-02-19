@@ -165,6 +165,8 @@ const websiteRecipeToSJRecipeInput = async (
           truncateString(step.text, 1000) ||
           'no description was provided for this step',
       }))
+    : recipe.recipeInstructions
+    ? [{ stepNum: 1, description: recipe.recipeInstructions }] // it might just be a string
     : []
 
   const recipeStepsWithIngredients = addIngredientsToSteps(
