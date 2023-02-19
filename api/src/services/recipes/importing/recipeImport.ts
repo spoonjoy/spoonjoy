@@ -1,9 +1,15 @@
 import { fetch } from '@whatwg-node/fetch'
 import * as cheerio from 'cheerio'
 import JSZip from 'jszip'
+import pluralize from 'pluralize'
 import puppeteer from 'puppeteer'
 import { Recipe } from 'schema-dts'
-import { CreateRecipeInput, QueryResolvers } from 'types/graphql'
+import {
+  CreateIngredientInput,
+  CreateRecipeInput,
+  CreateRecipeStepInput,
+  QueryResolvers,
+} from 'types/graphql'
 
 import { RedwoodError } from '@redwoodjs/api'
 
@@ -35,12 +41,15 @@ export const importRecipe: QueryResolvers['importRecipe'] = async ({
 
 const parseCroutonData = async (fileUrl: string) => {
   const jsons = await getJsonsFromZipFileUrl<CroutonRecipe>(fileUrl)
-  const sjRecipeInputs = croutonRecipesToSJRecipeInputs(jsons)
+  const sjRecipeInputs = await Promise.all(
+    croutonRecipesToSJRecipeInputs(jsons)
+  )
+  console.log('here!')
 }
 
-const croutonRecipesToSJRecipeInputs = async (
+const croutonRecipesToSJRecipeInputs = (
   croutonRecipes: CroutonRecipe[]
-): CreateRecipeInput[] => {
+): Promise<CreateRecipeInput>[] => {
   const sjRecipeInputs = croutonRecipes.map(async (croutonRecipe) => {
     const croutonRecipeIngredientsAsStrings = croutonRecipe.ingredients.map(
       (ing) => {
@@ -52,13 +61,78 @@ const croutonRecipesToSJRecipeInputs = async (
       croutonRecipeIngredientsAsStrings
     )
 
-    const sjRecipeInput: CreateRecipeInput = {
+    const basicRecipeInfo: BasicRecipeInfo = {
       title: croutonRecipe.name,
       servings: croutonRecipe.serves,
       description: croutonRecipe.notes,
     }
-    return sjRecipeInput
+
+    const basicRecipeStepsInfo: BasicRecipeStepInfo[] = croutonRecipe.steps.map(
+      (croutonStep) => ({
+        stepNum: croutonStep.order + 1,
+        description: croutonStep.step,
+        // TODO: generate step title
+      })
+    )
+
+    const recipeStepsWithIngredients = addIngredientsToSteps(
+      basicRecipeStepsInfo,
+      croutonRecipeIngredientsAsSJIngredients
+    )
+
+    return {
+      ...basicRecipeInfo,
+      steps: recipeStepsWithIngredients,
+    } as CreateRecipeInput
   })
+  return sjRecipeInputs
+}
+
+type BasicRecipeInfo = Pick<
+  CreateRecipeInput,
+  'title' | 'servings' | 'description'
+>
+type BasicRecipeStepInfo = Pick<
+  CreateRecipeStepInput,
+  'stepNum' | 'stepTitle' | 'description'
+>
+
+const addIngredientsToSteps = (
+  steps: BasicRecipeStepInfo[],
+  ingredients: CreateIngredientInput[]
+): CreateRecipeStepInput[] => {
+  // we'll remove ingredients as we use them
+  let remainingIngredients = [...ingredients]
+  // for each step, check if it uses any ingredients
+  const stepsWithIngredients = steps.map((step) => {
+    // for each ingredient, check if it's used in the step
+    const usedIngs: CreateIngredientInput[] = []
+    remainingIngredients = remainingIngredients.filter((ingredient) => {
+      const isUsed = step.description
+        .toLowerCase()
+        .includes(pluralize.singular(ingredient.ingredientName.toLowerCase()))
+      if (isUsed) {
+        usedIngs.push(ingredient)
+      }
+      return !isUsed
+    })
+    return {
+      ...step,
+      ingredients: usedIngs,
+    }
+  })
+  if (remainingIngredients.length > 0) {
+    console.warn(
+      `Couldn't figure out what steps these recipes belong to: ${JSON.stringify(
+        remainingIngredients
+      )}`
+    )
+    stepsWithIngredients[0].ingredients = [
+      ...stepsWithIngredients[0].ingredients,
+      ...remainingIngredients,
+    ]
+  }
+  return stepsWithIngredients
 }
 
 const getJsonsFromZipFileUrl = async <T>(fileUrl: string) => {

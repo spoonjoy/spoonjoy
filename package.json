@@ -29,9 +29,11 @@
     "@hookform/devtools@^4.2.2": "patch:@hookform/devtools@npm%3A4.2.2#./.yarn/patches/@hookform-devtools-npm-4.2.2-aafab2382b.patch"
   },
   "dependencies": {
+    "@types/pluralize": "^0.0.29",
     "api": "workspace:^",
     "cheerio": "^1.0.0-rc.12",
     "jszip": "^3.10.1",
+    "pluralize": "^8.0.0",
     "schema-dts": "^1.1.0"
   }
 }

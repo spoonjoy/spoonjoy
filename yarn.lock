@@ -7085,6 +7085,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/pluralize@npm:^0.0.29":
+  version: 0.0.29
+  resolution: "@types/pluralize@npm:0.0.29"
+  checksum: 840796fa1db158eb4d9787758d134736e29d9a8035f5b0cbad06e3801fc64b79112ba944c83f9a1a5b94da08703f505b8315b7e0f28bfc0f8e9e1ccfead7b083
+  languageName: node
+  linkType: hard
+
 "@types/prettier@npm:^2.1.5":
   version: 2.7.0
   resolution: "@types/prettier@npm:2.7.0"
@@ -20232,7 +20239,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pluralize@npm:8.0.0":
+"pluralize@npm:8.0.0, pluralize@npm:^8.0.0":
   version: 8.0.0
   resolution: "pluralize@npm:8.0.0"
   checksum: 2044cfc34b2e8c88b73379ea4a36fc577db04f651c2909041b054c981cd863dd5373ebd030123ab058d194ae615d3a97cfdac653991e499d10caf592e8b3dc33
@@ -22292,10 +22299,12 @@ __metadata:
   dependencies:
     "@redwoodjs/auth-dbauth-setup": 4.1.4
     "@redwoodjs/core": 4.1.4
+    "@types/pluralize": ^0.0.29
     api: "workspace:^"
     cheerio: ^1.0.0-rc.12
     graphql-2-json-schema: ^0.10.0
     jszip: ^3.10.1
+    pluralize: ^8.0.0
     prettier-plugin-tailwindcss: ^0.1.13
     schema-dts: ^1.1.0
   languageName: unknown

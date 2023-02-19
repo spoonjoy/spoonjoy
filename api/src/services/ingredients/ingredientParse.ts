@@ -41,21 +41,27 @@ export const parseIngredient: QueryResolvers['parseIngredient'] = async ({
   }
 }
 
-export const parseIngredients = async (ingredients: string[]) => {
+export const parseIngredients = async (
+  ingredients: string[]
+): Promise<CreateIngredientInput[]> => {
   const response = await getIngredientCompletions(ingredients)
 
   const jsonStrs = response.data.choices.map((choice) => {
     return choice.text || '{}'
   })
 
-  const asJsons = jsonStrs.map((jsonStr) => {
-    try {
-      const asJson = JSON.parse(jsonStr)
-      return asJson as CreateIngredientInput
-    } catch {
-      return `failed to parse ${jsonStr}`
-    }
-  })
+  const asJsons = jsonStrs
+    .map((jsonStr) => {
+      try {
+        const asJson = JSON.parse(jsonStr)
+        return asJson as CreateIngredientInput
+      } catch {
+        console.error(
+          `Couldn't parse ingredient output ${JSON.stringify(jsonStr)}`
+        )
+      }
+    })
+    .filter((json) => json !== undefined) as CreateIngredientInput[]
 
   return asJsons
 }
