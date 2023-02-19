@@ -7,6 +7,8 @@ import { CreateRecipeInput, QueryResolvers } from 'types/graphql'
 
 import { RedwoodError } from '@redwoodjs/api'
 
+import { parseIngredients } from 'src/services/ingredients/ingredientParse'
+
 import { CroutonRecipe } from './importedDataTypes'
 
 export const importRecipe: QueryResolvers['importRecipe'] = async ({
@@ -33,17 +35,21 @@ export const importRecipe: QueryResolvers['importRecipe'] = async ({
 
 const parseCroutonData = async (fileUrl: string) => {
   const jsons = await getJsonsFromZipFileUrl<CroutonRecipe>(fileUrl)
-  console.log(jsons)
+  const sjRecipeInputs = croutonRecipesToSJRecipeInputs(jsons)
 }
 
-const croutonRecipesToSJRecipeInputs = (
+const croutonRecipesToSJRecipeInputs = async (
   croutonRecipes: CroutonRecipe[]
 ): CreateRecipeInput[] => {
-  const sjRecipeInputs = croutonRecipes.map((croutonRecipe) => {
+  const sjRecipeInputs = croutonRecipes.map(async (croutonRecipe) => {
     const croutonRecipeIngredientsAsStrings = croutonRecipe.ingredients.map(
       (ing) => {
         return `${ing.quantity.amount} ${ing.quantity.quantityType} ${ing.ingredient.name}`
       }
+    )
+
+    const croutonRecipeIngredientsAsSJIngredients = await parseIngredients(
+      croutonRecipeIngredientsAsStrings
     )
 
     const sjRecipeInput: CreateRecipeInput = {
