@@ -24,13 +24,13 @@ export const importRecipe: QueryResolvers['importRecipe'] = async ({
 
   if (source === 'WEBSITE') {
     if (!url) throw new RedwoodError('No URL provided')
-    const recipe = await getRecipeStructuredDataFromWebsite(url)
+    const recipe = await parseWebsiteData(url)
     return {
-      returned: recipe.name?.toString() || 'No name',
+      returned: recipe.title,
     }
   } else if (source === 'CROUTON') {
     if (!fileUrl) throw new RedwoodError('No file URL provided')
-    const recipe = await parseCroutonData(fileUrl)
+    const recipes = await parseCroutonData(fileUrl)
     return {
       returned: fileUrl,
     }
@@ -44,7 +44,49 @@ const parseCroutonData = async (fileUrl: string) => {
   const sjRecipeInputs = await Promise.all(
     croutonRecipesToSJRecipeInputs(jsons)
   )
-  console.log('here!')
+  return sjRecipeInputs
+}
+
+const parseWebsiteData = async (url: string) => {
+  const recipeStructuredData = await getRecipeStructuredDataFromWebsite(url)
+  const sjRecipeInput = await websiteRecipeToSJRecipeInput(recipeStructuredData)
+  return sjRecipeInput
+}
+
+const websiteRecipeToSJRecipeInput = async (
+  recipe: Recipe
+): Promise<CreateRecipeInput> => {
+  const websiteRecipeIngredientsAsSJIngredients = Array.isArray(
+    recipe.recipeIngredient
+  )
+    ? await parseIngredients(recipe.recipeIngredient)
+    : []
+
+  const basicRecipeInfo: BasicRecipeInfo = {
+    title: recipe.name?.toString() || 'could not find title',
+    servings: parseInt(recipe.recipeYield ? toString() : '') || undefined,
+    description: recipe.description?.toString() || undefined,
+  }
+
+  const basicRecipeStepsInfo: BasicRecipeStepInfo[] = Array.isArray(
+    recipe.recipeInstructions
+  )
+    ? recipe.recipeInstructions?.map((step, idx) => ({
+        stepNum: idx + 1,
+        stepTitle: step.name || undefined,
+        description: step.text || 'no description was provided for this step',
+      }))
+    : []
+
+  const recipeStepsWithIngredients = addIngredientsToSteps(
+    basicRecipeStepsInfo,
+    websiteRecipeIngredientsAsSJIngredients
+  )
+
+  return {
+    ...basicRecipeInfo,
+    steps: recipeStepsWithIngredients,
+  } as CreateRecipeInput
 }
 
 const croutonRecipesToSJRecipeInputs = (
