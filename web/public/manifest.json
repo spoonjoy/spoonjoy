@@ -1,0 +1,8 @@
+{
+  "name": "spoonjoy",
+  "display": "standalone",
+  "start_url": "https://spoonjoy.com",
+  "icons": [
+    {"src": "/sj-icon-light.png"}
+  ]
+}
