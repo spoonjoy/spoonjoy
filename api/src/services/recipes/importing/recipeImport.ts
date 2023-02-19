@@ -1,3 +1,4 @@
+import type { Prisma } from '@prisma/client'
 import { fetch } from '@whatwg-node/fetch'
 import * as cheerio from 'cheerio'
 import JSZip from 'jszip'
@@ -13,31 +14,85 @@ import {
 
 import { RedwoodError } from '@redwoodjs/api'
 
+import { db } from 'src/lib/db'
 import { parseIngredients } from 'src/services/ingredients/ingredientParse'
+
+import {
+  createRecipeImage,
+  uploadImageToCloudinary,
+} from '../recipeImageHandler'
+import { mapStepsMutationInputToDbCreateInputNoStepOutputUses } from '../recipeUtilities'
 
 import { CroutonRecipe } from './importedDataTypes'
 
-export const importRecipe: QueryResolvers['importRecipe'] = async ({
-  input,
-}) => {
-  const { source, url, fileUrl } = input
+/**
+ * create the recipe - not doing it using the createRecipe resolver because:
+ * - I don't want to create a recipe image if the recipe already exists
+ * - I don't want to apply all the validations that the createRecipe resolver does
+ * - There's no stepOutputUses in an imported recipe, so I don't need to create those
+ */
+const simpleCreateRecipe = async (input: CreateRecipeInput) => {
+  // If nobody's logged in, create the recipe for the chef-rj user
+  const createForUsername = context.currentUser?.username || 'chef-rj'
 
-  if (source === 'WEBSITE') {
-    if (!url) throw new RedwoodError('No URL provided')
+  const { title, description, servings, steps, existingImageUrl } = input
+
+  const recipeDbInput: Prisma.RecipeCreateInput = {
+    title,
+    description,
+    servings,
+    chef: {
+      connect: {
+        username: createForUsername,
+      },
+    },
+    steps: mapStepsMutationInputToDbCreateInputNoStepOutputUses(steps),
+  }
+
+  const newRecipe = await db.$transaction(
+    async (tx) => {
+      // 1. Create the recipe
+      const newRecipe = await tx.recipe.create({
+        data: recipeDbInput,
+      })
+
+      const recipeId = newRecipe.id
+
+      await tx.recipe.update({
+        where: { id: recipeId },
+        data: {
+          imageUrl: existingImageUrl
+            ? await uploadImageToCloudinary(existingImageUrl, recipeId)
+            : await createRecipeImage(title, description, recipeId),
+        },
+      })
+
+      return newRecipe
+    },
+    { timeout: 15000 }
+  )
+
+  return newRecipe
+}
+
+export const importRecipeFromWebsite: QueryResolvers['importRecipeFromWebsite'] =
+  async ({ url }) => {
     const recipe = await parseWebsiteData(url)
+
+    const newRecipe = await simpleCreateRecipe(recipe)
+
     return {
-      returned: recipe.title,
+      recipeId: newRecipe.id,
     }
-  } else if (source === 'CROUTON') {
-    if (!fileUrl) throw new RedwoodError('No file URL provided')
+  }
+
+export const importRecipesFromCrouton: QueryResolvers['importRecipesFromCrouton'] =
+  async ({ fileUrl }) => {
     const recipes = await parseCroutonData(fileUrl)
     return {
       returned: fileUrl,
     }
-  } else {
-    throw new RedwoodError('Invalid source')
   }
-}
 
 const parseCroutonData = async (fileUrl: string) => {
   const jsons = await getJsonsFromZipFileUrl<CroutonRecipe>(fileUrl)
@@ -62,10 +117,23 @@ const websiteRecipeToSJRecipeInput = async (
     ? await parseIngredients(recipe.recipeIngredient)
     : []
 
+  // different websites seem to do this in different ways
+  const potentialImageUrl: string | undefined =
+    recipe.image &&
+    ((recipe.image.url as string) ||
+      (recipe.image[0].url as string) ||
+      recipe.image.toString())
+
+  const existingImageUrl =
+    potentialImageUrl && stringIsAValidUrl(potentialImageUrl)
+      ? potentialImageUrl
+      : undefined
+
   const basicRecipeInfo: BasicRecipeInfo = {
     title: recipe.name?.toString() || 'could not find title',
     servings: parseInt(recipe.recipeYield ? toString() : '') || undefined,
     description: recipe.description?.toString() || undefined,
+    existingImageUrl,
   }
 
   const basicRecipeStepsInfo: BasicRecipeStepInfo[] = Array.isArray(
@@ -132,7 +200,7 @@ const croutonRecipesToSJRecipeInputs = (
 
 type BasicRecipeInfo = Pick<
   CreateRecipeInput,
-  'title' | 'servings' | 'description'
+  'title' | 'servings' | 'description' | 'existingImageUrl'
 >
 type BasicRecipeStepInfo = Pick<
   CreateRecipeStepInput,
@@ -248,4 +316,13 @@ const getRecipeStructuredDataFromWebsite = async (
   const recipeLDJSON = JSON.parse(scriptString)
 
   return Array.isArray(recipeLDJSON) ? recipeLDJSON[0] : recipeLDJSON
+}
+
+const stringIsAValidUrl = (s: string) => {
+  try {
+    new URL(s)
+    return true
+  } catch (err) {
+    return false
+  }
 }

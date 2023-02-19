@@ -21,6 +21,7 @@ export const schema = gql`
 
   input CreateRecipeInput {
     title: String!
+    existingImageUrl: String
     description: String
     servings: Int
     steps: [CreateRecipeStepInput!]!

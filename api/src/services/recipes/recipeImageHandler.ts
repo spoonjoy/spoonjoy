@@ -35,7 +35,10 @@ export const createRecipeImage = async (
   }
 }
 
-const uploadImageToCloudinary = async (imagePath: string, imageId: string) => {
+export const uploadImageToCloudinary = async (
+  imagePath: string,
+  imageId: string
+) => {
   // Use the uploaded file's name as the asset's public ID and
   // allow overwriting the asset with new versions
   const options: CloudinaryOptions = {
