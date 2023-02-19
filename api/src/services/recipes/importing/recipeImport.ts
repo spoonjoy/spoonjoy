@@ -24,6 +24,7 @@ import {
 import { mapStepsMutationInputToDbCreateInputNoStepOutputUses } from '../recipeUtilities'
 
 import { CroutonRecipe } from './importedDataTypes'
+import { stringIsAValidUrl, truncateString } from './importHelpers'
 
 /**
  * create the recipe - not doing it using the createRecipe resolver because:
@@ -37,9 +38,11 @@ const simpleCreateRecipe = async (input: CreateRecipeInput) => {
 
   const { title, description, servings, steps, existingImageUrl } = input
 
+  // substrings should match the schema
+
   const recipeDbInput: Prisma.RecipeCreateInput = {
-    title,
-    description,
+    title: truncateString(title, 60) as string,
+    description: truncateString(description, 140),
     servings,
     chef: {
       connect: {
@@ -108,6 +111,31 @@ const parseWebsiteData = async (url: string) => {
   return sjRecipeInput
 }
 
+/**
+ * Known formats:
+ * - recipe.image is string
+ * - recipe.image is array of strings
+ * - recipe.image if object with url property
+ * - recipe.image is array of objects with url property
+ */
+const getImageFromLDJson = (recipe: Recipe): string | undefined => {
+  let potentialImage: string | undefined
+  if (!recipe.image) return undefined
+  if (typeof recipe.image === 'string') return recipe.image
+  if (Array.isArray(recipe.image)) {
+    const firstImage = recipe.image[0]
+    // not sure if it'll be a string or an object
+    potentialImage = firstImage
+      ? ((firstImage.url || firstImage) as string)
+      : undefined
+  } else {
+    potentialImage = recipe.image.url ? (recipe.image.url as string) : undefined
+  }
+  return potentialImage && stringIsAValidUrl(potentialImage)
+    ? potentialImage
+    : undefined
+}
+
 const websiteRecipeToSJRecipeInput = async (
   recipe: Recipe
 ): Promise<CreateRecipeInput> => {
@@ -117,17 +145,7 @@ const websiteRecipeToSJRecipeInput = async (
     ? await parseIngredients(recipe.recipeIngredient)
     : []
 
-  // different websites seem to do this in different ways
-  const potentialImageUrl: string | undefined =
-    recipe.image &&
-    ((recipe.image.url as string) ||
-      (recipe.image[0].url as string) ||
-      recipe.image.toString())
-
-  const existingImageUrl =
-    potentialImageUrl && stringIsAValidUrl(potentialImageUrl)
-      ? potentialImageUrl
-      : undefined
+  const existingImageUrl = getImageFromLDJson(recipe)
 
   const basicRecipeInfo: BasicRecipeInfo = {
     title: recipe.name?.toString() || 'could not find title',
@@ -141,8 +159,11 @@ const websiteRecipeToSJRecipeInput = async (
   )
     ? recipe.recipeInstructions?.map((step, idx) => ({
         stepNum: idx + 1,
-        stepTitle: step.name || undefined,
-        description: step.text || 'no description was provided for this step',
+        stepTitle:
+          step.name !== step.text ? truncateString(step.name, 191) : undefined,
+        description:
+          truncateString(step.text, 1000) ||
+          'no description was provided for this step',
       }))
     : []
 
@@ -233,7 +254,7 @@ const addIngredientsToSteps = (
   })
   if (remainingIngredients.length > 0) {
     console.warn(
-      `Couldn't figure out what steps these recipes belong to: ${JSON.stringify(
+      `Couldn't figure out what steps these ingredients belong to: ${JSON.stringify(
         remainingIngredients
       )}`
     )
@@ -316,13 +337,4 @@ const getRecipeStructuredDataFromWebsite = async (
   const recipeLDJSON = JSON.parse(scriptString)
 
   return Array.isArray(recipeLDJSON) ? recipeLDJSON[0] : recipeLDJSON
-}
-
-const stringIsAValidUrl = (s: string) => {
-  try {
-    new URL(s)
-    return true
-  } catch (err) {
-    return false
-  }
 }
