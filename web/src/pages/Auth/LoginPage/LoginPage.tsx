@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { FingerPrintIcon } from '@heroicons/react//24/solid'
 import { IFormSignin } from 'types/auth'
 
-import { Form, Submit, useForm } from '@redwoodjs/forms'
+import { Form, Submit } from '@redwoodjs/forms'
 import { navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
@@ -19,7 +19,10 @@ import AuthHeader from '../shared/AuthHeader'
 const WELCOME_MESSAGE = 'welcome back!'
 const REDIRECT = routes.welcome()
 
-const LoginPage = ({ type }) => {
+interface ILoginPageProps {
+  type: string
+}
+const LoginPage = ({ type }: ILoginPageProps) => {
   const {
     isAuthenticated,
     client: webAuthn,
@@ -29,28 +32,46 @@ const LoginPage = ({ type }) => {
   } = useAuth()
   const [shouldShowWebAuthn, setShouldShowWebAuthn] = useState(false)
   const [showWebAuthn, setShowWebAuthn] = useState(
-    webAuthn.isEnabled() && type !== 'password'
+    webAuthn?.isEnabled() && type !== 'password'
   )
+
+  const onAuthenticate = React.useCallback(async () => {
+    try {
+      await webAuthn?.authenticate()
+      await reauthenticate()
+      toast.success(WELCOME_MESSAGE)
+      navigate(REDIRECT)
+    } catch (e: any) {
+      if (e.name === 'WebAuthnDeviceNotFoundError') {
+        toast.error(
+          'Device not found, log in with username/password to continue'
+        )
+        setShowWebAuthn(false)
+      } else {
+        toast.error(e.message)
+      }
+    }
+  }, [webAuthn, reauthenticate])
 
   // should redirect right after login or wait to show the webAuthn prompts?
   useEffect(() => {
-    if (isAuthenticated && (!shouldShowWebAuthn || webAuthn.isEnabled())) {
+    if (isAuthenticated && (!shouldShowWebAuthn || webAuthn?.isEnabled())) {
       navigate(REDIRECT)
     }
-  }, [isAuthenticated, shouldShowWebAuthn])
+  }, [isAuthenticated, shouldShowWebAuthn, webAuthn])
 
   // if WebAuthn is enabled, show the prompt as soon as the page loads
   useEffect(() => {
     if (!loading && !isAuthenticated && showWebAuthn) {
       onAuthenticate()
     }
-  }, [loading, isAuthenticated])
+  }, [loading, isAuthenticated, showWebAuthn, onAuthenticate])
 
   // focus on the username field as soon as the page loads
-  const usernameRef = useRef()
+  const usernameRef = useRef<HTMLInputElement>(null)
   useEffect(() => {
-    usernameRef.current && usernameRef.current.focus()
-  }, [])
+    usernameRef.current?.focus()
+  }, [usernameRef])
 
   const onSubmit = async (data: IFormSignin) => {
     const webAuthnSupported = await webAuthn?.isSupported()
@@ -79,30 +100,12 @@ const LoginPage = ({ type }) => {
     }
   }
 
-  const onAuthenticate = React.useCallback(async () => {
-    try {
-      await webAuthn?.authenticate()
-      await reauthenticate()
-      toast.success(WELCOME_MESSAGE)
-      navigate(REDIRECT)
-    } catch (e: any) {
-      if (e.name === 'WebAuthnDeviceNotFoundError') {
-        toast.error(
-          'Device not found, log in with username/password to continue'
-        )
-        setShowWebAuthn(false)
-      } else {
-        toast.error(e.message)
-      }
-    }
-  }, [webAuthn, reauthenticate])
-
   const onRegister = async () => {
     try {
       await webAuthn?.register()
       toast.success(WELCOME_MESSAGE)
       navigate(REDIRECT)
-    } catch (e) {
+    } catch (e: any) {
       toast.error(e.message)
     }
   }
@@ -181,6 +184,7 @@ const LoginPage = ({ type }) => {
             label="username"
             fieldName="username"
             validation={{ required: true }}
+            ref={usernameRef}
           />
           <StyledPasswordField
             label="password"
