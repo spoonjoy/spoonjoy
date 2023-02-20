@@ -5,6 +5,7 @@ const mockRecipe1: RecursivePartial<Recipe> = {
   title: 'Israeli Hummus',
   description:
     "You'll seriously never have better hummus. It's very creamy and delicious!",
+  imageUrl: '',
   servings: 5,
   chef: {
     id: 'testUserId',
@@ -36,6 +37,7 @@ const mockRecipe1: RecursivePartial<Recipe> = {
           },
         },
       ],
+      stepOutputUses: [],
       description:
         "Boil the shit out of it until it's mushy, then let it cool in the water. Soak it overnight first if you're good at planning ahead",
     },

@@ -1,10 +1,19 @@
 import type { ComponentStory } from '@storybook/react'
 
+import { HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
+
 import { Loading, Empty, Failure, Success } from './RecipeCell'
 import { standard } from './RecipeCell.mock'
 
 export const loading = () => {
-  return Loading ? <Loading /> : <></>
+  return Loading ? (
+    <>
+      <HeaderSlot />
+      <Loading />
+    </>
+  ) : (
+    <></>
+  )
 }
 
 export const empty = () => {
@@ -16,7 +25,25 @@ export const failure: ComponentStory<typeof Failure> = (args) => {
 }
 
 export const success: ComponentStory<typeof Success> = (args) => {
-  return Success ? <Success {...standard()} {...args} /> : <></>
+  return Success ? (
+    <>
+      <HeaderSlot />
+      <Success {...standard()} {...args} />
+    </>
+  ) : (
+    <></>
+  )
+}
+
+export const successShort: ComponentStory<typeof Success> = (args) => {
+  return Success ? (
+    <>
+      <HeaderSlot />
+      <Success {...standard()} {...args} shortRecipe />
+    </>
+  ) : (
+    <></>
+  )
 }
 
 export default { title: 'Cells/RecipeCell' }
