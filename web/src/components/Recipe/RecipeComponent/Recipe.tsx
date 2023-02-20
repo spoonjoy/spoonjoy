@@ -169,10 +169,13 @@ const Recipe = ({ recipe }: Props) => {
           })
         ) : (
           <>
+            <div className="loading h-8 w-full" />
             <div className="m-auto my-5 grid max-w-xs gap-y-4">
               <IngredientsItemsList />
             </div>
-            <div className="loading h-2 w-full" />
+            <div className="loading mb-1 h-6 w-full" />
+            <div className="loading mb-1 h-6 w-full" />
+            <div className="loading mb-1 h-6 w-full" />
           </>
         )}
       </div>
