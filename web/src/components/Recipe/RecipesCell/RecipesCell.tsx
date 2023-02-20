@@ -23,7 +23,7 @@ export const QUERY = () => {
   `
 }
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => <Recipes />
 
 export const Empty = (props: { variables: FindCookbooksByUserVariables }) => {
   const { currentUser } = useAuth()
