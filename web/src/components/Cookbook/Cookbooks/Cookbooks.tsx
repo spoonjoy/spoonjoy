@@ -13,16 +13,16 @@ const Cookbooks = ({
   cookbooks,
   ownerUsername,
 }: {
-  cookbooks: CookbookInfo[]
-  ownerUsername: string
+  cookbooks?: CookbookInfo[]
+  ownerUsername?: string
 }) => {
   const { currentUser } = useAuth()
   const isOwner = currentUser?.username === ownerUsername
 
   return (
     <>
-      {cookbooks.length === 0 ? (
-        isOwner ? (
+      {cookbooks && cookbooks.length === 0 ? (
+        ownerUsername && isOwner ? (
           <EmptyState
             header="No cookbooks yet"
             subHeader="Get started by creating a new cookbook."
@@ -43,10 +43,14 @@ const Cookbooks = ({
       ) : (
         <div className="align-center flex justify-center">
           <ul className="inline-grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
-            {cookbooks.map((cookbook) => (
-              <CookbookCard key={cookbook.id} cookbook={cookbook} />
-            ))}
-            {isOwner && (
+            {cookbooks ? (
+              cookbooks.map((cookbook) => (
+                <CookbookCard key={cookbook.id} cookbook={cookbook} />
+              ))
+            ) : (
+              <CookbookCard />
+            )}
+            {ownerUsername && isOwner && (
               <ListCardBase
                 emptyState
                 linkTo={routes.user({

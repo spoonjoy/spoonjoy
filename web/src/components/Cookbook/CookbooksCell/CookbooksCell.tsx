@@ -17,7 +17,7 @@ export const QUERY = () => gql`
   }
 `
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => <Cookbooks />
 
 export const Empty = (props: { variables: FindCookbooksByUserVariables }) => (
   <Cookbooks cookbooks={[]} ownerUsername={props.variables.username} />
@@ -31,5 +31,5 @@ export const Success = ({
   cookbooks,
   variables,
 }: CellSuccessProps<FindCookbooksByUser, FindCookbooksByUserVariables>) => {
-  return <Cookbooks cookbooks={cookbooks} ownerUsername={variables!.username} />
+  return <Cookbooks cookbooks={cookbooks} ownerUsername={variables?.username} />
 }
