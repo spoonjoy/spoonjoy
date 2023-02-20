@@ -26,7 +26,7 @@ export const QUERY = () => {
   `
 }
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => <Cookbook />
 
 export const Empty = () => <div>Empty</div>
 

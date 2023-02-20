@@ -1,11 +1,13 @@
 import { FindRecipesByUser } from 'types/graphql'
 
-const mockRecipesSummaries: Array<Unpacked<FindRecipesByUser['recipes']>> = [
+export const mockRecipesSummaries: Array<
+  Unpacked<FindRecipesByUser['recipes']>
+> = [
   {
     id: 'testId1',
     title: 'Greatest recipe ever!',
     description: 'This is a rather delicious recipe.',
-    imageUrl: '',
+    imageUrl: '#',
     chef: {
       id: 'testUserId',
       username: 'ari',
@@ -15,7 +17,7 @@ const mockRecipesSummaries: Array<Unpacked<FindRecipesByUser['recipes']>> = [
     id: 'testId2',
     title: 'Second greatest recipe ever!',
     description: "You've seriously never had a better recipe.",
-    imageUrl: '',
+    imageUrl: '#',
     chef: {
       id: 'testUserId',
       username: 'ari',
@@ -26,7 +28,7 @@ const mockRecipesSummaries: Array<Unpacked<FindRecipesByUser['recipes']>> = [
     title: 'Third greatest recipe ever!',
     description:
       "Believe me, this is the greatest recipe you'll ever have. I discovered it on an island in Fiji!",
-    imageUrl: '',
+    imageUrl: '#',
     chef: {
       id: 'testUserId',
       username: 'ari',
