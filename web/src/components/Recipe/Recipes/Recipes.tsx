@@ -7,7 +7,7 @@ import RecipeCard from 'src/components/Recipe/Recipes/RecipeCard'
 import ListCardBase from 'src/components/shared/ListCard/ListCardBase'
 
 interface IRecipesProps {
-  recipes: RecipeShortInfo[]
+  recipes?: RecipeShortInfo[]
   withAddRecipeButton?: boolean
 }
 
@@ -17,9 +17,11 @@ export default function Recipes({
 }: IRecipesProps) {
   return (
     <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {recipes.map((recipe) => (
-        <RecipeCard key={recipe.id} recipe={recipe} />
-      ))}
+      {recipes ? (
+        recipes.map((recipe) => <RecipeCard key={recipe.id} recipe={recipe} />)
+      ) : (
+        <RecipeCard />
+      )}
       {withAddRecipeButton && (
         <ListCardBase
           emptyState

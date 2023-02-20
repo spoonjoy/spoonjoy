@@ -74,9 +74,9 @@ export const QUERY = (props: {
 export const Loading = ({ shortRecipe = false }: IRecipeCellExtraProps) => {
   switch (shortRecipe) {
     case true:
-      return <Recipes withAddRecipeButton />
+      return <Recipes />
     default:
-      return <Recipe recipe={undefined} />
+      return <Recipe />
   }
 }
 

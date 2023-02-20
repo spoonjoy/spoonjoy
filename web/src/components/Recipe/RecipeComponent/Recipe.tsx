@@ -16,7 +16,7 @@ import { HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
 import RecipeControlBar from './RecipeControlBar'
 
 interface Props {
-  recipe: NonNullable<FindRecipeById['recipe']> | undefined
+  recipe?: NonNullable<FindRecipeById['recipe']>
 }
 
 const Recipe = ({ recipe }: Props) => {

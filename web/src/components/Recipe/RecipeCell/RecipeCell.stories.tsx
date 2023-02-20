@@ -16,6 +16,17 @@ export const loading = () => {
   )
 }
 
+export const loadingShort = () => {
+  return Loading ? (
+    <>
+      <HeaderSlot />
+      <Loading shortRecipe />
+    </>
+  ) : (
+    <></>
+  )
+}
+
 export const empty = () => {
   return Empty ? <Empty /> : <></>
 }

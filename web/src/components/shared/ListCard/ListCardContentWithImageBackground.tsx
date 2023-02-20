@@ -1,6 +1,8 @@
+import { classNames } from 'src/helpers/css'
+
 interface IListCardContentWithImageBackgroundProps {
-  imageUrl: string
-  cardTitle: string
+  imageUrl?: string
+  cardTitle?: string
   byline?: string | null
   cardSubtitle?: string | null
   extraInfo?: React.ReactElement<HTMLDataListElement> | null
@@ -28,31 +30,38 @@ const ListCardContentWithImageBackground = ({
       style={{
         backgroundImage: `url('${imageUrl}')`,
       }}
-      className={`absolute top-0 bottom-0 left-0 right-0 bg-cover bg-bottom contrast-75 saturate-[.75] group-hover:contrast-100 group-hover:saturate-100 group-focus:contrast-100 group-focus:saturate-100`}
+      className={classNames(
+        !imageUrl
+          ? 'loading'
+          : 'bg-cover bg-bottom contrast-75 saturate-[.75] group-hover:contrast-100 group-hover:saturate-100 group-focus:contrast-100 group-focus:saturate-100',
+        'absolute top-0 bottom-0 left-0 right-0'
+      )}
     />
 
-    <div className="absolute bottom-0 flex w-full justify-center">
-      <div className="mx-2 w-full">
-        <div className="relative mb-2 rounded-md p-4 text-white backdrop-blur backdrop-brightness-50">
-          <h3 className="text-xl font-medium text-white opacity-90">
-            {cardTitle}
-          </h3>
-          <dl className="mt-1 flex flex-grow flex-col justify-between">
-            {byline && (
-              <div className="mb-1 flex items-center justify-center gap-1">
-                <div className="h-1 w-[4px] border-b-[1px] border-white opacity-50" />
-                <dd className="text-xs font-medium leading-none">
-                  <span className="opacity-70">by</span> {byline}
-                </dd>
-                <div className="h-1 w-[4px] border-b-[1px] border-white opacity-50" />
-              </div>
-            )}
-            <dd className="text-sm text-white opacity-80">{cardSubtitle}</dd>
-            {extraInfo && extraInfo}
-          </dl>
+    {cardTitle && (
+      <div className="absolute bottom-0 flex w-full justify-center">
+        <div className="mx-2 w-full">
+          <div className="relative mb-2 rounded-md p-4 text-white backdrop-blur backdrop-brightness-50">
+            <h3 className="text-xl font-medium text-white opacity-90">
+              {cardTitle}
+            </h3>
+            <dl className="mt-1 flex flex-grow flex-col justify-between">
+              {byline && (
+                <div className="mb-1 flex items-center justify-center gap-1">
+                  <div className="h-1 w-[4px] border-b-[1px] border-white opacity-50" />
+                  <dd className="text-xs font-medium leading-none">
+                    <span className="opacity-70">by</span> {byline}
+                  </dd>
+                  <div className="h-1 w-[4px] border-b-[1px] border-white opacity-50" />
+                </div>
+              )}
+              <dd className="text-sm text-white opacity-80">{cardSubtitle}</dd>
+              {extraInfo && extraInfo}
+            </dl>
+          </div>
         </div>
       </div>
-    </div>
+    )}
   </div>
 )
 
