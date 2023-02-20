@@ -116,58 +116,59 @@ const Recipe = ({ recipe }: Props) => {
           itemIds={listItemIds}
         />
       </div>
-
-      <div className="m-auto mb-7 max-w-xl">
-        {recipe.steps.map((step) => {
-          const {
-            stepNum,
-            stepTitle,
-            description,
-            ingredients,
-            stepOutputUses,
-          } = step!
-          return (
-            <div key={stepNum}>
-              {stepNum !== 1 && (
-                <div className="my-6 flex justify-center gap-1">
-                  <div className="w-[8px] rounded-xl border-b-8 border-indigo-700" />
-                  <div className="w-[8px] rounded-xl border-b-8 border-indigo-700" />
-                  <div className="w-[8px] rounded-xl border-b-8 border-indigo-700" />
-                </div>
-              )}
-              <h2 className="block text-lg font-medium leading-none text-gray-900">
-                step {stepNum}
-                {stepTitle && (
-                  <span>
-                    {': '}
-                    <span className="font-normal">{stepTitle}</span>
-                  </span>
+      {recipe?.steps && (
+        <div className="m-auto mb-7 max-w-xl">
+          {recipe.steps.map((step) => {
+            const {
+              stepNum,
+              stepTitle,
+              description,
+              ingredients,
+              stepOutputUses,
+            } = step!
+            return (
+              <div key={stepNum}>
+                {stepNum !== 1 && (
+                  <div className="my-6 flex justify-center gap-1">
+                    <div className="w-[8px] rounded-xl border-b-8 border-indigo-700" />
+                    <div className="w-[8px] rounded-xl border-b-8 border-indigo-700" />
+                    <div className="w-[8px] rounded-xl border-b-8 border-indigo-700" />
+                  </div>
                 )}
-              </h2>
-              {ingredients && (
-                <div className="m-auto my-5 grid max-w-xs gap-y-4">
-                  {ingredients.length > 0 && (
-                    <IngredientsItemsList
-                      items={ingredients}
-                      listType="recipeIngredients"
-                    />
+                <h2 className="block text-lg font-medium leading-none text-gray-900">
+                  step {stepNum}
+                  {stepTitle && (
+                    <span>
+                      {': '}
+                      <span className="font-normal">{stepTitle}</span>
+                    </span>
                   )}
-                  {stepOutputUses.length > 0 && (
-                    <IngredientsItemsList
-                      items={stepOutputUses}
-                      steps={recipe.steps as IStepInfoForList}
-                      listType="stepOutputUses"
-                    />
-                  )}
+                </h2>
+                {ingredients && (
+                  <div className="m-auto my-5 grid max-w-xs gap-y-4">
+                    {ingredients.length > 0 && (
+                      <IngredientsItemsList
+                        items={ingredients}
+                        listType="recipeIngredients"
+                      />
+                    )}
+                    {stepOutputUses.length > 0 && (
+                      <IngredientsItemsList
+                        items={stepOutputUses}
+                        steps={recipe.steps as IStepInfoForList}
+                        listType="stepOutputUses"
+                      />
+                    )}
+                  </div>
+                )}
+                <div className="text-gray-800">
+                  <p>{description}</p>
                 </div>
-              )}
-              <div className="text-gray-800">
-                <p>{description}</p>
               </div>
-            </div>
-          )
-        })}
-      </div>
+            )
+          })}
+        </div>
+      )}
       {isOwnRecipe && (
         <RecipeControlBar
           recipeId={recipe.id}
