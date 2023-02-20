@@ -145,11 +145,11 @@ export const DefaultHeader = ({
   title,
   endChild,
 }: {
-  title: string
+  title?: string
   endChild?: JSX.Element
 }) => (
   <div className="mx-auto flex max-w-7xl items-center justify-between space-x-5 px-4 pt-10 pb-5 sm:px-6 lg:justify-start lg:px-8">
-    <span>{title}</span>
+    {title ? <span>{title}</span> : <div className="loading h-10 w-96" />}
     {endChild}
   </div>
 )
