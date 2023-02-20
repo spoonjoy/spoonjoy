@@ -116,9 +116,9 @@ const Recipe = ({ recipe }: Props) => {
           itemIds={listItemIds}
         />
       </div>
-      {recipe?.steps && (
-        <div className="m-auto mb-7 max-w-xl">
-          {recipe.steps.map((step) => {
+      <div className="m-auto mb-7 max-w-xl">
+        {recipe?.steps ? (
+          recipe.steps.map((step) => {
             const {
               stepNum,
               stepTitle,
@@ -166,9 +166,17 @@ const Recipe = ({ recipe }: Props) => {
                 </div>
               </div>
             )
-          })}
-        </div>
-      )}
+          })
+        ) : (
+          <>
+            <div className="m-auto my-5 grid max-w-xs gap-y-4">
+              <IngredientsItemsList />
+            </div>
+            <div className="loading h-2 w-full" />
+          </>
+        )}
+      </div>
+
       {isOwnRecipe && (
         <RecipeControlBar
           recipeId={recipe.id}

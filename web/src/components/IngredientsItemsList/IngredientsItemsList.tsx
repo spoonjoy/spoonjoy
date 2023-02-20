@@ -2,6 +2,7 @@ import { BeakerIcon } from '@heroicons/react/20/solid'
 import { Square2StackIcon } from '@heroicons/react/20/solid'
 import { observer } from 'mobx-react-lite'
 
+import { classNames } from 'src/helpers/css'
 import { useStore } from 'src/stores/RootStore'
 
 // Ingredient items and shopping list items are the same, but shopping list items should have quantity and unit optional. That's a TODO
@@ -44,10 +45,10 @@ interface IStepItem {
 export type IStepInfoForList = IStepItem[]
 
 interface IIngredientsItemsList {
-  items: (IIngredientItem | IStepOutputUseItem | null)[]
+  items?: (IIngredientItem | IStepOutputUseItem | null)[]
   /** This is used by stepOutputUses to get the step titles */
   steps?: IStepInfoForList
-  listType: 'recipeIngredients' | 'shoppingListItems' | 'stepOutputUses'
+  listType?: 'recipeIngredients' | 'shoppingListItems' | 'stepOutputUses'
 }
 
 // For use both when listing ingredients in a recipe and items in a shopping list
@@ -61,78 +62,96 @@ const IngredientsItemsList = ({
     return steps && steps[stepNum - 1].stepTitle
   }
   return (
-    <fieldset className="border-t border-b border-gray-200">
-      <ul className="divide-y divide-gray-200 ">
-        {items.map((item) => {
-          const { id } = item!
-          if (listItemsStore.items.get(id) === undefined) {
-            listItemsStore.addItem(id)
-          }
-          const itemStore = listItemsStore.items.get(id)!
-          const selected = itemStore.selected
-          const onCheck = () => {
-            itemStore.setItemState(!selected)
-          }
-
-          const itemInfo = (() => {
-            switch (listType) {
-              case 'recipeIngredients':
-                return getIngredientItemInfo(item as IIngredientItem)
-              case 'stepOutputUses':
-                return getStepOutputUseItemInfo(
-                  item as IStepOutputUseItem,
-                  getStepTitle
-                )
-              case 'shoppingListItems':
-                return getShoppingListItemInfo(item as IShoppingListItem)
+    <fieldset
+      className={classNames(
+        'border-t border-b',
+        items ? 'border-gray-200' : 'border-white'
+      )}
+    >
+      <ul
+        className={classNames(
+          'divide-y',
+          items ? 'divide-gray-200' : 'divide-gray-100'
+        )}
+      >
+        {items && listType ? (
+          items.map((item) => {
+            const { id } = item!
+            if (listItemsStore.items.get(id) === undefined) {
+              listItemsStore.addItem(id)
             }
-          })()
-
-          const iconProps = {
-            className: `mr-3 h-5 w-5 ${
-              selected ? 'text-indigo-400' : 'text-indigo-600'
-            }`,
-            'aria-hidden': true,
-          }
-
-          const itemIcon = (() => {
-            switch (listType) {
-              case 'recipeIngredients':
-                return <BeakerIcon {...iconProps} />
-              case 'stepOutputUses':
-                return <Square2StackIcon {...iconProps} />
+            const itemStore = listItemsStore.items.get(id)!
+            const selected = itemStore.selected
+            const onCheck = () => {
+              itemStore.setItemState(!selected)
             }
-          })()
 
-          return (
-            <li key={itemInfo.key}>
-              <button className="h-full w-full py-4" onClick={onCheck}>
-                <span className="flex h-full w-full items-center">
-                  {itemIcon}
-                  <div
-                    className={`min-w-0 flex-1 text-start text-sm ${
-                      selected
-                        ? 'text-gray-400 line-through decoration-indigo-600 decoration-2'
-                        : 'text-gray-700'
-                    }`}
-                  >
-                    {itemInfo.itemLabel}
-                  </div>
-                  <div className="ml-3 flex h-5 items-center">
-                    <input
-                      id={`ingredient-${id}`}
-                      name={`ingredient-${id}`}
-                      type="checkbox"
-                      checked={selected}
-                      onChange={onCheck}
-                      className="h-4 w-4 cursor-pointer rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                    />
-                  </div>
-                </span>
-              </button>
-            </li>
-          )
-        })}
+            const itemInfo = (() => {
+              switch (listType) {
+                case 'recipeIngredients':
+                  return getIngredientItemInfo(item as IIngredientItem)
+                case 'stepOutputUses':
+                  return getStepOutputUseItemInfo(
+                    item as IStepOutputUseItem,
+                    getStepTitle
+                  )
+                case 'shoppingListItems':
+                  return getShoppingListItemInfo(item as IShoppingListItem)
+              }
+            })()
+
+            const iconProps = {
+              className: `mr-3 h-5 w-5 ${
+                selected ? 'text-indigo-400' : 'text-indigo-600'
+              }`,
+              'aria-hidden': true,
+            }
+
+            const itemIcon = (() => {
+              switch (listType) {
+                case 'recipeIngredients':
+                  return <BeakerIcon {...iconProps} />
+                case 'stepOutputUses':
+                  return <Square2StackIcon {...iconProps} />
+              }
+            })()
+
+            return (
+              <li key={itemInfo.key}>
+                <button className="h-full w-full py-4" onClick={onCheck}>
+                  <span className="flex h-full w-full items-center">
+                    {itemIcon}
+                    <div
+                      className={`min-w-0 flex-1 text-start text-sm ${
+                        selected
+                          ? 'text-gray-400 line-through decoration-indigo-600 decoration-2'
+                          : 'text-gray-700'
+                      }`}
+                    >
+                      {itemInfo.itemLabel}
+                    </div>
+                    <div className="ml-3 flex h-5 items-center">
+                      <input
+                        id={`ingredient-${id}`}
+                        name={`ingredient-${id}`}
+                        type="checkbox"
+                        checked={selected}
+                        onChange={onCheck}
+                        className="h-4 w-4 cursor-pointer rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                      />
+                    </div>
+                  </span>
+                </button>
+              </li>
+            )
+          })
+        ) : (
+          <>
+            <li className="loading h-full w-full py-4" />
+            <li className="loading h-full w-full py-4" />
+            <li className="loading h-full w-full py-4" />
+          </>
+        )}
       </ul>
     </fieldset>
   )
