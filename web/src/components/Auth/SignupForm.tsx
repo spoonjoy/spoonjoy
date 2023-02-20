@@ -32,12 +32,21 @@ const SignupForm = ({ onComplete }: ISignupFormProps) => {
     }
   }
 
+  const usernameRef = React.useRef<HTMLInputElement>(null)
+  React.useEffect(() => {
+    // i couldn't figure out why, but this wasn't working without the setTimeout
+    setTimeout(() => {
+      usernameRef.current?.focus()
+    })
+  }, [usernameRef])
+
   return (
     <Form<IFormSignup> onSubmit={onSubmit} className="space-y-6">
       <StyledTextField
         label="username"
         fieldName="username"
         validation={{ required: true }}
+        ref={usernameRef}
       />
       <StyledTextField
         label="email"

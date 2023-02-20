@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 
-import { useAuth } from 'src/auth'
 import { navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
+import { useAuth } from 'src/auth'
 import SignupForm from 'src/components/Auth/SignupForm'
 
 import AuthFormWrapper from '../shared/AuthFormWrapper'
