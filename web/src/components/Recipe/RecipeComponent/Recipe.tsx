@@ -66,7 +66,7 @@ const Recipe = ({ recipe }: Props) => {
           }
           className={classNames(
             'relative m-auto h-[350px] bg-cover bg-bottom sm:h-[400px] md:h-[500px] lg:w-[900px]',
-            !recipe && 'animate-pulse'
+            !recipe && 'loading'
           )}
         >
           {recipe && (

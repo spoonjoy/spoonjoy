@@ -34,7 +34,9 @@
   .btn-small-rounded-secondary {
     @apply btn-small-rounded border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:bg-gray-50 disabled:text-gray-500
   }
-
+  .loading {
+    @apply animate-pulse cursor-wait bg-slate-200
+  }
 }
 
 @keyframes fade-in-out {
