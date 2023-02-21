@@ -25,7 +25,7 @@ const WelcomePage = () => {
     const welcomeImageNumber = Math.floor(Math.random() * 9) + 1
 
     // window width rounded to the nearest 100 pixels
-    const welcomeImageWidth = Math.round(window.innerWidth / 100) * 100
+    const welcomeImageWidth = Math.ceil(window.innerWidth / 100) * 100
 
     return (
       <>
