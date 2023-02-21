@@ -15,13 +15,13 @@ export const AuthWebAuthnPrompt = ({
     </div>
     <div className="mt-3 text-center sm:mt-5">
       <h2 className="text-lg font-medium leading-6 text-gray-900">
-        Passwordless Login Enabled
+        passwordless login enabled
       </h2>
-      <p>Log in with your fingerprint, face or PIN</p>
+      <p>log in with your fingerprint, face or PIN</p>
     </div>
     <div className="mt-5">
       <button className="btn-primary w-full" onClick={onAuthenticate}>
-        Open Authenticator
+        open authenticator
       </button>
     </div>
     <div className=" mt-5 text-center text-sm text-gray-300">
@@ -51,10 +51,10 @@ export const RegisterWebAuthnPrompt = ({
     </div>
     <div className="mt-3 text-center sm:mt-5">
       <h2 className="text-lg font-medium leading-6 text-gray-900">
-        No more passwords!
+        mo more passwords!
       </h2>
       <p className="mt-2 text-sm text-gray-500">
-        Depending on your device you can log in with your fingerprint, face or
+        depending on your device you can log in with your fingerprint, face or
         PIN next time.
       </p>
     </div>
@@ -63,13 +63,13 @@ export const RegisterWebAuthnPrompt = ({
         className="btn-primary inline-flex w-full justify-center sm:col-start-2"
         onClick={onRegister}
       >
-        Turn On
+        turn On
       </button>
       <button
         className="btn-dismiss mt-2 inline-flex w-full justify-center sm:col-start-1 sm:mt-0"
         onClick={onSkip}
       >
-        Skip for now
+        skip for now
       </button>
     </div>
   </AuthFormWrapper>
