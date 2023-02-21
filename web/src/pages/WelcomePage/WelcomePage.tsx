@@ -9,7 +9,7 @@ import { MetaTags } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
 
-import WelcomeHeaderImg from './sj-welcome-header.jpg'
+// import WelcomeHeaderImg from './sj-welcome-header.jpg'
 
 const WelcomePage = () => {
   const { currentUser } = useAuth()
@@ -20,6 +20,12 @@ const WelcomePage = () => {
       { name: 'sign up', href: routes.signup() },
       { name: 'log in', href: routes.login() },
     ]
+
+    // Change the number here to the number of images in the welcome_images folder
+    const welcomeImageNumber = Math.floor(Math.random() * 9) + 1
+
+    // window width rounded to the nearest 100 pixels
+    const welcomeImageWidth = Math.round(window.innerWidth / 100) * 100
 
     return (
       <>
@@ -162,7 +168,7 @@ const WelcomePage = () => {
           <div className="absolute bottom-0 top-[30rem] left-0 right-0 lg:inset-y-0 lg:left-1/2 lg:w-1/2">
             <img
               className="h-full w-full object-cover"
-              src={WelcomeHeaderImg}
+              src={`https://res.cloudinary.com/dpjmyc4uz/image/upload/w_${welcomeImageWidth},f_auto/welcome_images/sjwelcome_${welcomeImageNumber}`}
               alt="Home cooking, made easy"
             />
           </div>
