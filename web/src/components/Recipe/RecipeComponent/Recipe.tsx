@@ -59,11 +59,9 @@ const Recipe = ({ recipe }: Props) => {
       />
       <HeaderSlot.Plug id="recipe">
         <div
-          style={
-            recipe && {
-              backgroundImage: `url('${recipe.imageUrl}')`,
-            }
-          }
+          style={{
+            backgroundImage: `url('https://res.cloudinary.com/dpjmyc4uz/image/upload/w_900,f_auto/${recipe?.id}')`,
+          }}
           className={classNames(
             'relative m-auto h-[350px] bg-cover bg-bottom sm:h-[400px] md:h-[500px] lg:w-[900px]',
             !recipe && 'loading'
