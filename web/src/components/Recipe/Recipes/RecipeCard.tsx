@@ -33,7 +33,10 @@ const RecipeCard = ({ recipe }: { recipe?: RecipeShortInfo }) => {
         <div className="absolute left-0 top-0 right-0 z-10 flex h-16 rounded-t-lg bg-gradient-to-b from-black to-transparent text-white opacity-70" />
       )}
       <ListCardContentWithImageBackground
-        imageUrl={`https://res.cloudinary.com/dpjmyc4uz/image/upload/w_400,f_auto/${recipe?.id}`}
+        imageUrl={
+          recipe?.id &&
+          `https://res.cloudinary.com/dpjmyc4uz/image/upload/w_400,f_auto/${recipe.id}`
+        }
         cardTitle={recipe?.title}
         byline={recipe?.chef.username}
         cardSubtitle={recipe?.description}
