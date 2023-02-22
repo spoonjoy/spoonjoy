@@ -8,11 +8,15 @@ import { Link, Redirect, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
+import Loading from 'src/components/Loading/Loading'
 
 // import WelcomeHeaderImg from './sj-welcome-header.jpg'
 
 const WelcomePage = () => {
-  const { currentUser } = useAuth()
+  const { currentUser, loading } = useAuth()
+  if (loading) {
+    return <Loading />
+  }
   if (currentUser) {
     return <Redirect to={routes.user({ username: currentUser.username })} />
   } else {
