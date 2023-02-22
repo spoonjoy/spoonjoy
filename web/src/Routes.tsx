@@ -22,14 +22,14 @@ const Routes = () => {
     <Router useAuth={useAuth}>
       <Set whileLoadingAuth={LoadingPage}>
         {/* Here we put things that should redirect to the sign up page */}
-        <Private wrap={SiteLayout} unauthenticated="signup">
+        <Private wrap={SiteLayout} unauthenticated="signup" whileLoadingAuth={LoadingPage}>
           <Set wrap={BackgroundLayout}>
             <Route path="/recipes/new" page={RecipeNewRecipePage} name="newRecipe" />
             <Route path="/cookbooks/new" page={CookbookNewCookbookPage} name="newCookbook" />
           </Set>
         </Private>
         {/* Here we put things that should redirect to the welcome page */}
-        <Private wrap={SiteLayout} unauthenticated="welcome">
+        <Private wrap={SiteLayout} unauthenticated="welcome" whileLoadingAuth={LoadingPage}>
           <Set wrap={BackgroundLayout}>
             <Route path="/recipes/{id}/edit" page={RecipeEditRecipePage} name="editRecipe" />
             <Route path="/cookbooks/{id}/edit" page={CookbookEditCookbookPage} name="editCookbook" />
@@ -37,7 +37,7 @@ const Routes = () => {
           </Set>
         </Private>
         <Route path="/" page={WelcomePage} name="welcome" />
-        <Set wrap={SiteLayout}>
+        <Set wrap={SiteLayout} whileLoadingAuth={LoadingPage}>
           <Route path="/login" page={AuthLoginPage} name="login" />
           <Route path="/signup" page={AuthSignupPage} name="signup" />
           <Route path="/signup-and-create-cookbook/{recipeId}" page={AuthSignupAndCreateCookbookPage} name="signupAndCreateCookbook" />
