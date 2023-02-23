@@ -63,7 +63,7 @@ export const RegisterWebAuthnPrompt = ({
         className="btn-primary inline-flex w-full justify-center sm:col-start-2"
         onClick={onRegister}
       >
-        turn On
+        turn on
       </button>
       <button
         className="btn-dismiss mt-2 inline-flex w-full justify-center sm:col-start-1 sm:mt-0"
