@@ -39,6 +39,9 @@
   .loading {
     @apply animate-pulse cursor-wait bg-slate-200
   }
+  .link {
+    @apply text-indigo-600 hover:text-indigo-500
+  }
 }
 
 @keyframes fade-in-out {

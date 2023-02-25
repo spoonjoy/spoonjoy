@@ -33,7 +33,7 @@ const AuthHeader = ({ location }: IAuthHeaderProps) => (
             ? routes.login()
             : routes.signup()
         }
-        className="font-medium text-indigo-600 hover:text-indigo-500"
+        className="link font-medium"
       >
         {location === 'signup' || location === 'new-cookbook'
           ? 'log in'

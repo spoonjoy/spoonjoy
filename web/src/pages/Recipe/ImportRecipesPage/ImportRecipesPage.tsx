@@ -1,4 +1,5 @@
 import { Form } from '@redwoodjs/forms'
+import { Link } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import StyledTextField from 'src/components/formComponents/StyledTextField'
@@ -21,7 +22,16 @@ const ImportRecipesPage = () => {
           placeholder="paste link to recipe"
           validation={{ required: true }}
         />
+        <button className="btn-submit-primary w-full" type="submit">
+          import recipe
+        </button>
       </Form>
+      <div className="mt-2 text-center text-sm">
+        or{' '}
+        <Link to="#" className="link">
+          import from another platform
+        </Link>
+      </div>
     </>
   )
 }
