@@ -1,7 +1,7 @@
 {
   "name": "spoonjoy",
   "display": "standalone",
-  "start_url": "https://spoonjoy.com",
+  "start_url": "https://spoonjoy.app",
   "icons": [
     {"src": "/sj-icon-light.png"}
   ]

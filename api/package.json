@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "@redwoodjs/api": "4.1.4",
-    "@redwoodjs/auth-dbauth-api": "4.1.4",
-    "@redwoodjs/graphql-server": "4.1.4",
+    "@redwoodjs/api": "4.2.0",
+    "@redwoodjs/auth-dbauth-api": "4.2.0",
+    "@redwoodjs/graphql-server": "4.2.0",
     "@simplewebauthn/server": "^6",
     "@tailwindcss/forms": "^0.5.3",
     "@whatwg-node/fetch": "^0.8.1",
