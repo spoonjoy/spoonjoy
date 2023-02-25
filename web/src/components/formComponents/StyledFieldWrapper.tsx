@@ -22,6 +22,8 @@ export interface StyledFieldWrapperProps {
   maxLength?: number
   /** Current length of the text in the field. Must include if using maxLength */
   currentLength?: number
+  /** Use this to make the field grow larger on larger screens */
+  grow?: boolean
 }
 const StyledFieldWrapper = ({
   children,
