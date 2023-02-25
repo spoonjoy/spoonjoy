@@ -18,6 +18,7 @@ const StyledTextField = React.forwardRef<
       maxLength,
       currentLength,
       placeholder,
+      disabled,
     },
     ref
   ) => {
@@ -37,6 +38,7 @@ const StyledTextField = React.forwardRef<
           validation={validation}
           onChange={onChange}
           ref={ref}
+          disabled={disabled}
         />
       </StyledFieldWrapper>
     )

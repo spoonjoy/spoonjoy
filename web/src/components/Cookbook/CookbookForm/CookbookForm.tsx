@@ -20,7 +20,8 @@ export type onUpdateCookbook = (
 ) => void
 
 interface CookbookFormProps {
-  cookbook?: EditCookbookById['cookbook']
+  // it's null while loading, and undefined when creating a new cookbook
+  cookbook?: EditCookbookById['cookbook'] | null
   onSave: onCreateCookbook | onUpdateCookbook
   error?: RWGqlError
   loading: boolean
@@ -72,17 +73,18 @@ const CookbookForm = ({
 
         <StyledTextField
           fieldName="title"
-          placeholder="my favorite recipes"
+          placeholder={cookbook === null ? 'loading...' : 'my favorite recipes'}
           defaultValue={cookbook?.title || undefined}
           validation={{ required: true, maxLength: MAX_TITLE_LENGTH }}
           maxLength={MAX_TITLE_LENGTH}
           currentLength={watch().title?.length || 0}
           ref={fieldRef}
+          disabled={cookbook === null}
         />
 
         <div className="mt-10 flex justify-center">
           <Submit disabled={loading} className="btn-submit-primary">
-            {cookbook ? 'update cookbook' : 'create new cookbook'}
+            {cookbook === undefined ? 'create new cookbook' : 'update cookbook'}
           </Submit>
         </div>
       </Form>

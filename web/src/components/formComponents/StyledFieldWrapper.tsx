@@ -9,6 +9,7 @@ export interface StyledFieldProps<T = Element>
   onChange?: (e: React.ChangeEvent<T>) => void
   validation?: RegisterOptions
   placeholder?: string
+  disabled?: boolean
 }
 
 export interface StyledFieldWrapperProps {

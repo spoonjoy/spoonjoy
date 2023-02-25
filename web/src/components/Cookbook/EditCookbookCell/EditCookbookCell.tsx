@@ -36,7 +36,7 @@ const REFETCH_COOKBOOK_TITLE = gql`
   }
 `
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => <CookbookForm cookbook={null} loading={true} />
 
 export const Failure = ({ error }: CellFailureProps) => (
   <div className="rw-cell-error">{error?.message}</div>
