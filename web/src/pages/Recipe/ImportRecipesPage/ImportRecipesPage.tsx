@@ -1,20 +1,27 @@
-import { Link, routes } from '@redwoodjs/router'
+import { Form } from '@redwoodjs/forms'
 import { MetaTags } from '@redwoodjs/web'
+
+import StyledTextField from 'src/components/formComponents/StyledTextField'
+import { HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
 
 const ImportRecipesPage = () => {
   return (
     <>
-      <MetaTags title="ImportRecipes" description="ImportRecipes page" />
-
-      <h1>ImportRecipesPage</h1>
-      <p>
-        Find me in{' '}
-        <code>./web/src/pages/ImportRecipesPage/ImportRecipesPage.tsx</code>
-      </p>
-      <p>
-        My default route is named <code>importRecipes</code>, link to me with `
-        <Link to={routes.importRecipes()}>ImportRecipes</Link>`
-      </p>
+      <MetaTags title="import recipes" description="Import Recipes page" />
+      <HeaderSlot.Plug id="recipe">
+        <div className="mt-20 w-screen text-center">
+          <span className="text-xl text-indigo-700">import to</span>
+          <br />
+          <span className="text-5xl">spoonjoy</span>
+        </div>
+      </HeaderSlot.Plug>
+      <Form className="m-auto max-w-sm pt-10">
+        <StyledTextField
+          fieldName="url"
+          placeholder="paste link to recipe"
+          validation={{ required: true }}
+        />
+      </Form>
     </>
   )
 }
