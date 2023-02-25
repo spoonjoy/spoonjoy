@@ -38,6 +38,7 @@ const Routes = () => {
         </Private>
         <Route path="/" page={WelcomePage} name="welcome" />
         <Set wrap={SiteLayout} whileLoadingAuth={LoadingPage}>
+          <Route path="/import-recipes" page={RecipeImportRecipesPage} name="importRecipes" />
           <Route path="/login" page={AuthLoginPage} name="login" />
           <Route path="/signup" page={AuthSignupPage} name="signup" />
           <Route path="/signup-and-create-cookbook/{recipeId}" page={AuthSignupAndCreateCookbookPage} name="signupAndCreateCookbook" />
