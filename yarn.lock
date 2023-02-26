@@ -5201,13 +5201,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sparticuz/chromium@npm:111":
+"@sparticuz/chromium-min@npm:111":
   version: 111.0.0
-  resolution: "@sparticuz/chromium@npm:111.0.0"
+  resolution: "@sparticuz/chromium-min@npm:111.0.0"
   dependencies:
     follow-redirects: ^1.15.2
     tar-fs: ^2.1.1
-  checksum: 44f9ecf67285a1e9bb02df41805a7177f397c11ce5ca182612d13887ae43f260406c72c4cce33381f222011803425215d0a3ff452b703f1dbd30a55a6894e284
+  checksum: beaf6600db7441e66ea681244ce40c3ba617ab65228563e80fc283fbe9350c11038578ad679186fcad2d9b1e84ff9aaa979bc9a756d73f1a829d052a84d00824
   languageName: node
   linkType: hard
 
@@ -8478,7 +8478,7 @@ __metadata:
     "@redwoodjs/auth-dbauth-api": 4.2.0
     "@redwoodjs/graphql-server": 4.2.0
     "@simplewebauthn/server": ^6
-    "@sparticuz/chromium": 111
+    "@sparticuz/chromium-min": 111
     "@tailwindcss/forms": ^0.5.3
     "@whatwg-node/fetch": ^0.8.1
     cloudinary: ^1.33.0
