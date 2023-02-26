@@ -336,7 +336,9 @@ const getRecipeStructuredDataFromWebsite = async (
     const browser = await puppeteer.launch({
       args: chromium.args,
       defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath(),
+      executablePath: await chromium.executablePath(
+        'https://sj-misc.s3.amazonaws.com/chromium-v111.0.0-pack.tar'
+      ),
       headless: chromium.headless,
       ignoreHTTPSErrors: true,
     })
