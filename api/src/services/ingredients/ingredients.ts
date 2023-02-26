@@ -97,18 +97,12 @@ export const Ingredient: RequiredIngredientRelationResolvers = {
     return maybeRecipeStep
   },
   unit: async (_obj, { root }) => {
-    const maybeUnit = await db.ingredient
-      .findUnique({
-        where: {
-          recipeId_stepNum_unitId_ingredientRefId: {
-            recipeId: root.recipeId,
-            stepNum: root.stepNum,
-            unitId: root.unitId,
-            ingredientRefId: root.ingredientRefId,
-          },
-        },
-      })
-      .unit()
+    const maybeUnit = await db.unit.findUnique({
+      where: {
+        id: root.unitId,
+      },
+    })
+
     if (!maybeUnit) {
       throw new Error('Could not resolve unit')
     }
@@ -116,18 +110,12 @@ export const Ingredient: RequiredIngredientRelationResolvers = {
     return maybeUnit
   },
   ingredientRef: async (_obj, { root }) => {
-    const maybeIngredientRef = await db.ingredient
-      .findUnique({
-        where: {
-          recipeId_stepNum_unitId_ingredientRefId: {
-            recipeId: root.recipeId,
-            stepNum: root.stepNum,
-            unitId: root.unitId,
-            ingredientRefId: root.ingredientRefId,
-          },
-        },
-      })
-      .ingredientRef()
+    const maybeIngredientRef = await db.ingredientRef.findUnique({
+      where: {
+        id: root.ingredientRefId,
+      },
+    })
+
     if (!maybeIngredientRef) {
       throw new Error('Could not resolve ingredientRef')
     }
