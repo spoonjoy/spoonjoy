@@ -70,6 +70,39 @@ const simpleCreateRecipe = async (input: CreateRecipeInput) => {
         },
       })
 
+      // if logged in, add to 'imported' cookbook
+      if (context.currentUser) {
+        const IMPORT_COOKBOOK_NAME = 'imported'
+        await tx.recipeInCookbook.create({
+          data: {
+            cookbook: {
+              connectOrCreate: {
+                where: {
+                  authorId_title: {
+                    authorId: context.currentUser.id,
+                    title: IMPORT_COOKBOOK_NAME,
+                  },
+                },
+                create: {
+                  authorId: context.currentUser.id,
+                  title: IMPORT_COOKBOOK_NAME,
+                },
+              },
+            },
+            recipe: {
+              connect: {
+                id: recipeId,
+              },
+            },
+            addedBy: {
+              connect: {
+                id: context.currentUser.id,
+              },
+            },
+          },
+        })
+      }
+
       return newRecipe
     },
     { timeout: 15000 }
