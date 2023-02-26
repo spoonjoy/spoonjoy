@@ -13,7 +13,7 @@ export const schema = gql`
 
     sourceRecipeId: String
     sourceRecipe: Recipe
-    sourceRecipeUrl: String
+    sourceUrl: String
   }
 
   type Query {

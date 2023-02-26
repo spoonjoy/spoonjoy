@@ -1,5 +1,6 @@
 import type { FindRecipeById } from 'types/graphql'
 
+import { Link } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
@@ -75,6 +76,19 @@ const Recipe = ({ recipe }: Props) => {
                   <span className="mb-2 block text-base font-medium leading-snug tracking-wide opacity-[95%]">
                     {recipe.title}
                   </span>
+                  {recipe.sourceUrl && (
+                    <a
+                      href={recipe.sourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group mb-2 -mt-2 block text-xs font-normal tracking-wide"
+                    >
+                      <span className="opacity-[60%]">originally from </span>
+                      <span className="underline opacity-[60%] group-hover:opacity-90 group-focus:opacity-90">
+                        {new URL(recipe.sourceUrl).hostname.replace('www.', '')}
+                      </span>
+                    </a>
+                  )}
                   <span className="block text-sm font-normal leading-snug tracking-wide opacity-[85%]">
                     {recipe.description}
                   </span>

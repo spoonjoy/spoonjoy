@@ -66,6 +66,8 @@ export const QUERY = (props: {
         inMyCookbooks {
           cookbookId
         }
+        sourceUrl
+        sourceRecipeId
       }
     }
   `
