@@ -3,6 +3,7 @@ import { Link } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import StyledTextField from 'src/components/formComponents/StyledTextField'
+import RecipeImportLoading from 'src/components/Recipe/Importing/RecipeImportLoading/RecipeImportLoading'
 import { HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
 
 const ImportRecipesPage = () => {
@@ -17,6 +18,7 @@ const ImportRecipesPage = () => {
 
   return (
     <>
+      <RecipeImportLoading />
       <MetaTags title="import recipes" description="Import Recipes page" />
       <HeaderSlot.Plug id="recipe">
         <div className="mt-20 w-screen text-center xl:mt-40">
