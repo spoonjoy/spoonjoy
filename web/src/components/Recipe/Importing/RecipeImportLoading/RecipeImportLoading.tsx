@@ -4,23 +4,30 @@ import {
 } from '@heroicons/react/24/solid'
 import LogoBlack from 'public/logos/sj_black.svg'
 
-import { Link, navigate, routes } from '@redwoodjs/router'
+import { navigate } from '@redwoodjs/router'
 
 import { classNames } from 'src/helpers/css'
 
 export interface IRecipeImportLoadingProps {
   redirectUrl: string | null
   hasError: boolean
+  setShowLoading: React.Dispatch<React.SetStateAction<boolean>>
+  onRetry: () => void
 }
 
 const RecipeImportLoading = ({
   redirectUrl,
   hasError,
+  setShowLoading,
+  onRetry,
 }: IRecipeImportLoadingProps) => {
   return (
     <div className="fixed bottom-0 top-0 left-0 right-0 z-50 flex flex-col items-center justify-center gap-2 bg-white">
       <LogoBlack
-        className={classNames('h-12 w-auto', !redirectUrl && 'animate-pulse')}
+        className={classNames(
+          'h-12 w-auto',
+          !redirectUrl && !hasError && 'animate-pulse'
+        )}
       />
       <div className="mx-auto max-w-3xl px-5 text-sm leading-5 text-gray-700 sm:text-base">
         <h1 className="mt-2 text-center text-xl font-bold tracking-tight text-gray-800 sm:text-2xl">
@@ -61,12 +68,14 @@ const RecipeImportLoading = ({
       <div className="mt-10">
         {hasError ? (
           <div>
-            <button className="btn-error-primary">try again</button>
+            <button onClick={onRetry} className="btn-error-primary">
+              try again
+            </button>
             <span className="mt-2 block text-center text-sm">
               or {''}
-              <Link className="link" to={routes.importRecipes()}>
+              <button className="link" onClick={() => setShowLoading(false)}>
                 go back
-              </Link>
+              </button>
             </span>
           </div>
         ) : (

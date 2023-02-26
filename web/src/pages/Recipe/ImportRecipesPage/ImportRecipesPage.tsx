@@ -54,7 +54,14 @@ const ImportRecipesPage = () => {
   return (
     <>
       {showLoading && (
-        <RecipeImportLoading redirectUrl={redirectUrl} hasError={!!error} />
+        <RecipeImportLoading
+          redirectUrl={redirectUrl}
+          hasError={!!error}
+          setShowLoading={setShowLoading}
+          onRetry={() => {
+            onSubmit({ url: fieldRef.current?.value || '' })
+          }}
+        />
       )}
       <MetaTags title="import recipes" description="Import Recipes page" />
       <HeaderSlot.Plug id="recipe">
