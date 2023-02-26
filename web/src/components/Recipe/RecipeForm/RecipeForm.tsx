@@ -205,6 +205,7 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
                 {recipe ? 'update recipe' : 'create new recipe'}
               </Submit>
               <button
+                className="btn-error mt-2"
                 onClick={(e) => {
                   e.preventDefault() // needed so that this button doesn't try to submit the form
                   recipeInputStore.clear()
@@ -220,7 +221,6 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
                     toast('recipe form has been reset')
                   }
                 }}
-                className="btn-error"
               >
                 {recipe ? 'discard changes' : 'reset'}
               </button>
