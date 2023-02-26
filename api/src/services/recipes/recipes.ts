@@ -215,9 +215,9 @@ export const updateRecipe: MutationResolvers['updateRecipe'] = async ({
     title,
     description,
     servings,
-    imageUrl: (await shouldUpdateRecipeImage(id, input))
-      ? await createRecipeImage(title, description, id)
-      : undefined,
+    // imageUrl: (await shouldUpdateRecipeImage(id, input))
+    //   ? await createRecipeImage(title, description, id)
+    //   : undefined,
     steps: mapStepsMutationInputToDbUpdateInputNoStepOutputUses(steps, id),
   }
 
