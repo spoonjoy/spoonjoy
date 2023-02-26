@@ -1,7 +1,10 @@
 import type { Prisma } from '@prisma/client'
+import chromium from '@sparticuz/chromium'
 import { fetch } from '@whatwg-node/fetch'
+import * as cheerio from 'cheerio'
 import JSZip from 'jszip'
 import pluralize from 'pluralize'
+import puppeteer from 'puppeteer-core'
 import { Recipe } from 'schema-dts'
 import {
   CreateIngredientInput,
@@ -9,6 +12,8 @@ import {
   CreateRecipeStepInput,
   MutationResolvers,
 } from 'types/graphql'
+
+import { RedwoodError } from '@redwoodjs/api'
 
 import { db } from 'src/lib/db'
 import { parseIngredients } from 'src/services/ingredients/ingredientParse'
@@ -136,19 +141,7 @@ const parseCroutonData = async (fileUrl: string) => {
 }
 
 const parseWebsiteData = async (url: string) => {
-  const apiUrl =
-    process.env.NODE_ENV === 'development'
-      ? 'http://localhost:8910/api/'
-      : 'https://spoonjoy.app/api/'
-
-  const response = await fetch(
-    `${apiUrl}/getRecipeStructuredDataFromWebsite?url=${url}`
-  )
-
-  const responseJson = await response.json()
-
-  const recipeStructuredData = responseJson.body.data
-
+  const recipeStructuredData = await getRecipeStructuredDataFromWebsite(url)
   const sjRecipeInput = await websiteRecipeToSJRecipeInput(recipeStructuredData)
   return sjRecipeInput
 }
@@ -320,4 +313,71 @@ const getJsonsFromZipFileUrl = async <T>(fileUrl: string) => {
   })
 
   return await Promise.all(jsonPromises)
+}
+
+const getRecipeStructuredDataFromWebsite = async (
+  url: string
+): Promise<Recipe> => {
+  let webPageString: string | null | undefined
+  try {
+    // first, try to get the website with fetch
+    webPageString = await fetch(url).then((res) => res.text())
+    // some web pages block fetch, so check for error
+    if (
+      !webPageString ||
+      webPageString.includes('error') ||
+      webPageString.includes('Forbidden')
+    )
+      throw new RedwoodError("Couldn't fetch")
+  } catch (error) {
+    console.error('Could not get the website using fetch, error:', error)
+
+    // if fetch fails, try to get the website with puppeteer
+    const browser = await puppeteer.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
+      ignoreHTTPSErrors: true,
+    })
+    const page = await browser.newPage()
+    await page.goto(url, { waitUntil: 'domcontentloaded' })
+    // await page.goto(url)
+    await page.waitForSelector('script[type="application/ld+json"]')
+    // const innerText = await page.$eval(
+    //   'script[type="application/ld+json"]',
+    //   (el) => el.textContent
+    // )
+    webPageString = await page.evaluate(
+      () => document.querySelector('*')?.outerHTML
+    )
+  }
+  if (!webPageString) throw new RedwoodError("Couldn't get web page content")
+
+  const webPageHTML = cheerio.load(webPageString)
+  const structuredData = webPageHTML('script[type="application/ld+json"]')
+
+  const firstRecipeElement = structuredData
+    .filter((i, el) => {
+      const scriptContent = webPageHTML(el).html()
+      const scriptJson = JSON.parse(scriptContent || '{}')
+
+      let type: string | string[] | undefined
+      // if scriptJson is an array, get the first element
+      if (Array.isArray(scriptJson)) {
+        type = scriptJson[0]['@type'] as string | string[] | undefined
+      } else {
+        type = scriptJson['@type'] as string | string[] | undefined
+      }
+      return (type && (type === 'Recipe' || type.includes('Recipe'))) || false
+    })
+    .get()[0]
+
+  if (!firstRecipeElement) throw new RedwoodError("Couldn't find recipe")
+
+  const scriptString = webPageHTML(firstRecipeElement).html() || ''
+
+  const recipeLDJSON = JSON.parse(scriptString)
+
+  return Array.isArray(recipeLDJSON) ? recipeLDJSON[0] : recipeLDJSON
 }
