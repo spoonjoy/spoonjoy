@@ -1,5 +1,5 @@
 import type { Prisma } from '@prisma/client'
-import chromium from '@sparticuz/chromium'
+import chromium from '@sparticuz/chromium-min'
 import { fetch } from '@whatwg-node/fetch'
 import * as cheerio from 'cheerio'
 import JSZip from 'jszip'
