@@ -25,7 +25,7 @@
     @apply btn border-gray-300 px-4 py-2 text-base font-medium enabled:hover:bg-gray-50  focus:ring-indigo-500 enabled:bg-white disabled:bg-gray-400 sm:text-sm;
   }
   .btn-submit-primary {
-    @apply btn px-6 py-3 text-base font-medium text-white focus:ring-indigo-500 enabled:bg-indigo-600 enabled:hover:bg-indigo-700 disabled:bg-gray-400;
+    @apply btn text-base px-6 py-3 font-medium text-white focus:ring-indigo-500 enabled:bg-indigo-600 enabled:hover:bg-indigo-700 disabled:bg-gray-400;
   }
   .btn-small-rounded {
     @apply inline-flex items-center rounded-full  border px-2.5 py-0.5 text-sm font-medium leading-5 shadow-sm
@@ -35,6 +35,12 @@
   }
   .btn-small-rounded-secondary {
     @apply btn-small-rounded border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:bg-gray-50 disabled:text-gray-500
+  }
+  .btn-error {
+    @apply btn px-4 py-2 text-base font-medium text-white hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 enabled:bg-red-600
+  }
+  .btn-error-primary {
+    @apply btn px-6 py-3 text-base font-medium text-white hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 enabled:bg-red-600
   }
   .loading {
     @apply animate-pulse cursor-wait bg-slate-200

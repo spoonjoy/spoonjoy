@@ -4,6 +4,8 @@ import {
 } from '@heroicons/react/24/solid'
 import LogoBlack from 'public/logos/sj_black.svg'
 
+import { Link, routes } from '@redwoodjs/router'
+
 import { classNames } from 'src/helpers/css'
 
 export interface IRecipeImportLoadingProps {
@@ -56,9 +58,26 @@ const RecipeImportLoading = ({
           </li>
         </ul>
       </div>
-      <button className="btn-submit-primary mt-10" disabled={loading}>
-        got it, go to recipe
-      </button>
+      <div className="mt-10">
+        {hasError ? (
+          <div>
+            <button className="btn-error-primary">try again</button>
+            <span className="mt-2 block text-center text-sm">
+              or {''}
+              <Link className="link" to={routes.importRecipes()}>
+                go back
+              </Link>
+            </span>
+          </div>
+        ) : (
+          <button
+            className={classNames('btn-submit-primary')}
+            disabled={loading}
+          >
+            got it, go to recipe
+          </button>
+        )}
+      </div>
     </div>
   )
 }
