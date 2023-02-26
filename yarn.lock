@@ -5201,6 +5201,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sparticuz/chromium@npm:111":
+  version: 111.0.0
+  resolution: "@sparticuz/chromium@npm:111.0.0"
+  dependencies:
+    follow-redirects: ^1.15.2
+    tar-fs: ^2.1.1
+  checksum: 44f9ecf67285a1e9bb02df41805a7177f397c11ce5ca182612d13887ae43f260406c72c4cce33381f222011803425215d0a3ff452b703f1dbd30a55a6894e284
+  languageName: node
+  linkType: hard
+
 "@storybook/addon-a11y@npm:6.5.16":
   version: 6.5.16
   resolution: "@storybook/addon-a11y@npm:6.5.16"
@@ -8468,11 +8478,12 @@ __metadata:
     "@redwoodjs/auth-dbauth-api": 4.2.0
     "@redwoodjs/graphql-server": 4.2.0
     "@simplewebauthn/server": ^6
+    "@sparticuz/chromium": 111
     "@tailwindcss/forms": ^0.5.3
     "@whatwg-node/fetch": ^0.8.1
     cloudinary: ^1.33.0
     openai: ^3.1.0
-    puppeteer: ^19.7.1
+    puppeteer-core: 19.7.0
   languageName: unknown
   linkType: soft
 
@@ -10426,6 +10437,16 @@ __metadata:
   version: 1.0.3
   resolution: "chrome-trace-event@npm:1.0.3"
   checksum: 080ce2d20c2b9e0f8461a380e9585686caa768b1c834a464470c9dc74cda07f27611c7b727a2cd768a9cecd033297fdec4ce01f1e58b62227882c1059dec321c
+  languageName: node
+  linkType: hard
+
+"chromium-bidi@npm:0.4.3":
+  version: 0.4.3
+  resolution: "chromium-bidi@npm:0.4.3"
+  peerDependencies:
+    devtools-protocol: "*"
+    mitt: "*"
+  checksum: e0370a30230af0a7ca67022d3fd913e9750331be906033101fb7ba96eae51cf3e481a8379f850c9b5990e46f9725b4270b49be9a4e3db45d2ec8e1135046e294
   languageName: node
   linkType: hard
 
@@ -14014,7 +14035,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.14.8":
+"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.14.8, follow-redirects@npm:^1.15.2":
   version: 1.15.2
   resolution: "follow-redirects@npm:1.15.2"
   peerDependenciesMeta:
@@ -21179,10 +21200,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer-core@npm:19.7.1":
-  version: 19.7.1
-  resolution: "puppeteer-core@npm:19.7.1"
+"puppeteer-core@npm:19.7.0":
+  version: 19.7.0
+  resolution: "puppeteer-core@npm:19.7.0"
   dependencies:
+    chromium-bidi: 0.4.3
     cross-fetch: 3.1.5
     debug: 4.3.4
     devtools-protocol: 0.0.1094867
@@ -21194,27 +21216,11 @@ __metadata:
     unbzip2-stream: 1.4.3
     ws: 8.11.0
   peerDependencies:
-    chromium-bidi: 0.4.3
     typescript: ">= 4.7.4"
   peerDependenciesMeta:
-    chromium-bidi:
-      optional: true
     typescript:
       optional: true
-  checksum: 11899bf099f356f0340be7e36b22890eb475e6f71d7f54578976a3ac7674efbfa27e0fca6fd82a96aa107346c42f5db62616361fc38d444023386a8a5d27c428
-  languageName: node
-  linkType: hard
-
-"puppeteer@npm:^19.7.1":
-  version: 19.7.1
-  resolution: "puppeteer@npm:19.7.1"
-  dependencies:
-    cosmiconfig: 8.0.0
-    https-proxy-agent: 5.0.1
-    progress: 2.0.3
-    proxy-from-env: 1.1.0
-    puppeteer-core: 19.7.1
-  checksum: 27bdcaecc7628b50d023aefdcc800f69964b42371be2b90da5b1ed2a4b505194cc75dbd0ff9dc497bd520003fd0e18a02adf2fb8d19aa3e42a686db47dbb03e2
+  checksum: cd1446ecdbe9620a24ee8c6a2899c0148a8a3116a74f73e16020f11efdf967bf384a9dd06d3de8ab530cafd465c5da941de715388f6b3b662ed8a5a9d89d3d1f
   languageName: node
   linkType: hard
 
@@ -22302,6 +22308,7 @@ __metadata:
     jszip: ^3.10.1
     pluralize: ^8.0.0
     prettier-plugin-tailwindcss: ^0.1.13
+    puppeteer-core: 19.7.0
     schema-dts: ^1.1.0
   languageName: unknown
   linkType: soft
@@ -23821,7 +23828,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tar-fs@npm:2.1.1":
+"tar-fs@npm:2.1.1, tar-fs@npm:^2.1.1":
   version: 2.1.1
   resolution: "tar-fs@npm:2.1.1"
   dependencies:

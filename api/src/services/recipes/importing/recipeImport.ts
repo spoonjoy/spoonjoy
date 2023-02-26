@@ -1,16 +1,16 @@
 import type { Prisma } from '@prisma/client'
+import chromium from '@sparticuz/chromium'
 import { fetch } from '@whatwg-node/fetch'
 import * as cheerio from 'cheerio'
 import JSZip from 'jszip'
 import pluralize from 'pluralize'
-import puppeteer from 'puppeteer'
+import puppeteer from 'puppeteer-core'
 import { Recipe } from 'schema-dts'
 import {
   CreateIngredientInput,
   CreateRecipeInput,
   CreateRecipeStepInput,
   MutationResolvers,
-  QueryResolvers,
 } from 'types/graphql'
 
 import { RedwoodError } from '@redwoodjs/api'
@@ -333,7 +333,13 @@ const getRecipeStructuredDataFromWebsite = async (
     console.error('Could not get the website using fetch, error:', error)
 
     // if fetch fails, try to get the website with puppeteer
-    const browser = await puppeteer.launch()
+    const browser = await puppeteer.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
+      ignoreHTTPSErrors: true,
+    })
     const page = await browser.newPage()
     await page.goto(url, { waitUntil: 'domcontentloaded' })
     // await page.goto(url)
