@@ -74,6 +74,11 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
       current: useMatch(routes.newRecipe()).match,
     },
     {
+      name: 'import recipes',
+      href: routes.importRecipes(),
+      current: useMatch(routes.importRecipes()).match,
+    },
+    {
       name: 'new cookbook',
       href: routes.user({
         username: (currentUser?.username as string) || '',

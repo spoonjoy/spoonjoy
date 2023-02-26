@@ -54,10 +54,17 @@ model Recipe {
   steps               RecipeStep[]
   cookbooks           RecipeInCookbook[]
 
+  sourceRecipeId      String?
+  sourceRecipe        Recipe? @relation("SourceRecipe", fields: [sourceRecipeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  sourceUrl           String?
+
+  recipeForks         Recipe[] @relation("SourceRecipe")
+
   // Allow users to create a second recipe with the same title *if* the other one is deleted
   // TODO this is currently broken, see here: https://github.com/spoonjoy/spoonjoy-requests-issues/issues/1
   @@unique([chefId, title, deletedAt])
   @@index([chefId])
+  @@index([sourceRecipeId])
 }
 
 model RecipeStep {

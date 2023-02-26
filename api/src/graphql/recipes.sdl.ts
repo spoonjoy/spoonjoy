@@ -10,6 +10,10 @@ export const schema = gql`
     steps: [RecipeStep!]!
     imageUrl: String!
     inMyCookbooks: [RecipeInCookbook!]
+
+    sourceRecipeId: String
+    sourceRecipe: Recipe
+    sourceRecipeUrl: String
   }
 
   type Query {

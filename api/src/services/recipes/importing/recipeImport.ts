@@ -9,6 +9,7 @@ import {
   CreateIngredientInput,
   CreateRecipeInput,
   CreateRecipeStepInput,
+  MutationResolvers,
   QueryResolvers,
 } from 'types/graphql'
 
@@ -32,7 +33,7 @@ import { stringIsAValidUrl, truncateString } from './importHelpers'
  * - I don't want to apply all the validations that the createRecipe resolver does
  * - There's no stepOutputUses in an imported recipe, so I don't need to create those
  */
-const simpleCreateRecipe = async (input: CreateRecipeInput) => {
+const simpleCreateRecipe = async (input: CreateRecipeInput, url?: string) => {
   // If nobody's logged in, create the recipe for the chef-rj user
   const createForUsername = context.currentUser?.username || 'chef-rj'
 
@@ -44,6 +45,7 @@ const simpleCreateRecipe = async (input: CreateRecipeInput) => {
     title: truncateString(title, 60) as string,
     description: truncateString(description, 140),
     servings,
+    sourceUrl: url,
     chef: {
       connect: {
         username: createForUsername,
@@ -111,18 +113,18 @@ const simpleCreateRecipe = async (input: CreateRecipeInput) => {
   return newRecipe
 }
 
-export const importRecipeFromWebsite: QueryResolvers['importRecipeFromWebsite'] =
+export const importRecipeFromWebsite: MutationResolvers['importRecipeFromWebsite'] =
   async ({ url }) => {
     const recipe = await parseWebsiteData(url)
 
-    const newRecipe = await simpleCreateRecipe(recipe)
+    const newRecipe = await simpleCreateRecipe(recipe, url)
 
     return {
       recipeId: newRecipe.id,
     }
   }
 
-export const importRecipesFromCrouton: QueryResolvers['importRecipesFromCrouton'] =
+export const importRecipesFromCrouton: MutationResolvers['importRecipesFromCrouton'] =
   async ({ fileUrl }) => {
     const recipes = await parseCroutonData(fileUrl)
     return {
