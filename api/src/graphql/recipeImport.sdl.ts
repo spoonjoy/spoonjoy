@@ -7,8 +7,8 @@ export const schema = gql`
     cookbookId: ID!
   }
 
-  type Query {
-    importRecipeFromWebsite(url: String!): RecipeID @skipAuth
-    importRecipesFromCrouton(fileUrl: String!): CookbookID @requireAuth
+  type Mutation {
+    importRecipeFromWebsite(url: String!): RecipeID! @skipAuth
+    importRecipesFromCrouton(fileUrl: String!): CookbookID! @requireAuth
   }
 `

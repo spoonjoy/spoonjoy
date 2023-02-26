@@ -1,10 +1,23 @@
+import { ImportRecipeFromWebsiteMutation } from 'types/graphql'
+
 import { Form } from '@redwoodjs/forms'
-import { Link } from '@redwoodjs/router'
-import { MetaTags } from '@redwoodjs/web'
+import { Link, routes } from '@redwoodjs/router'
+import { MetaTags, useMutation } from '@redwoodjs/web'
+import { toast } from '@redwoodjs/web/dist/toast'
 
 import StyledTextField from 'src/components/formComponents/StyledTextField'
 import RecipeImportLoading from 'src/components/Recipe/Importing/RecipeImportLoading/RecipeImportLoading'
 import { HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
+
+type FormImportRecipeFromWebsite = { url: string }
+
+const IMPORT_RECIPE_FROM_WEBSITE_MUTATION = gql`
+  mutation ImportRecipeFromWebsiteMutation($url: String!) {
+    import: importRecipeFromWebsite(url: $url) {
+      recipeId
+    }
+  }
+`
 
 const ImportRecipesPage = () => {
   const fieldRef = React.useRef<HTMLInputElement>(null)
@@ -16,9 +29,33 @@ const ImportRecipesPage = () => {
     }, 100)
   }, [fieldRef])
 
+  const [showLoading, setShowLoading] = React.useState(false)
+  const [redirectUrl, setRedirectUrl] = React.useState<string | null>(null)
+
+  const [importRecipeFromWebsite, { error }] =
+    useMutation<ImportRecipeFromWebsiteMutation>(
+      IMPORT_RECIPE_FROM_WEBSITE_MUTATION,
+      {
+        onCompleted: (data) => {
+          toast.success('recipe imported')
+          setRedirectUrl(routes.recipe({ id: data.import.recipeId }))
+        },
+        onError: (error) => {
+          toast.error(error.message)
+        },
+      }
+    )
+
+  const onSubmit = ({ url }: FormImportRecipeFromWebsite) => {
+    setShowLoading(true)
+    importRecipeFromWebsite({ variables: { url } })
+  }
+
   return (
     <>
-      <RecipeImportLoading />
+      {showLoading && (
+        <RecipeImportLoading redirectUrl={redirectUrl} hasError={!!error} />
+      )}
       <MetaTags title="import recipes" description="Import Recipes page" />
       <HeaderSlot.Plug id="recipe">
         <div className="mt-20 w-screen text-center xl:mt-40">
@@ -27,7 +64,10 @@ const ImportRecipesPage = () => {
           <span className="text-5xl sm:text-6xl">spoonjoy</span>
         </div>
       </HeaderSlot.Plug>
-      <Form className="m-auto max-w-sm pt-10">
+      <Form<FormImportRecipeFromWebsite>
+        className="m-auto max-w-sm pt-10"
+        onSubmit={onSubmit}
+      >
         <StyledTextField
           fieldName="url"
           placeholder="paste link to recipe"

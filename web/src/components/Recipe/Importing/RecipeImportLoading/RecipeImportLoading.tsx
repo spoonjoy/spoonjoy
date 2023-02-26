@@ -4,23 +4,23 @@ import {
 } from '@heroicons/react/24/solid'
 import LogoBlack from 'public/logos/sj_black.svg'
 
-import { Link, routes } from '@redwoodjs/router'
+import { Link, navigate, routes } from '@redwoodjs/router'
 
 import { classNames } from 'src/helpers/css'
 
 export interface IRecipeImportLoadingProps {
-  loading: boolean
+  redirectUrl: string | null
   hasError: boolean
 }
 
 const RecipeImportLoading = ({
-  loading,
+  redirectUrl,
   hasError,
 }: IRecipeImportLoadingProps) => {
   return (
     <div className="fixed bottom-0 top-0 left-0 right-0 z-50 flex flex-col items-center justify-center gap-2 bg-white">
       <LogoBlack
-        className={classNames('h-12 w-auto', loading && 'animate-pulse')}
+        className={classNames('h-12 w-auto', !redirectUrl && 'animate-pulse')}
       />
       <div className="mx-auto max-w-3xl px-5 text-sm leading-5 text-gray-700 sm:text-base">
         <h1 className="mt-2 text-center text-xl font-bold tracking-tight text-gray-800 sm:text-2xl">
@@ -72,7 +72,8 @@ const RecipeImportLoading = ({
         ) : (
           <button
             className={classNames('btn-submit-primary')}
-            disabled={loading}
+            disabled={!redirectUrl}
+            onClick={() => redirectUrl && navigate(redirectUrl)}
           >
             got it, go to recipe
           </button>
