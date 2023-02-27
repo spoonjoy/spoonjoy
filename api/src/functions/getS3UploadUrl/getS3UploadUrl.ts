@@ -31,9 +31,20 @@ export const handler = async (event: APIGatewayEvent, _context: Context) => {
     },
   })
 
+  const filename = event.queryStringParameters?.filename
+
+  if (!filename) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({
+        error: 'Missing filename',
+      }),
+    }
+  }
+
   const bucketParams = {
     Bucket: 'sj-misc',
-    Key: `uploads/${event.queryStringParameters!.filename}`,
+    Key: `uploads/${filename}`,
   }
 
   // Create a command to put the object in the S3 bucket.
@@ -44,6 +55,8 @@ export const handler = async (event: APIGatewayEvent, _context: Context) => {
     expiresIn: 60 * 5, // 5 minutes
   })
 
+  const fileUrl = `https://sj-misc.s3.amazonaws.com/uploads/${filename}`
+
   return {
     statusCode: 200,
     headers: {
@@ -52,6 +65,7 @@ export const handler = async (event: APIGatewayEvent, _context: Context) => {
     body: JSON.stringify({
       data: {
         signedUrl,
+        fileUrl,
       },
     }),
   }
