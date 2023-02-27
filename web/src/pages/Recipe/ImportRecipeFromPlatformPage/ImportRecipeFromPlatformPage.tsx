@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 
+import axios from 'axios'
+
 const ImportRecipeFromPlatformPage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null)
 
@@ -11,21 +13,26 @@ const ImportRecipeFromPlatformPage: React.FC = () => {
 
   const handleFileUpload = async () => {
     if (file) {
-      const presignedUrl =
-        'https://sj-misc.s3.us-east-1.amazonaws.com/uploads/test-upload.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAR2UOPEM2KMSDJF4F%2F20230227%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230227T021007Z&X-Amz-Expires=300&X-Amz-Signature=2099180eab5b1bb137f979c168e4ceed6785f0fa8a3e2f6c4e436dc994e641d6&X-Amz-SignedHeaders=host&x-id=PutObject'
+      const filename = file.name.replace(' ', '+')
+      const presignedUrlEndpoint = `http://${window.location.host}/api/getS3UploadUrl?filename=${filename}`
 
-      // Upload the file to S3
-      const response = await fetch(presignedUrl, {
-        method: 'PUT',
-        body: file,
-        headers: {
-          'Content-Type': file.type,
-        },
-      })
+      // Get the pre-signed S3 URL using Axios
+      const presignedUrlResponse = await axios.get(presignedUrlEndpoint)
+      const presignedUrl = presignedUrlResponse.data.data.signedUrl
+      const fileUrl = presignedUrlResponse.data.data.fileUrl
+
+      // Create the config object with headers and body
+      const config = {
+        headers: { 'Content-Type': file.type },
+        data: file,
+      }
+
+      // Upload the file to S3 using Axios
+      const uploadResponse = await axios.put(presignedUrl, config)
 
       // Handle the response
-      if (response.ok) {
-        console.log('File uploaded successfully!')
+      if (uploadResponse.status === 200) {
+        console.log('File uploaded successfully! Get it from', fileUrl)
       } else {
         console.log('Error uploading file')
       }

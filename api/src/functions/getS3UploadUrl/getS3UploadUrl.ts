@@ -44,7 +44,7 @@ export const handler = async (event: APIGatewayEvent, _context: Context) => {
 
   const bucketParams = {
     Bucket: 'sj-misc',
-    Key: `uploads/${filename}`,
+    Key: `uploads/${encodeURI(filename)}`,
   }
 
   // Create a command to put the object in the S3 bucket.
@@ -55,7 +55,9 @@ export const handler = async (event: APIGatewayEvent, _context: Context) => {
     expiresIn: 60 * 5, // 5 minutes
   })
 
-  const fileUrl = `https://sj-misc.s3.amazonaws.com/uploads/${filename}`
+  const fileUrl = `https://sj-misc.s3.amazonaws.com/uploads/${encodeURI(
+    filename
+  )}`
 
   return {
     statusCode: 200,
