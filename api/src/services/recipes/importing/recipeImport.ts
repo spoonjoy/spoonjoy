@@ -133,7 +133,7 @@ export const importRecipeFromWebsite: MutationResolvers['importRecipeFromWebsite
 
 export const importRecipesFromCrouton: MutationResolvers['importRecipesFromCrouton'] =
   async ({ fileKey }) => {
-    const recipes = await parseCroutonData(fileKey)
+    const recipeInputs = await parseCroutonData(fileKey)
     return {
       returned: fileKey,
     }
