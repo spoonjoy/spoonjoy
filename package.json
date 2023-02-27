@@ -31,8 +31,6 @@
   "dependencies": {
     "@types/pluralize": "^0.0.29",
     "api": "workspace:^",
-    "cheerio": "^1.0.0-rc.12",
-    "cloudinary": "^1.33.0",
     "jszip": "^3.10.1",
     "pluralize": "^8.0.0",
     "puppeteer-core": "19.7.0",

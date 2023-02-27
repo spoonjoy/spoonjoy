@@ -8481,6 +8481,8 @@ __metadata:
     "@sparticuz/chromium-min": 111
     "@tailwindcss/forms": ^0.5.3
     "@whatwg-node/fetch": ^0.8.1
+    cheerio: ^1.0.0-rc.12
+    cloudinary: ^1.33.0
     openai: ^3.1.0
     puppeteer-core: 19.7.0
   languageName: unknown
@@ -22302,8 +22304,6 @@ __metadata:
     "@redwoodjs/core": 4.2.0
     "@types/pluralize": ^0.0.29
     api: "workspace:^"
-    cheerio: ^1.0.0-rc.12
-    cloudinary: ^1.33.0
     graphql-2-json-schema: ^0.10.0
     jszip: ^3.10.1
     pluralize: ^8.0.0
