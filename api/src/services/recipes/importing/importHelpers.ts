@@ -15,3 +15,18 @@ export const truncateString = (
   if (str.length <= maxLength) return str
   return str.slice(0, maxLength - 1) + '…'
 }
+
+export const unescapeHtml = (html: string) => {
+  const entities: { [key: string]: string } = {
+    '&amp;': '&',
+    '&lt;': '<',
+    '&gt;': '>',
+    '&quot;': '"',
+    '&#39;': "'",
+  }
+  const regex = /&(amp|lt|gt|quot|#39);/g
+  return html.replace(
+    regex,
+    (match, entity) => entities[`&${entity};`] || match
+  )
+}

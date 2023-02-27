@@ -25,7 +25,11 @@ import {
 import { mapStepsMutationInputToDbCreateInputNoStepOutputUses } from '../recipeUtilities'
 
 import { CroutonRecipe } from './importedDataTypes'
-import { stringIsAValidUrl, truncateString } from './importHelpers'
+import {
+  stringIsAValidUrl,
+  truncateString,
+  unescapeHtml,
+} from './importHelpers'
 
 /**
  * create the recipe - not doing it using the createRecipe resolver because:
@@ -201,7 +205,7 @@ const websiteRecipeToSJRecipeInput = async (
           'no description was provided for this step',
       }))
     : recipe.recipeInstructions
-    ? [{ stepNum: 1, description: recipe.recipeInstructions }] // it might just be a string
+    ? [{ stepNum: 1, description: recipe.recipeInstructions as string }] // it might just be a string
     : []
 
   const recipeStepsWithIngredients = addIngredientsToSteps(
@@ -315,48 +319,51 @@ const getJsonsFromZipFileUrl = async <T>(fileUrl: string) => {
   return await Promise.all(jsonPromises)
 }
 
+const getWebPageUsingFetch = async (url: string) => {
+  const webPageString = await fetch(url, {
+    headers: {
+      Accept:
+        'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+      'User-Agent':
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36',
+    },
+  }).then((res) => res.text())
+  return webPageString
+}
+
+const getWebPageUsingPuppeteer = async (url: string) => {
+  // if fetch fails, try to get the website with puppeteer
+  const browser = await puppeteer.launch({
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath(
+      'https://sj-misc.s3.amazonaws.com/chromium-v111.0.0-pack.tar'
+    ),
+    headless: chromium.headless,
+    ignoreHTTPSErrors: true,
+  })
+  const page = await browser.newPage()
+  await page.goto(url, { waitUntil: 'domcontentloaded' })
+  // await page.goto(url)
+  await page.waitForSelector('script[type="application/ld+json"]')
+  // const innerText = await page.$eval(
+  //   'script[type="application/ld+json"]',
+  //   (el) => el.textContent
+  // )
+  const webPageString = await page.evaluate(
+    () => document.querySelector('*')?.outerHTML
+  )
+
+  return webPageString
+}
+
 const getRecipeStructuredDataFromWebsite = async (
   url: string
 ): Promise<Recipe> => {
-  let webPageString: string | null | undefined
-  try {
-    // first, try to get the website with fetch
-    webPageString = await fetch(url).then((res) => res.text())
-    // some web pages block fetch, so check for error
-    if (
-      !webPageString ||
-      webPageString.includes('error') ||
-      webPageString.includes('Forbidden')
-    )
-      throw new RedwoodError("Couldn't fetch")
-  } catch (error) {
-    console.error('Could not get the website using fetch, error:', error)
+  // first, try to get the website with fetch
+  const webPageString = await getWebPageUsingFetch(url)
 
-    // if fetch fails, try to get the website with puppeteer
-    const browser = await puppeteer.launch({
-      args: chromium.args,
-      defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath(
-        'https://sj-misc.s3.amazonaws.com/chromium-v111.0.0-pack.tar'
-      ),
-      headless: chromium.headless,
-      ignoreHTTPSErrors: true,
-    })
-    const page = await browser.newPage()
-    await page.goto(url, { waitUntil: 'domcontentloaded' })
-    // await page.goto(url)
-    await page.waitForSelector('script[type="application/ld+json"]')
-    // const innerText = await page.$eval(
-    //   'script[type="application/ld+json"]',
-    //   (el) => el.textContent
-    // )
-    webPageString = await page.evaluate(
-      () => document.querySelector('*')?.outerHTML
-    )
-  }
-  if (!webPageString) throw new RedwoodError("Couldn't get web page content")
-
-  const webPageHTML = cheerio.load(webPageString)
+  const webPageHTML = cheerio.load(unescapeHtml(webPageString))
   const structuredData = webPageHTML('script[type="application/ld+json"]')
 
   const firstRecipeElement = structuredData
