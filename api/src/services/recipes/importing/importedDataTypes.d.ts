@@ -10,7 +10,7 @@ export interface CroutonRecipe {
   // Cooking time in minutes
   cookingDuration?: number
   // e.g. https://example.com
-  webLink: string
+  webLink?: string
   // The hostname of the computer that the recipe was exported from
   senderName: string
   ingredients: Array<{

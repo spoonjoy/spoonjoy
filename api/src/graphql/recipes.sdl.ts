@@ -25,7 +25,14 @@ export const schema = gql`
 
   input CreateRecipeInput {
     title: String!
-    existingImageUrl: String
+    """
+    This can be anything that's a valid input to Cloudinary's upload API
+    """
+    existingImage: String
+    """
+    If you got this recipe from a website and want to give attribution, put the URL here
+    """
+    sourceUrl: String
     description: String
     servings: Int
     steps: [CreateRecipeStepInput!]!

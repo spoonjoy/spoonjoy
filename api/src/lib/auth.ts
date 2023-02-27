@@ -111,13 +111,20 @@ export const hasRole = (roles: AllowedRoles): boolean => {
  *
  * @see https://github.com/redwoodjs/redwood/tree/main/packages/auth for examples
  */
-export const requireAuth = ({ roles }: { roles?: AllowedRoles } = {}) => {
+export const requireAuth = ({
+  roles,
+  customErrorMessage,
+}: { roles?: AllowedRoles; customErrorMessage?: string } = {}) => {
   if (!isAuthenticated()) {
-    throw new AuthenticationError('You are not logged in!')
+    throw new AuthenticationError(
+      customErrorMessage || 'You are not logged in!'
+    )
   }
 
   if (roles && !hasRole(roles)) {
-    throw new ForbiddenError("You don't have access to do that.")
+    throw new ForbiddenError(
+      customErrorMessage || "You don't have access to do that."
+    )
   }
 }
 

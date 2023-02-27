@@ -1,6 +1,3 @@
-import { GetObjectCommand } from '@aws-sdk/client-s3'
-import { S3Client } from '@aws-sdk/client-s3'
-import type { Prisma } from '@prisma/client'
 import chromium from '@sparticuz/chromium-min'
 import { fetch } from '@whatwg-node/fetch'
 import * as cheerio from 'cheerio'
@@ -17,108 +14,18 @@ import {
 
 import { RedwoodError } from '@redwoodjs/api'
 
-import { db } from 'src/lib/db'
-import { downloadFileFromS3, getFileBuffer, getFileData } from 'src/lib/s3'
+import { requireAuth } from 'src/lib/auth'
+import { downloadFileFromS3 } from 'src/lib/s3'
 import { parseIngredients } from 'src/services/ingredients/ingredientParse'
-
-import {
-  createRecipeImage,
-  uploadImageToCloudinary,
-} from '../recipeImageHandler'
-import { mapStepsMutationInputToDbCreateInputNoStepOutputUses } from '../recipeUtilities'
 
 import { CroutonRecipe } from './importedDataTypes'
 import {
+  createRecipesAndAddToCookbook,
+  simpleCreateRecipe,
   stringIsAValidUrl,
   truncateString,
   unescapeHtml,
 } from './importHelpers'
-
-/**
- * create the recipe - not doing it using the createRecipe resolver because:
- * - I don't want to create a recipe image if the recipe already exists
- * - I don't want to apply all the validations that the createRecipe resolver does
- * - There's no stepOutputUses in an imported recipe, so I don't need to create those
- */
-const simpleCreateRecipe = async (input: CreateRecipeInput, url?: string) => {
-  // If nobody's logged in, create the recipe for the chef-rj user
-  const createForUsername = context.currentUser?.username || 'chef-rj'
-
-  const { title, description, servings, steps, existingImageUrl } = input
-
-  // substrings should match the schema
-
-  const recipeDbInput: Prisma.RecipeCreateInput = {
-    title: truncateString(title, 60) as string,
-    description: truncateString(description, 140),
-    servings,
-    sourceUrl: url,
-    chef: {
-      connect: {
-        username: createForUsername,
-      },
-    },
-    steps: mapStepsMutationInputToDbCreateInputNoStepOutputUses(steps),
-  }
-
-  const newRecipe = await db.$transaction(
-    async (tx) => {
-      // 1. Create the recipe
-      const newRecipe = await tx.recipe.create({
-        data: recipeDbInput,
-      })
-
-      const recipeId = newRecipe.id
-
-      await tx.recipe.update({
-        where: { id: recipeId },
-        data: {
-          imageUrl: existingImageUrl
-            ? await uploadImageToCloudinary(existingImageUrl, recipeId)
-            : await createRecipeImage(title, description, recipeId),
-        },
-      })
-
-      // if logged in, add to 'imported' cookbook
-      if (context.currentUser) {
-        const IMPORT_COOKBOOK_NAME = 'imported'
-        await tx.recipeInCookbook.create({
-          data: {
-            cookbook: {
-              connectOrCreate: {
-                where: {
-                  authorId_title: {
-                    authorId: context.currentUser.id,
-                    title: IMPORT_COOKBOOK_NAME,
-                  },
-                },
-                create: {
-                  authorId: context.currentUser.id,
-                  title: IMPORT_COOKBOOK_NAME,
-                },
-              },
-            },
-            recipe: {
-              connect: {
-                id: recipeId,
-              },
-            },
-            addedBy: {
-              connect: {
-                id: context.currentUser.id,
-              },
-            },
-          },
-        })
-      }
-
-      return newRecipe
-    },
-    { timeout: 15000 }
-  )
-
-  return newRecipe
-}
 
 export const importRecipeFromWebsite: MutationResolvers['importRecipeFromWebsite'] =
   async ({ url }) => {
@@ -126,6 +33,9 @@ export const importRecipeFromWebsite: MutationResolvers['importRecipeFromWebsite
 
     const newRecipe = await simpleCreateRecipe(recipe, url)
 
+    if (newRecipe instanceof RedwoodError) {
+      throw newRecipe
+    }
     return {
       recipeId: newRecipe.id,
     }
@@ -133,10 +43,17 @@ export const importRecipeFromWebsite: MutationResolvers['importRecipeFromWebsite
 
 export const importRecipesFromCrouton: MutationResolvers['importRecipesFromCrouton'] =
   async ({ fileKey }) => {
-    const recipeInputsWithImages = await parseCroutonData(fileKey)
-    return {
-      returned: fileKey,
-    }
+    requireAuth({
+      customErrorMessage:
+        'You must be logged in to import recipes from Crouton',
+    })
+
+    const recipeInputs = await parseCroutonData(fileKey)
+
+    return await createRecipesAndAddToCookbook(
+      recipeInputs,
+      'imported from crouton'
+    )
   }
 
 const parseCroutonData = async (fileKey: string) => {
@@ -147,7 +64,10 @@ const parseCroutonData = async (fileKey: string) => {
 
 const parseWebsiteData = async (url: string) => {
   const recipeStructuredData = await getRecipeStructuredDataFromWebsite(url)
-  const sjRecipeInput = await websiteRecipeToSJRecipeInput(recipeStructuredData)
+  const sjRecipeInput = await websiteRecipeToSJRecipeInput(
+    recipeStructuredData,
+    url
+  )
   return sjRecipeInput
 }
 
@@ -177,7 +97,8 @@ const getImageFromLDJson = (recipe: Recipe): string | undefined => {
 }
 
 const websiteRecipeToSJRecipeInput = async (
-  recipe: Recipe
+  recipe: Recipe,
+  websiteUrl: string
 ): Promise<CreateRecipeInput> => {
   const websiteRecipeIngredientsAsSJIngredients = Array.isArray(
     recipe.recipeIngredient
@@ -191,7 +112,8 @@ const websiteRecipeToSJRecipeInput = async (
     title: recipe.name?.toString() || 'could not find title',
     servings: parseInt(recipe.recipeYield ? toString() : '') || undefined,
     description: recipe.description?.toString() || undefined,
-    existingImageUrl,
+    existingImage: existingImageUrl,
+    sourceUrl: websiteUrl,
   }
 
   const basicRecipeStepsInfo: BasicRecipeStepInfo[] = Array.isArray(
@@ -220,14 +142,9 @@ const websiteRecipeToSJRecipeInput = async (
   } as CreateRecipeInput
 }
 
-interface IRecipeInputAndImage {
-  recipeInput: CreateRecipeInput
-  imageBase64?: string
-}
-
 const croutonRecipesToSJRecipeInputs = (
   croutonRecipes: CroutonRecipe[]
-): Promise<IRecipeInputAndImage>[] => {
+): Promise<CreateRecipeInput>[] => {
   const sjRecipeInputs = croutonRecipes.map(async (croutonRecipe) => {
     const croutonRecipeIngredientsAsStrings = croutonRecipe.ingredients.map(
       (ing) => {
@@ -239,10 +156,14 @@ const croutonRecipesToSJRecipeInputs = (
       croutonRecipeIngredientsAsStrings
     )
 
+    const imageBase64 = croutonRecipe.images[0] || undefined
+
     const basicRecipeInfo: BasicRecipeInfo = {
       title: croutonRecipe.name,
       servings: croutonRecipe.serves,
       description: croutonRecipe.notes,
+      existingImage: imageBase64,
+      sourceUrl: croutonRecipe.webLink,
     }
 
     const basicRecipeStepsInfo: BasicRecipeStepInfo[] = croutonRecipe.steps.map(
@@ -259,19 +180,17 @@ const croutonRecipesToSJRecipeInputs = (
     )
 
     return {
-      recipeInput: {
-        ...basicRecipeInfo,
-        steps: recipeStepsWithIngredients,
-      } as CreateRecipeInput,
-      imageBase64: croutonRecipe.images[0] || undefined,
+      ...basicRecipeInfo,
+      steps: recipeStepsWithIngredients,
     }
   })
+
   return sjRecipeInputs
 }
 
 type BasicRecipeInfo = Pick<
   CreateRecipeInput,
-  'title' | 'servings' | 'description' | 'existingImageUrl'
+  'title' | 'servings' | 'description' | 'existingImage' | 'sourceUrl'
 >
 type BasicRecipeStepInfo = Pick<
   CreateRecipeStepInput,

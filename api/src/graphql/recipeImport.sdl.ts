@@ -3,8 +3,10 @@ export const schema = gql`
     recipeId: ID!
   }
 
-  type CookbookID {
+  type BulkImportResult {
     cookbookId: ID!
+    importCount: Int!
+    failedCount: Int!
   }
 
   type Mutation {
@@ -13,6 +15,6 @@ export const schema = gql`
     Import a zip files of recipes, exported from Crouton, from a file uploaded to S3.
     $fileKey is the key of the file in S3.
     """
-    importRecipesFromCrouton(fileKey: String!): CookbookID! @requireAuth
+    importRecipesFromCrouton(fileKey: String!): BulkImportResult! @requireAuth
   }
 `

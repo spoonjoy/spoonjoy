@@ -28,27 +28,33 @@ export const createRecipeImage = async (
   const openaiUrl = imageResponse.data.data[0].url
 
   if (openaiUrl) {
-    const sjUrl = uploadImageToCloudinary(openaiUrl, recipeId)
+    const sjUrl = uploadFileToCloudinary(openaiUrl, recipeId)
     return sjUrl
   } else {
     throw new Error("Couldn't get image from OpenAI.")
   }
 }
 
-export const uploadImageToCloudinary = async (
-  imagePath: string,
-  imageId: string
+export const uploadFileToCloudinary = async (
+  /** This can be:
+   * - a local file path
+   * - a remote URL
+   * - the data URI, base64-encoded
+   * (etc. - see more here: https://cloudinary.com/documentation/image_upload_api_reference#upload_required_parameters)
+   */
+  file: string,
+  fileId: string
 ) => {
   // Use the uploaded file's name as the asset's public ID and
   // allow overwriting the asset with new versions
   const options: CloudinaryOptions = {
-    public_id: imageId,
+    public_id: fileId,
     invalidate: true,
   }
 
   try {
     // Upload the image
-    const result = await cloudinary.uploader.upload(imagePath, options)
+    const result = await cloudinary.uploader.upload(file, options)
     console.log(result)
     return result.secure_url
   } catch (error) {
