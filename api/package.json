@@ -10,7 +10,6 @@
     "@sparticuz/chromium-min": "111",
     "@tailwindcss/forms": "^0.5.3",
     "@whatwg-node/fetch": "^0.8.1",
-    "cloudinary": "^1.33.0",
     "openai": "^3.1.0",
     "puppeteer-core": "19.7.0"
   }
