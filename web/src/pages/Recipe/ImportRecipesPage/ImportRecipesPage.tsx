@@ -86,16 +86,12 @@ const ImportRecipesPage = () => {
           import from website
         </button>
       </Form>
-      {/* <div className="mt-2 text-center text-sm opacity-50">
+      <div className="mt-2 text-center text-sm">
         or{' '}
-        <Link
-          to="#"
-          className="link line-through decoration-gray-900 decoration-2"
-        >
+        <Link to={routes.importRecipesFromPlatform()} className="link">
           import from another platform
         </Link>
-        <span className="block">(coming soon)</span>
-      </div> */}
+      </div>
     </>
   )
 }

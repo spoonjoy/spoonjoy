@@ -29,6 +29,7 @@
     "@hookform/devtools@^4.2.2": "patch:@hookform/devtools@npm%3A4.2.2#./.yarn/patches/@hookform-devtools-npm-4.2.2-aafab2382b.patch"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.279.0",
     "@types/pluralize": "^0.0.29",
     "api": "workspace:^",
     "jszip": "^3.10.1",
