@@ -133,7 +133,7 @@ export const importRecipeFromWebsite: MutationResolvers['importRecipeFromWebsite
 
 export const importRecipesFromCrouton: MutationResolvers['importRecipesFromCrouton'] =
   async ({ fileKey }) => {
-    const recipeInputs = await parseCroutonData(fileKey)
+    const recipeInputsWithImages = await parseCroutonData(fileKey)
     return {
       returned: fileKey,
     }
@@ -141,10 +141,8 @@ export const importRecipesFromCrouton: MutationResolvers['importRecipesFromCrout
 
 const parseCroutonData = async (fileKey: string) => {
   const jsons = await getJsonsFromZipFileKey<CroutonRecipe>(fileKey)
-  const sjRecipeInputs = await Promise.all(
-    croutonRecipesToSJRecipeInputs(jsons)
-  )
-  return sjRecipeInputs
+
+  return await Promise.all(croutonRecipesToSJRecipeInputs(jsons))
 }
 
 const parseWebsiteData = async (url: string) => {
@@ -222,9 +220,14 @@ const websiteRecipeToSJRecipeInput = async (
   } as CreateRecipeInput
 }
 
+interface IRecipeInputAndImage {
+  recipeInput: CreateRecipeInput
+  imageBase64?: string
+}
+
 const croutonRecipesToSJRecipeInputs = (
   croutonRecipes: CroutonRecipe[]
-): Promise<CreateRecipeInput>[] => {
+): Promise<IRecipeInputAndImage>[] => {
   const sjRecipeInputs = croutonRecipes.map(async (croutonRecipe) => {
     const croutonRecipeIngredientsAsStrings = croutonRecipe.ingredients.map(
       (ing) => {
@@ -256,9 +259,12 @@ const croutonRecipesToSJRecipeInputs = (
     )
 
     return {
-      ...basicRecipeInfo,
-      steps: recipeStepsWithIngredients,
-    } as CreateRecipeInput
+      recipeInput: {
+        ...basicRecipeInfo,
+        steps: recipeStepsWithIngredients,
+      } as CreateRecipeInput,
+      imageBase64: croutonRecipe.images[0] || undefined,
+    }
   })
   return sjRecipeInputs
 }
