@@ -1,6 +1,18 @@
 import React, { useState } from 'react'
 
 import axios from 'axios'
+import { ImportRecipeFromCroutonMutation } from 'types/graphql'
+
+import { useMutation } from '@redwoodjs/web'
+import { toast } from '@redwoodjs/web/dist/toast'
+
+const IMPORT_RECIPE_FROM_CROUTON_MUTATION = gql`
+  mutation ImportRecipeFromCroutonMutation($fileUrl: String!) {
+    import: importRecipesFromCrouton(fileUrl: $fileUrl) {
+      cookbookId
+    }
+  }
+`
 
 const ImportRecipeFromPlatformPage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null)
@@ -10,6 +22,19 @@ const ImportRecipeFromPlatformPage: React.FC = () => {
       setFile(event.target.files[0])
     }
   }
+
+  const [importRecipesFromCrouton, { error }] =
+    useMutation<ImportRecipeFromCroutonMutation>(
+      IMPORT_RECIPE_FROM_CROUTON_MUTATION,
+      {
+        onCompleted: (data) => {
+          toast.success('recipes imported')
+        },
+        onError: (error) => {
+          toast.error(error.message)
+        },
+      }
+    )
 
   const handleFileUpload = async () => {
     if (file) {
@@ -33,6 +58,7 @@ const ImportRecipeFromPlatformPage: React.FC = () => {
       // Handle the response
       if (uploadResponse.status === 200) {
         console.log('File uploaded successfully! Get it from', fileUrl)
+        importRecipesFromCrouton({ variables: { fileUrl } })
       } else {
         console.log('Error uploading file')
       }
