@@ -13,6 +13,7 @@ import { mapStepsMutationInputToDbCreateInputNoStepOutputUses } from '../recipeU
 
 export const stringIsAValidUrl = (s: string) => {
   try {
+    // eslint-disable-next-line no-new
     new URL(s)
     return true
   } catch (err) {
