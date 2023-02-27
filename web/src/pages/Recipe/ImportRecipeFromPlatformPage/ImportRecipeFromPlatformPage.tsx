@@ -3,8 +3,10 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { ImportRecipeFromCroutonMutation } from 'types/graphql'
 
-import { useMutation } from '@redwoodjs/web'
+import { MetaTags, useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/dist/toast'
+
+import { HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
 
 const IMPORT_RECIPE_FROM_CROUTON_MUTATION = gql`
   mutation ImportRecipeFromCroutonMutation($fileKey: String!) {
@@ -65,10 +67,23 @@ const ImportRecipeFromPlatformPage: React.FC = () => {
   }
 
   return (
-    <div>
-      <input type="file" onChange={handleFileChange} />
-      <button onClick={handleFileUpload}>Upload</button>
-    </div>
+    <>
+      <MetaTags
+        title="import recipes from platform"
+        description="Import Recipes from Platform page"
+      />
+      <HeaderSlot.Plug id="recipe-bulk-import">
+        <div className="mt-20 w-screen text-center xl:mt-40">
+          <span className="text-xl text-indigo-700 sm:text-2xl">import to</span>
+          <br />
+          <span className="text-5xl sm:text-6xl">spoonjoy</span>
+        </div>
+      </HeaderSlot.Plug>
+      <div>
+        <input type="file" onChange={handleFileChange} />
+        <button onClick={handleFileUpload}>Upload</button>
+      </div>
+    </>
   )
 }
 
