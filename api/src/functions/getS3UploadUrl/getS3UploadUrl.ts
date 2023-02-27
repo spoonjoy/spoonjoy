@@ -1,8 +1,7 @@
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import type { APIGatewayEvent, Context } from 'aws-lambda'
 
 import { logger } from 'src/lib/logger'
+import { getSignedUploadUrl } from 'src/lib/s3'
 
 /**
  * The handler function is your code that processes http request events.
@@ -23,14 +22,6 @@ import { logger } from 'src/lib/logger'
 export const handler = async (event: APIGatewayEvent, _context: Context) => {
   logger.info(`${event.httpMethod} ${event.path}: getS3UploadUrl function`)
 
-  const s3 = new S3Client({
-    region: 'us-east-1',
-    credentials: {
-      accessKeyId: process.env.S3_ACCESS_KEY || '',
-      secretAccessKey: process.env.S3_SECRET_KEY || '',
-    },
-  })
-
   const filename = event.queryStringParameters?.filename
 
   if (!filename) {
@@ -44,20 +35,7 @@ export const handler = async (event: APIGatewayEvent, _context: Context) => {
 
   const fileKey = `uploads/${filename}`
 
-  const bucketParams = {
-    Bucket: 'sj-misc',
-    Key: fileKey,
-  }
-
-  // Create a command to put the object in the S3 bucket.
-  const command = new PutObjectCommand(bucketParams)
-
-  // Create a presigned URL for the command.
-  const signedUrl = await getSignedUrl(s3, command, {
-    expiresIn: 60 * 5, // 5 minutes
-  })
-
-  const fileUrl = fileKey
+  const signedUrl = await getSignedUploadUrl(fileKey)
 
   return {
     statusCode: 200,
@@ -67,7 +45,7 @@ export const handler = async (event: APIGatewayEvent, _context: Context) => {
     body: JSON.stringify({
       data: {
         signedUrl,
-        fileUrl,
+        fileKey,
       },
     }),
   }

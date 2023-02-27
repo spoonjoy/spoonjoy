@@ -18,6 +18,7 @@ import {
 import { RedwoodError } from '@redwoodjs/api'
 
 import { db } from 'src/lib/db'
+import { downloadFileFromS3, getFileBuffer, getFileData } from 'src/lib/s3'
 import { parseIngredients } from 'src/services/ingredients/ingredientParse'
 
 import {
@@ -131,15 +132,15 @@ export const importRecipeFromWebsite: MutationResolvers['importRecipeFromWebsite
   }
 
 export const importRecipesFromCrouton: MutationResolvers['importRecipesFromCrouton'] =
-  async ({ fileUrl }) => {
-    const recipes = await parseCroutonData(fileUrl)
+  async ({ fileKey }) => {
+    const recipes = await parseCroutonData(fileKey)
     return {
-      returned: fileUrl,
+      returned: fileKey,
     }
   }
 
-const parseCroutonData = async (fileUrl: string) => {
-  const jsons = await getJsonsFromZipFileUrl<CroutonRecipe>(fileUrl)
+const parseCroutonData = async (fileKey: string) => {
+  const jsons = await getJsonsFromZipFileKey<CroutonRecipe>(fileKey)
   const sjRecipeInputs = await Promise.all(
     croutonRecipesToSJRecipeInputs(jsons)
   )
@@ -309,24 +310,9 @@ const addIngredientsToSteps = (
   return stepsWithIngredients
 }
 
-const getJsonsFromZipFileUrl = async <T>(fileUrl: string) => {
-  const s3 = new S3Client({
-    region: 'us-east-1',
-    credentials: {
-      accessKeyId: process.env.S3_ACCESS_KEY || '',
-      secretAccessKey: process.env.S3_SECRET_KEY || '',
-    },
-  })
-
-  const bucketParams = {
-    Bucket: 'sj-misc',
-    Key: fileUrl,
-  }
-
-  const data = await s3.send(new GetObjectCommand(bucketParams))
-
-  const response = await fetch(fileUrl)
-  const croutons = await JSZip.loadAsync(await response.arrayBuffer())
+const getJsonsFromZipFileKey = async <T>(fileKey: string) => {
+  const buffer = await downloadFileFromS3(fileKey)
+  const croutons = await JSZip.loadAsync(buffer)
   const jsonPromises = Object.values(croutons.files).map(async (file) => {
     const fileContent = await file.async('string')
     const contentAsJson = JSON.parse(fileContent) as T

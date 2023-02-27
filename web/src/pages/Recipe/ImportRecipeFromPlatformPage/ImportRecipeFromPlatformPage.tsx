@@ -7,8 +7,8 @@ import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/dist/toast'
 
 const IMPORT_RECIPE_FROM_CROUTON_MUTATION = gql`
-  mutation ImportRecipeFromCroutonMutation($fileUrl: String!) {
-    import: importRecipesFromCrouton(fileUrl: $fileUrl) {
+  mutation ImportRecipeFromCroutonMutation($fileKey: String!) {
+    import: importRecipesFromCrouton(fileKey: $fileKey) {
       cookbookId
     }
   }
@@ -44,21 +44,20 @@ const ImportRecipeFromPlatformPage: React.FC = () => {
       // Get the pre-signed S3 URL using Axios
       const presignedUrlResponse = await axios.get(presignedUrlEndpoint)
       const presignedUrl = presignedUrlResponse.data.data.signedUrl
-      const fileUrl = presignedUrlResponse.data.data.fileUrl
+      const fileKey = presignedUrlResponse.data.data.fileKey
 
       // Create the config object with headers and body
-      const config = {
+      const options = {
         headers: { 'Content-Type': file.type },
-        data: file,
       }
 
       // Upload the file to S3 using Axios
-      const uploadResponse = await axios.put(presignedUrl, config)
+      const uploadResponse = await axios.put(presignedUrl, file, options)
 
       // Handle the response
       if (uploadResponse.status === 200) {
-        console.log('File uploaded successfully! Get it from', fileUrl)
-        importRecipesFromCrouton({ variables: { fileUrl } })
+        console.log('File uploaded successfully!')
+        importRecipesFromCrouton({ variables: { fileKey } })
       } else {
         console.log('Error uploading file')
       }
