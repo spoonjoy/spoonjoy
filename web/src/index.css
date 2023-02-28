@@ -21,6 +21,9 @@
   .btn-primary {
     @apply btn px-4 py-2 text-base font-medium  text-white enabled:hover:bg-indigo-800 focus:ring-indigo-500 enabled:bg-indigo-600 disabled:bg-gray-400 sm:text-sm;
   }
+  .btn-secondary {
+    @apply btn px-4 py-2 text-base bg-indigo-100 font-medium text-indigo-700 hover:bg-indigo-200 focus:ring-indigo-500;
+  }
   .btn-dismiss {
     @apply btn border-gray-300 px-4 py-2 text-base font-medium enabled:hover:bg-gray-50  focus:ring-indigo-500 enabled:bg-white disabled:bg-gray-400 sm:text-sm;
   }

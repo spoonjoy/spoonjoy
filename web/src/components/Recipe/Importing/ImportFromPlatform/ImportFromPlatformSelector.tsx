@@ -25,7 +25,7 @@ const ImportFromPlatformSelector = ({
       {/* <div className="mt-5 text-center text-lg font-bold text-indigo-700 sm:text-xl">
         from
       </div> */}
-      <ul className="m-auto mb-5 mt-10 grid max-w-xs grid-cols-2 gap-px overflow-hidden rounded-lg bg-gray-200 p-1 shadow sm:max-w-md">
+      <ul className="m-auto mb-3 mt-10 grid max-w-xs grid-cols-2 gap-px overflow-hidden rounded-lg bg-gray-200 p-1 shadow sm:max-w-md">
         {actions.map((action, actionIdx) => (
           <li
             key={action.title}
