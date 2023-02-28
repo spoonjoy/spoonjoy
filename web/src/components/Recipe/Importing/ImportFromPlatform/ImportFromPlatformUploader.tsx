@@ -5,6 +5,7 @@ import axios from 'axios'
 import { ImportRecipeFromCroutonMutation } from 'types/graphql'
 
 import { FileField } from '@redwoodjs/forms'
+import { routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/dist/toast'
 
@@ -12,6 +13,8 @@ const IMPORT_RECIPE_FROM_CROUTON_MUTATION = gql`
   mutation ImportRecipeFromCroutonMutation($fileKey: String!) {
     import: importRecipesFromCrouton(fileKey: $fileKey) {
       cookbookId
+      importCount
+      failedCount
     }
   }
 `
@@ -19,16 +22,19 @@ const IMPORT_RECIPE_FROM_CROUTON_MUTATION = gql`
 interface IImportFromPlatformUploaderProps {
   setShowLoading: (showLoading: boolean) => void
   setRedirectUrl: (redirectUrl: string) => void
+  setBulkSuccessStats: (stats: { succeeded: number; failed: number }) => void
   setOnRetry: React.Dispatch<React.SetStateAction<() => void>>
   setError: (error: Error | undefined) => void
 }
 const ImportFromPlatformUploader = ({
   setShowLoading,
   setRedirectUrl,
+  setBulkSuccessStats,
   setOnRetry,
   setError,
 }: IImportFromPlatformUploaderProps) => {
   const [file, setFile] = useState<File | null>(null)
+  const [fileKey, setFileKey] = useState<string | undefined>(undefined)
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -42,22 +48,34 @@ const ImportFromPlatformUploader = ({
       {
         onCompleted: (data) => {
           toast.success('recipes imported')
+          setRedirectUrl(routes.cookbook({ id: data.import.cookbookId }))
+          setBulkSuccessStats({
+            succeeded: data.import.importCount,
+            failed: data.import.failedCount,
+          })
         },
         onError: (error) => {
           toast.error(error.message)
+          setOnRetry(
+            () => () => importRecipesFromCrouton({ variables: { fileKey } })
+          )
         },
       }
     )
 
+  setError(error)
+
   const handleFileUpload = async () => {
     if (file) {
+      setShowLoading(true)
+
       const filename = file.name.replace(' ', '+')
       const presignedUrlEndpoint = `http://${window.location.host}/api/getS3UploadUrl?filename=${filename}`
 
       // Get the pre-signed S3 URL using Axios
       const presignedUrlResponse = await axios.get(presignedUrlEndpoint)
       const presignedUrl = presignedUrlResponse.data.data.signedUrl
-      const fileKey = presignedUrlResponse.data.data.fileKey
+      setFileKey(presignedUrlResponse.data.data.fileKey)
 
       // Create the config object with headers and body
       const options = {
@@ -69,10 +87,10 @@ const ImportFromPlatformUploader = ({
 
       // Handle the response
       if (uploadResponse.status === 200) {
-        console.log('File uploaded successfully!')
+        toast.success('file uploaded successfully')
         importRecipesFromCrouton({ variables: { fileKey } })
       } else {
-        console.log('Error uploading file')
+        toast.error('error uploading file')
       }
     }
   }
