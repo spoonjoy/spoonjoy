@@ -121,7 +121,11 @@ const ImportFromPlatformUploader = ({
 
       // we're already checking that currentUser exists
       const filename = `${currentUser!.username}/${file.name}`.replace(' ', '+')
-      const presignedUrlEndpoint = `http://${window.location.host}/api/getS3UploadUrl?filename=${filename}`
+      const isLocalhost = window.location.host.includes('localhost')
+      const siteUrl = isLocalhost
+        ? 'http://localhost:8910'
+        : 'https://spoonjoy.app'
+      const presignedUrlEndpoint = `${siteUrl}/api/getS3UploadUrl?filename=${filename}`
 
       // Get the pre-signed S3 URL using Axios
       const presignedUrlResponse = await axios.get(presignedUrlEndpoint)
