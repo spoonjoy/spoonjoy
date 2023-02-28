@@ -1,13 +1,15 @@
 import JSZip from 'jszip'
 
+const GROUP_SIZE = 5
+
 export const splitJSZipIntoGroups = async (zip: JSZip): Promise<JSZip[]> => {
   const entries = Object.entries(zip.files)
-  const numGroups = Math.ceil(entries.length / 10)
+  const numGroups = Math.ceil(entries.length / GROUP_SIZE)
   const groups = await Promise.all(
     Array.from({ length: numGroups }, async (_, i) => {
-      const start = i * 10
+      const start = i * GROUP_SIZE
       const group = new JSZip()
-      const files = entries.slice(start, start + 10)
+      const files = entries.slice(start, start + GROUP_SIZE)
       for (const [key, file] of files) {
         const data = await file.async('uint8array')
         group.file(key, data)

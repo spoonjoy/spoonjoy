@@ -149,7 +149,7 @@ const ImportFromPlatformUploader = ({
   }
 
   /**
-   * Verify that the file is a crouton file, and if so, return an array of files, broken up into smaller chunks (10 recipes per zip)
+   * Verify that the file is a crouton file, and if so, return an array of files, broken up into smaller chunks
    * @returns null if not a crouton file, otherwise an array of files
    */
   const handleCroutonFile = async (): Promise<JSZip[] | null> => {
