@@ -18,7 +18,7 @@ export const parseIngredient: QueryResolvers['parseIngredient'] = async ({
 }) => {
   const response = await getIngredientCompletions([input])
 
-  const jsonStr = response.data.choices[0].text || '{}'
+  const jsonStr = response?.data.choices[0].text || '{}'
 
   try {
     const asJson = JSON.parse(jsonStr)
@@ -46,9 +46,10 @@ export const parseIngredients = async (
 ): Promise<CreateIngredientInput[]> => {
   const response = await getIngredientCompletions(ingredients)
 
-  const jsonStrs = response.data.choices.map((choice) => {
-    return choice.text || '{}'
-  })
+  const jsonStrs =
+    response?.data.choices.map((choice) => {
+      return choice.text || '{}'
+    }) || []
 
   const asJsons = jsonStrs
     .map((jsonStr) => {
@@ -70,16 +71,25 @@ export const getIngredientCompletions = async (ingredients: string[]) => {
   const prompts = ingredients.map((ingredient) => {
     return `${ingredient} ->`
   })
-  return await openai.createCompletion({
-    // This model is slightly more reliable but way more expensive
-    // model: 'davinci:ft-spoonjoy:ingredient-inputs-2023-02-18-16-21-57',
-    model: 'curie:ft-spoonjoy:ingredient-inputs-low-epochs-2023-02-18-17-54-03',
-    prompt: prompts,
-    temperature: 0,
-    max_tokens: 100,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
-    stop: ['####'],
-  })
+  try {
+    return await openai.createCompletion({
+      // This model is slightly more reliable but way more expensive
+      // model: 'davinci:ft-spoonjoy:ingredient-inputs-2023-02-18-16-21-57',
+      model:
+        'curie:ft-spoonjoy:ingredient-inputs-low-epochs-2023-02-18-17-54-03',
+      prompt: prompts,
+      temperature: 0,
+      max_tokens: 400,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+      stop: ['####'],
+    })
+  } catch (error) {
+    console.error(
+      `Couldn't get completion for ingredients ${JSON.stringify(
+        ingredients
+      )}. Error: ${error.message}`
+    )
+  }
 }

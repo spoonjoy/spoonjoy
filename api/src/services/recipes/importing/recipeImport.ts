@@ -148,7 +148,12 @@ const croutonRecipesToSJRecipeInputs = (
   const sjRecipeInputs = croutonRecipes.map(async (croutonRecipe) => {
     const croutonRecipeIngredientsAsStrings = croutonRecipe.ingredients.map(
       (ing) => {
-        return `${ing.quantity.amount} ${ing.quantity.quantityType} ${ing.ingredient.name}`
+        const amount = ing.quantity?.amount
+        const quantityType = ing.quantity?.quantityType
+        const ingredientName = ing.ingredient?.name
+        return `${amount ? amount : ''} ${quantityType ? quantityType : ''} ${
+          ingredientName ? ingredientName : ''
+        }`
       }
     )
 
@@ -227,10 +232,14 @@ const addIngredientsToSteps = (
         remainingIngredients
       )}`
     )
-    stepsWithIngredients[0].ingredients = [
-      ...stepsWithIngredients[0].ingredients,
-      ...remainingIngredients,
-    ]
+    try {
+      stepsWithIngredients[0].ingredients = [
+        ...(stepsWithIngredients[0]?.ingredients || []),
+        ...remainingIngredients,
+      ]
+    } catch (e) {
+      console.error(e)
+    }
   }
   return stepsWithIngredients
 }

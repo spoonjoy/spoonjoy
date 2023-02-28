@@ -6,6 +6,7 @@ import LogoBlack from 'public/logos/sj_black.svg'
 
 import { navigate } from '@redwoodjs/router'
 
+import ProgressBar from 'src/components/Loading/ProgressBar'
 import { classNames } from 'src/helpers/css'
 
 export interface IRecipeImportLoadingProps {
@@ -14,7 +15,8 @@ export interface IRecipeImportLoadingProps {
   setShowLoading: React.Dispatch<React.SetStateAction<boolean>>
   onRetry: () => void
   importSource: 'website' | 'platform'
-  bulkSuccessStats?: { succeeded: number; failed: number }
+  bulkSuccessStats?: { succeeded: number; failed: number; total: number }
+  setError: (error: Error | undefined) => void
 }
 
 const RecipeImportLoading = ({
@@ -24,6 +26,7 @@ const RecipeImportLoading = ({
   onRetry,
   importSource,
   bulkSuccessStats,
+  setError,
 }: IRecipeImportLoadingProps) => {
   return (
     <div className="fixed bottom-0 top-0 left-0 right-0 z-50 flex flex-col items-center justify-center gap-2 bg-white">
@@ -75,7 +78,13 @@ const RecipeImportLoading = ({
       <div className="mt-10">
         {hasError ? (
           <div>
-            <button onClick={onRetry} className="btn-error-primary">
+            <button
+              onClick={() => {
+                onRetry()
+                setError(undefined)
+              }}
+              className="btn-error-primary"
+            >
               try again
             </button>
             <span className="mt-2 block text-center text-sm">
@@ -97,20 +106,27 @@ const RecipeImportLoading = ({
       </div>
       <div>
         {bulkSuccessStats && (
-          <div className="text-center text-sm text-gray-400">
-            <span className="mb-1 block">
-              {bulkSuccessStats.succeeded === 0
-                ? 'no recipes imported'
-                : `${bulkSuccessStats.succeeded} ${
-                    bulkSuccessStats.succeeded === 1 ? 'recipe' : 'recipes'
-                  } imported`}
-            </span>
-            <span>
-              {bulkSuccessStats.failed === 0
-                ? 'no failures'
-                : `${bulkSuccessStats.failed} failed`}
-            </span>
-          </div>
+          <>
+            <ProgressBar
+              successAmount={bulkSuccessStats.succeeded}
+              failureAmount={bulkSuccessStats.failed}
+              totalAmount={bulkSuccessStats.total}
+            />
+            <div className="text-center text-xs text-gray-400">
+              <span className="mb-1 block">
+                {bulkSuccessStats.succeeded === 0
+                  ? 'no recipes imported'
+                  : `${bulkSuccessStats.succeeded} ${
+                      bulkSuccessStats.succeeded === 1 ? 'recipe' : 'recipes'
+                    } imported`}
+              </span>
+              <span>
+                {bulkSuccessStats.failed === 0
+                  ? 'no failures'
+                  : `${bulkSuccessStats.failed} failed`}
+              </span>
+            </div>
+          </>
         )}
       </div>
     </div>

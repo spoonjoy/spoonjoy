@@ -2,11 +2,14 @@ import React, { useState } from 'react'
 
 import { CloudArrowUpIcon } from '@heroicons/react/24/solid'
 import axios from 'axios'
+import JSZip from 'jszip'
 import { ImportRecipeFromCroutonMutation } from 'types/graphql'
 
 import { routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/dist/toast'
+
+import { splitJSZipIntoGroups, zipToFile } from './uploaderHelpers'
 
 const IMPORT_RECIPE_FROM_CROUTON_MUTATION = gql`
   mutation ImportRecipeFromCroutonMutation($fileKey: String!) {
@@ -32,16 +35,16 @@ const ImportFromPlatformUploader = ({
   setOnRetry,
   setError,
 }: IImportFromPlatformUploaderProps) => {
-  const [file, setFile] = useState<File | null>(null)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [fileKey, setFileKey] = useState<string | undefined>(undefined)
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      setFile(event.target.files[0])
+      setSelectedFile(event.target.files[0])
     }
   }
 
-  const [importRecipesFromCrouton, { error }] =
+  const [importRecipesFromCrouton, { data, error }] =
     useMutation<ImportRecipeFromCroutonMutation>(
       IMPORT_RECIPE_FROM_CROUTON_MUTATION,
       {
@@ -64,7 +67,7 @@ const ImportFromPlatformUploader = ({
 
   setError(error)
 
-  const handleFileUpload = async () => {
+  const handleFileUpload = async (file: File) => {
     if (file) {
       setShowLoading(true)
 
@@ -95,6 +98,64 @@ const ImportFromPlatformUploader = ({
     }
   }
 
+  /**
+   * Verify that the file is a crouton file, and if so, return an array of files, broken up into smaller chunks (10 recipes per zip)
+   * @returns null if not a crouton file, otherwise an array of files
+   */
+  const handleCroutonFile = async (): Promise<JSZip[] | null> => {
+    try {
+      if (selectedFile) {
+        const croutons = await JSZip.loadAsync(selectedFile)
+        const fileNames = Object.keys(croutons.files)
+
+        if (fileNames.length === 0) {
+          toast.error('file appears to be empty')
+          return null
+        }
+
+        // verify that the file is a crouton file
+        if (!fileNames[0].endsWith('.crumb')) {
+          toast.error('not a crouton file')
+          return null
+        }
+
+        toast.loading(
+          'crouton file verified, found ' + fileNames.length + ' recipes'
+        )
+
+        // split the file into chunks of 10 recipes
+        const chunks = await splitJSZipIntoGroups(croutons)
+        return chunks
+      } else {
+        toast.error('no file selected')
+        return null
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : (error as string)
+      toast.error(message)
+      return null
+    }
+  }
+
+  const onSubmit = async () => {
+    try {
+      const timestamp = new Date().toLocaleString()
+      const chunks = await handleCroutonFile()
+      if (chunks) {
+        chunks.forEach(async (chunk, idx) => {
+          // doing non-null assertion here because we already verified that the file exists
+          const file = await zipToFile(
+            chunk,
+            `${timestamp}/${idx}-${selectedFile!.name}`
+          )
+          handleFileUpload(file)
+        })
+      }
+    } catch (error) {
+      toast.error(error.message)
+    }
+  }
+
   return (
     <>
       <div className="m-auto mt-10 flex max-w-sm flex-col gap-5">
@@ -103,7 +164,7 @@ const ImportFromPlatformUploader = ({
             htmlFor="dropzone-file"
             className="flex h-64 w-full cursor-pointer flex-col items-center justify-between rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100"
           >
-            <div className="flex flex-col items-center justify-center pt-16">
+            <div className="flex flex-col items-center justify-center pt-20">
               <CloudArrowUpIcon className="mb-2 h-10 text-gray-500" />
               {file ? (
                 <p className="mb-10 text-sm font-semibold text-gray-500">
@@ -132,7 +193,7 @@ const ImportFromPlatformUploader = ({
         </div>
         <button
           className="btn-submit-primary w-full"
-          onClick={handleFileUpload}
+          onClick={onSubmit}
           disabled={!file}
         >
           import from crouton app

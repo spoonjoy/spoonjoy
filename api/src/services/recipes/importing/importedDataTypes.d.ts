@@ -14,9 +14,9 @@ export interface CroutonRecipe {
   // The hostname of the computer that the recipe was exported from
   senderName: string
   ingredients: Array<{
-    quantity: {
+    quantity?: {
       // the below list might not be exhaustive, so we use a string
-      quantityType: string
+      quantityType?: string
       // quantityType:
       //   | 'ITEM'
       //   | 'TABLESPOON'
@@ -35,9 +35,9 @@ export interface CroutonRecipe {
       //   | 'BUNCH'
       //   | 'PACKET'
       //   | 'SECTION'
-      amount: number
+      amount?: number
     }
-    ingredient: {
+    ingredient?: {
       name: string
       uuid: string
     }

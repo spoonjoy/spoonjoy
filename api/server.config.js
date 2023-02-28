@@ -14,7 +14,9 @@
 
 /** @type {import('fastify').FastifyServerOptions} */
 const config = {
-  requestTimeout: 15_000,
+  requestTimeout: 0, // no limit
+  connectionTimeout: 0, // no limit
+  keepAliveTimeout: 100000, // no limit
   logger: {
     // Note: If running locally using `yarn rw serve` you may want to adust
     // the default non-development level to `info`

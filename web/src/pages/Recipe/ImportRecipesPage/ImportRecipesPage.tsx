@@ -6,12 +6,15 @@ import RecipeImportLoading from 'src/components/Recipe/Importing/RecipeImportLoa
 import { HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
 
 const ImportRecipesPage = () => {
-  const [showLoading, setShowLoading] = React.useState(false)
+  const [showLoading, setShowLoading] = React.useState(true)
   const [redirectUrl, setRedirectUrl] = React.useState<string | null>(null)
 
   const [bulkSuccessStats, setBulkSuccessStats] = React.useState<
-    { succeeded: number; failed: number } | undefined
-  >()
+    { succeeded: number; failed: number; total: number } | undefined
+  >({ succeeded: 0, failed: 0, total: 100 })
+  // const [bulkSuccessStats, setBulkSuccessStats] = React.useState<
+  //   { succeeded: number; failed: number; total: number } | undefined
+  // >()
 
   const [error, setError] = React.useState<Error | undefined>(undefined)
   const [onRetry, setOnRetry] = React.useState<() => void>(() => () => {})
@@ -30,6 +33,7 @@ const ImportRecipesPage = () => {
           onRetry={onRetry}
           importSource={importSource}
           bulkSuccessStats={bulkSuccessStats}
+          setError={setError}
         />
       )}
       <MetaTags title="import recipes" description="Import Recipes page" />

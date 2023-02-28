@@ -21,17 +21,24 @@ export const createRecipeImage = async (
 ) => {
   // Written by ChatGPT ;)
   const prompt = `Generate an image of ${title} professional food photography that looks as if it could be featured in a high-end cookbook. The dish should be presented on a plate with appropriate garnishes, and the overall image should have a visually pleasing composition and lighting. The dish should look delicious and appetizing.`
-  const imageResponse = await openai.createImage({
-    prompt,
-  })
 
-  const openaiUrl = imageResponse.data.data[0].url
+  try {
+    const imageResponse = await openai.createImage({
+      prompt,
+    })
 
-  if (openaiUrl) {
-    const sjUrl = uploadFileToCloudinary(openaiUrl, recipeId)
-    return sjUrl
-  } else {
-    throw new Error("Couldn't get image from OpenAI.")
+    const openaiUrl = imageResponse.data.data[0].url
+
+    if (openaiUrl) {
+      const sjUrl = uploadFileToCloudinary(openaiUrl, recipeId)
+      return sjUrl
+    } else {
+      throw new Error(`Couldn't get image from OpenAI for recipe ${title}.`)
+    }
+  } catch (e) {
+    throw new Error(
+      `Couldn't get image from OpenAI for recipe ${title}. Error: ${e}`
+    )
   }
 }
 
