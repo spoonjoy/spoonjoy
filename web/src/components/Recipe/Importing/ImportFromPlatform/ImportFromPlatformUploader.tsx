@@ -5,9 +5,11 @@ import axios from 'axios'
 import JSZip from 'jszip'
 import { ImportRecipeFromCroutonMutation } from 'types/graphql'
 
-import { routes } from '@redwoodjs/router'
+import { navigate, routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/dist/toast'
+
+import { useAuth } from 'src/auth'
 
 import { splitJSZipIntoGroups, zipToFile } from './uploaderHelpers'
 
@@ -24,17 +26,31 @@ const IMPORT_RECIPE_FROM_CROUTON_MUTATION = gql`
 export interface IImportFromPlatformUploaderProps {
   setShowLoading: (showLoading: boolean) => void
   setRedirectUrl: (redirectUrl: string) => void
-  setBulkSuccessStats: (stats: { succeeded: number; failed: number }) => void
+  bulkSuccessStats:
+    | {
+        succeeded: number
+        failed: number
+        total: number
+      }
+    | undefined
+  setBulkSuccessStats: (stats: {
+    succeeded: number
+    failed: number
+    total: number
+  }) => void
   setOnRetry: React.Dispatch<React.SetStateAction<() => void>>
   setError: (error: Error | undefined) => void
 }
 const ImportFromPlatformUploader = ({
   setShowLoading,
   setRedirectUrl,
+  bulkSuccessStats,
   setBulkSuccessStats,
   setOnRetry,
   setError,
 }: IImportFromPlatformUploaderProps) => {
+  const { currentUser } = useAuth()
+
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [fileKey, setFileKey] = useState<string | undefined>(undefined)
 
@@ -48,14 +64,9 @@ const ImportFromPlatformUploader = ({
     useMutation<ImportRecipeFromCroutonMutation>(
       IMPORT_RECIPE_FROM_CROUTON_MUTATION,
       {
-        onCompleted: (data) => {
-          toast.success('recipes imported')
-          setRedirectUrl(routes.cookbook({ id: data.import.cookbookId }))
-          setBulkSuccessStats({
-            succeeded: data.import.importCount,
-            failed: data.import.failedCount,
-          })
-        },
+        // onCompleted: (data) => {
+        //   return data
+        // },
         onError: (error) => {
           toast.error(error.message)
           setOnRetry(
@@ -67,11 +78,18 @@ const ImportFromPlatformUploader = ({
 
   setError(error)
 
-  const handleFileUpload = async (file: File) => {
+  const handleFileUpload = async (
+    file: File,
+    onUploadSuccess: (fileKey: string) => Promise<void>
+  ) => {
+    if (!currentUser) {
+      toast.error('You must be logged in to import recipes from a platform')
+      navigate(routes.login())
+    }
     if (file) {
       setShowLoading(true)
 
-      const filename = file.name.replace(' ', '+')
+      const filename = `${currentUser?.username}/${file.name}`.replace(' ', '+')
       const presignedUrlEndpoint = `http://${window.location.host}/api/getS3UploadUrl?filename=${filename}`
 
       // Get the pre-signed S3 URL using Axios
@@ -90,10 +108,12 @@ const ImportFromPlatformUploader = ({
 
       // Handle the response
       if (uploadResponse.status === 200) {
-        toast.success('file uploaded successfully')
-        importRecipesFromCrouton({ variables: { fileKey: returnedFileKey } })
+        // toast.success('file uploaded successfully')
+        await onUploadSuccess(returnedFileKey)
       } else {
-        toast.error('error uploading file')
+        toast.error(
+          `error uploading file, status code: ${uploadResponse.status}`
+        )
       }
     }
   }
@@ -123,6 +143,12 @@ const ImportFromPlatformUploader = ({
           'crouton file verified, found ' + fileNames.length + ' recipes'
         )
 
+        setBulkSuccessStats({
+          succeeded: 0,
+          failed: 0,
+          total: fileNames.length,
+        })
+
         // split the file into chunks of 10 recipes
         const chunks = await splitJSZipIntoGroups(croutons)
         return chunks
@@ -148,11 +174,38 @@ const ImportFromPlatformUploader = ({
             chunk,
             `${timestamp}/${idx}-${selectedFile!.name}`
           )
-          handleFileUpload(file)
+          await handleFileUpload(file, onUploadSuccess)
         })
+        if (data) {
+          setRedirectUrl(routes.cookbook({ id: data.import.cookbookId }))
+        }
       }
     } catch (error) {
-      toast.error(error.message)
+      const errorMessage =
+        error instanceof Error ? error.message : (error as string)
+      toast.error(errorMessage)
+    }
+  }
+
+  const onUploadSuccess = async (fileKey: string) => {
+    try {
+      await importRecipesFromCrouton({
+        variables: { fileKey },
+      })
+      if (data) {
+        const { importCount, failedCount } = data.import
+        if (bulkSuccessStats) {
+          setBulkSuccessStats({
+            succeeded: bulkSuccessStats.succeeded + importCount,
+            failed: bulkSuccessStats.failed + failedCount,
+            total: bulkSuccessStats.total,
+          })
+        }
+      }
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : (error as string)
+      toast.error(errorMessage)
     }
   }
 
@@ -166,9 +219,9 @@ const ImportFromPlatformUploader = ({
           >
             <div className="flex flex-col items-center justify-center pt-20">
               <CloudArrowUpIcon className="mb-2 h-10 text-gray-500" />
-              {file ? (
+              {selectedFile ? (
                 <p className="mb-10 text-sm font-semibold text-gray-500">
-                  {file.name}
+                  {selectedFile.name}
                 </p>
               ) : (
                 <>
@@ -194,7 +247,7 @@ const ImportFromPlatformUploader = ({
         <button
           className="btn-submit-primary w-full"
           onClick={onSubmit}
-          disabled={!file}
+          disabled={!selectedFile}
         >
           import from crouton app
         </button>
