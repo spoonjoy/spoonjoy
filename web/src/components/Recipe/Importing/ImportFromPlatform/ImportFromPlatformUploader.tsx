@@ -5,7 +5,7 @@ import axios from 'axios'
 import JSZip from 'jszip'
 import { ImportRecipeFromCroutonMutation } from 'types/graphql'
 
-import { navigate, routes } from '@redwoodjs/router'
+import { navigate, Redirect, routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/dist/toast'
 
@@ -54,24 +54,42 @@ const ImportFromPlatformUploader = ({
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [fileKey, setFileKey] = useState<string | undefined>(undefined)
 
+  const [numRecipes, setNumRecipes] = useState<number | undefined>(undefined)
+  const [cookbookId, setCookbookId] = useState<string | undefined>(undefined)
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       setSelectedFile(event.target.files[0])
     }
   }
 
-  const [importRecipesFromCrouton, { data, error }] =
+  if (bulkSuccessStats && bulkSuccessStats.total > 0 && cookbookId) {
+    if (
+      bulkSuccessStats.failed + bulkSuccessStats.succeeded ===
+      bulkSuccessStats.total
+    ) {
+      setRedirectUrl(routes.cookbook({ id: cookbookId }))
+    }
+  }
+
+  const [importRecipesFromCrouton, { error }] =
     useMutation<ImportRecipeFromCroutonMutation>(
       IMPORT_RECIPE_FROM_CROUTON_MUTATION,
       {
-        // onCompleted: (data) => {
-        //   return data
-        // },
+        onCompleted: (data) => {
+          setBulkSuccessStats({
+            succeeded: data.import.importCount,
+            failed: data.import.failedCount,
+            total:
+              numRecipes || data.import.importCount + data.import.failedCount,
+          })
+          setCookbookId(data.import.cookbookId)
+        },
         onError: (error) => {
           toast.error(error.message)
-          setOnRetry(
-            () => () => importRecipesFromCrouton({ variables: { fileKey } })
-          )
+          // setOnRetry(
+          //   () => () => importRecipesFromCrouton({ variables: { fileKey } })
+          // )
         },
       }
     )
@@ -82,14 +100,16 @@ const ImportFromPlatformUploader = ({
     file: File,
     onUploadSuccess: (fileKey: string) => Promise<void>
   ) => {
-    if (!currentUser) {
-      toast.error('You must be logged in to import recipes from a platform')
-      navigate(routes.login())
-    }
     if (file) {
       setShowLoading(true)
+      setBulkSuccessStats({
+        succeeded: 0,
+        failed: 0,
+        total: 0,
+      })
 
-      const filename = `${currentUser?.username}/${file.name}`.replace(' ', '+')
+      // we're already checking that currentUser exists
+      const filename = `${currentUser!.username}/${file.name}`.replace(' ', '+')
       const presignedUrlEndpoint = `http://${window.location.host}/api/getS3UploadUrl?filename=${filename}`
 
       // Get the pre-signed S3 URL using Axios
@@ -143,11 +163,7 @@ const ImportFromPlatformUploader = ({
           'crouton file verified, found ' + fileNames.length + ' recipes'
         )
 
-        setBulkSuccessStats({
-          succeeded: 0,
-          failed: 0,
-          total: fileNames.length,
-        })
+        setNumRecipes(fileNames.length)
 
         // split the file into chunks of 10 recipes
         const chunks = await splitJSZipIntoGroups(croutons)
@@ -176,9 +192,6 @@ const ImportFromPlatformUploader = ({
           )
           await handleFileUpload(file, onUploadSuccess)
         })
-        if (data) {
-          setRedirectUrl(routes.cookbook({ id: data.import.cookbookId }))
-        }
       }
     } catch (error) {
       const errorMessage =
@@ -192,16 +205,6 @@ const ImportFromPlatformUploader = ({
       await importRecipesFromCrouton({
         variables: { fileKey },
       })
-      if (data) {
-        const { importCount, failedCount } = data.import
-        if (bulkSuccessStats) {
-          setBulkSuccessStats({
-            succeeded: bulkSuccessStats.succeeded + importCount,
-            failed: bulkSuccessStats.failed + failedCount,
-            total: bulkSuccessStats.total,
-          })
-        }
-      }
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : (error as string)
@@ -209,51 +212,55 @@ const ImportFromPlatformUploader = ({
     }
   }
 
-  return (
-    <>
-      <div className="m-auto mt-10 flex max-w-sm flex-col gap-5">
-        <div className="flex w-full items-center justify-center">
-          <label
-            htmlFor="dropzone-file"
-            className="flex h-64 w-full cursor-pointer flex-col items-center justify-between rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100"
-          >
-            <div className="flex flex-col items-center justify-center pt-20">
-              <CloudArrowUpIcon className="mb-2 h-10 text-gray-500" />
-              {selectedFile ? (
-                <p className="mb-10 text-sm font-semibold text-gray-500">
-                  {selectedFile.name}
-                </p>
-              ) : (
-                <>
-                  <p className="mb-10 text-sm text-gray-500">
-                    <span className="font-semibold">click to select</span>
-                    {/* or drag and drop */}
+  if (!currentUser) {
+    return <Redirect to={routes.login()} />
+  } else {
+    return (
+      <>
+        <div className="m-auto mt-10 flex max-w-sm flex-col gap-5">
+          <div className="flex w-full items-center justify-center">
+            <label
+              htmlFor="dropzone-file"
+              className="flex h-64 w-full cursor-pointer flex-col items-center justify-between rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100"
+            >
+              <div className="flex flex-col items-center justify-center pt-20">
+                <CloudArrowUpIcon className="mb-2 h-10 text-gray-500" />
+                {selectedFile ? (
+                  <p className="mb-10 text-sm font-semibold text-gray-500">
+                    {selectedFile.name}
                   </p>
-                </>
-              )}
-            </div>
-            <input
-              id="dropzone-file"
-              type="file"
-              className="hidden"
-              accept=".zip"
-              onChange={handleFileChange}
-            />
-            <p className="mb-5 text-xs text-gray-500">
-              .zip file exported from crouton
-            </p>
-          </label>
+                ) : (
+                  <>
+                    <p className="mb-10 text-sm text-gray-500">
+                      <span className="font-semibold">click to select</span>
+                      {/* or drag and drop */}
+                    </p>
+                  </>
+                )}
+              </div>
+              <input
+                id="dropzone-file"
+                type="file"
+                className="hidden"
+                accept=".zip"
+                onChange={handleFileChange}
+              />
+              <p className="mb-5 text-xs text-gray-500">
+                .zip file exported from crouton
+              </p>
+            </label>
+          </div>
+          <button
+            className="btn-submit-primary w-full"
+            onClick={onSubmit}
+            disabled={!selectedFile}
+          >
+            import from crouton app
+          </button>
         </div>
-        <button
-          className="btn-submit-primary w-full"
-          onClick={onSubmit}
-          disabled={!selectedFile}
-        >
-          import from crouton app
-        </button>
-      </div>
-    </>
-  )
+      </>
+    )
+  }
 }
 
 export default ImportFromPlatformUploader
