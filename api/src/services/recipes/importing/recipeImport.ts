@@ -31,7 +31,7 @@ export const importRecipeFromWebsite: MutationResolvers['importRecipeFromWebsite
   async ({ url }) => {
     const recipe = await parseWebsiteData(url)
 
-    const newRecipe = await simpleCreateRecipe(recipe, url)
+    const newRecipe = await simpleCreateRecipe(recipe)
 
     if (newRecipe instanceof RedwoodError) {
       throw newRecipe

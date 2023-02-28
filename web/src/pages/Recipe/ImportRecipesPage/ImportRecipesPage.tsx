@@ -10,7 +10,7 @@ const ImportRecipesPage = () => {
   const [redirectUrl, setRedirectUrl] = React.useState<string | null>(null)
 
   const [error, setError] = React.useState<Error | undefined>(undefined)
-  const [onRetry, setOnRetry] = React.useState<() => void>(() => {})
+  const [onRetry, setOnRetry] = React.useState<() => void>(() => () => {})
 
   return (
     <>

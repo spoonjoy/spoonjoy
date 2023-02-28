@@ -20,7 +20,7 @@ const IMPORT_RECIPE_FROM_WEBSITE_MUTATION = gql`
 interface IImportFromWebsiteFormProps {
   setShowLoading: (showLoading: boolean) => void
   setRedirectUrl: (redirectUrl: string) => void
-  setOnRetry: (onRetry: () => void) => void
+  setOnRetry: React.Dispatch<React.SetStateAction<() => void>>
   setError: (error: Error | undefined) => void
 }
 
@@ -48,7 +48,11 @@ const ImportFromWebsiteForm = ({
           setRedirectUrl(routes.recipe({ id: data.import.recipeId }))
         },
         onError: (error) => {
-          // toast.error(error.message)
+          toast.error(error.message)
+
+          setOnRetry(() => () => {
+            onSubmit({ url: fieldRef.current?.value || '' })
+          })
         },
       }
     )
@@ -56,13 +60,9 @@ const ImportFromWebsiteForm = ({
   setError(error)
 
   const onSubmit = ({ url }: FormImportRecipeFromWebsite) => {
-    // setShowLoading(true)
+    setShowLoading(true)
     importRecipeFromWebsite({ variables: { url } })
   }
-
-  setOnRetry(() => {
-    onSubmit({ url: fieldRef.current?.value || '' })
-  })
 
   return (
     <Form<FormImportRecipeFromWebsite>
