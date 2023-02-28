@@ -138,16 +138,20 @@ const ImportFromPlatformUploader = ({
       }
 
       // Upload the file to S3 using Axios
-      const uploadResponse = await axios.put(presignedUrl, file, options)
-
-      // Handle the response
-      if (uploadResponse.status === 200) {
-        // toast.success('file uploaded successfully')
-        await onUploadSuccess(returnedFileKey)
-      } else {
-        toast.error(
-          `error uploading file, status code: ${uploadResponse.status}`
-        )
+      try {
+        const uploadResponse = await axios.put(presignedUrl, file, options)
+        // Handle the response
+        if (uploadResponse.status === 200) {
+          // toast.success('file uploaded successfully')
+          await onUploadSuccess(returnedFileKey)
+        } else {
+          const errorMessage = `error uploading file, status code: ${uploadResponse.status}`
+          toast.error(errorMessage)
+          setError(new Error(errorMessage))
+        }
+      } catch (error) {
+        toast.error(error.message)
+        setError(error)
       }
     }
   }
