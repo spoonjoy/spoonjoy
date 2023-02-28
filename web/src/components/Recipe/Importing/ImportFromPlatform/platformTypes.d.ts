@@ -1,0 +1,1 @@
+type SupportedPlatforms = 'crouton'
