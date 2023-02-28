@@ -31,7 +31,7 @@ const ImportFromPlatformSelector = ({
   ]
 
   return (
-    <ul className="m-auto mb-5 mt-10 grid max-w-xs grid-cols-2 gap-px overflow-hidden rounded-lg bg-gray-200 p-1 shadow">
+    <ul className="m-auto mb-5 mt-10 grid max-w-xs grid-cols-2 gap-px overflow-hidden rounded-lg bg-gray-200 p-1 shadow sm:max-w-md">
       {actions.map((action, actionIdx) => (
         <li
           key={action.title}
@@ -47,7 +47,7 @@ const ImportFromPlatformSelector = ({
               href={`mailto:${encodeURI(
                 'spoonjoy team<hi@spoonjoy.app>?subject=I want to import from another platform&body=(what platform do you want to import from?)'
               )}`}
-              className="flex h-full w-full flex-col justify-center bg-white text-center text-xs opacity-80 hover:bg-opacity-75"
+              className="flex h-full w-full flex-col justify-center bg-white text-center text-xs opacity-80 hover:bg-opacity-75 sm:text-sm"
             >
               don&apos;t see what
               <br /> you&apos;re looking for?
@@ -59,7 +59,7 @@ const ImportFromPlatformSelector = ({
             </a>
           ) : (
             <button
-              className="h-full w-full p-6 outline-none"
+              className="h-full w-full p-6 outline-none sm:px-12 sm:py-8"
               onClick={action.onClick}
             >
               <img
