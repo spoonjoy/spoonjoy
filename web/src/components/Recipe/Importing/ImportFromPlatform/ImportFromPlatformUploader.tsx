@@ -16,7 +16,18 @@ const IMPORT_RECIPE_FROM_CROUTON_MUTATION = gql`
   }
 `
 
-const ImportFromPlatformUploader: React.FC = () => {
+interface IImportFromPlatformUploaderProps {
+  setShowLoading: (showLoading: boolean) => void
+  setRedirectUrl: (redirectUrl: string) => void
+  setOnRetry: React.Dispatch<React.SetStateAction<() => void>>
+  setError: (error: Error | undefined) => void
+}
+const ImportFromPlatformUploader = ({
+  setShowLoading,
+  setRedirectUrl,
+  setOnRetry,
+  setError,
+}: IImportFromPlatformUploaderProps) => {
   const [file, setFile] = useState<File | null>(null)
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,17 +83,22 @@ const ImportFromPlatformUploader: React.FC = () => {
         <div className="flex w-full items-center justify-center">
           <label
             htmlFor="dropzone-file"
-            className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100"
+            className="flex h-64 w-full cursor-pointer flex-col items-center justify-between rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100"
           >
-            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+            <div className="flex flex-col items-center justify-center pt-16">
               <CloudArrowUpIcon className="mb-2 h-10 text-gray-500" />
-              <p className="mb-2 text-sm text-gray-500">
-                <span className="font-semibold">click to upload</span> or drag
-                and drop
-              </p>
-              <p className="text-xs text-gray-500">
-                .zip file exported from crouton
-              </p>
+              {file ? (
+                <p className="mb-10 text-sm font-semibold text-gray-500">
+                  {file.name}
+                </p>
+              ) : (
+                <>
+                  <p className="mb-10 text-sm text-gray-500">
+                    <span className="font-semibold">click to select</span>
+                    {/* or drag and drop */}
+                  </p>
+                </>
+              )}
             </div>
             <input
               id="dropzone-file"
@@ -91,11 +107,15 @@ const ImportFromPlatformUploader: React.FC = () => {
               accept=".zip"
               onChange={handleFileChange}
             />
+            <p className="mb-5 text-xs text-gray-500">
+              .zip file exported from crouton
+            </p>
           </label>
         </div>
         <button
           className="btn-submit-primary w-full"
           onClick={handleFileUpload}
+          disabled={!file}
         >
           import from crouton app
         </button>
