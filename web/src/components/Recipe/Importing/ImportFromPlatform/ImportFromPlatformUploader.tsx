@@ -75,7 +75,7 @@ const ImportFromPlatformUploader = ({
     }
   }
 
-  const [importRecipesFromCrouton, { error }] =
+  const [importRecipesFromCrouton] =
     useMutation<ImportRecipeFromCroutonMutation>(
       IMPORT_RECIPE_FROM_CROUTON_MUTATION,
       {
@@ -97,15 +97,15 @@ const ImportFromPlatformUploader = ({
           setCookbookId(data.import.cookbookId)
         },
         onError: (error) => {
+          setError(error)
           toast.error(error.message)
           setOnRetry(() => () => {
             setShowLoading(false)
+            setError(undefined)
           })
         },
       }
     )
-
-  setError(error)
 
   const handleFileUpload = async (
     file: File,
