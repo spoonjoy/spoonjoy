@@ -4,7 +4,6 @@ import { CloudArrowUpIcon } from '@heroicons/react/24/solid'
 import axios from 'axios'
 import { ImportRecipeFromCroutonMutation } from 'types/graphql'
 
-import { FileField } from '@redwoodjs/forms'
 import { routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/dist/toast'
@@ -19,7 +18,7 @@ const IMPORT_RECIPE_FROM_CROUTON_MUTATION = gql`
   }
 `
 
-interface IImportFromPlatformUploaderProps {
+export interface IImportFromPlatformUploaderProps {
   setShowLoading: (showLoading: boolean) => void
   setRedirectUrl: (redirectUrl: string) => void
   setBulkSuccessStats: (stats: { succeeded: number; failed: number }) => void

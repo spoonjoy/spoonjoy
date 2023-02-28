@@ -13,6 +13,8 @@ export interface IRecipeImportLoadingProps {
   hasError: boolean
   setShowLoading: React.Dispatch<React.SetStateAction<boolean>>
   onRetry: () => void
+  importSource: 'website' | 'platform'
+  bulkSuccessStats?: { succeeded: number; failed: number }
 }
 
 const RecipeImportLoading = ({
@@ -20,6 +22,7 @@ const RecipeImportLoading = ({
   hasError,
   setShowLoading,
   onRetry,
+  importSource,
 }: IRecipeImportLoadingProps) => {
   return (
     <div className="fixed bottom-0 top-0 left-0 right-0 z-50 flex flex-col items-center justify-center gap-2 bg-white">
@@ -31,7 +34,7 @@ const RecipeImportLoading = ({
       />
       <div className="mx-auto max-w-3xl px-5 text-sm leading-5 text-gray-700 sm:text-base">
         <h1 className="mt-2 text-center text-xl font-bold tracking-tight text-gray-800 sm:text-2xl">
-          importing your recipe...
+          importing your {importSource === 'website' ? 'recipe' : 'recipes'}...
         </h1>
         <p className="mt-8 mb-2 text-center font-bold">
           what you need to know:
@@ -60,7 +63,10 @@ const RecipeImportLoading = ({
                 double check
               </strong>{' '}
               and make sure we&apos;ve gotten everything right - if you want to
-              make any changes, just hit the edit button below the recipe
+              make any changes, just hit the edit button{' '}
+              {importSource === 'website'
+                ? 'below the recipe'
+                : 'at the bottom of each recipe'}
             </span>
           </li>
         </ul>
@@ -84,7 +90,7 @@ const RecipeImportLoading = ({
             disabled={!redirectUrl}
             onClick={() => redirectUrl && navigate(redirectUrl)}
           >
-            got it, go to recipe
+            got it, go to {importSource === 'website' ? 'recipe' : 'cookbook'}
           </button>
         )}
       </div>

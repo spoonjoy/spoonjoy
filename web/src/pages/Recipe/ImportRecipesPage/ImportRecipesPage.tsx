@@ -1,8 +1,6 @@
-import { Link, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import ImportFromPlatform from 'src/components/Recipe/Importing/ImportFromPlatform/ImportFromPlatform'
-import ImportFromPlatformSelector from 'src/components/Recipe/Importing/ImportFromPlatform/ImportFromPlatformSelector'
 import ImportFromWebsiteForm from 'src/components/Recipe/Importing/ImportFromWebsiteForm/ImportFromWebsiteForm'
 import RecipeImportLoading from 'src/components/Recipe/Importing/RecipeImportLoading/RecipeImportLoading'
 import { HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
@@ -30,6 +28,8 @@ const ImportRecipesPage = () => {
           hasError={!!error}
           setShowLoading={setShowLoading}
           onRetry={onRetry}
+          importSource={importSource}
+          bulkSuccessStats={bulkSuccessStats}
         />
       )}
       <MetaTags title="import recipes" description="Import Recipes page" />
@@ -48,7 +48,15 @@ const ImportRecipesPage = () => {
           setError={setError}
         />
       ) : (
-        <ImportFromPlatform />
+        <ImportFromPlatform
+          uploaderProps={{
+            setShowLoading,
+            setRedirectUrl,
+            setBulkSuccessStats,
+            setOnRetry,
+            setError,
+          }}
+        />
       )}
       <div className="mt-2 text-center text-sm">
         or{' '}

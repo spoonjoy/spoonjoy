@@ -1,7 +1,13 @@
 import ImportFromPlatformSelector from './ImportFromPlatformSelector'
-import ImportFromPlatformUploader from './ImportFromPlatformUploader'
+import ImportFromPlatformUploader, {
+  IImportFromPlatformUploaderProps,
+} from './ImportFromPlatformUploader'
 
-const ImportFromPlatform = () => {
+interface IImportFromPlatformProps {
+  uploaderProps: IImportFromPlatformUploaderProps
+}
+
+const ImportFromPlatform = ({ uploaderProps }: IImportFromPlatformProps) => {
   const [selectedPlatform, setSelectedPlatform] = React.useState<
     SupportedPlatforms | undefined
   >(undefined)
@@ -9,7 +15,7 @@ const ImportFromPlatform = () => {
   if (selectedPlatform) {
     switch (selectedPlatform) {
       case 'crouton':
-        return <ImportFromPlatformUploader />
+        return <ImportFromPlatformUploader {...uploaderProps} />
     }
   } else {
     return (
