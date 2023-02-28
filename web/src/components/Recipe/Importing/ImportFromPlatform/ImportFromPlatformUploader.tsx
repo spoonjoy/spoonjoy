@@ -80,12 +80,20 @@ const ImportFromPlatformUploader = ({
       IMPORT_RECIPE_FROM_CROUTON_MUTATION,
       {
         onCompleted: (data) => {
-          setBulkSuccessStats({
-            succeeded: data.import.importCount,
-            failed: data.import.failedCount,
-            total:
-              numRecipes || data.import.importCount + data.import.failedCount,
-          })
+          if (bulkSuccessStats) {
+            setBulkSuccessStats({
+              succeeded: bulkSuccessStats.succeeded + data.import.importCount,
+              failed: bulkSuccessStats.failed + data.import.failedCount,
+              total: numRecipes || bulkSuccessStats.total,
+            })
+          } else {
+            setBulkSuccessStats({
+              succeeded: data.import.importCount,
+              failed: data.import.failedCount,
+              total:
+                numRecipes || data.import.importCount + data.import.failedCount,
+            })
+          }
           setCookbookId(data.import.cookbookId)
         },
         onError: (error) => {
@@ -108,7 +116,7 @@ const ImportFromPlatformUploader = ({
       setBulkSuccessStats({
         succeeded: 0,
         failed: 0,
-        total: 0,
+        total: numRecipes || 0,
       })
 
       // we're already checking that currentUser exists
