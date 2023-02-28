@@ -5,13 +5,17 @@ import axios from 'axios'
 import JSZip from 'jszip'
 import { ImportRecipeFromCroutonMutation } from 'types/graphql'
 
-import { navigate, Redirect, routes } from '@redwoodjs/router'
+import { Redirect, routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/dist/toast'
 
 import { useAuth } from 'src/auth'
 
-import { splitJSZipIntoGroups, zipToFile } from './uploaderHelpers'
+import {
+  getFormattedDateString,
+  splitJSZipIntoGroups,
+  zipToFile,
+} from './uploaderHelpers'
 
 const IMPORT_RECIPE_FROM_CROUTON_MUTATION = gql`
   mutation ImportRecipeFromCroutonMutation($fileKey: String!) {
@@ -52,7 +56,6 @@ const ImportFromPlatformUploader = ({
   const { currentUser } = useAuth()
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const [fileKey, setFileKey] = useState<string | undefined>(undefined)
 
   const [numRecipes, setNumRecipes] = useState<number | undefined>(undefined)
   const [cookbookId, setCookbookId] = useState<string | undefined>(undefined)
@@ -87,9 +90,9 @@ const ImportFromPlatformUploader = ({
         },
         onError: (error) => {
           toast.error(error.message)
-          // setOnRetry(
-          //   () => () => importRecipesFromCrouton({ variables: { fileKey } })
-          // )
+          setOnRetry(() => () => {
+            setShowLoading(false)
+          })
         },
       }
     )
@@ -116,7 +119,6 @@ const ImportFromPlatformUploader = ({
       const presignedUrlResponse = await axios.get(presignedUrlEndpoint)
       const presignedUrl = presignedUrlResponse.data.data.signedUrl
       const returnedFileKey = presignedUrlResponse.data.data.fileKey
-      setFileKey(returnedFileKey)
 
       // Create the config object with headers and body
       const options = {
@@ -181,7 +183,7 @@ const ImportFromPlatformUploader = ({
 
   const onSubmit = async () => {
     try {
-      const timestamp = new Date().toLocaleString()
+      const timestamp = getFormattedDateString()
       const chunks = await handleCroutonFile()
       if (chunks) {
         chunks.forEach(async (chunk, idx) => {

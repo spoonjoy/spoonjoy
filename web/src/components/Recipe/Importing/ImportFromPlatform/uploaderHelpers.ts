@@ -1,6 +1,6 @@
 import JSZip from 'jszip'
 
-export async function splitJSZipIntoGroups(zip: JSZip): Promise<JSZip[]> {
+export const splitJSZipIntoGroups = async (zip: JSZip): Promise<JSZip[]> => {
   const entries = Object.entries(zip.files)
   const numGroups = Math.ceil(entries.length / 10)
   const groups = await Promise.all(
@@ -24,4 +24,12 @@ export const zipToFile = async (
 ): Promise<File> => {
   const blob = await zip.generateAsync({ type: 'blob' })
   return new File([blob], fileName, { type: 'application/zip' })
+}
+export const getFormattedDateString = () => {
+  const date = new Date()
+  const isoString = date.toISOString()
+  const [dateStr, timeStr] = isoString.split('T')
+  const [year, month, day] = dateStr.split('-')
+  const [hour, minute] = timeStr.slice(0, -1).split(':')
+  return `${year}/${month}/${day}/${hour}/${minute}`
 }
