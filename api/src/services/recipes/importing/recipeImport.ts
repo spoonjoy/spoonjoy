@@ -162,7 +162,7 @@ const croutonRecipesToSJRecipeInputs = (
       title: croutonRecipe.name,
       servings: croutonRecipe.serves,
       description: croutonRecipe.notes,
-      existingImage: imageBase64,
+      existingImage: imageBase64 && 'data:image/svg+xml;base64,' + imageBase64,
       sourceUrl: croutonRecipe.webLink,
     }
 

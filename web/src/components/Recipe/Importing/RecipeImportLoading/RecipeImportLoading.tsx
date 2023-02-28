@@ -23,6 +23,7 @@ const RecipeImportLoading = ({
   setShowLoading,
   onRetry,
   importSource,
+  bulkSuccessStats,
 }: IRecipeImportLoadingProps) => {
   return (
     <div className="fixed bottom-0 top-0 left-0 right-0 z-50 flex flex-col items-center justify-center gap-2 bg-white">
@@ -92,6 +93,24 @@ const RecipeImportLoading = ({
           >
             got it, go to {importSource === 'website' ? 'recipe' : 'cookbook'}
           </button>
+        )}
+      </div>
+      <div>
+        {bulkSuccessStats && (
+          <div className="text-center text-sm text-gray-400">
+            <span className="mb-1 block">
+              {bulkSuccessStats.succeeded === 0
+                ? 'no recipes imported'
+                : `${bulkSuccessStats.succeeded} ${
+                    bulkSuccessStats.succeeded === 1 ? 'recipe' : 'recipes'
+                  } imported`}
+            </span>
+            <span>
+              {bulkSuccessStats.failed === 0
+                ? 'no failures'
+                : `${bulkSuccessStats.failed} failed`}
+            </span>
+          </div>
         )}
       </div>
     </div>

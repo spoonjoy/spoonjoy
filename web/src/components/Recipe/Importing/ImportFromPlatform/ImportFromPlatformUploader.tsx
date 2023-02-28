@@ -74,7 +74,8 @@ const ImportFromPlatformUploader = ({
       // Get the pre-signed S3 URL using Axios
       const presignedUrlResponse = await axios.get(presignedUrlEndpoint)
       const presignedUrl = presignedUrlResponse.data.data.signedUrl
-      setFileKey(presignedUrlResponse.data.data.fileKey)
+      const returnedFileKey = presignedUrlResponse.data.data.fileKey
+      setFileKey(returnedFileKey)
 
       // Create the config object with headers and body
       const options = {
@@ -87,7 +88,7 @@ const ImportFromPlatformUploader = ({
       // Handle the response
       if (uploadResponse.status === 200) {
         toast.success('file uploaded successfully')
-        importRecipesFromCrouton({ variables: { fileKey } })
+        importRecipesFromCrouton({ variables: { fileKey: returnedFileKey } })
       } else {
         toast.error('error uploading file')
       }
