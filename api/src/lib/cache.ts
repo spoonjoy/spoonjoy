@@ -10,7 +10,11 @@ if (process.env.NODE_ENV === 'test') {
   try {
     client = new RedisClient({ url: process.env.CACHE_HOST, logger })
   } catch (e) {
-    logger.error(`Could not connect to cache: ${e.message}`)
+    if (e instanceof Error) {
+      logger.error(`Could not connect to cache: ${e.message}`)
+    } else {
+      logger.error(`Could not connect to cache: ${e}`)
+    }
   }
 }
 
