@@ -22,4 +22,6 @@ export const { cache, cacheFindMany, cacheClient, deleteCacheKey } =
   createCache(client, {
     logger,
     timeout: 500,
+    // If we need to invalidate all cache entries, we can change this prefix
+    prefix: 'alpha',
   })
