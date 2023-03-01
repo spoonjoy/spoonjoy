@@ -1,0 +1,26 @@
+-- AlterTable
+ALTER TABLE `Cookbook` ADD COLUMN `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    ADD COLUMN `updatedAt` DATETIME(3) NULL;
+
+-- AlterTable
+ALTER TABLE `Ingredient` ADD COLUMN `updatedAt` DATETIME(3) NULL;
+
+-- AlterTable
+ALTER TABLE `Recipe` ADD COLUMN `updatedAt` DATETIME(3) NULL;
+
+-- AlterTable
+ALTER TABLE `RecipeInCookbook` ADD COLUMN `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    ADD COLUMN `updatedAt` DATETIME(3) NULL;
+
+-- AlterTable
+ALTER TABLE `RecipeStep` ADD COLUMN `updatedAt` DATETIME(3) NULL;
+
+-- AlterTable
+ALTER TABLE `ShoppingList` ADD COLUMN `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    ADD COLUMN `updatedAt` DATETIME(3) NULL;
+
+-- AlterTable
+ALTER TABLE `ShoppingListItem` ADD COLUMN `updatedAt` DATETIME(3) NULL;
+
+-- AlterTable
+ALTER TABLE `User` ADD COLUMN `updatedAt` DATETIME(3) NULL;
