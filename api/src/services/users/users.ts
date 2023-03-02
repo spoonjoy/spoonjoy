@@ -4,15 +4,21 @@ import type {
   UserRelationResolvers,
 } from 'types/graphql'
 
-import { cache, cacheFindMany } from 'src/lib/cache'
+import {
+  cache,
+  cacheFindMany,
+  deleteCacheKey,
+  getUserCacheKey,
+  getUsersCacheKey,
+} from 'src/lib/cache'
 import { db } from 'src/lib/db'
 
 export const users: QueryResolvers['users'] = () => {
-  return cacheFindMany('v1-users', db.user)
+  return cacheFindMany(getUsersCacheKey(), db.user)
 }
 
 export const user: QueryResolvers['user'] = ({ id }) => {
-  return cache(`v1-user-${id}`, () => db.user.findUnique({ where: { id } }))
+  return cache(getUserCacheKey(id), () => db.user.findUnique({ where: { id } }))
 }
 
 export const createUser: MutationResolvers['createUser'] = ({ input }) => {
@@ -21,7 +27,11 @@ export const createUser: MutationResolvers['createUser'] = ({ input }) => {
   })
 }
 
-export const updateUser: MutationResolvers['updateUser'] = ({ id, input }) => {
+export const updateUser: MutationResolvers['updateUser'] = async ({
+  id,
+  input,
+}) => {
+  await deleteCacheKey(getUserCacheKey(id))
   return db.user.update({
     data: input,
     where: { id },
