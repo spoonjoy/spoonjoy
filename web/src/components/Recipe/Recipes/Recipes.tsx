@@ -21,7 +21,8 @@ const Recipes = ({
 }: IRecipesProps) => {
   return (
     <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {recipes ? (
+      {/* when loading, withMyCookbooksQuery will pass in an empty array (because undefined/null imply that it doesn't exist) */}
+      {recipes && myCookbooks?.length !== 0 ? (
         recipes.map((recipe) => (
           <RecipeCard
             key={recipe.id}

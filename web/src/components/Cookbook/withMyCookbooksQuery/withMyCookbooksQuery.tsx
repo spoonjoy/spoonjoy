@@ -22,12 +22,15 @@ function withMyCookbooksQuery<
       }
     )
 
-    if (loading) return <div>Loading...</div>
-    if (error) return <div>Error: {error.message}</div>
+    if (loading) return <WrappedComponent {...(props as T)} myCookbooks={[]} />
+    if (error) {
+      console.error('error in withMyCookbooksQuery', error)
+      return <WrappedComponent {...(props as T)} />
+    }
 
     const myCookbooks = data?.myCookbooks
 
-    return <WrappedComponent {...(props as T)} myCookbooks={myCookbooks} />
+    return <WrappedComponent {...(props as T)} myCookbooks={[myCookbooks]} />
   }
 }
 
