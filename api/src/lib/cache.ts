@@ -51,14 +51,18 @@ export const getRecipesStepsCacheKey = (recipeId: string) =>
   `${recipesStepsCacheKeyPrefix}-${recipeId}`
 
 const ingredientCacheKeyPrefix = 'v1-ingredient'
-// for ingredients in a recipe step
+/** for ingredients in a recipe step */
 export const getIngredientsInStepCacheKey = (
   recipeId: string,
   stepNum: number
 ) => `${ingredientCacheKeyPrefix}s-${recipeId}-${stepNum}`
+/** for ingredients using a given ingredientRef */
+export const getIngredientsUsingIngredientRefCacheKey = (
+  ingredientRefId: string
+) => `${ingredientCacheKeyPrefix}s-${ingredientRefId}`
 
 const stepOutputUsesCacheKeyPrefix = 'v1-stepOutputUse'
-// for stepOutputUses in a recipe step
+/** for stepOutputUses in a recipe step */
 export const getStepOutputUsesInStepCacheKey = (
   recipeId: string,
   inputStepNum: number
