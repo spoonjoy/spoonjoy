@@ -5,6 +5,10 @@ const config: CapacitorConfig = {
   appName: 'spoonjoy',
   webDir: 'dist',
   bundledWebRuntime: false,
+
+  ios: {
+    path: '../ios',
+  },
 }
 
 export default config
