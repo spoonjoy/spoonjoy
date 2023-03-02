@@ -97,6 +97,8 @@ model StepOutputUse {
   inputStepNum  Int
   inputOfStep   RecipeStep @relation(name: "input", fields: [recipeId, inputStepNum], references: [recipeId, stepNum], onDelete: Cascade)
 
+  updatedAt DateTime @default(now()) @updatedAt
+
   @@unique([recipeId, outputStepNum, inputStepNum])
   @@index([recipeId, outputStepNum, inputStepNum])
   @@index([recipeId, outputStepNum])
@@ -127,6 +129,8 @@ model IngredientRef {
   name             String             @unique
   ingredients      Ingredient[]
   shoppingListIems ShoppingListItem[]
+
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Unit {
@@ -134,6 +138,8 @@ model Unit {
   name             String             @unique
   ingredients      Ingredient[]
   shoppingListIems ShoppingListItem[]
+
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Cookbook {

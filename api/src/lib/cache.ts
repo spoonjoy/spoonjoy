@@ -48,6 +48,10 @@ export const getUsersRecipesCacheKey = (username: string) =>
   `${recipeCacheKeyPrefix}s-${username}`
 export const getRecipesCacheKey = () => `${recipeCacheKeyPrefix}s`
 
+const recipesStepsCacheKeyPrefix = 'v1-recipesSteps'
+export const getRecipesStepsCacheKey = (recipeId: string) =>
+  `${recipesStepsCacheKeyPrefix}-${recipeId}`
+
 const userCacheKeyPrefix = 'v1-user'
 export const getUserCacheKey = (id: string) => `${userCacheKeyPrefix}-${id}`
 export const getUsersCacheKey = () => `${userCacheKeyPrefix}s`

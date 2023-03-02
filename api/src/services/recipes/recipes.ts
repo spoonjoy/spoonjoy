@@ -21,6 +21,7 @@ import {
   deleteCacheKey,
   getRecipeCacheKey,
   getRecipesCacheKey,
+  getRecipesStepsCacheKey,
   getUsersRecipesCacheKey,
 } from 'src/lib/cache'
 import { db } from 'src/lib/db'
@@ -295,10 +296,18 @@ export const Recipe: RequiredRecipeRelationResolvers = {
 
     return maybeChef
   },
+  // steps doesn't have its own resolver for this
   steps: async (_obj, { root }) => {
-    const maybeSteps = await db.recipe
-      .findUnique({ where: { id: root?.id } })
-      .steps()
+    const maybeSteps = cacheFindMany(
+      getRecipesStepsCacheKey(root.id),
+      db.recipeStep,
+      {
+        conditions: {
+          where: { recipeId: root.id },
+        },
+      }
+    )
+
     if (!maybeSteps) {
       throw new Error('Could not resolve steps')
     }
