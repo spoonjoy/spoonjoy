@@ -13,6 +13,8 @@ import {
 } from 'src/lib/cache'
 import { db } from 'src/lib/db'
 
+import { usersRecipes } from '../recipes/recipes'
+
 export const users: QueryResolvers['users'] = () => {
   return cacheFindMany(getUsersCacheKey(), db.user)
 }
@@ -45,10 +47,7 @@ export const deleteUser: MutationResolvers['deleteUser'] = ({ id }) => {
 }
 
 export const User: UserRelationResolvers = {
-  credentials: (_obj, { root }) => {
-    return db.user.findUnique({ where: { id: root?.id } }).credentials()
-  },
   recipes: (_obj, { root }) => {
-    return db.user.findUnique({ where: { id: root?.id } }).recipes()
+    return usersRecipes({ username: root.username })
   },
 }
