@@ -26,6 +26,7 @@ import {
 import { db } from 'src/lib/db'
 
 import { mapStepsMutationInputToDbCreateManyStepOutputUsesInput } from '../stepOutputUses/stepOutputUsesUtilities'
+import { user } from '../users/users'
 
 import { createRecipeImage } from './recipeImageHandler'
 import {
@@ -244,8 +245,7 @@ export const updateRecipe: MutationResolvers['updateRecipe'] = async ({
     return updatedRecipeNoStepOutputUses
   })
 
-  // TODO The prefix needs to be specified here until https://github.com/redwoodjs/redwood/issues/7346 is closed
-  await deleteCacheKey(`alpha-${getRecipeCacheKey(id)}`)
+  await deleteCacheKey(getRecipeCacheKey(id))
   return updatedRecipe
 }
 
@@ -287,9 +287,8 @@ type RequiredRecipeRelationResolvers = RecipeRelationResolvers & {
 
 export const Recipe: RequiredRecipeRelationResolvers = {
   chef: async (_obj, { root }) => {
-    const maybeChef = await db.recipe
-      .findUnique({ where: { id: root?.id } })
-      .chef()
+    const maybeChef = await user({ id: root.chefId })
+
     if (!maybeChef) {
       throw new Error('Could not resolve chef')
     }

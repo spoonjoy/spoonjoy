@@ -1,4 +1,9 @@
-import { createCache, InMemoryClient, RedisClient } from '@redwoodjs/api/cache'
+import {
+  CacheKey,
+  createCache,
+  InMemoryClient,
+  RedisClient,
+} from '@redwoodjs/api/cache'
 
 import { logger } from './logger'
 
@@ -18,17 +23,24 @@ if (process.env.NODE_ENV === 'test') {
   }
 }
 
-export const { cache, cacheFindMany, cacheClient, deleteCacheKey } =
-  createCache(client, {
-    logger,
-    timeout: 500,
-    // If we need to invalidate all cache entries, we can change this prefix
-    prefix: 'alpha',
-    fields: {
-      id: 'id',
-      updatedAt: 'updatedAt',
-    },
-  })
+export const {
+  cache,
+  cacheFindMany,
+  cacheClient,
+  deleteCacheKey: badDeleteCacheKey,
+} = createCache(client, {
+  logger,
+  timeout: 500,
+  // If we need to invalidate all cache entries, we can change this prefix
+  prefix: 'alpha',
+  fields: {
+    id: 'id',
+    updatedAt: 'updatedAt',
+  },
+})
+
+// TODO The prefix needs to be specified here until https://github.com/redwoodjs/redwood/issues/7346 is closed
+export const deleteCacheKey = (key: string) => badDeleteCacheKey(`alpha-${key}`)
 
 const recipeCacheKeyPrefix = 'v1-recipe'
 export const getRecipeCacheKey = (id: string) => `${recipeCacheKeyPrefix}-${id}`
