@@ -20,7 +20,7 @@ export const RecipeInCookbook: RecipeInCookbookRelationResolvers = {
     return maybeRecipe
   },
   addedBy: async (_obj, { root }) => {
-    const maybeUser = await user({ id: root.addedBy })
+    const maybeUser = await user({ id: root.addedById })
     if (!maybeUser) {
       throw new Error('Could not resolve user')
     }
