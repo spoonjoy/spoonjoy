@@ -65,10 +65,10 @@ export default function AddToCookbookButton({
       Currently, this is unused as there's a whole page for handling this. Leaving this
       component here in case I want to test the dialog flow as an alternative to a whole page
       */}
-      <SignUpAndAddToCookbookDialog
+      {/* <SignUpAndAddToCookbookDialog
         isDialogOpen={openDialog === 'signup'}
         dismissDialog={dismissDialog}
-      />
+      /> */}
       <div className="relative inline-block text-left">
         <button
           onClick={(e) => {
