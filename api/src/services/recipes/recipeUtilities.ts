@@ -220,13 +220,8 @@ export const mapIngredientsMutationInputToDbUpdateInput = (
       const { quantity, unitName, ingredientName } = ingredient
       return {
         where: {
-          recipeId_stepNum_unitId_ingredientRefId: {
-            // TODO figure out how to get these IDs in here
-            recipeId: 'noid',
-            stepNum: -1,
-            unitId: 'noid',
-            ingredientRefId: 'noid',
-          },
+          // TODO figure out how to get the ID in here so we don't need to delete and recreate them all
+          id: 'noid',
         },
         update: {
           quantity,

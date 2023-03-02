@@ -52,6 +52,8 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
 
   const onSubmit = (data: FormUpdateRecipe | FormCreateRecipe) => {
     console.log('onSubmit data:', data)
+    setShowLoadingScreen(true)
+
     if (recipe) {
       ;(onSave as onUpdateRecipe)(recipe.id, data as FormUpdateRecipe)
     } else {
@@ -125,16 +127,10 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
   const [showLoadingScreen, setShowLoadingScreen] = React.useState(false)
 
   React.useEffect(() => {
-    if (loading) {
-      setTimeout(() => {
-        setShowLoadingScreen(true)
-      }, 1000)
+    if (error) {
+      setShowLoadingScreen(false)
     }
-    // can reenable this if necessary but it causes a flash of the form before redirect when saving is complete
-    // else {
-    //   setShowLoadingScreen(false)
-    // }
-  }, [loading])
+  }, [error])
 
   return (
     <>

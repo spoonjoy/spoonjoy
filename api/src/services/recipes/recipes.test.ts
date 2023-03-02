@@ -21,13 +21,12 @@ import {
   updateRecipe,
   deleteRecipe,
   Recipe,
-  myRecipes,
   usersRecipes,
 } from './recipes'
 import {
   bobsRecipeScenarioData,
   deletedRecipeScenarioData,
-  lindasRecipeScenarioData,
+  // lindasRecipeScenarioData,
   recipeIncludeAllRelations,
   recipeScenarioData,
   StandardScenario as RecipeScenario,
@@ -79,35 +78,6 @@ describe('recipes', () => {
       ).length
       expect(numBobsNotDeletedRecipes > 0)
       expect(result.length).toEqual(numBobsNotDeletedRecipes)
-    }
-  )
-
-  scenario(
-    "throws an error if a user that's not logged in tries to get their own recipes",
-    async () => {
-      expect.assertions(1)
-      try {
-        await myRecipes()
-      } catch (e) {
-        expect(e).toMatchObject(
-          new RedwoodGraphQLError('You are not logged in!')
-        )
-      }
-    }
-  )
-
-  scenario(
-    'allows a logged in user to get their own (non-deleted) recipes',
-    async (scenario: RecipeScenario) => {
-      mockCurrentUser({
-        id: scenario.user.bob.id,
-        username: scenario.user.bob.username,
-      })
-      const result = await myRecipes()
-      expect(Object.keys(recipeScenarioData).length).toEqual(
-        result.length + Object.keys(lindasRecipeScenarioData).length
-      )
-      expect(result.length)
     }
   )
 
