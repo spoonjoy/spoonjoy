@@ -15,6 +15,7 @@ import { validateWith } from '@redwoodjs/api'
 import { RedwoodGraphQLContext } from '@redwoodjs/graphql-server/dist/functions/types'
 
 import { requireAuth, requireRecipeAuth } from 'src/lib/auth'
+import { cacheFindMany } from 'src/lib/cache'
 import { db } from 'src/lib/db'
 
 import { mapStepsMutationInputToDbCreateManyStepOutputUsesInput } from '../stepOutputUses/stepOutputUsesUtilities'
@@ -34,14 +35,16 @@ export const recipes: QueryResolvers['recipes'] = () => {
 }
 
 export const usersRecipes: QueryResolvers['usersRecipes'] = ({ username }) => {
-  return db.recipe.findMany({
-    where: {
-      chef: { username },
-      AND: {
-        deletedAt: null,
+  return cacheFindMany(`v1-recipes-${username}`, db.recipe, {
+    conditions: {
+      where: {
+        chef: { username },
+        AND: {
+          deletedAt: null,
+        },
       },
+      orderBy: { title: 'asc' },
     },
-    orderBy: { title: 'asc' },
   })
 }
 

@@ -28,8 +28,8 @@ model User {
   cookbooks           Cookbook[]
   addedToCookbooks    RecipeInCookbook[]
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model UserCredential {
@@ -61,8 +61,8 @@ model Recipe {
 
   recipeForks Recipe[] @relation("SourceRecipe")
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   // Allow users to create a second recipe with the same title *if* the other one is deleted
   // TODO this is currently broken, see here: https://github.com/spoonjoy/spoonjoy-requests-issues/issues/1
@@ -82,7 +82,7 @@ model RecipeStep {
   usingSteps  StepOutputUse[] @relation("input")
   usedBySteps StepOutputUse[] @relation("output")
 
-  updatedAt DateTime? @updatedAt
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@unique([recipeId, stepNum])
   @@index([recipeId])
@@ -114,7 +114,7 @@ model Ingredient {
   ingredientRefId String
   ingredientRef   IngredientRef @relation(fields: [ingredientRefId], references: [id])
 
-  updatedAt DateTime? @updatedAt
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@index([recipeId, stepNum])
   @@index([recipeId])
@@ -143,8 +143,8 @@ model Cookbook {
   author   User               @relation(fields: [authorId], references: [id], onDelete: Cascade)
   recipes  RecipeInCookbook[]
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@unique([authorId, title])
   @@index([authorId])
@@ -159,8 +159,8 @@ model RecipeInCookbook {
   addedById  String
   addedBy    User     @relation(fields: [addedById], references: [id])
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@unique([cookbookId, recipeId])
   @@index([cookbookId])
@@ -176,8 +176,8 @@ model ShoppingList {
   author   User               @relation(fields: [authorId], references: [id], onDelete: Cascade)
   items    ShoppingListItem[]
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@index([authorId])
 }
@@ -192,7 +192,7 @@ model ShoppingListItem {
   ingredientRefId String
   ingredientRef   IngredientRef @relation(fields: [ingredientRefId], references: [id])
 
-  updatedAt DateTime? @updatedAt
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@unique([shoppingListId, unitId, ingredientRefId])
   @@index([shoppingListId])
