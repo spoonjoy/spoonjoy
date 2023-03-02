@@ -30,4 +30,8 @@ export const { cache, cacheFindMany, cacheClient, deleteCacheKey } =
     },
   })
 
-export const getRecipeCacheKey = (id: string) => `v1-recipe-${id}`
+const recipeCacheKeyPrefix = 'v1-recipe'
+export const getRecipeCacheKey = (id: string) => `${recipeCacheKeyPrefix}-${id}`
+export const getUsersRecipesCacheKey = (username: string) =>
+  `${recipeCacheKeyPrefix}s-${username}`
+export const getRecipesCacheKey = () => `${recipeCacheKeyPrefix}s`

@@ -20,6 +20,8 @@ import {
   cacheFindMany,
   deleteCacheKey,
   getRecipeCacheKey,
+  getRecipesCacheKey,
+  getUsersRecipesCacheKey,
 } from 'src/lib/cache'
 import { db } from 'src/lib/db'
 
@@ -32,15 +34,17 @@ import {
 } from './recipeUtilities'
 
 export const recipes: QueryResolvers['recipes'] = () => {
-  return db.recipe.findMany({
-    where: {
-      deletedAt: null,
+  return cacheFindMany(getRecipesCacheKey(), db.recipe, {
+    conditions: {
+      where: {
+        deletedAt: null,
+      },
     },
   })
 }
 
 export const usersRecipes: QueryResolvers['usersRecipes'] = ({ username }) => {
-  return cacheFindMany(`v1-recipes-${username}`, db.recipe, {
+  return cacheFindMany(getUsersRecipesCacheKey(username), db.recipe, {
     conditions: {
       where: {
         chef: { username },
