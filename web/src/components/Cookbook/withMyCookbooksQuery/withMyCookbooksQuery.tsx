@@ -11,14 +11,14 @@ const MY_COOKBOOKS_QUERY = gql`
   }
 `
 
-function withMyCookbooks<
+function withMyCookbooksQuery<
   T extends { myCookbooks?: MyCookbooksQuery['myCookbooks'] }
->(WrappedComponent: React.ComponentType<T>, username: string) {
+>(WrappedComponent: React.ComponentType<T>, username?: string | null) {
   return function MyCookbooksHOC(props: Omit<T, 'myCookbooks'>) {
     const { data, loading, error } = useQuery<MyCookbooksQuery>(
       MY_COOKBOOKS_QUERY,
       {
-        variables: { username },
+        variables: { username: username || '' },
       }
     )
 
@@ -31,4 +31,4 @@ function withMyCookbooks<
   }
 }
 
-export default withMyCookbooks
+export default withMyCookbooksQuery
