@@ -24,4 +24,10 @@ export const { cache, cacheFindMany, cacheClient, deleteCacheKey } =
     timeout: 500,
     // If we need to invalidate all cache entries, we can change this prefix
     prefix: 'alpha',
+    fields: {
+      id: 'id',
+      updatedAt: 'updatedAt',
+    },
   })
+
+export const getRecipeCacheKey = (id: string) => `v1-recipe-${id}`

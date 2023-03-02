@@ -15,7 +15,12 @@ import { validateWith } from '@redwoodjs/api'
 import { RedwoodGraphQLContext } from '@redwoodjs/graphql-server/dist/functions/types'
 
 import { requireAuth, requireRecipeAuth } from 'src/lib/auth'
-import { cache, cacheFindMany } from 'src/lib/cache'
+import {
+  cache,
+  cacheFindMany,
+  deleteCacheKey,
+  getRecipeCacheKey,
+} from 'src/lib/cache'
 import { db } from 'src/lib/db'
 
 import { mapStepsMutationInputToDbCreateManyStepOutputUsesInput } from '../stepOutputUses/stepOutputUsesUtilities'
@@ -49,7 +54,7 @@ export const usersRecipes: QueryResolvers['usersRecipes'] = ({ username }) => {
 }
 
 export const recipe: QueryResolvers['recipe'] = ({ id }) => {
-  return cache(`v1-recipe-${id}`, () => {
+  return cache(getRecipeCacheKey(id), () => {
     return db.recipe.findUnique({
       where: { id },
     })
@@ -212,7 +217,7 @@ export const updateRecipe: MutationResolvers['updateRecipe'] = async ({
     steps: mapStepsMutationInputToDbUpdateInputNoStepOutputUses(steps, id),
   }
 
-  return await db.$transaction(async (tx) => {
+  const updatedRecipe = await db.$transaction(async (tx) => {
     // 1. Update the recipe
     const updatedRecipeNoStepOutputUses = await tx.recipe.update({
       where: { id },
@@ -234,6 +239,10 @@ export const updateRecipe: MutationResolvers['updateRecipe'] = async ({
 
     return updatedRecipeNoStepOutputUses
   })
+
+  // TODO The prefix needs to be specified here until https://github.com/redwoodjs/redwood/issues/7346 is closed
+  await deleteCacheKey(`alpha-${getRecipeCacheKey(id)}`)
+  return updatedRecipe
 }
 
 /** instead of deleting a recipe, this method marks it as deleted */
