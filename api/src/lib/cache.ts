@@ -51,3 +51,10 @@ export const getRecipesCacheKey = () => `${recipeCacheKeyPrefix}s`
 const userCacheKeyPrefix = 'v1-user'
 export const getUserCacheKey = (id: string) => `${userCacheKeyPrefix}-${id}`
 export const getUsersCacheKey = () => `${userCacheKeyPrefix}s`
+
+const cookbookCacheKeyPrefix = 'v1-cookbook'
+export const getCookbookCacheKey = (id: string) =>
+  `${cookbookCacheKeyPrefix}-${id}`
+export const getUsersCookbooksCacheKey = (username: string) =>
+  `${cookbookCacheKeyPrefix}s-${username}`
+export const getCookbooksCacheKey = () => `${cookbookCacheKeyPrefix}s`
