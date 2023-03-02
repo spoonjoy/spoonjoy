@@ -11,7 +11,7 @@ import type {
 import { RedwoodGraphQLContext } from '@redwoodjs/graphql-server/dist/functions/types'
 
 import { requireAuth, requireCookbookAuth } from 'src/lib/auth'
-import { cacheFindMany, getRecipeInCookbookCacheKey } from 'src/lib/cache'
+import { cacheFindMany, getRecipeInCookbooksCacheKey } from 'src/lib/cache'
 import { db } from 'src/lib/db'
 
 import { user } from '../users/users'
@@ -147,7 +147,7 @@ export const Cookbook: RequiredCookbookRelationResolvers = {
   // this is RecipeInCookbook[], which doesn't have any resolvers of its own, so implementing that here
   recipes: async (_obj, { root }) => {
     return cacheFindMany(
-      getRecipeInCookbookCacheKey(root.id),
+      getRecipeInCookbooksCacheKey(root.id),
       db.recipeInCookbook,
       {
         conditions: {

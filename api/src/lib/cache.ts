@@ -64,5 +64,12 @@ export const getUsersCookbooksCacheKey = (username: string) =>
 export const getCookbooksCacheKey = () => `${cookbookCacheKeyPrefix}s`
 
 const recipeInCookbookCacheKeyPrefix = 'v1-recipeInCookbook'
-export const getRecipeInCookbookCacheKey = (cookbookId: string) =>
+/** this is for finding the recipes in a cookbook */
+export const getRecipeInCookbooksCacheKey = (cookbookId: string) =>
   `${recipeInCookbookCacheKeyPrefix}-${cookbookId}`
+
+//** for finding the cookbooks that a recipe is in */
+export const getRecipeInMyCookbooksCacheKey = (
+  myUsername: string,
+  recipeId: string
+) => `${recipeInCookbookCacheKeyPrefix}s-${recipeId}-${myUsername}`

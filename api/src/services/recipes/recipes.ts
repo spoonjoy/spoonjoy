@@ -20,6 +20,7 @@ import {
   cacheFindMany,
   deleteCacheKey,
   getRecipeCacheKey,
+  getRecipeInMyCookbooksCacheKey,
   getRecipesCacheKey,
   getRecipesStepsCacheKey,
   getUsersRecipesCacheKey,
@@ -320,10 +321,13 @@ export const Recipe: RequiredRecipeRelationResolvers = {
       return null
     }
 
-    const recipeInCookbooks = await db.recipeInCookbook.findMany({
-      where: { addedById: currentUser.id, recipeId: root.id },
-    })
-
-    return recipeInCookbooks
+    // steps doesn't have its own resolver for this
+    return cacheFindMany(
+      getRecipeInMyCookbooksCacheKey(currentUser.username, root.id),
+      db.recipeInCookbook,
+      {
+        conditions: { where: { addedById: currentUser.id, recipeId: root.id } },
+      }
+    )
   },
 }
