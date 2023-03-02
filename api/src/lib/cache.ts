@@ -1,27 +1,25 @@
-import {
-  CacheKey,
-  createCache,
-  InMemoryClient,
-  RedisClient,
-} from '@redwoodjs/api/cache'
+import { RedwoodError } from '@redwoodjs/api'
+import { createCache, InMemoryClient, RedisClient } from '@redwoodjs/api/cache'
 
 import { logger } from './logger'
 
-export let client: InMemoryClient | RedisClient
-
-if (process.env.NODE_ENV === 'test') {
-  client = new InMemoryClient()
-} else {
-  try {
-    client = new RedisClient({ url: process.env.CACHE_HOST, logger })
-  } catch (e) {
-    if (e instanceof Error) {
-      logger.error(`Could not connect to cache: ${e.message}`)
-    } else {
-      logger.error(`Could not connect to cache: ${e}`)
+const getClient = () => {
+  if (process.env.NODE_ENV === 'test') {
+    return new InMemoryClient()
+  } else {
+    try {
+      return new RedisClient({ url: process.env.CACHE_HOST, logger })
+    } catch (e) {
+      const errorString =
+        e instanceof Error
+          ? `Could not connect to cache: ${e.message}`
+          : `Could not connect to cache: ${e}`
+      throw new RedwoodError(errorString)
     }
   }
 }
+
+export const client = getClient()
 
 export const {
   cache,
