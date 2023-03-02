@@ -11,7 +11,10 @@ import type {
 import { RedwoodGraphQLContext } from '@redwoodjs/graphql-server/dist/functions/types'
 
 import { requireAuth, requireCookbookAuth } from 'src/lib/auth'
+import { cacheFindMany, getRecipeInCookbookCacheKey } from 'src/lib/cache'
 import { db } from 'src/lib/db'
+
+import { user } from '../users/users'
 
 /**
  * TODO: Figure out if there's a better way to fix these incorrect type errors than putting `as unknown as CookbookModel[]` etc
@@ -135,21 +138,29 @@ type RequiredCookbookRelationResolvers = CookbookRelationResolvers & {
 
 export const Cookbook: RequiredCookbookRelationResolvers = {
   author: async (_obj, { root }) => {
-    const maybeAuthor = await db.cookbook
-      .findUnique({ where: { id: root?.id } })
-      .author()
+    const maybeAuthor = await user({ id: root.authorId })
     if (!maybeAuthor) {
       throw new Error('Could not resolve cookbook author')
     }
     return maybeAuthor
   },
+  // this is RecipeInCookbook[], which doesn't have any resolvers of its own, so implementing that here
   recipes: async (_obj, { root }) => {
-    const maybeRecipes = await db.cookbook
-      .findUnique({ where: { id: root?.id } })
-      .recipes({ orderBy: { recipe: { title: 'asc' } } })
-    if (!maybeRecipes) {
-      throw new Error('Could not resolve cookbook recipes')
-    }
-    return maybeRecipes
+    return cacheFindMany(
+      getRecipeInCookbookCacheKey(root.id),
+      db.recipeInCookbook,
+      {
+        conditions: {
+          where: {
+            cookbookId: root.id,
+          },
+          orderBy: {
+            recipe: {
+              title: 'asc',
+            },
+          },
+        },
+      }
+    )
   },
 }
