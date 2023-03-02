@@ -1,16 +1,13 @@
-import type {
-  QueryResolvers,
-  // MutationResolvers,
-  // RecipeStepRelationResolvers,
-  RequiredResolverFn,
-  ResolversParentTypes,
-  ResolversTypes,
-  RecipeStepRelationResolvers,
-} from 'types/graphql'
+import type { QueryResolvers, RecipeStepRelationResolvers } from 'types/graphql'
 
-import { RedwoodGraphQLContext } from '@redwoodjs/graphql-server/dist/functions/types'
-
+import {
+  cacheFindMany,
+  getIngredientsInStepCacheKey,
+  getStepOutputUsesInStepCacheKey,
+} from 'src/lib/cache'
 import { db } from 'src/lib/db'
+
+import { recipe } from '../recipes/recipes'
 
 export const recipeSteps: QueryResolvers['recipeSteps'] = () => {
   return db.recipeStep.findMany()
@@ -56,60 +53,41 @@ export const recipeStep: QueryResolvers['recipeStep'] = ({
 //   })
 // }
 
-type RequiredRecipeStepRelationResolvers = RecipeStepRelationResolvers & {
-  recipe: RequiredResolverFn<
-    ResolversTypes['Recipe'],
-    ResolversParentTypes['RecipeStep'],
-    RedwoodGraphQLContext
-  >
-  ingredients: NonNullable<RecipeStepRelationResolvers['ingredients']>
-  stepOutputUses: NonNullable<RecipeStepRelationResolvers['stepOutputUses']>
-}
-
-export const RecipeStep: RequiredRecipeStepRelationResolvers = {
+export const RecipeStep: RecipeStepRelationResolvers = {
   recipe: async (_obj, { root }) => {
-    const maybeRecipe = await db.recipeStep
-      .findUnique({
-        where: {
-          recipeId_stepNum: {
-            recipeId: root.recipeId,
-            stepNum: root.stepNum,
-          },
-        },
-      })
-      .recipe()
+    const maybeRecipe = await recipe({ id: root.recipeId })
     if (!maybeRecipe) {
       throw new Error('Could not resolve recipe')
     }
 
     return maybeRecipe
   },
-  ingredients: async (_obj, { root }) => {
-    const maybeIngredients = await db.recipeStep
-      .findUnique({
-        where: {
-          recipeId_stepNum: {
+  ingredients: (_obj, { root }) => {
+    return cacheFindMany(
+      getIngredientsInStepCacheKey(root.recipeId, root.stepNum),
+      db.ingredient,
+      {
+        conditions: {
+          where: {
             recipeId: root.recipeId,
             stepNum: root.stepNum,
           },
         },
-      })
-      .ingredients()
-
-    return maybeIngredients
+      }
+    )
   },
-  stepOutputUses: async (_obj, { root }) => {
-    const maybeStepOutputUses = await db.recipeStep
-      .findUnique({
-        where: {
-          recipeId_stepNum: {
+  stepOutputUses: (_obj, { root }) => {
+    return cacheFindMany(
+      getStepOutputUsesInStepCacheKey(root.recipeId, root.stepNum),
+      db.stepOutputUse,
+      {
+        conditions: {
+          where: {
             recipeId: root.recipeId,
-            stepNum: root.stepNum,
+            inputStepNum: root.stepNum,
           },
         },
-      })
-      .usingSteps()
-
-    return maybeStepOutputUses
+      }
+    )
   },
 }

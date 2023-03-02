@@ -4,15 +4,11 @@ import type {
   MutationResolvers,
   CreateRecipeStepInput,
   UpdateRecipeStepInput,
-  RequiredResolverFn,
-  ResolversTypes,
-  ResolversParentTypes,
   RecipeRelationResolvers,
   UpdateRecipeInput,
 } from 'types/graphql'
 
 import { validateWith } from '@redwoodjs/api'
-import { RedwoodGraphQLContext } from '@redwoodjs/graphql-server/dist/functions/types'
 
 import { requireAuth, requireRecipeAuth } from 'src/lib/auth'
 import {
@@ -269,25 +265,7 @@ export const deleteRecipe: MutationResolvers['deleteRecipe'] = async ({
   // })
 }
 
-type RequiredRecipeRelationResolvers = RecipeRelationResolvers & {
-  chef: RequiredResolverFn<
-    ResolversTypes['User'],
-    ResolversParentTypes['Recipe'],
-    RedwoodGraphQLContext
-  >
-  steps: RequiredResolverFn<
-    Array<ResolversTypes['RecipeStep']>,
-    ResolversParentTypes['Recipe'],
-    RedwoodGraphQLContext
-  >
-  inMyCookbooks: RequiredResolverFn<
-    Array<ResolversTypes['RecipeInCookbook']> | null,
-    ResolversParentTypes['Recipe'],
-    RedwoodGraphQLContext
-  >
-}
-
-export const Recipe: RequiredRecipeRelationResolvers = {
+export const Recipe: RecipeRelationResolvers = {
   chef: async (_obj, { root }) => {
     const maybeChef = await user({ id: root.chefId })
 
@@ -297,8 +275,8 @@ export const Recipe: RequiredRecipeRelationResolvers = {
 
     return maybeChef
   },
-  // steps doesn't have its own resolver for this
   steps: async (_obj, { root }) => {
+    // steps doesn't have its own resolver for this
     const maybeSteps = cacheFindMany(
       getRecipesStepsCacheKey(root.id),
       db.recipeStep,

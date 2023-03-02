@@ -2,13 +2,8 @@ import type {
   QueryResolvers,
   MutationResolvers,
   CookbookRelationResolvers,
-  RequiredResolverFn,
-  ResolversParentTypes,
-  ResolversTypes,
   Cookbook as CookbookModel,
 } from 'types/graphql'
-
-import { RedwoodGraphQLContext } from '@redwoodjs/graphql-server/dist/functions/types'
 
 import { requireAuth, requireCookbookAuth } from 'src/lib/auth'
 import { cacheFindMany, getRecipeInCookbooksCacheKey } from 'src/lib/cache'
@@ -123,20 +118,7 @@ export const deleteCookbook: MutationResolvers['deleteCookbook'] = async ({
   }) as unknown as CookbookModel
 }
 
-type RequiredCookbookRelationResolvers = CookbookRelationResolvers & {
-  author: RequiredResolverFn<
-    ResolversTypes['User'],
-    ResolversParentTypes['Cookbook'],
-    RedwoodGraphQLContext
-  >
-  recipes: RequiredResolverFn<
-    Array<ResolversTypes['RecipeInCookbook']>,
-    ResolversParentTypes['Cookbook'],
-    RedwoodGraphQLContext
-  >
-}
-
-export const Cookbook: RequiredCookbookRelationResolvers = {
+export const Cookbook: CookbookRelationResolvers = {
   author: async (_obj, { root }) => {
     const maybeAuthor = await user({ id: root.authorId })
     if (!maybeAuthor) {
