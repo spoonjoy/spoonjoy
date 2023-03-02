@@ -24,6 +24,9 @@
   "prisma": {
     "seed": "yarn rw exec seed"
   },
+  "scripts": {
+    "cap": "yarn workspace web run -- cap"
+  },
   "packageManager": "yarn@3.2.4",
   "resolutions": {
     "@hookform/devtools@^4.2.2": "patch:@hookform/devtools@npm%3A4.2.2#./.yarn/patches/@hookform-devtools-npm-4.2.2-aafab2382b.patch"

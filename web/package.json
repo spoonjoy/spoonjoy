@@ -13,6 +13,8 @@
     ]
   },
   "dependencies": {
+    "@capacitor/core": "^4.7.0",
+    "@capacitor/ios": "^4.7.0",
     "@headlessui/react": "^1.7.9",
     "@heroicons/react": "^2.0.11",
     "@redwoodjs/auth-dbauth-web": "4.2.0",
@@ -34,6 +36,7 @@
     "react-view-slot": "^1.0.1"
   },
   "devDependencies": {
+    "@capacitor/cli": "^4.7.0",
     "@hookform/devtools": "^4.2.2",
     "autoprefixer": "^10.4.12",
     "mobx-devtools-mst": "^0.9.30",
