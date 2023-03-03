@@ -51,7 +51,7 @@ export const RegisterWebAuthnPrompt = ({
     </div>
     <div className="mt-3 text-center sm:mt-5">
       <h2 className="text-lg font-medium leading-6 text-gray-900">
-        mo more passwords!
+        no more passwords!
       </h2>
       <p className="mt-2 text-sm text-gray-500">
         depending on your device you can log in with your fingerprint, face or
