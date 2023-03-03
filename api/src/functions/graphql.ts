@@ -18,7 +18,9 @@ export const handler = createGraphQLHandler({
   services,
   cors: {
     origin:
-      process.env.NODE_ENV === 'development' ? '*' : 'https://spoonjoy.app',
+      process.env.NODE_ENV === 'development'
+        ? ['http://localhost:8910', 'capacitor://localhost']
+        : ['https://spoonjoy.app', 'capacitor://localhost'],
     credentials: true,
   },
   armorConfig: {

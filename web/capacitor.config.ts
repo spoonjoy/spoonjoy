@@ -8,7 +8,6 @@ const config: CapacitorConfig = {
 
   ios: {
     path: '../ios',
-    contentInset: 'always',
   },
 }
 

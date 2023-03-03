@@ -25,7 +25,8 @@
     "seed": "yarn rw exec seed"
   },
   "scripts": {
-    "cap": "yarn workspace web run -- cap"
+    "cap": "yarn workspace web run -- cap",
+    "cap:bso": "yarn rw build web && yarn cap sync && yarn cap open ios"
   },
   "packageManager": "yarn@3.2.4",
   "resolutions": {

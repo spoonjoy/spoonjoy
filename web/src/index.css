@@ -19,47 +19,55 @@
     @apply rounded-md border border-transparent shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2;
   }
   .btn-primary {
-    @apply btn px-4 py-2 text-base font-medium  text-white enabled:hover:bg-indigo-800 focus:ring-indigo-500 enabled:bg-indigo-600 disabled:bg-gray-400 sm:text-sm;
+    @apply btn px-4 py-2 text-base font-medium  text-white focus:ring-indigo-500 enabled:bg-indigo-600 enabled:hover:bg-indigo-800 disabled:bg-gray-400 sm:text-sm;
   }
   .btn-secondary {
-    @apply btn px-4 py-2 text-base bg-indigo-100 font-medium text-indigo-700 hover:bg-indigo-200 focus:ring-indigo-500;
+    @apply btn bg-indigo-100 px-4 py-2 text-base font-medium text-indigo-700 hover:bg-indigo-200 focus:ring-indigo-500;
   }
   .btn-dismiss {
-    @apply btn border-gray-300 px-4 py-2 text-base font-medium enabled:hover:bg-gray-50  focus:ring-indigo-500 enabled:bg-white disabled:bg-gray-400 sm:text-sm;
+    @apply btn border-gray-300 px-4 py-2 text-base font-medium focus:ring-indigo-500  enabled:bg-white enabled:hover:bg-gray-50 disabled:bg-gray-400 sm:text-sm;
   }
   .btn-submit-primary {
-    @apply btn text-base px-6 py-3 font-medium text-white focus:ring-indigo-500 enabled:bg-indigo-600 enabled:hover:bg-indigo-700 disabled:bg-gray-400;
+    @apply btn px-6 py-3 text-base font-medium text-white focus:ring-indigo-500 enabled:bg-indigo-600 enabled:hover:bg-indigo-700 disabled:bg-gray-400;
   }
   .btn-small-rounded {
-    @apply inline-flex items-center rounded-full  border px-2.5 py-0.5 text-sm font-medium leading-5 shadow-sm
+    @apply inline-flex items-center rounded-full  border px-2.5 py-0.5 text-sm font-medium leading-5 shadow-sm;
   }
   .btn-small-rounded-primary {
-    @apply btn-small-rounded border-white bg-indigo-700 text-white disabled:bg-indigo-500 disabled:text-gray-300
+    @apply btn-small-rounded border-white bg-indigo-700 text-white disabled:bg-indigo-500 disabled:text-gray-300;
   }
   .btn-small-rounded-secondary {
-    @apply btn-small-rounded border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:bg-gray-50 disabled:text-gray-500
+    @apply btn-small-rounded border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:bg-gray-50 disabled:text-gray-500;
   }
   .btn-error {
-    @apply btn px-4 py-2 text-base font-medium text-white hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 enabled:bg-red-600
+    @apply btn px-4 py-2 text-base font-medium text-white hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 enabled:bg-red-600;
   }
   .btn-error-primary {
-    @apply btn px-6 py-3 text-base font-medium text-white hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 enabled:bg-red-600
+    @apply btn px-6 py-3 text-base font-medium text-white hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 enabled:bg-red-600;
   }
   .loading {
-    @apply animate-pulse cursor-wait bg-slate-200
+    @apply animate-pulse cursor-wait bg-slate-200;
   }
   .link {
-    @apply text-indigo-600 hover:text-indigo-500
+    @apply text-indigo-600 hover:text-indigo-500;
   }
 }
 
-@layer utilities {
-  .pt-safe {
-    padding-top: env(safe-area-inset-top);
-  }
-  .pb-safe {
-    padding-bottom: env(safe-area-inset-bottom);
-  }
+
+.top-safe-cover {
+  height: env(safe-area-inset-top);
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 9999;
+}
+
+.top-safe-margin {
+  margin-top: env(safe-area-inset-top);
+}
+
+.safe-area-padding {
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 @keyframes fade-in-out {
@@ -91,4 +99,3 @@
 .animate-sub-text.opacity-0 {
   animation-name: fade-out;
 }
-

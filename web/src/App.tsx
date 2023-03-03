@@ -26,7 +26,10 @@ const App = () => {
             >
               <StoreProvider value={store}>
                 <Toaster
-                  toastOptions={{ className: 'rw-toast', duration: 6000 }}
+                  toastOptions={{
+                    className: 'rw-toast top-safe-margin',
+                    duration: 6000,
+                  }}
                 />
                 <Routes />
               </StoreProvider>
