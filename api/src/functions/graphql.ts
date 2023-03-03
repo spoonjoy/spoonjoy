@@ -16,6 +16,11 @@ export const handler = createGraphQLHandler({
   directives,
   sdls,
   services,
+  cors: {
+    origin:
+      process.env.NODE_ENV === 'development' ? '*' : 'https://spoonjoy.app',
+    credentials: true,
+  },
   armorConfig: {
     maxDepth: { n: 10 },
     costLimit: {

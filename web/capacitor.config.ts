@@ -11,4 +11,11 @@ const config: CapacitorConfig = {
   },
 }
 
+if (process.env.NODE_ENV !== 'development') {
+  config.server = {
+    url: process.env.CAPACITOR_LIVERELOAD_URL,
+    cleartext: true,
+  }
+}
+
 export default config

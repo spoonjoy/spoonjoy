@@ -28,8 +28,14 @@ const WelcomePage = () => {
     // Change the number here to the number of images in the welcome_images folder
     const welcomeImageNumber = Math.floor(Math.random() * 9) + 1
 
+    const actualScreenWidth =
+      window.screen.width * (window.devicePixelRatio || 1)
+
     // window width rounded to the nearest 100 pixels
-    const welcomeImageWidth = Math.ceil(window.innerWidth / 100) * 100
+    const welcomeImageWidth = Math.ceil(actualScreenWidth / 100) * 100
+
+    const welcomeImageUrl = `https://res.cloudinary.com/dpjmyc4uz/image/upload/w_${welcomeImageWidth}/welcome_images/sjwelcome_${welcomeImageNumber}`
+    console.log('welcomeImageUrl', welcomeImageUrl)
 
     return (
       <>
@@ -38,7 +44,7 @@ const WelcomePage = () => {
           description="spoonjoy welcome page"
         />
         <div className="relative h-screen overflow-hidden bg-white">
-          <div className="mx-auto max-w-7xl lg:h-full">
+          <div className="pt-safe mx-auto max-w-7xl pt-10 lg:h-full">
             <div className="relative z-10 h-full bg-white pb-8 sm:pb-16 md:pb-20 lg:w-full lg:max-w-2xl lg:pb-28 xl:pb-32">
               <svg
                 className="absolute inset-y-0 right-0 hidden h-full w-48 translate-x-1/2 transform text-white lg:block"
@@ -172,7 +178,7 @@ const WelcomePage = () => {
           <div className="absolute bottom-0 top-[30rem] left-0 right-0 lg:inset-y-0 lg:left-1/2 lg:w-1/2">
             <img
               className="h-full w-full object-cover"
-              src={`https://res.cloudinary.com/dpjmyc4uz/image/upload/w_${welcomeImageWidth},f_auto/welcome_images/sjwelcome_${welcomeImageNumber}`}
+              src={welcomeImageUrl}
               alt="Home cooking, made easy"
             />
           </div>

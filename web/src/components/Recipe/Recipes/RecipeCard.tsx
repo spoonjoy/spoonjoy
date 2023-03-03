@@ -49,7 +49,7 @@ const RecipeCard = ({
       <ListCardContentWithImageBackground
         imageUrl={
           recipe?.id &&
-          `https://res.cloudinary.com/dpjmyc4uz/image/upload/w_400,f_auto/${recipe.id}`
+          `https://res.cloudinary.com/dpjmyc4uz/image/upload/w_400/${recipe.id}`
         }
         cardTitle={recipe?.title}
         byline={recipe?.chef.username}
