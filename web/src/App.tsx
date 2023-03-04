@@ -29,12 +29,15 @@ const App = () => {
                   <Toaster
                     containerStyle={{
                       top: 'max(1rem, env(safe-area-inset-top))',
+                      position: 'absolute',
+                      zIndex: 9999,
                     }}
                     toastOptions={{
                       className: 'rw-toast',
                       duration: 60000,
                     }}
                   />
+                  <div className="top-safe-cover bg-white" />
                 </div>
                 <Routes />
               </StoreProvider>

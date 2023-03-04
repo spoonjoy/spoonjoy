@@ -21,7 +21,7 @@ const DialogBase = ({
     <Transition.Root show={openState} as={Fragment}>
       <Dialog
         as="div"
-        className="relative z-[100000]"
+        className="relative z-[9998]"
         initialFocus={initialFocusRef}
         onClose={onClose}
       >
