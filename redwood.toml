@@ -7,10 +7,11 @@
 
 [web]
   bundler = "vite"
+  # bundler = "webpack"
   title = "spoonjoy"
   port = 8910
-  host = '0.0.0.0'
-  apiUrl = "http://localhost:8910/api"
+  host = '0.0.0.0' # Bind to all network instances/allow access from anywhere
+  apiUrl = "http://localhost:8911"
   includeEnvironmentVariables = [] # any ENV vars that should be available to the web side, see https://redwoodjs.com/docs/environment-variables#web
 [api]
   port = 8911
