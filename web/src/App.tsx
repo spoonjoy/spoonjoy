@@ -34,7 +34,7 @@ const App = () => {
                     }}
                     toastOptions={{
                       className: 'rw-toast',
-                      duration: 60000,
+                      duration: 6000,
                     }}
                   />
                   <div className="top-safe-cover bg-white" />
