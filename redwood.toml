@@ -6,12 +6,11 @@
 # https://redwoodjs.com/docs/app-configuration-redwood-toml
 
 [web]
-  # bundler = "vite"
-  bundler = "webpack"
+  bundler = "vite"
   title = "spoonjoy"
   port = 8910
-  host = '0.0.0.0' # Bind to all network instances/allow access from anywhere
-  apiUrl = "http://localhost:8911"
+  host = '0.0.0.0'
+  apiUrl = "http://localhost:8910/api"
   includeEnvironmentVariables = [] # any ENV vars that should be available to the web side, see https://redwoodjs.com/docs/environment-variables#web
 [api]
   port = 8911
