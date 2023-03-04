@@ -25,13 +25,17 @@ const App = () => {
               }}
             >
               <StoreProvider value={store}>
-                <Toaster
-                  containerClassName="rw-toast-container"
-                  toastOptions={{
-                    className: 'rw-toast',
-                    duration: 6000,
-                  }}
-                />
+                <div>
+                  <Toaster
+                    containerStyle={{
+                      top: 'max(1rem, env(safe-area-inset-top))',
+                    }}
+                    toastOptions={{
+                      className: 'rw-toast',
+                      duration: 60000,
+                    }}
+                  />
+                </div>
                 <Routes />
               </StoreProvider>
             </RedwoodApolloProvider>
