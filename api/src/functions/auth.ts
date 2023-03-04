@@ -172,7 +172,7 @@ export const handler = async (
       HttpOnly: true,
       Path: '/',
       SameSite: 'None',
-      Secure: process.env.NODE_ENV !== 'development' ? true : false,
+      Secure: process.env.NODE_ENV === 'development' ? false : true,
     },
 
     forgotPassword: forgotPasswordOptions,
