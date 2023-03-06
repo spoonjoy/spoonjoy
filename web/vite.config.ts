@@ -8,12 +8,22 @@ dns.setDefaultResultOrder('verbatim')
 
 import redwood from '@redwoodjs/vite'
 
+const isProd = process.env.NODE_ENV === 'production'
+
 /**
  * https://vitejs.dev/config/
  * @type {import('vite').UserConfig}
  */
 const viteConfig: UserConfig = {
   plugins: [redwood()],
+  server: {
+    https: isProd
+      ? undefined
+      : {
+          key: '../certs/local.spoonjoy.app-key.pem',
+          cert: '../certs/local.spoonjoy.app.pem',
+        },
+  },
 }
 
 export default defineConfig(viteConfig)

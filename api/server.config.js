@@ -39,6 +39,10 @@ const config = {
 const configureFastify = async (fastify, options) => {
   if (options.side === 'api') {
     fastify.log.info({ custom: { options } }, 'Configuring api side')
+    fastify.https = {
+      key: '../certs/local.spoonjoy.app-key.pem',
+      cert: '../certs/local.spoonjoy.app.pem',
+    }
   }
 
   if (options.side === 'web') {

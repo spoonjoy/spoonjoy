@@ -9,6 +9,10 @@ const config: CapacitorConfig = {
   ios: {
     path: '../ios',
   },
+
+  server: {
+    iosScheme: 'spoonjoy',
+  },
 }
 
 if (process.env.NODE_ENV !== 'development') {
