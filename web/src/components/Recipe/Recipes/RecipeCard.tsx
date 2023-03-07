@@ -13,25 +13,17 @@ const RecipeCard = ({
   myCookbooks,
 }: {
   recipe?: RecipeShortInfo
-  myCookbooks?: FindCookbooksForDropdown['myCookbooks'] | null
+  myCookbooks?: FindCookbooksForDropdown['myCookbooks']
 }) => {
   const { currentUser } = useAuth()
   const addToCookbookBtnWrapper = recipe && (
     <div className="absolute top-5 right-4 z-20">
       {currentUser ? (
-        myCookbooks ? (
-          <AddToCookbookButton
-            currentRecipeId={recipe.id}
-            inMyCookbooks={recipe.inMyCookbooks}
-            myCookbooks={myCookbooks}
-          />
-        ) : (
-          <AddToCookbookButtonCell
-            currentRecipeId={recipe.id}
-            inMyCookbooks={recipe.inMyCookbooks}
-            username={currentUser.username}
-          />
-        )
+        <AddToCookbookButton
+          currentRecipeId={recipe.id}
+          inMyCookbooks={recipe.inMyCookbooks}
+          myCookbooks={myCookbooks}
+        />
       ) : (
         <AddToCookbookButton currentRecipeId={recipe.id} inMyCookbooks={null} />
       )}

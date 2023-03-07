@@ -1,28 +1,30 @@
 import { PlusIcon } from '@heroicons/react/20/solid'
-import type { MyCookbooksQuery, RecipeShortInfo } from 'types/graphql'
+import type { RecipeShortInfo } from 'types/graphql'
 
 import { routes } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
-import withMyCookbooksQuery from 'src/components/Cookbook/withMyCookbooksQuery/withMyCookbooksQuery'
+import useMyCookbooksQuery from 'src/components/Cookbook/useMyCookbooksQuery'
 import RecipeCard from 'src/components/Recipe/Recipes/RecipeCard'
 import ListCardBase from 'src/components/shared/ListCard/ListCardBase'
 
 interface IRecipesProps {
   recipes?: RecipeShortInfo[]
   withAddRecipeButton?: boolean
-  myCookbooks?: MyCookbooksQuery['myCookbooks']
 }
 
-const Recipes = ({
-  recipes,
-  withAddRecipeButton = false,
-  myCookbooks,
-}: IRecipesProps) => {
+const Recipes = ({ recipes, withAddRecipeButton = false }: IRecipesProps) => {
+  const { currentUser } = useAuth()
+
+  const {
+    data: myCookbooks,
+    loading,
+    error,
+  } = useMyCookbooksQuery(currentUser?.username)
   return (
     <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {/* when loading, withMyCookbooksQuery will pass in an empty array (because undefined/null imply that it doesn't exist) */}
-      {recipes && myCookbooks?.length !== 0 ? (
+      {recipes && !loading ? (
         recipes.map((recipe) => (
           <RecipeCard
             key={recipe.id}
@@ -49,10 +51,4 @@ const Recipes = ({
   )
 }
 
-const RecipesWithMyCookbooksQuery = (props: IRecipesProps) => {
-  const { currentUser } = useAuth()
-  const Component = withMyCookbooksQuery(Recipes, currentUser?.username)
-  return <Component {...props} />
-}
-
-export default RecipesWithMyCookbooksQuery
+export default Recipes
