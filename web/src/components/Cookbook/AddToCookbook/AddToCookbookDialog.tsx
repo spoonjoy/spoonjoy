@@ -110,7 +110,7 @@ const AddToCookbookDialog = ({
                     )}
                     ref={idx === 0 ? addButtonRef : undefined}
                   >
-                    {alreadyInCookbook ? 'save' : 'saved'}
+                    {alreadyInCookbook ? 'saved' : 'save'}
                   </button>
                 </div>
               </div>
