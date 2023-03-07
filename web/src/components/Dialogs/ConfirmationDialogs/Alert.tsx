@@ -66,7 +66,7 @@ const Alert = ({
           }}
           ref={cancelButtonRef}
         >
-          Cancel
+          cancel
         </button>
       </div>
     </DialogBase>

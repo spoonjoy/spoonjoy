@@ -31,7 +31,7 @@ const RecipeEditDeleteBtn = ({
 
   const [deleteRecipe] = useMutation(DELETE_RECIPE_MUTATION, {
     onCompleted: () => {
-      toast.success('Recipe deleted')
+      toast.success('recipe deleted')
       navigate(routes.user({ username: ownerUsername }))
     },
     onError: (error) => {
@@ -50,30 +50,30 @@ const RecipeEditDeleteBtn = ({
     setIsDialogOpen(false)
   }
 
-  const dropdownItems = [{ name: 'Delete Recipe', onClick: onDeleteClick }]
+  const dropdownItems = [{ name: 'delete recipe', onClick: onDeleteClick }]
 
   return (
     <>
       <Alert
         openState={isDialogOpen}
-        header={'Delete Recipe'}
+        header={'delete recipe'}
         body={
-          'If you delete your recipe, you\'ll never see it again! Until we get around to creating the "recently deleted" section, but who knows how long that will take.'
+          'if you delete your recipe, you\'ll never see it again! until we get around to creating the "recently deleted" section, but who knows how long that will take.'
         }
-        confirmTxt={'Delete'}
+        confirmTxt={'delete'}
         onConfirm={onConfirmDelete}
         onCancel={onCancelDelete}
       />
-      <div className="inline-flex rounded-md shadow-sm">
+      <div className="mb-5 inline-flex rounded-md shadow-sm">
         <Link
           to={routes.editRecipe({ id: recipeId })}
           className="relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
         >
-          Edit Recipe
+          edit recipe
         </Link>
         <Menu as="div" className="relative -ml-px block">
           <Menu.Button className="relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
-            <span className="sr-only">Open options</span>
+            <span className="sr-only">open options</span>
             <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
           </Menu.Button>
           <Transition
