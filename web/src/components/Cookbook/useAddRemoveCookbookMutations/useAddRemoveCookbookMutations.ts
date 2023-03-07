@@ -34,10 +34,15 @@ export interface IUseAddRemoveCookbookMutationsOutput {
   errorRemove?: Error
 }
 
-const useAddRemoveCookbookMutations = (
-  onAddToCookbookComplete?: (cookbookId: string) => void,
+interface IUseAddRemoveCookbookMutations {
+  onAddToCookbookComplete?: (cookbookId: string) => void
   onRemoveFromCookbookComplete?: (cookbookId: string) => void
-): IUseAddRemoveCookbookMutationsOutput => {
+}
+
+const useAddRemoveCookbookMutations = ({
+  onAddToCookbookComplete,
+  onRemoveFromCookbookComplete,
+}: IUseAddRemoveCookbookMutations): IUseAddRemoveCookbookMutationsOutput => {
   const [addToCookbook, { loading: loadingAdd, error: errorAdd }] =
     useMutation<AddToCookbookMutation>(ADD_TO_COOKBOOK_MUTATION, {
       onCompleted: (data) => {

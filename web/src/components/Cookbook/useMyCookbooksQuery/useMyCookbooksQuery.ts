@@ -11,7 +11,11 @@ const MY_COOKBOOKS_QUERY = gql`
   }
 `
 
-const useMyCookbooksQuery = (username?: string) => {
+interface IUseMyCookbooksQuery {
+  username?: string
+}
+
+const useMyCookbooksQuery = ({ username }: IUseMyCookbooksQuery) => {
   const { data, loading, error } = useQuery<MyCookbooksQuery>(
     MY_COOKBOOKS_QUERY,
     {

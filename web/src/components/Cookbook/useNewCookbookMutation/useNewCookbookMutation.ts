@@ -21,9 +21,13 @@ export interface IUseNewCookbookMutationOutput {
   error?: RWGqlError
 }
 
-const useNewCookbookMutation = (
+interface IUseNewCookbookMutation {
   onCreateCookbookComplete?: (newCookbookId: string) => void
-): IUseNewCookbookMutationOutput => {
+}
+
+const useNewCookbookMutation = ({
+  onCreateCookbookComplete,
+}: IUseNewCookbookMutation): IUseNewCookbookMutationOutput => {
   const [createCookbook, { loading, error }] =
     useMutation<CreateCookbookMutation>(CREATE_COOKBOOK_MUTATION, {
       onCompleted: (data) => {

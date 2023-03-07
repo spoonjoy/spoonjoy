@@ -43,10 +43,10 @@ const AddToCookbookDialog = ({
   }
 
   const { onAddToCookbook, onRemoveFromCookbook, loadingAdd, loadingRemove } =
-    useAddRemoveCookbookMutations(
+    useAddRemoveCookbookMutations({
       onAddToCookbookComplete,
-      onRemoveFromCookbookComplete
-    )
+      onRemoveFromCookbookComplete,
+    })
   const addButtonRef = React.useRef(null)
 
   const getOnToggleRecipe =

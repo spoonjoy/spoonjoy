@@ -31,7 +31,7 @@ const SignupAndCreateCookbookPage = ({
     navigate(routes.cookbook({ id: cookbookId }))
   }
   const { onAddToCookbook, onRemoveFromCookbook, loadingAdd, loadingRemove } =
-    useAddRemoveCookbookMutations(onAddToCookbookComplete)
+    useAddRemoveCookbookMutations({ onAddToCookbookComplete })
 
   const onCreateCookbookComplete = (newCookbookId: string) => {
     onAddToCookbook(newCookbookId, recipeId)
@@ -41,7 +41,7 @@ const SignupAndCreateCookbookPage = ({
     onSave: createCookbook,
     loading,
     error,
-  } = useNewCookbookMutation(onCreateCookbookComplete)
+  } = useNewCookbookMutation({ onCreateCookbookComplete })
 
   const onSignupComplete = () => {
     createCookbook({ title: 'My first cookbook!' })
