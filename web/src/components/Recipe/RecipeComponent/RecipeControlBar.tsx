@@ -4,20 +4,10 @@ import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { DeleteRecipeMutationVariables } from 'types/graphql'
 
-import { Link, navigate, routes } from '@redwoodjs/router'
-import { useMutation } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/dist/toast'
+import { Link, routes } from '@redwoodjs/router'
 
-import Alert from 'src/components/Dialogs/ConfirmationDialogs/Alert'
+import DeleteRecipe from 'src/components/Dialogs/ConfirmationDialogs/DeleteRecipe/DeleteRecipe'
 import { classNames } from 'src/helpers/css'
-
-const DELETE_RECIPE_MUTATION = gql`
-  mutation DeleteRecipeMutation($id: String!) {
-    deleteRecipe(id: $id) {
-      id
-    }
-  }
-`
 
 interface RecipeEditDeleteBtnProps {
   recipeId: DeleteRecipeMutationVariables['id']
@@ -29,40 +19,19 @@ const RecipeEditDeleteBtn = ({
 }: RecipeEditDeleteBtnProps) => {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false)
 
-  const [deleteRecipe] = useMutation(DELETE_RECIPE_MUTATION, {
-    onCompleted: () => {
-      toast.success('recipe deleted')
-      navigate(routes.user({ username: ownerUsername }))
-    },
-    onError: (error) => {
-      toast.error(error.message)
-    },
-  })
-
   const onDeleteClick = () => {
     setIsDialogOpen(true)
-  }
-  const onConfirmDelete = () => {
-    setIsDialogOpen(false)
-    deleteRecipe({ variables: { id: recipeId } })
-  }
-  const onCancelDelete = () => {
-    setIsDialogOpen(false)
   }
 
   const dropdownItems = [{ name: 'delete recipe', onClick: onDeleteClick }]
 
   return (
     <>
-      <Alert
-        openState={isDialogOpen}
-        header={'delete recipe'}
-        body={
-          'if you delete your recipe, you\'ll never see it again! until we get around to creating the "recently deleted" section, but who knows how long that will take.'
-        }
-        confirmTxt={'delete'}
-        onConfirm={onConfirmDelete}
-        onCancel={onCancelDelete}
+      <DeleteRecipe
+        recipeId={recipeId}
+        ownerUsername={ownerUsername}
+        isDialogOpen={isDialogOpen}
+        setIsDialogOpen={setIsDialogOpen}
       />
       <div className="mb-5 inline-flex rounded-md shadow-sm">
         <Link
