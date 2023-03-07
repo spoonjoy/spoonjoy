@@ -54,8 +54,8 @@ const RecipeEditDeleteBtn = ({
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
           >
-            <Menu.Items className="absolute right-0 z-10 mt-2 -mr-1 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-              <div className="py-1">
+            <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <div className="p-1">
                 {dropdownItems.map((item) => (
                   <Menu.Item key={item.name}>
                     {({ active }) => (
@@ -63,7 +63,7 @@ const RecipeEditDeleteBtn = ({
                         onClick={item.onClick}
                         className={classNames(
                           active ? 'bg-gray-100 text-red-900' : 'text-red-700',
-                          'block px-4 py-2 text-sm'
+                          'block w-full px-4 py-2 text-sm'
                         )}
                       >
                         {item.name}
