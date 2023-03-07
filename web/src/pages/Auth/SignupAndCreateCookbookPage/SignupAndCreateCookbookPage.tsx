@@ -5,7 +5,7 @@ import { MetaTags } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
 import SignupForm from 'src/components/Auth/SignupForm'
-import useAddRemoveCookbookMutations from 'src/components/Cookbook/useAddRemoveCOokbookMutations/useAddRemoveCookbookMutations'
+import useAddRemoveCookbookMutations from 'src/components/Cookbook/useAddRemoveCookbookMutations'
 import useNewCookbookMutation from 'src/components/Cookbook/useNewCookbookMutation'
 import RecipeCell from 'src/components/Recipe/RecipeCell'
 import { HeaderSlot, DefaultHeader } from 'src/layouts/SiteLayout/SiteLayout'
