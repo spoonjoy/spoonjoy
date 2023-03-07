@@ -149,13 +149,25 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
 export const DefaultHeader = ({
   title,
   endChild,
+  byLine,
 }: {
   title?: string
   endChild?: JSX.Element
+  byLine?: string
 }) => (
-  <div className="mx-auto flex max-w-7xl items-center justify-between space-x-5 px-4 pt-10 pb-5 sm:px-6 lg:justify-start lg:px-8">
-    {title ? <span>{title}</span> : <div className="loading h-10 w-96" />}
-    {endChild}
+  <div className="mx-auto flex max-w-7xl flex-col px-4 pt-10 pb-5 sm:px-6 lg:px-8">
+    <div className="flex items-center justify-between space-x-5   lg:justify-start ">
+      {title ? <span>{title}</span> : <div className="loading h-10 w-96" />}
+      {endChild}
+    </div>
+    {byLine && (
+      <Link
+        className="ml-1 mt-1 text-base font-normal text-gray-700 hover:text-gray-500"
+        to={routes.user({ username: byLine })}
+      >
+        by {byLine}
+      </Link>
+    )}
   </div>
 )
 

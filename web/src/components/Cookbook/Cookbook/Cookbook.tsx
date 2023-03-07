@@ -49,22 +49,25 @@ const Cookbook = ({ cookbook }: Props) => {
         />
         <MetaTags title={`${description}`} description={description} />
         <HeaderSlot.Plug id="cookbooks" deps={[title]}>
-          <DefaultHeader
-            title={title}
-            endChild={
-              isOwner ? (
-                <button
-                  onClick={() =>
-                    navigate(routes.cookbook({ id: cookbook.id, edit: true }))
-                  }
-                  className="btn-small-rounded-secondary"
-                >
-                  <span className="sr-only">Edit</span>
-                  <PencilIcon className="h-4 w-4" />
-                </button>
-              ) : undefined
-            }
-          />
+          <>
+            <DefaultHeader
+              title={title}
+              endChild={
+                isOwner ? (
+                  <button
+                    onClick={() =>
+                      navigate(routes.cookbook({ id: cookbook.id, edit: true }))
+                    }
+                    className="btn-small-rounded-secondary"
+                  >
+                    <span className="sr-only">Edit</span>
+                    <PencilIcon className="h-4 w-4" />
+                  </button>
+                ) : undefined
+              }
+              byLine={isOwner ? undefined : `${cookbook.author.username}`}
+            />
+          </>
         </HeaderSlot.Plug>
         {recipes.length ? (
           <Recipes recipes={recipes} />
