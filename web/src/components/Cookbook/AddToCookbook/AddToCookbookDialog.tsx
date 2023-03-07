@@ -4,6 +4,7 @@ import { FindCookbooksForDropdown } from 'types/graphql'
 import DialogBase from 'src/components/Dialogs/DialogBase'
 import { classNames } from 'src/helpers/css'
 
+import NewCookbook from '../NewCookbook/NewCookbook'
 import useAddRemoveCookbookMutations from '../useAddRemoveCookbookMutations'
 
 import { IInMyCookbook } from './AddToCookbookButton'
@@ -72,6 +73,9 @@ const AddToCookbookDialog = ({
         Add to cookbook
       </Dialog.Title>
       <ul className=" min-w-[300px] divide-y divide-gray-200">
+        <li>
+          <NewCookbook inline />
+        </li>
         {myCookbooks.map((cookbook, idx) => {
           const alreadyInCookbook = recipeInCookbooks.find(
             (e) => e.cookbookId === cookbook.id
@@ -98,7 +102,7 @@ const AddToCookbookDialog = ({
                     )}
                     ref={idx === 0 ? addButtonRef : undefined}
                   >
-                    {alreadyInCookbook ? 'Saved' : 'Save'}
+                    {alreadyInCookbook ? 'save' : 'saved'}
                   </button>
                 </div>
               </div>

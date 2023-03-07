@@ -8,6 +8,7 @@ import { Form, FormError, Submit, useForm } from '@redwoodjs/forms'
 import type { RWGqlError } from '@redwoodjs/forms'
 
 import StyledTextField from 'src/components/formComponents/StyledTextField'
+import { classNames } from 'src/helpers/css'
 
 import { onCreateCookbook } from '../useNewCookbookMutation'
 
@@ -25,6 +26,7 @@ interface CookbookFormProps {
   onSave: onCreateCookbook | onUpdateCookbook
   error?: RWGqlError
   loading: boolean
+  inline?: boolean
 }
 
 /**
@@ -35,9 +37,10 @@ const CookbookForm = ({
   onSave,
   error,
   loading,
+  inline = false,
 }: CookbookFormProps) => {
   const formMethods = useForm<FormUpdateCookbook | FormCreateCookbook>({
-    mode: 'onBlur',
+    mode: inline ? 'onSubmit' : 'onBlur',
   })
   const fieldRef = React.useRef<HTMLInputElement>(null)
   React.useEffect(() => {
@@ -58,11 +61,12 @@ const CookbookForm = ({
   const MAX_TITLE_LENGTH = 60
 
   return (
-    <div className="p-5">
+    <div className={classNames(inline ? 'pt-5' : 'p-5')}>
       <Form<FormUpdateCookbook | FormCreateCookbook>
         formMethods={formMethods}
         onSubmit={onSubmit}
         error={error}
+        className={classNames(inline && 'flex align-middle')}
       >
         <FormError
           error={error}
@@ -82,9 +86,22 @@ const CookbookForm = ({
           disabled={cookbook === null}
         />
 
-        <div className="mt-10 flex justify-center">
-          <Submit disabled={loading} className="btn-submit-primary">
-            {cookbook === undefined ? 'create new cookbook' : 'update cookbook'}
+        <div
+          className={classNames(
+            inline ? 'align-middle' : 'mt-10 flex justify-center'
+          )}
+        >
+          <Submit
+            disabled={loading}
+            className={
+              inline ? 'btn-small-rounded-primary' : 'btn-submit-primary'
+            }
+          >
+            {cookbook === undefined
+              ? inline
+                ? 'save'
+                : 'create new cookbook'
+              : 'update cookbook'}
           </Submit>
         </div>
       </Form>
