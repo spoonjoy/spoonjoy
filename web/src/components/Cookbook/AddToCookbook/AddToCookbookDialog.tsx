@@ -19,13 +19,15 @@ interface IAddToCookbookDialogProps {
 }
 
 const AddToCookbookDialog = ({
-  myCookbooks,
+  myCookbooks: myCookbooksInit,
   recipeInCookbooks,
   setRecipeInCookbooks,
   currentRecipeId,
   isDialogOpen,
   dismissDialog,
 }: IAddToCookbookDialogProps) => {
+  const [myCookbooks, setMyCookbooks] = React.useState(myCookbooksInit)
+
   const onAddToCookbookComplete = (cookbookId: string) => {
     dismissDialog()
     const newRecipeInCookbook: IInMyCookbook = {
@@ -70,11 +72,17 @@ const AddToCookbookDialog = ({
         as="h3"
         className="text-lg font-medium leading-6 text-gray-900"
       >
-        Add to cookbook
+        add to cookbook
       </Dialog.Title>
       <ul className=" min-w-[300px] divide-y divide-gray-200">
-        <li>
-          <NewCookbook inline />
+        <li className="pb-4">
+          <NewCookbook
+            inline
+            onCreateCookbookComplete={(newCookbook) => {
+              setMyCookbooks([newCookbook, ...myCookbooks])
+              onAddToCookbook(newCookbook.id, currentRecipeId)
+            }}
+          />
         </li>
         {myCookbooks.map((cookbook, idx) => {
           const alreadyInCookbook = recipeInCookbooks.find(

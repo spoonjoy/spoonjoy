@@ -9,6 +9,7 @@ const CREATE_COOKBOOK_MUTATION = gql`
   mutation CreateCookbookMutation($input: CreateCookbookInput!) {
     cookbook: createCookbook(input: $input) {
       id
+      title
     }
   }
 `
@@ -22,7 +23,9 @@ export interface IUseNewCookbookMutationOutput {
 }
 
 interface IUseNewCookbookMutation {
-  onCreateCookbookComplete?: (newCookbookId: string) => void
+  onCreateCookbookComplete?: (
+    newCookbook: CreateCookbookMutation['cookbook']
+  ) => void
 }
 
 const useNewCookbookMutation = ({
@@ -31,8 +34,8 @@ const useNewCookbookMutation = ({
   const [createCookbook, { loading, error }] =
     useMutation<CreateCookbookMutation>(CREATE_COOKBOOK_MUTATION, {
       onCompleted: (data) => {
-        toast.success('Cookbook created')
-        onCreateCookbookComplete && onCreateCookbookComplete(data.cookbook.id)
+        toast.success('cookbook created')
+        onCreateCookbookComplete && onCreateCookbookComplete(data.cookbook)
       },
       onError: (error) => {
         toast.error(error.message)

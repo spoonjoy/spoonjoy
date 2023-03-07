@@ -66,7 +66,7 @@ const CookbookForm = ({
         formMethods={formMethods}
         onSubmit={onSubmit}
         error={error}
-        className={classNames(inline && 'flex align-middle')}
+        className={classNames(inline && 'flex items-center')}
       >
         <FormError
           error={error}
@@ -77,6 +77,7 @@ const CookbookForm = ({
 
         <StyledTextField
           fieldName="title"
+          inline
           placeholder={cookbook === null ? 'loading...' : 'my favorite recipes'}
           defaultValue={cookbook?.title || undefined}
           validation={{ required: true, maxLength: MAX_TITLE_LENGTH }}

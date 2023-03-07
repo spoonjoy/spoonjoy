@@ -2,6 +2,8 @@ import { observer } from 'mobx-react-lite'
 
 import { FieldError, Label, RegisterOptions } from '@redwoodjs/forms'
 
+import { classNames } from 'src/helpers/css'
+
 /** Use this to type any props that are children of `StyledFieldWrapper` */
 export interface StyledFieldProps<T = Element>
   extends Omit<StyledFieldWrapperProps, 'children'> {
@@ -24,6 +26,8 @@ export interface StyledFieldWrapperProps {
   currentLength?: number
   /** Use this to make the field grow larger on larger screens */
   grow?: boolean
+  /** Use this to make the field inline */
+  inline?: boolean
 }
 const StyledFieldWrapper = ({
   children,
@@ -31,9 +35,10 @@ const StyledFieldWrapper = ({
   label,
   maxLength,
   currentLength,
+  inline = false,
 }: StyledFieldWrapperProps) => {
   return (
-    <div className="mb-3">
+    <div className={classNames(inline ? 'mr-10 flex-1' : 'mb-3')}>
       {label && (
         <Label
           name={fieldName}
@@ -43,7 +48,12 @@ const StyledFieldWrapper = ({
           {label}
         </Label>
       )}
-      <div className="relative mt-1 rounded-md shadow-sm">
+      <div
+        className={classNames(
+          !!label && 'mt-1',
+          'relative rounded-md shadow-sm'
+        )}
+      >
         {children}
         {maxLength !== undefined && currentLength !== undefined && (
           <div className="pointer-events-none absolute -inset-y-0 -right-4 flex w-2 items-center text-left text-sm text-gray-400">
@@ -51,7 +61,9 @@ const StyledFieldWrapper = ({
           </div>
         )}
       </div>
-      <FieldError name={fieldName} className="mt-2 text-sm text-red-600" />
+      {!inline && (
+        <FieldError name={fieldName} className="mt-2 text-sm text-red-600" />
+      )}
     </div>
   )
 }

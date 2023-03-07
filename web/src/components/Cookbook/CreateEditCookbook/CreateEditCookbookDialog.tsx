@@ -1,5 +1,7 @@
 import { Dialog } from '@headlessui/react'
 
+import { navigate, routes } from '@redwoodjs/router'
+
 import DialogBase from 'src/components/Dialogs/DialogBase'
 
 import EditCookbookCell from '../EditCookbookCell'
@@ -28,7 +30,11 @@ const CreateEditCookbookDialog = ({
         {editCookbookId ? (
           <EditCookbookCell id={editCookbookId} />
         ) : (
-          <NewCookbook />
+          <NewCookbook
+            onCreateCookbookComplete={(newCookbook) =>
+              navigate(routes.cookbook({ id: newCookbook.id }))
+            }
+          />
         )}
       </div>
     </DialogBase>

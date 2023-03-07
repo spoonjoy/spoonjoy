@@ -22,6 +22,7 @@ const StyledTextField = React.forwardRef<
       placeholder,
       disabled,
       grow,
+      inline = false,
     },
     ref
   ) => {
@@ -31,6 +32,7 @@ const StyledTextField = React.forwardRef<
         fieldName={fieldName}
         maxLength={maxLength}
         currentLength={currentLength}
+        inline={inline}
       >
         <TextField
           name={fieldName}
