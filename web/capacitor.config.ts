@@ -12,14 +12,16 @@ const config: CapacitorConfig = {
 
   server: {
     iosScheme: 'spoonjoy',
+    hostname: 'spoonjoy.app',
   },
 }
 
-if (process.env.NODE_ENV !== 'development') {
-  config.server = {
-    url: process.env.CAPACITOR_LIVERELOAD_URL,
-    cleartext: true,
-  }
-}
+// if (process.env.NODE_ENV !== 'development') {
+//   config.server = {
+//     ...config.server,
+//     url: process.env.CAPACITOR_LIVERELOAD_URL,
+//     cleartext: true,
+//   }
+// }
 
 export default config

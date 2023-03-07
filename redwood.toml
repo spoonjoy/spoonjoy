@@ -12,6 +12,7 @@
   port = 8910
   host = '0.0.0.0' # Bind to all network instances/allow access from anywhere
   apiUrl = "/api"
+  # apiUrl = "https://spoonjoy.app/api"
   includeEnvironmentVariables = [] # any ENV vars that should be available to the web side, see https://redwoodjs.com/docs/environment-variables#web
 [api]
   port = 8911

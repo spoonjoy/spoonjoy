@@ -161,8 +161,8 @@ export const handler = async (
     cors: {
       origin:
         process.env.NODE_ENV === 'development'
-          ? ['http://localhost:8910', 'capacitor://localhost']
-          : ['https://spoonjoy.app', 'capacitor://localhost'],
+          ? ['http://localhost:8910', 'spoonjoy://spoonjoy.app']
+          : ['https://spoonjoy.app', 'spoonjoy://spoonjoy.app'],
       credentials: true,
     },
 
