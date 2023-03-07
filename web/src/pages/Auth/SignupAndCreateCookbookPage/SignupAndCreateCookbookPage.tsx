@@ -1,16 +1,12 @@
 import { useEffect } from 'react'
 
-import { useAuth } from 'src/auth'
 import { navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
+import { useAuth } from 'src/auth'
 import SignupForm from 'src/components/Auth/SignupForm'
-import withAddRemoveCookbookMutations, {
-  IWithAddRemoveCookbookMutationsChildProps,
-} from 'src/components/Cookbook/withAddRemoveCookbookMutations/withAddRemoveCookbookMutations'
-import withNewCookbookMutation, {
-  IWithNewCookbookMutationChildProps,
-} from 'src/components/Cookbook/withNewCookbookMutation/withNewCookbookMutation'
+import useAddRemoveCookbookMutations from 'src/components/Cookbook/useAddRemoveCOokbookMutations/useAddRemoveCookbookMutations'
+import useNewCookbookMutation from 'src/components/Cookbook/useNewCookbookMutation'
 import RecipeCell from 'src/components/Recipe/RecipeCell'
 import { HeaderSlot, DefaultHeader } from 'src/layouts/SiteLayout/SiteLayout'
 
@@ -20,13 +16,9 @@ interface ISignupAndCreateCookbookPageProps {
   recipeId: string
 }
 
-const SignupAndCreateCookbookPageRenderer = ({
+const SignupAndCreateCookbookPage = ({
   recipeId, // this is the recipeId that will be added to the new cookbook
-  // Commented these out as I couldn't think of a way to use them yet - the error should already by toasted by the useMutation's onError
-  // loading: createCookbookLoading,
-  // error: createCookbookError,
-  onSave: createCookbook,
-}: ISignupAndCreateCookbookPageProps & IWithNewCookbookMutationChildProps) => {
+}: ISignupAndCreateCookbookPageProps) => {
   const { currentUser } = useAuth()
 
   useEffect(() => {
@@ -34,6 +26,22 @@ const SignupAndCreateCookbookPageRenderer = ({
       navigate(routes.user({ username: currentUser.username }))
     }
   }, [currentUser])
+
+  const onAddToCookbookComplete = (cookbookId: string) => {
+    navigate(routes.cookbook({ id: cookbookId }))
+  }
+  const { onAddToCookbook, onRemoveFromCookbook, loadingAdd, loadingRemove } =
+    useAddRemoveCookbookMutations(onAddToCookbookComplete)
+
+  const onCreateCookbookComplete = (newCookbookId: string) => {
+    onAddToCookbook(newCookbookId, recipeId)
+  }
+
+  const {
+    onSave: createCookbook,
+    loading,
+    error,
+  } = useNewCookbookMutation(onCreateCookbookComplete)
 
   const onSignupComplete = () => {
     createCookbook({ title: 'My first cookbook!' })
@@ -59,37 +67,4 @@ const SignupAndCreateCookbookPageRenderer = ({
   )
 }
 
-const SignupAndCreateCookbookPageSubContainer = ({
-  recipeId,
-  onAddToCookbook,
-}: ISignupAndCreateCookbookPageProps &
-  IWithAddRemoveCookbookMutationsChildProps) => {
-  const onCreateCookbookComplete = (newCookbookId: string) => {
-    onAddToCookbook(newCookbookId, recipeId)
-  }
-  const ChildComponent =
-    withNewCookbookMutation<ISignupAndCreateCookbookPageProps>({
-      child: SignupAndCreateCookbookPageRenderer,
-      onCreateCookbookComplete,
-      outerProps: { recipeId },
-    })
-
-  return <ChildComponent />
-}
-
-const SignupAndCreateCookbookPageContainer = ({
-  recipeId,
-}: ISignupAndCreateCookbookPageProps) => {
-  const onAddToCookbookComplete = (cookbookId: string) => {
-    navigate(routes.cookbook({ id: cookbookId }))
-  }
-  const ChildComponent =
-    withAddRemoveCookbookMutations<ISignupAndCreateCookbookPageProps>({
-      child: SignupAndCreateCookbookPageSubContainer,
-      onAddToCookbookComplete,
-      outerProps: { recipeId },
-    })
-  return <ChildComponent />
-}
-
-export default SignupAndCreateCookbookPageContainer
+export default SignupAndCreateCookbookPage

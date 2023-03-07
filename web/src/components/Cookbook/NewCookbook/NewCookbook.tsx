@@ -2,11 +2,16 @@ import { navigate, routes } from '@redwoodjs/router'
 
 import CookbookForm from 'src/components/Cookbook/CookbookForm'
 
-import withNewCookbookMutation from '../withNewCookbookMutation/withNewCookbookMutation'
+import useNewCookbookMutation from '../useNewCookbookMutation'
 
-export default withNewCookbookMutation({
-  child: CookbookForm,
-  onCreateCookbookComplete: (newCoobookId) =>
-    navigate(routes.cookbook({ id: newCoobookId })),
-  outerProps: {},
-})
+const NewCookbook = () => {
+  const onCreateCookbookComplete = (newCoobookId: string) =>
+    navigate(routes.cookbook({ id: newCoobookId }))
+  const { onSave, loading, error } = useNewCookbookMutation(
+    onCreateCookbookComplete
+  )
+
+  return <CookbookForm onSave={onSave} loading={loading} error={error} />
+}
+
+export default NewCookbook

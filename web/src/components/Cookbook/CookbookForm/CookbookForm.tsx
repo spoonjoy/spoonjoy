@@ -9,7 +9,7 @@ import type { RWGqlError } from '@redwoodjs/forms'
 
 import StyledTextField from 'src/components/formComponents/StyledTextField'
 
-import { onCreateCookbook } from '../withNewCookbookMutation/withNewCookbookMutation'
+import { onCreateCookbook } from '../useNewCookbookMutation'
 
 type FormUpdateCookbook = NonNullable<UpdateCookbookInput>
 type FormCreateCookbook = NonNullable<CreateCookbookInput>
