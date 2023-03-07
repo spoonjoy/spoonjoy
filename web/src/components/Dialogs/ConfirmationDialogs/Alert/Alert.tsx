@@ -3,7 +3,7 @@ import { useRef } from 'react'
 import { Dialog } from '@headlessui/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 
-import DialogBase from '../DialogBase'
+import DialogBase from 'src/components/Dialogs/DialogBase'
 
 interface AlertProps {
   openState: boolean
