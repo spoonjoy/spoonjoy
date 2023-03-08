@@ -45,6 +45,7 @@ export const recipes: QueryResolvers['recipes'] = () => {
 export const usersRecipes: QueryResolvers['usersRecipes'] = async ({
   username,
 }) => {
+  // we need to do this manually instead of using cacheFindMany because we need to not filter based on deletedAt
   const latest = await db.recipe.findFirst({
     where: {
       chef: { username },
