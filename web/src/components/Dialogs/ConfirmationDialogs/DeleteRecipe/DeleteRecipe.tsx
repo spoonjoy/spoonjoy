@@ -2,6 +2,8 @@ import { navigate, routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/dist/toast'
 
+import { useAuth } from 'src/auth'
+
 import Alert from '../Alert'
 
 const DELETE_RECIPE_MUTATION = gql`
@@ -14,21 +16,23 @@ const DELETE_RECIPE_MUTATION = gql`
 
 interface IDeleteRecipeProps {
   recipeId: string
-  ownerUsername: string
   isDialogOpen: boolean
   setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const DeleteRecipe = ({
   recipeId,
-  ownerUsername,
   isDialogOpen,
   setIsDialogOpen,
 }: IDeleteRecipeProps) => {
-  const [deleteRecipe] = useMutation(DELETE_RECIPE_MUTATION, {
+  const { currentUser } = useAuth()
+  const [deleteRecipe, { loading }] = useMutation(DELETE_RECIPE_MUTATION, {
     onCompleted: () => {
       toast.success('recipe deleted')
-      navigate(routes.user({ username: ownerUsername }))
+      // If user is not logged in, they shouldn't even see this dialog
+      navigate(
+        routes.user({ username: currentUser!.username, page: 'recipes' })
+      )
     },
     onError: (error) => {
       toast.error(error.message)
@@ -53,6 +57,7 @@ const DeleteRecipe = ({
       confirmTxt={'delete'}
       onConfirm={onConfirmDelete}
       onCancel={onCancelDelete}
+      buttonsDisabled={loading}
     />
   )
 }

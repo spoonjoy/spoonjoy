@@ -11,12 +11,8 @@ import { classNames } from 'src/helpers/css'
 
 interface RecipeEditDeleteBtnProps {
   recipeId: DeleteRecipeMutationVariables['id']
-  ownerUsername: string
 }
-const RecipeEditDeleteBtn = ({
-  recipeId,
-  ownerUsername,
-}: RecipeEditDeleteBtnProps) => {
+const RecipeEditDeleteBtn = ({ recipeId }: RecipeEditDeleteBtnProps) => {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false)
 
   const onDeleteClick = () => {
@@ -29,7 +25,6 @@ const RecipeEditDeleteBtn = ({
     <>
       <DeleteRecipe
         recipeId={recipeId}
-        ownerUsername={ownerUsername}
         isDialogOpen={isDialogOpen}
         setIsDialogOpen={setIsDialogOpen}
       />

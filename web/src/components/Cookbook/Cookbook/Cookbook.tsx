@@ -1,10 +1,11 @@
-import { PencilIcon } from '@heroicons/react/24/outline'
+import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline'
 import type { FindCookbookById } from 'types/graphql'
 
 import { navigate, routes, useParams } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
+import DeleteCookbook from 'src/components/Dialogs/ConfirmationDialogs/DeleteCookbook/DeleteCookbook'
 import Recipes from 'src/components/Recipe/Recipes'
 import EmptyState from 'src/components/shared/EmptyState'
 import { HeaderSlot, DefaultHeader } from 'src/layouts/SiteLayout/SiteLayout'
@@ -18,6 +19,8 @@ interface Props {
 const Cookbook = ({ cookbook }: Props) => {
   const { currentUser } = useAuth()
   const { edit } = useParams()
+
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false)
 
   if (!cookbook) {
     return (
@@ -47,6 +50,11 @@ const Cookbook = ({ cookbook }: Props) => {
           }}
           editCookbookId={cookbook.id}
         />
+        <DeleteCookbook
+          cookbookId={cookbook.id}
+          isDialogOpen={isDeleteDialogOpen}
+          setIsDialogOpen={setIsDeleteDialogOpen}
+        />
         <MetaTags title={`${description}`} description={description} />
         <HeaderSlot.Plug id="cookbooks" deps={[title]}>
           <>
@@ -54,15 +62,26 @@ const Cookbook = ({ cookbook }: Props) => {
               title={title}
               endChild={
                 isOwner ? (
-                  <button
-                    onClick={() =>
-                      navigate(routes.cookbook({ id: cookbook.id, edit: true }))
-                    }
-                    className="btn-small-rounded-secondary"
-                  >
-                    <span className="sr-only">Edit</span>
-                    <PencilIcon className="h-4 w-4" />
-                  </button>
+                  <div className="flex gap-1">
+                    <button
+                      onClick={() =>
+                        navigate(
+                          routes.cookbook({ id: cookbook.id, edit: true })
+                        )
+                      }
+                      className="btn-small-rounded-secondary"
+                    >
+                      <span className="sr-only">Edit</span>
+                      <PencilIcon className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => setIsDeleteDialogOpen(true)}
+                      className="btn-small-rounded-secondary"
+                    >
+                      <span className="sr-only">Delete</span>
+                      <TrashIcon className="h-4 w-4 text-red-800" />
+                    </button>
+                  </div>
                 ) : undefined
               }
               byLine={isOwner ? undefined : `${cookbook.author.username}`}
