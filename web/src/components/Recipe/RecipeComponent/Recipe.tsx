@@ -1,6 +1,5 @@
 import type { FindRecipeById } from 'types/graphql'
 
-import { Link } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
