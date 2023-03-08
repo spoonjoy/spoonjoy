@@ -42,8 +42,14 @@ export const deleteCacheKey = (key: string) => badDeleteCacheKey(`alpha-${key}`)
 
 const recipeCacheKeyPrefix = 'v1-recipe'
 export const getRecipeCacheKey = (id: string) => `${recipeCacheKeyPrefix}-${id}`
-export const getUsersRecipesCacheKey = (username: string) =>
-  `${recipeCacheKeyPrefix}s-${username}`
+export const getUsersRecipesCacheKey = (
+  username: string,
+  latestId: string | undefined,
+  latestUpdatedAt: Date | undefined
+) =>
+  latestId && latestUpdatedAt
+    ? `${recipeCacheKeyPrefix}s-${username}-${latestId}-${latestUpdatedAt.getTime()}`
+    : `${recipeCacheKeyPrefix}s-${username}`
 export const getRecipesCacheKey = () => `${recipeCacheKeyPrefix}s`
 
 const recipesStepsCacheKeyPrefix = 'v1-recipesSteps'

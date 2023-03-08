@@ -42,18 +42,30 @@ export const recipes: QueryResolvers['recipes'] = () => {
   })
 }
 
-export const usersRecipes: QueryResolvers['usersRecipes'] = ({ username }) => {
-  return cacheFindMany(getUsersRecipesCacheKey(username), db.recipe, {
-    conditions: {
-      where: {
-        chef: { username },
-        AND: {
-          deletedAt: null,
-        },
-      },
-      orderBy: { title: 'asc' },
+export const usersRecipes: QueryResolvers['usersRecipes'] = async ({
+  username,
+}) => {
+  const latest = await db.recipe.findFirst({
+    where: {
+      chef: { username },
     },
+    orderBy: { updatedAt: 'desc' },
+    select: { id: true, updatedAt: true },
   })
+  return cache(
+    getUsersRecipesCacheKey(username, latest?.id, latest?.updatedAt),
+    () => {
+      return db.recipe.findMany({
+        where: {
+          chef: { username },
+          AND: {
+            deletedAt: null,
+          },
+        },
+        orderBy: { title: 'asc' },
+      })
+    }
+  )
 }
 
 export const recipe: QueryResolvers['recipe'] = ({ id }) => {

@@ -124,7 +124,7 @@ const Recipe = ({ recipe }: Props) => {
       </HeaderSlot.Plug>
       <div className="my-6 flex justify-center">
         <ReloadIngredientsItemsList
-          label={'Clear Progress'}
+          label={'clear progress'}
           itemIds={listItemIds}
         />
       </div>
