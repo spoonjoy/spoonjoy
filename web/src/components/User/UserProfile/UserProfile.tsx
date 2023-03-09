@@ -8,7 +8,8 @@ import CreateEditCookbookDialog from 'src/components/Cookbook/CreateEditCookbook
 import RecipesCell from 'src/components/Recipe/RecipesCell'
 import { classNames } from 'src/helpers/css'
 
-import UserProfileHeader from '../UserProfileHeader/UserProfileHeader'
+import UserProfileBottomBar from '../UserProfileBottomBar'
+import UserProfileHeader from '../UserProfileHeader'
 
 interface IUserProfileProps {
   username: string
@@ -65,7 +66,8 @@ const UserProfile = ({ username }: IUserProfileProps) => {
             ))}
           </Tab.List>
         </div>
-        <Tab.Panels className=" border-t-2 border-opacity-80 pt-8">
+        {/* bottom padding is to offset the addrecipecookbook bar */}
+        <Tab.Panels className="border-t-2 border-opacity-80 pt-10 pb-12 sm:pb-0">
           <Tab.Panel>
             <CookbooksCell username={username} />
           </Tab.Panel>
@@ -73,6 +75,7 @@ const UserProfile = ({ username }: IUserProfileProps) => {
             <RecipesCell username={username} />
           </Tab.Panel>
         </Tab.Panels>
+        <UserProfileBottomBar />
       </Tab.Group>
     </>
   )
