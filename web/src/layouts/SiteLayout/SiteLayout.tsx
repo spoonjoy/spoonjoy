@@ -14,6 +14,7 @@ import { Link, navigate, routes, useMatch } from '@redwoodjs/router'
 import { toast } from '@redwoodjs/web/dist/toast'
 
 import { useAuth } from 'src/auth'
+import FloatingNav from 'src/components/FloatingNav/FloatingNav'
 import { ICurrentUser } from 'src/lib/auth'
 
 type SiteLayoutProps = {
@@ -140,6 +141,7 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
             </main>
           </div>
         </div>
+        {/* <FloatingNav /> */}
       </SlotProvider>
     </>
   )
