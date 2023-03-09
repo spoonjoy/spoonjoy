@@ -1,4 +1,4 @@
-import { PlusCircleIcon } from '@heroicons/react/24/solid'
+import { PlusCircleIcon } from '@heroicons/react/24/outline'
 
 import { navigate, routes } from '@redwoodjs/router'
 
@@ -22,7 +22,7 @@ const BottomBarBtn = ({ onClick, title }: IBottomBarBtnProps) => (
 const UserProfileBottomBar = () => {
   const { currentUser } = useAuth()
   return (
-    <div className="h-15 fixed bottom-0 left-0 right-0 z-50 h-12 divide-x-2 divide-gray-200/50 border-t-2 border-gray-200/50 bg-white/50 text-gray-800/90 backdrop-blur-lg sm:hidden">
+    <div className="h-15 fixed bottom-0 left-0 right-0 z-50 h-12 divide-x-2 divide-gray-200/50 border-t-2 border-gray-200/50 bg-white/50 text-gray-800/80 backdrop-blur-lg sm:hidden">
       <BottomBarBtn
         onClick={() => {
           navigate(
