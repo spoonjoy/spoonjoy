@@ -79,7 +79,7 @@ const UserProfile = ({ username }: IUserProfileProps) => {
             <RecipesCell username={username} />
           </Tab.Panel>
         </Tab.Panels>
-        <UserProfileBottomBar />
+        {/* <UserProfileBottomBar /> */}
       </Tab.Group>
     </>
   )
