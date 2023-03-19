@@ -61,9 +61,9 @@ const FloatingNav = () => {
       <div className="m-auto flex h-12 w-[95%] text-white">
         <div
           style={{
-            background: `radial-gradient(circle 2.25rem at center right, #0000 98%, rgb(17 24 39 / 0.7)) center right`,
+            background: `radial-gradient(circle 2.25rem at center right, #0000 98%, rgb(0 0 0 / 0.6)) center right`,
           }}
-          className="flex-grow-1 my-2 -mr-[2rem] h-full w-full rounded-l-full"
+          className="flex-grow-1 my-2 -mr-[2rem] h-full w-full rounded-l-full opacity-80"
         >
           <ul className="flex h-full w-full justify-around pr-[2.5rem] pl-[1rem]">
             {leftNav.map((navItem) => (
@@ -93,9 +93,9 @@ const FloatingNav = () => {
           style={{
             width: '100%',
             height: '100%',
-            background: `radial-gradient(circle 2.25rem at center left, #0000 98%, rgb(17 24 39 / 0.7)) center left`,
+            background: `radial-gradient(circle 2.25rem at center left, #0000 98%, rgb(0 0 0 / 0.6)) center left`,
           }}
-          className="flex-grow-1 my-2 -ml-[2rem] h-full w-full rounded-r-full"
+          className="flex-grow-1 my-2 -ml-[2rem] h-full w-full rounded-r-full opacity-80"
         >
           <ul className="flex h-full w-full justify-around pl-[2.5rem] pr-[1rem]">
             {rightNav.map((navItem) => (
@@ -111,7 +111,7 @@ const FloatingNav = () => {
             ))}
           </ul>
         </div>
-        <div className="absolute top-2 -bottom-2 -z-10 w-[95%] rounded-full shadow-lg backdrop-blur" />
+        <div className="absolute top-2 -bottom-2 -z-10 w-[95%] rounded-full backdrop-blur" />
       </div>
     </nav>
   )
