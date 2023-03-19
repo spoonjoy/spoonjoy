@@ -1,5 +1,7 @@
 import LogoWhite from 'public/logos/sj_white.svg'
 
+import { Link } from '@redwoodjs/router'
+
 const FloatingNav = () => {
   /**
    * sizing here is as follows:
@@ -17,9 +19,12 @@ const FloatingNav = () => {
         >
           <div className="mr-[2rem] flex justify-center">before</div>
         </div>
-        <div className="flex h-[4rem] w-[4rem] flex-shrink-0 flex-col items-center justify-center rounded-full bg-black/70">
+        <Link
+          to="#"
+          className="z-10 flex h-[4rem] w-[4rem] flex-shrink-0 flex-col items-center justify-center rounded-full bg-black/70 ring-indigo-700 ring-offset-2 hover:bg-black/90 focus:ring-2"
+        >
           <LogoWhite className="h-8 w-8" />
-        </div>
+        </Link>
         <div
           style={{
             width: '100%',
