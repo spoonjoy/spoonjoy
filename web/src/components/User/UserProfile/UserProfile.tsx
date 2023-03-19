@@ -35,6 +35,10 @@ const UserProfile = ({ username }: IUserProfileProps) => {
   }
   const tabNames = ['cookbooks', 'recipes']
 
+  React.useEffect(() => {
+    setSelectedTabNum(page === 'cookbook' ? 0 : page === 'recipes' ? 1 : 0)
+  }, [page, newCookbook])
+
   return (
     <>
       <CreateEditCookbookDialog
