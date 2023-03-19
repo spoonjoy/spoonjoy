@@ -124,7 +124,7 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
             currentUser={currentUser as ICurrentUser | null}
           />
 
-          <div className="pb-10">
+          <div className="pb-20 sm:pb-10">
             <header>
               <div className="w-screen">
                 <h1 className="text-3xl font-bold leading-tight tracking-tight text-gray-900">

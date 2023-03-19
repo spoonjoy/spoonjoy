@@ -20,6 +20,7 @@ const LoadingPage = () => <Loading />
 const Routes = () => {
   return (
     <Router useAuth={useAuth}>
+      <Route path="/user-settings" page={UserUserSettingsPage} name="userSettings" />
       <Set whileLoadingAuth={LoadingPage}>
         {/* Here we put things that should redirect to the sign up page */}
         <Private wrap={SiteLayout} unauthenticated="signup" whileLoadingAuth={LoadingPage}>

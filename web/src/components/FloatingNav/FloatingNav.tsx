@@ -85,7 +85,7 @@ const FloatingNav = () => {
             page: 'cookbooks',
             newCookbook: false,
           })}
-          className="z-10 flex h-[4rem] w-[4rem] flex-shrink-0 flex-col items-center justify-center rounded-full bg-black/70 ring-indigo-700 ring-offset-2 hover:bg-black/90 focus:ring-2"
+          className="z-10 flex h-[4rem] w-[4rem] flex-shrink-0 flex-col items-center justify-center rounded-full bg-black/70 shadow-md ring-indigo-700 ring-offset-2 backdrop-blur hover:bg-black/90 focus:ring-2"
         >
           <LogoWhite className="h-8 w-8" />
         </Link>
