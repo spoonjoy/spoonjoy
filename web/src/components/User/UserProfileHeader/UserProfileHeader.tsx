@@ -28,7 +28,10 @@ const UserProfileHeader = ({ username }: { username: string }) => {
           <h1 className="text-2xl font-bold text-gray-900">
             {isOwnProfile ? 'my pantry' : `${username}'s pantry`}
           </h1>
-          <Link to={routes.settings()} className="btn-small-rounded-secondary">
+          <Link
+            to={routes.settings()}
+            className="btn-small-rounded-secondary sm:hidden"
+          >
             <span className="sr-only">Edit</span>
             <WrenchScrewdriverIcon className="h-4 w-4" />
           </Link>
