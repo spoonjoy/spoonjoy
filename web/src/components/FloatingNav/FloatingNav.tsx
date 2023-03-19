@@ -1,34 +1,53 @@
-import { UserIcon } from '@heroicons/react/24/solid'
+import {
+  UserIcon,
+  PlusIcon,
+  ArchiveBoxArrowDownIcon,
+  FolderPlusIcon,
+} from '@heroicons/react/24/solid'
 import LogoWhite from 'public/logos/sj_white.svg'
 
 import { Link, routes, useMatch } from '@redwoodjs/router'
 
+import { useAuth } from 'src/auth'
+
 const FloatingNav = () => {
+  const { currentUser } = useAuth()
+
   const leftNav = [
     {
       name: 'recipe',
       href: routes.newRecipe(),
       current: useMatch(routes.newRecipe()).match,
-      icon: UserIcon,
+      icon: PlusIcon,
     },
     {
-      name: 'recipe',
-      href: routes.newRecipe(),
-      current: useMatch(routes.newRecipe()).match,
-      icon: UserIcon,
+      name: 'import',
+      href: routes.importRecipes(),
+      current: useMatch(routes.importRecipes()).match,
+      icon: ArchiveBoxArrowDownIcon,
     },
   ]
   const rightNav = [
     {
-      name: 'recipe',
-      href: routes.newRecipe(),
-      current: useMatch(routes.newRecipe()).match,
-      icon: UserIcon,
+      name: 'cookbook',
+      href: routes.user({
+        username: (currentUser?.username as string) || '',
+        page: 'cookbooks',
+        newCookbook: true,
+      }),
+      current: false, // This is on the user pantry page, so that'll be the current page
+      icon: FolderPlusIcon,
     },
     {
-      name: 'recipe',
-      href: routes.newRecipe(),
-      current: useMatch(routes.newRecipe()).match,
+      name: 'pantry',
+      href: routes.user({
+        username: (currentUser?.username as string) || '',
+        page: 'cookbooks',
+        newCookbook: false,
+      }),
+      current: useMatch(
+        routes.user({ username: (currentUser?.username as string) || '' })
+      ).match,
       icon: UserIcon,
     },
   ]
@@ -38,7 +57,7 @@ const FloatingNav = () => {
    * negative margins on side things are circleDiameter / 2
    * */
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 mb-[max(1.5rem,env(safe-area-inset-top))]">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 mb-[max(1.5rem,env(safe-area-inset-bottom))]">
       <div className="m-auto flex h-12 w-[95%] text-white">
         <div
           style={{
@@ -61,7 +80,11 @@ const FloatingNav = () => {
           </ul>
         </div>
         <Link
-          to="#"
+          to={routes.user({
+            username: (currentUser?.username as string) || '',
+            page: 'cookbooks',
+            newCookbook: false,
+          })}
           className="z-10 flex h-[4rem] w-[4rem] flex-shrink-0 flex-col items-center justify-center rounded-full bg-black/70 ring-indigo-700 ring-offset-2 hover:bg-black/90 focus:ring-2"
         >
           <LogoWhite className="h-8 w-8" />
