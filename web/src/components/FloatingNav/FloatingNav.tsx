@@ -1,8 +1,37 @@
+import { UserIcon } from '@heroicons/react/24/solid'
 import LogoWhite from 'public/logos/sj_white.svg'
 
-import { Link } from '@redwoodjs/router'
+import { Link, routes, useMatch } from '@redwoodjs/router'
 
 const FloatingNav = () => {
+  const leftNav = [
+    {
+      name: 'recipe',
+      href: routes.newRecipe(),
+      current: useMatch(routes.newRecipe()).match,
+      icon: UserIcon,
+    },
+    {
+      name: 'recipe',
+      href: routes.newRecipe(),
+      current: useMatch(routes.newRecipe()).match,
+      icon: UserIcon,
+    },
+  ]
+  const rightNav = [
+    {
+      name: 'recipe',
+      href: routes.newRecipe(),
+      current: useMatch(routes.newRecipe()).match,
+      icon: UserIcon,
+    },
+    {
+      name: 'recipe',
+      href: routes.newRecipe(),
+      current: useMatch(routes.newRecipe()).match,
+      icon: UserIcon,
+    },
+  ]
   /**
    * sizing here is as follows:
    * radial gradients are (circleDiameter + desiredSpacing) / 2
@@ -10,14 +39,26 @@ const FloatingNav = () => {
    * */
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 mb-[max(1.5rem,env(safe-area-inset-top))]">
-      <div className="m-auto flex h-12 w-[90%] text-white">
+      <div className="m-auto flex h-12 w-[95%] text-white">
         <div
           style={{
             background: `radial-gradient(circle 2.25rem at center right, #0000 98%, rgb(17 24 39 / 0.7)) center right`,
           }}
           className="flex-grow-1 my-2 -mr-[2rem] h-full w-full rounded-l-full"
         >
-          <div className="mr-[2rem] flex justify-center">before</div>
+          <ul className="flex h-full w-full justify-around pr-[2.5rem] pl-[1rem]">
+            {leftNav.map((navItem) => (
+              <li key={navItem.name}>
+                <Link
+                  className="flex h-full flex-col justify-center hover:text-gray-300"
+                  to={navItem.href}
+                >
+                  <navItem.icon className="mx-auto h-5 w-5" />
+                  <span className="text-xs font-light">{navItem.name}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
         <Link
           to="#"
@@ -33,9 +74,21 @@ const FloatingNav = () => {
           }}
           className="flex-grow-1 my-2 -ml-[2rem] h-full w-full rounded-r-full"
         >
-          <div className="ml-[2rem] flex justify-center">after</div>
+          <ul className="flex h-full w-full justify-around pl-[2.5rem] pr-[1rem]">
+            {rightNav.map((navItem) => (
+              <li key={navItem.name}>
+                <Link
+                  className="flex h-full flex-col justify-center hover:text-gray-300"
+                  to={navItem.href}
+                >
+                  <navItem.icon className="mx-auto h-5 w-5" />
+                  <span className="text-xs font-light">{navItem.name}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
-        <div className="absolute top-2 -bottom-2 -z-10 w-[90%] rounded-full backdrop-blur" />
+        <div className="absolute top-2 -bottom-2 -z-10 w-[95%] rounded-full backdrop-blur" />
       </div>
     </nav>
   )
