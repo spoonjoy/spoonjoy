@@ -97,15 +97,15 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
 
   const userNavigation: IUserNavigation[] = [
     {
-      name: 'Sign out',
+      name: 'sign out',
       onClick: () => {
         logOut()
           .then(() => {
             navigate(routes.welcome())
-            toast.success('You have been signed out')
+            toast.success('you have been signed out')
           })
           .catch(() => {
-            toast.error('There was a problem with signing you out')
+            toast.error('there was a problem with signing you out')
           })
       },
     },
