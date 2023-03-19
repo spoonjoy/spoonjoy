@@ -111,7 +111,7 @@ const FloatingNav = () => {
             ))}
           </ul>
         </div>
-        <div className="absolute top-2 -bottom-2 -z-10 w-[95%] rounded-full backdrop-blur" />
+        <div className="absolute top-2 -bottom-2 -z-10 w-[95%] rounded-full shadow-lg backdrop-blur" />
       </div>
     </nav>
   )
