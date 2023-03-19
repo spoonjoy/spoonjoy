@@ -198,7 +198,7 @@ const Header = ({
     <Disclosure as="nav" className=" bg-white">
       {({ open }) => (
         <>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto hidden max-w-7xl px-4 sm:block sm:px-6 lg:px-8">
             <div className="flex h-16 justify-between">
               <div className="flex">
                 <Link

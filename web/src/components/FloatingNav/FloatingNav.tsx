@@ -57,7 +57,7 @@ const FloatingNav = () => {
    * negative margins on side things are circleDiameter / 2
    * */
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 mb-[max(1.5rem,env(safe-area-inset-bottom))]">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 mb-[max(1.5rem,env(safe-area-inset-bottom))] sm:hidden">
       <div className="m-auto flex h-12 w-[95%] text-white">
         <div
           style={{
