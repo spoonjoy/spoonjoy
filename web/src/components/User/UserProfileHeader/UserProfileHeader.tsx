@@ -1,4 +1,7 @@
+import { WrenchScrewdriverIcon } from '@heroicons/react/24/solid'
 import ChefRJ from 'public/images/chef-rj.png'
+
+import { Link, navigate, routes } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
 
@@ -21,10 +24,14 @@ const UserProfileHeader = ({ username }: { username: string }) => {
               Use vertical padding to simulate center alignment when both lines of text are one line,
               but preserve the same layout if the text wraps without making the image jump around.
             */}
-        <div className="pt-1.5">
+        <div className="flex w-full justify-between pt-1.5 sm:justify-start sm:gap-5">
           <h1 className="text-2xl font-bold text-gray-900">
             {isOwnProfile ? 'my pantry' : `${username}'s pantry`}
           </h1>
+          <Link to={routes.settings()} className="btn-small-rounded-secondary">
+            <span className="sr-only">Edit</span>
+            <WrenchScrewdriverIcon className="h-4 w-4" />
+          </Link>
           {/* <p className="text-sm font-medium text-gray-500">
             Applied for{' '}
             <a href="#" className="text-gray-900">

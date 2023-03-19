@@ -158,7 +158,7 @@ export const DefaultHeader = ({
   byLine?: string
 }) => (
   <div className="mx-auto flex max-w-7xl flex-col px-4 pt-10 pb-5 sm:px-6 lg:px-8">
-    <div className="flex items-center justify-between space-x-5   lg:justify-start ">
+    <div className="flex items-center justify-between space-x-5 lg:justify-start ">
       {title ? <span>{title}</span> : <div className="loading h-10 w-96" />}
       {endChild}
     </div>

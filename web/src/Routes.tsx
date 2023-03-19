@@ -20,7 +20,6 @@ const LoadingPage = () => <Loading />
 const Routes = () => {
   return (
     <Router useAuth={useAuth}>
-      <Route path="/user-settings" page={UserUserSettingsPage} name="userSettings" />
       <Set whileLoadingAuth={LoadingPage}>
         {/* Here we put things that should redirect to the sign up page */}
         <Private wrap={SiteLayout} unauthenticated="signup" whileLoadingAuth={LoadingPage}>
@@ -35,6 +34,7 @@ const Routes = () => {
             <Route path="/recipes/{id}/edit" page={RecipeEditRecipePage} name="editRecipe" />
             <Route path="/cookbooks/{id}/edit" page={CookbookEditCookbookPage} name="editCookbook" />
             <Route path="/shopping-list" page={ShoppingListPage} name="shoppingList" />
+            <Route path="/settings" page={UserUserSettingsPage} name="settings" />
           </Set>
         </Private>
         <Route path="/" page={WelcomePage} name="welcome" />
