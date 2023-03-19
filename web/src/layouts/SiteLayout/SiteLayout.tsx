@@ -141,7 +141,7 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
             </main>
           </div>
         </div>
-        {/* <FloatingNav /> */}
+        <FloatingNav />
       </SlotProvider>
     </>
   )
