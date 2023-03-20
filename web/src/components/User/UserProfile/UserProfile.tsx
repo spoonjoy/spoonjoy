@@ -70,8 +70,7 @@ const UserProfile = ({ username }: IUserProfileProps) => {
             ))}
           </Tab.List>
         </div>
-        {/* bottom padding is to offset the addrecipecookbook bar */}
-        <Tab.Panels className="border-t-2 border-opacity-80 pt-10 pb-[calc(env(safe-area-inset-bottom)+3rem)] sm:pb-0">
+        <Tab.Panels className="border-t-2 border-opacity-80 pt-10">
           <Tab.Panel>
             <CookbooksCell username={username} />
           </Tab.Panel>
