@@ -63,7 +63,7 @@ const FloatingNav = () => {
           style={{
             background: `radial-gradient(circle 2.25rem at center right, #0000 98%, rgb(0 0 0 / 0.6)) center right`,
           }}
-          className="flex-grow-1 my-2 -mr-[2rem] h-full w-full rounded-l-full opacity-80"
+          className="flex-grow-1 my-2 -mr-[2rem] h-full w-full rounded-l-full border-l-2 border-white opacity-80"
         >
           <ul className="flex h-full w-full justify-around pr-[2.5rem] pl-[1rem]">
             {leftNav.map((navItem) => (
@@ -95,9 +95,9 @@ const FloatingNav = () => {
             height: '100%',
             background: `radial-gradient(circle 2.25rem at center left, #0000 98%, rgb(0 0 0 / 0.6)) center left`,
           }}
-          className="flex-grow-1 my-2 -ml-[2rem] h-full w-full rounded-r-full opacity-80"
+          className="flex-grow-1 relative my-2 -ml-[2rem] h-full w-full rounded-r-full opacity-80"
         >
-          <ul className="flex h-full w-full justify-around pl-[2.5rem] pr-[1rem]">
+          <ul className="flex h-full w-full justify-around border-l-2 border-white pl-[2.5rem] pr-[1rem]">
             {rightNav.map((navItem) => (
               <li key={navItem.name}>
                 <Link

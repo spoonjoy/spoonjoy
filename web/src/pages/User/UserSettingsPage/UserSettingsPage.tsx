@@ -13,7 +13,7 @@ const UserSettingsPage = () => {
       <HeaderSlot.Plug id="settings">
         <DefaultHeader title="settings" />
       </HeaderSlot.Plug>
-      <div className="mt-20 mb-80 w-full text-center sm:mb-10">
+      <div className="mt-20 mb-72 w-full text-center sm:mb-10">
         more coming soon...
       </div>
       <div className="mx-auto text-center">
