@@ -29,7 +29,7 @@ const App = () => {
                   <Toaster
                     containerStyle={{
                       top: 'max(1rem, env(safe-area-inset-top))',
-                      position: 'absolute',
+                      position: 'fixed',
                       zIndex: 9999,
                     }}
                     toastOptions={{
