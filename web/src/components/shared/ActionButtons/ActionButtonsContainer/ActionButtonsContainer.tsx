@@ -2,7 +2,7 @@ import { classNames } from 'src/helpers/css'
 
 interface IActionButtonsContainerProps {
   children: React.ReactNode
-  location: 'list-card' | 'recipe-header'
+  location: 'list-card' | 'recipe-header' | 'default-header'
 }
 
 const ActionButtonsContainer = ({
@@ -15,7 +15,11 @@ const ActionButtonsContainer = ({
     )}
     <div
       className={classNames(
-        location === 'list-card' ? 'absolute top-5 right-4 z-20' : 'mt-2 mr-2',
+        location === 'list-card'
+          ? 'absolute top-5 right-4 z-20'
+          : location === 'recipe-header'
+          ? 'mt-2 mr-2'
+          : 'mt-1',
         'flex gap-2'
       )}
     >

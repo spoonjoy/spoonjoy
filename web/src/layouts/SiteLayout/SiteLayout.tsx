@@ -15,6 +15,10 @@ import { toast } from '@redwoodjs/web/dist/toast'
 
 import { useAuth } from 'src/auth'
 import FloatingNav from 'src/components/FloatingNav/FloatingNav'
+import ActionButtonsContainer from 'src/components/shared/ActionButtons/ActionButtonsContainer/ActionButtonsContainer'
+import ShareButton, {
+  IShareButtonProps,
+} from 'src/components/shared/ActionButtons/ShareButton/ShareButton'
 import { ICurrentUser } from 'src/lib/auth'
 
 type SiteLayoutProps = {
@@ -159,14 +163,27 @@ export const DefaultHeader = ({
   title,
   endChild,
   byLine,
+  shareButtonProps,
 }: {
   title?: string
   endChild?: JSX.Element
   byLine?: string
+  shareButtonProps?: Omit<IShareButtonProps, 'customSize'>
 }) => (
   <div className="mx-auto flex max-w-7xl flex-col px-4 pt-10 pb-5 sm:px-6 lg:px-8">
     <div className="flex items-center justify-between space-x-5 lg:justify-start ">
-      {title ? <span>{title}</span> : <div className="loading h-10 w-96" />}
+      {title ? (
+        <div className="flex gap-2">
+          <span>{title}</span>
+          {shareButtonProps && (
+            <ActionButtonsContainer location="default-header">
+              <ShareButton {...shareButtonProps} customSize={1.6} />
+            </ActionButtonsContainer>
+          )}
+        </div>
+      ) : (
+        <div className="loading h-10 w-96" />
+      )}
       {endChild}
     </div>
     {byLine && (

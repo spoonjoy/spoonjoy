@@ -37,7 +37,7 @@ const Cookbook = ({ cookbook }: Props) => {
     const recipes = cookbook.recipes.map((recipeInCookbook) => {
       return recipeInCookbook?.recipe
     })
-    const description = `${author.username}'s ${title} Cookbook`
+    const description = `${author.username}'s "${title}" cookbook`
 
     const isOwner = currentUser?.id === author.id
 
@@ -60,6 +60,14 @@ const Cookbook = ({ cookbook }: Props) => {
           <>
             <DefaultHeader
               title={title}
+              shareButtonProps={{
+                title: description,
+                text: isOwner
+                  ? `check out my "${title}" cookbook on spoonjoy!`
+                  : `check out ${author.username}'s "${title}" cookbook on spoonjoy!`,
+                url: routes.cookbook({ id: cookbook.id }),
+                onLightBackground: true,
+              }}
               endChild={
                 isOwner ? (
                   <div className="flex gap-1">
