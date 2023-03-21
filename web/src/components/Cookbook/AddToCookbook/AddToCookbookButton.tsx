@@ -69,31 +69,22 @@ export default function AddToCookbookButton({
         isDialogOpen={openDialog === 'signup'}
         dismissDialog={dismissDialog}
       /> */}
-      <div className="relative inline-block text-left">
-        <button
-          onClick={(e) => {
-            // We don't want the click to bubble up and trigger the Link, in case it's wrapped in one.
-            e.stopPropagation()
-            e.preventDefault()
+      <button
+        onClick={(e) => {
+          // We don't want the click to bubble up and trigger the Link, in case it's wrapped in one.
+          e.stopPropagation()
+          e.preventDefault()
 
-            onOpenDialog()
-          }}
-          className="text-white"
-        >
-          <span className="sr-only">Add to cookbook</span>
-          {inMyCookbooks && recipeInCookbooks.length > 0 ? (
-            <BookmarkIconSolid
-              className="h-5 w-5 hover:text-gray-300"
-              aria-hidden="true"
-            />
-          ) : (
-            <BookmarkIconOutline
-              className="h-5 w-5 hover:text-gray-300"
-              aria-hidden="true"
-            />
-          )}
-        </button>
-      </div>
+          onOpenDialog()
+        }}
+      >
+        <span className="sr-only">Add to cookbook</span>
+        {inMyCookbooks && recipeInCookbooks.length > 0 ? (
+          <BookmarkIconSolid className="action-btn" aria-hidden="true" />
+        ) : (
+          <BookmarkIconOutline className="action-btn" aria-hidden="true" />
+        )}
+      </button>
     </>
   )
 }

@@ -7,6 +7,7 @@ import AddToCookbookButton from 'src/components/Cookbook/AddToCookbook/AddToCook
 import AddToCookbookButtonCell from 'src/components/Cookbook/AddToCookbookButtonCell'
 import ListCardBase from 'src/components/shared/ListCard/ListCardBase'
 import ListCardContentWithImageBackground from 'src/components/shared/ListCard/ListCardContentWithImageBackground'
+import ShareButton from 'src/components/shared/ShareButton/ShareButton'
 
 const RecipeCard = ({
   recipe,
@@ -17,7 +18,8 @@ const RecipeCard = ({
 }) => {
   const { currentUser } = useAuth()
   const addToCookbookBtnWrapper = recipe && (
-    <div className="absolute top-5 right-4 z-20">
+    <div className="absolute top-5 right-4 z-20 flex gap-2">
+      <ShareButton />
       {currentUser ? (
         <AddToCookbookButton
           currentRecipeId={recipe.id}
