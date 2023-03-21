@@ -45,7 +45,7 @@ const ShareButton = ({
         }
         className={classNames(
           `action-btn mb-[0.4rem]`,
-          !!onLightBackground && 'text-gray-900',
+          !!onLightBackground && 'text-gray-900 hover:text-gray-600',
           !customSize && 'h-[1.4rem] w-[1.4rem]'
         )}
       />
