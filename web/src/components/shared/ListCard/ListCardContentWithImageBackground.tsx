@@ -42,7 +42,7 @@ const ListCardContentWithImageBackground = ({
       <div className="absolute bottom-0 flex w-full justify-center">
         <div className="mx-2 w-full">
           <div className="relative mb-2 rounded-md p-4 text-white backdrop-blur backdrop-brightness-50">
-            <h3 className="text-xl font-medium text-white opacity-90">
+            <h3 className="text-xl font-medium leading-[1.2] text-white opacity-90 line-clamp-2">
               {cardTitle}
             </h3>
             <dl className="mt-1 flex flex-grow flex-col justify-between">

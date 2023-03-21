@@ -19,7 +19,7 @@ const RecipeCard = ({
 }) => {
   const { currentUser } = useAuth()
   const addToCookbookBtnWrapper = recipe && (
-    <ActionButtonsContainer location="list-card" topGradient={!!recipe}>
+    <ActionButtonsContainer location="list-card">
       <ShareButton />
       {currentUser ? (
         <AddToCookbookButton

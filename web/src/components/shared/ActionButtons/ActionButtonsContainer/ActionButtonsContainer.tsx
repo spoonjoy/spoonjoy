@@ -3,16 +3,14 @@ import { classNames } from 'src/helpers/css'
 interface IActionButtonsContainerProps {
   children: React.ReactNode
   location: 'list-card' | 'recipe-header'
-  topGradient?: boolean
 }
 
 const ActionButtonsContainer = ({
   children,
   location,
-  topGradient,
 }: IActionButtonsContainerProps) => (
   <>
-    {topGradient && (
+    {location === 'list-card' && (
       <div className="absolute left-0 top-0 right-0 z-10 flex h-16 rounded-t-lg bg-gradient-to-b from-black to-transparent text-white opacity-50" />
     )}
     <div
