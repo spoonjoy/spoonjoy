@@ -18,7 +18,7 @@ const ShareButton = () => {
 
   return (
     <button onClick={share}>
-      <ArrowUpOnSquareIcon className="action-btn mb-[0.4rem] h-6 w-6" />
+      <ArrowUpOnSquareIcon className="action-btn mb-[0.4rem] h-[1.4rem] w-[1.4rem]" />
       <span className="sr-only">share</span>
     </button>
   )

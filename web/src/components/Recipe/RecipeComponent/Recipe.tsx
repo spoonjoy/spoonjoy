@@ -9,6 +9,7 @@ import IngredientsItemsList, {
   IStepInfoForList,
 } from 'src/components/IngredientsItemsList/IngredientsItemsList'
 import ReloadIngredientsItemsList from 'src/components/IngredientsItemsList/ReloadIngredientsItemsList'
+import ShareButton from 'src/components/shared/ShareButton/ShareButton'
 import UserInfo from 'src/components/shared/UserInfo/UserInfo'
 import { classNames } from 'src/helpers/css'
 import { HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
@@ -96,8 +97,9 @@ const Recipe = ({ recipe }: Props) => {
                 <div className="flex justify-between">
                   {/* Chef info */}
                   <UserInfo username={recipe.chef.username} />
-                  {/* Cookbook dropdown */}
-                  <div className="mt-2 mr-2">
+                  {/* Action buttons */}
+                  <div className="mt-2 mr-2 flex gap-2">
+                    <ShareButton />
                     {/*
                      * Three inMyCookbooks scenarios:
                      * - Stuff in array -> user has added recipes to their cookbooks
