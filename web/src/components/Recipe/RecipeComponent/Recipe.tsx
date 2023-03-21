@@ -1,5 +1,6 @@
 import type { FindRecipeById } from 'types/graphql'
 
+import { routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
@@ -100,7 +101,15 @@ const Recipe = ({ recipe }: Props) => {
                   <UserInfo username={recipe.chef.username} />
                   {/* Action buttons */}
                   <ActionButtonsContainer location="recipe-header">
-                    <ShareButton />
+                    <ShareButton
+                      title={`"${recipe.title}" by ${recipe.chef.username}`}
+                      text={
+                        currentUser?.id === recipe.chef.id
+                          ? `check out my "${recipe.title}" recipe on spoonjoy!`
+                          : `check out ari's "${recipe.title} recipe on spoonjoy!`
+                      }
+                      url={routes.recipe({ id: recipe.id })}
+                    />
                     {/*
                      * Three inMyCookbooks scenarios:
                      * - Stuff in array -> user has added recipes to their cookbooks

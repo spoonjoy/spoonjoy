@@ -20,7 +20,15 @@ const RecipeCard = ({
   const { currentUser } = useAuth()
   const addToCookbookBtnWrapper = recipe && (
     <ActionButtonsContainer location="list-card">
-      <ShareButton />
+      <ShareButton
+        title={`"${recipe.title}" by ${recipe.chef.username}`}
+        text={
+          currentUser?.id === recipe.chef.id
+            ? `check out my "${recipe.title}" recipe on spoonjoy!`
+            : `check out ari's "${recipe.title} recipe on spoonjoy!`
+        }
+        url={routes.recipe({ id: recipe.id })}
+      />
       {currentUser ? (
         <AddToCookbookButton
           currentRecipeId={recipe.id}
