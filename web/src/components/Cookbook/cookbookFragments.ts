@@ -3,5 +3,9 @@ export const COOKBOOK_INFO = gql`
     id
     title
     imageUrl
+    author {
+      id
+      username
+    }
   }
 `

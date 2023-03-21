@@ -14,7 +14,7 @@ interface IListCardBaseProps {
   /* Whether or not this is a small square card */
   smallSquare?: boolean
   /* Components to render outside of the link. Can be absolutely positioned */
-  childrenOutsideLink?: React.ReactNode
+  childrenOutsideLink?: React.ReactNode | Element
 }
 
 /**
