@@ -5,9 +5,10 @@ import { routes } from '@redwoodjs/router'
 import { useAuth } from 'src/auth'
 import AddToCookbookButton from 'src/components/Cookbook/AddToCookbook/AddToCookbookButton'
 import AddToCookbookButtonCell from 'src/components/Cookbook/AddToCookbookButtonCell'
+import ActionButtonsContainer from 'src/components/shared/ActionButtons/ActionButtonsContainer/ActionButtonsContainer'
+import ShareButton from 'src/components/shared/ActionButtons/ShareButton/ShareButton'
 import ListCardBase from 'src/components/shared/ListCard/ListCardBase'
 import ListCardContentWithImageBackground from 'src/components/shared/ListCard/ListCardContentWithImageBackground'
-import ShareButton from 'src/components/shared/ShareButton/ShareButton'
 
 const RecipeCard = ({
   recipe,
@@ -18,7 +19,7 @@ const RecipeCard = ({
 }) => {
   const { currentUser } = useAuth()
   const addToCookbookBtnWrapper = recipe && (
-    <div className="absolute top-5 right-4 z-20 flex gap-2">
+    <ActionButtonsContainer location="list-card" topGradient={!!recipe}>
       <ShareButton />
       {currentUser ? (
         <AddToCookbookButton
@@ -29,7 +30,7 @@ const RecipeCard = ({
       ) : (
         <AddToCookbookButton currentRecipeId={recipe.id} inMyCookbooks={null} />
       )}
-    </div>
+    </ActionButtonsContainer>
   )
   return (
     <ListCardBase
@@ -37,9 +38,6 @@ const RecipeCard = ({
       linkTitle={recipe ? 'Show recipe ' + recipe.id + ' detail' : 'loading...'}
       childrenOutsideLink={addToCookbookBtnWrapper}
     >
-      {recipe && (
-        <div className="absolute left-0 top-0 right-0 z-10 flex h-16 rounded-t-lg bg-gradient-to-b from-black to-transparent text-white opacity-70" />
-      )}
       <ListCardContentWithImageBackground
         imageUrl={
           recipe?.id &&

@@ -9,7 +9,8 @@ import IngredientsItemsList, {
   IStepInfoForList,
 } from 'src/components/IngredientsItemsList/IngredientsItemsList'
 import ReloadIngredientsItemsList from 'src/components/IngredientsItemsList/ReloadIngredientsItemsList'
-import ShareButton from 'src/components/shared/ShareButton/ShareButton'
+import ActionButtonsContainer from 'src/components/shared/ActionButtons/ActionButtonsContainer/ActionButtonsContainer'
+import ShareButton from 'src/components/shared/ActionButtons/ShareButton/ShareButton'
 import UserInfo from 'src/components/shared/UserInfo/UserInfo'
 import { classNames } from 'src/helpers/css'
 import { HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
@@ -98,7 +99,7 @@ const Recipe = ({ recipe }: Props) => {
                   {/* Chef info */}
                   <UserInfo username={recipe.chef.username} />
                   {/* Action buttons */}
-                  <div className="mt-2 mr-2 flex gap-2">
+                  <ActionButtonsContainer location="recipe-header">
                     <ShareButton />
                     {/*
                      * Three inMyCookbooks scenarios:
@@ -116,7 +117,7 @@ const Recipe = ({ recipe }: Props) => {
                     ) : (
                       <AddToCookbookButton currentRecipeId={recipe.id} />
                     )}
-                  </div>
+                  </ActionButtonsContainer>
                 </div>
               </div>
             </div>
