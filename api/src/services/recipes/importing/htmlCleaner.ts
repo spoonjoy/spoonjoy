@@ -4,7 +4,6 @@ import { JSDOM } from 'jsdom'
 import { RedwoodError } from '@redwoodjs/api'
 
 import { getWebPageUsingFetch } from './getWebpage'
-import { unescapeHtml } from './importHelpers'
 
 export const fetchAndCleanHtml = async (
   url: string
