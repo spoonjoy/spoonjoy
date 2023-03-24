@@ -11,6 +11,7 @@ export const schema = gql`
 
   type Mutation {
     importRecipeFromWebsite(url: String!): RecipeID! @skipAuth
+    importRecipeFromWebsiteUsingGpt4TEST(url: String!): RecipeID! @skipAuth
     """
     Import a zip files of recipes, exported from Crouton, from a file uploaded to S3.
     $fileKey is the key of the file in S3.
