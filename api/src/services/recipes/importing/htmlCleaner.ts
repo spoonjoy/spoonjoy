@@ -5,10 +5,8 @@ import { RedwoodError } from '@redwoodjs/api'
 
 import { getWebPageUsingFetch } from './getWebpage'
 
-export const fetchAndCleanHtml = async (url: string): Promise<string> => {
+export const cleanHtml = async (webPageString: string): Promise<string> => {
   try {
-    const webPageString = await getWebPageUsingFetch(url)
-
     const minifiedHtml = minifyAndExtractContent(webPageString)
 
     return minifiedHtml

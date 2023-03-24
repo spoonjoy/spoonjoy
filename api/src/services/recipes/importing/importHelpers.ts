@@ -1,4 +1,5 @@
 import type { Prisma } from '@prisma/client'
+import * as cheerio from 'cheerio'
 import { BulkImportResult, CreateRecipeInput } from 'types/graphql'
 
 import { RedwoodError } from '@redwoodjs/api'
@@ -45,6 +46,43 @@ export const unescapeHtml = (html: string) => {
   )
 }
 
+export const getImageFromHtml = async (
+  html: string
+): Promise<string | undefined> => {
+  try {
+    // Parse the HTML using Cheerio
+    const $ = cheerio.load(unescapeHtml(html))
+
+    // Try to find a good social media image
+    const socialMediaImage = $('meta[property="og:image"]').attr('content')
+
+    // Try to find a good SEO image
+    const seoImage = $('meta[name="twitter:image"]').attr('content')
+
+    // Try to find a good header image
+    const headerImage = $('header img').attr('src')
+
+    // Filter out any images that don't meet certain criteria
+    const isValidImage = (imageUrl: string): boolean => {
+      // Add your own criteria here, such as minimum image size or aspect ratio
+      return true
+    }
+    const images = [socialMediaImage, seoImage, headerImage].filter(
+      (imageUrl) => imageUrl && isValidImage(imageUrl)
+    )
+
+    // Return the first good image, if one was found
+    if (images.length > 0) {
+      return images[0]
+    } else {
+      return undefined
+    }
+  } catch (error) {
+    console.error(error)
+    return undefined
+  }
+}
+
 interface PrismaCreatedRecipe {
   title: string
   servings: number | null
@@ -66,6 +104,8 @@ interface PrismaCreatedRecipe {
  */
 export const simpleCreateRecipe = async (
   input: CreateRecipeInput,
+  customExistingImageUrl: string | undefined = undefined,
+  customSourceUrl: string | undefined = undefined,
   addToCookbookName = 'imported'
 ): Promise<PrismaCreatedRecipe | RedwoodError> => {
   try {
@@ -81,7 +121,7 @@ export const simpleCreateRecipe = async (
       title: truncateString(title, 60) as string,
       description: truncateString(description, 140),
       servings,
-      sourceUrl: sourceUrl,
+      sourceUrl: customSourceUrl || sourceUrl,
       chef: {
         connect: {
           username: createForUsername,
@@ -102,7 +142,9 @@ export const simpleCreateRecipe = async (
         await tx.recipe.update({
           where: { id: recipeId },
           data: {
-            imageUrl: existingImage
+            imageUrl: customExistingImageUrl
+              ? await uploadFileToCloudinary(customExistingImageUrl, recipeId)
+              : existingImage
               ? await uploadFileToCloudinary(existingImage, recipeId)
               : await createRecipeImage(title, description, recipeId),
           },

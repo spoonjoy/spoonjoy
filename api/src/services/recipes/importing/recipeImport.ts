@@ -16,10 +16,11 @@ import { downloadFileFromS3 } from 'src/lib/s3'
 import { parseIngredients } from 'src/services/ingredients/ingredientParse'
 
 import { getWebPageUsingFetch } from './getWebpage'
-import { fetchAndCleanHtml } from './htmlCleaner'
+import { cleanHtml } from './htmlCleaner'
 import { CroutonRecipe } from './importedDataTypes'
 import {
   createRecipesAndAddToCookbook,
+  getImageFromHtml,
   simpleCreateRecipe,
   stringIsAValidUrl,
   truncateString,
@@ -27,26 +28,42 @@ import {
 } from './importHelpers'
 import { convertRecipeHtmlToInputUsingOpenAi } from './openAiHelpers'
 
-export const importRecipeFromWebsiteUsingGpt4TEST: MutationResolvers['importRecipeFromWebsiteUsingGpt4TEST'] =
-  async ({ url }) => {
-    const cleanedHtml = await fetchAndCleanHtml(url)
-
-    const recipeInput = await convertRecipeHtmlToInputUsingOpenAi(cleanedHtml)
-
-    console.log('here')
-  }
-
 export const importRecipeFromWebsite: MutationResolvers['importRecipeFromWebsite'] =
   async ({ url }) => {
-    const recipe = await parseWebsiteData(url)
+    const webPageString = await getWebPageUsingFetch(url)
 
-    const newRecipe = await simpleCreateRecipe(recipe)
+    try {
+      const recipe = await parseWebsiteStructuredData(webPageString, url)
+      const newRecipe = await simpleCreateRecipe(recipe)
 
-    if (newRecipe instanceof RedwoodError) {
-      throw newRecipe
-    }
-    return {
-      recipeId: newRecipe.id,
+      if (newRecipe instanceof RedwoodError) {
+        throw newRecipe
+      }
+
+      return {
+        recipeId: newRecipe.id,
+      }
+    } catch (e) {
+      console.error(
+        'Error importing recipe via structured data, will try using GPT. Had following error',
+        e
+      )
+
+      const imageUrl = await getImageFromHtml(webPageString)
+
+      const cleanedHtml = await cleanHtml(webPageString)
+
+      const recipeInput = await convertRecipeHtmlToInputUsingOpenAi(cleanedHtml)
+
+      const newRecipe = await simpleCreateRecipe(recipeInput, imageUrl, url)
+
+      if (newRecipe instanceof RedwoodError) {
+        throw newRecipe
+      }
+
+      return {
+        recipeId: newRecipe.id,
+      }
     }
   }
 
@@ -71,8 +88,10 @@ const parseCroutonData = async (fileKey: string) => {
   return await Promise.all(croutonRecipesToSJRecipeInputs(jsons))
 }
 
-const parseWebsiteData = async (url: string) => {
-  const recipeStructuredData = await getRecipeStructuredDataFromWebsite(url)
+const parseWebsiteStructuredData = async (webPageHTML: string, url: string) => {
+  const recipeStructuredData = await getRecipeStructuredDataFromWebsite(
+    webPageHTML
+  )
   const sjRecipeInput = await websiteRecipeToSJRecipeInput(
     recipeStructuredData,
     url
@@ -266,11 +285,8 @@ const getJsonsFromZipFileKey = async <T>(fileKey: string) => {
 }
 
 const getRecipeStructuredDataFromWebsite = async (
-  url: string
+  webPageString: string
 ): Promise<Recipe> => {
-  // first, try to get the website with fetch
-  const webPageString = await getWebPageUsingFetch(url)
-
   const webPageHTML = cheerio.load(unescapeHtml(webPageString))
   const structuredData = webPageHTML('script[type="application/ld+json"]')
 
