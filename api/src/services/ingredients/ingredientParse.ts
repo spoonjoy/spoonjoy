@@ -7,6 +7,25 @@ import {
 
 import { RedwoodGraphQLError } from '@redwoodjs/graphql-server'
 
+/** GPT sometimes doesn't understand that we want floats, not fractions. */
+export const replaceFractionsWithFloats = (str: string): string => {
+  // Define a regular expression pattern to match fractions
+  const fractionPattern = /(?:(\d+)\s+)?(\d+)\/(\d+)/g
+
+  // Replace each fraction with its equivalent float
+  const result = str.replace(
+    fractionPattern,
+    (match, wholeNumber, numerator, denominator) => {
+      const float =
+        (wholeNumber ? Number(wholeNumber) : 0) +
+        Number(numerator) / Number(denominator)
+      return float.toString()
+    }
+  )
+
+  return result
+}
+
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_KEY,
 })
@@ -21,7 +40,7 @@ export const parseIngredient: QueryResolvers['parseIngredient'] = async ({
   const jsonStr = response?.data.choices[0].text || '{}'
 
   try {
-    const asJson = JSON.parse(jsonStr)
+    const asJson = JSON.parse(replaceFractionsWithFloats(jsonStr))
     try {
       return {
         ingredientName: asJson.ingredientName || '',

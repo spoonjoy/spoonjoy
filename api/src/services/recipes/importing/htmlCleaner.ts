@@ -5,9 +5,7 @@ import { RedwoodError } from '@redwoodjs/api'
 
 import { getWebPageUsingFetch } from './getWebpage'
 
-export const fetchAndCleanHtml = async (
-  url: string
-): Promise<string | null> => {
+export const fetchAndCleanHtml = async (url: string): Promise<string> => {
   try {
     const webPageString = await getWebPageUsingFetch(url)
 
@@ -19,7 +17,7 @@ export const fetchAndCleanHtml = async (
   }
 }
 
-function minifyAndExtractContent(html: string): string | null {
+function minifyAndExtractContent(html: string): string {
   // Find the important part of the page
   const dom = new JSDOM(html)
   const { document: doc } = dom.window
@@ -41,7 +39,9 @@ function minifyAndExtractContent(html: string): string | null {
   }
 
   if (!importantPart) {
-    return null
+    throw new RedwoodError(
+      'Could not find the important part of the recipe page'
+    )
   }
 
   // remove unnecessary elements

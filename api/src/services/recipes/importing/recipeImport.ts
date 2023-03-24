@@ -25,10 +25,13 @@ import {
   truncateString,
   unescapeHtml,
 } from './importHelpers'
+import { convertRecipeHtmlToInputUsingOpenAi } from './openAiHelpers'
 
 export const importRecipeFromWebsiteUsingGpt4TEST: MutationResolvers['importRecipeFromWebsiteUsingGpt4TEST'] =
   async ({ url }) => {
     const cleanedHtml = await fetchAndCleanHtml(url)
+
+    const recipeInput = await convertRecipeHtmlToInputUsingOpenAi(cleanedHtml)
 
     console.log('here')
   }
