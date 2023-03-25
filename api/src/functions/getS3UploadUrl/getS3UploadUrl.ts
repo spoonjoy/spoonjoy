@@ -1,5 +1,9 @@
 import type { APIGatewayEvent, Context } from 'aws-lambda'
 
+import { authDecoder } from '@redwoodjs/auth-dbauth-api'
+import { useRequireAuth } from '@redwoodjs/graphql-server'
+
+import { getCurrentUser, isAuthenticated } from 'src/lib/auth'
 import { logger } from 'src/lib/logger'
 import { getSignedUploadUrl } from 'src/lib/s3'
 
@@ -19,34 +23,58 @@ import { getSignedUploadUrl } from 'src/lib/s3'
  * @param { Context } context - contains information about the invocation,
  * function, and execution environment.
  */
-export const handler = async (event: APIGatewayEvent, _context: Context) => {
+const getS3UploadUrlHandler = async (
+  event: APIGatewayEvent,
+  _context: Context
+) => {
   logger.info(`${event.httpMethod} ${event.path}: getS3UploadUrl function`)
 
-  const filename = event.queryStringParameters?.filename
+  if (isAuthenticated()) {
+    const filename = event.queryStringParameters?.filename
 
-  if (!filename) {
+    if (!filename) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({
+          error: 'Missing filename',
+        }),
+      }
+    }
+
+    const fileKey = `uploads/${filename}`
+
+    const signedUrl = await getSignedUploadUrl(fileKey)
+
     return {
-      statusCode: 400,
+      statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
-        error: 'Missing filename',
+        data: {
+          signedUrl,
+          fileKey,
+        },
+      }),
+    }
+  } else {
+    logger.error('Access to getS3UploadUrlHandler denied')
+    return {
+      statusCode: 403,
+      body: JSON.stringify({
+        error: 'You must be logged in',
       }),
     }
   }
-
-  const fileKey = `uploads/${filename}`
-
-  const signedUrl = await getSignedUploadUrl(fileKey)
-
-  return {
-    statusCode: 200,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      data: {
-        signedUrl,
-        fileKey,
-      },
-    }),
-  }
 }
+
+// tell vercel to use this as an edge function - https://vercel.com/docs/concepts/functions/edge-functions/quickstart
+export const config = {
+  runtime: 'edge',
+}
+
+export const handler = useRequireAuth({
+  handlerFn: getS3UploadUrlHandler,
+  getCurrentUser,
+  authDecoder,
+})

@@ -53,7 +53,7 @@ const ImportFromPlatformUploader = ({
   setOnRetry,
   setError,
 }: IImportFromPlatformUploaderProps) => {
-  const { currentUser } = useAuth()
+  const { currentUser, getToken } = useAuth()
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
 
@@ -121,14 +121,22 @@ const ImportFromPlatformUploader = ({
 
       // we're already checking that currentUser exists
       const filename = `${currentUser!.username}/${file.name}`.replace(' ', '+')
-      const isLocalhost = window.location.host.includes('localhost')
+      const isLocalhost = window.location.host.includes('local')
       const siteUrl = isLocalhost
-        ? 'http://localhost:8910'
+        ? 'https://local.spoonjoy.app:8910'
         : 'https://spoonjoy.app'
       const presignedUrlEndpoint = `${siteUrl}/api/getS3UploadUrl?filename=${filename}`
 
+      const currentUserToken = await getToken()
+
       // Get the pre-signed S3 URL using Axios
-      const presignedUrlResponse = await axios.get(presignedUrlEndpoint)
+      const presignedUrlResponse = await axios.get(presignedUrlEndpoint, {
+        headers: {
+          Authorization: `Bearer ${currentUserToken}`,
+          'auth-provider': 'dbAuth',
+          'Content-Type': 'application/json',
+        },
+      })
       const presignedUrl = presignedUrlResponse.data.data.signedUrl
       const returnedFileKey = presignedUrlResponse.data.data.fileKey
 
