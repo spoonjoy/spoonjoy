@@ -5,6 +5,11 @@ import { DbAuthHandler, DbAuthHandlerOptions } from '@redwoodjs/auth-dbauth-api'
 
 import { db } from 'src/lib/db'
 
+// tell vercel to use this as an edge function - https://vercel.com/docs/concepts/functions/edge-functions/quickstart
+export const config = {
+  runtime: 'edge',
+}
+
 export const handler = async (
   event: APIGatewayProxyEvent,
   context: Context
@@ -161,7 +166,11 @@ export const handler = async (
     cors: {
       origin:
         process.env.NODE_ENV === 'development'
-          ? ['http://localhost:8910', 'spoonjoy://spoonjoy.app']
+          ? [
+              'https://local.spoonjoy.app:8910',
+              'spoonjoy://spoonjoy.app',
+              'https://local.spoonjoy.app',
+            ]
           : ['https://spoonjoy.app', 'spoonjoy://spoonjoy.app'],
       credentials: true,
     },
@@ -194,10 +203,12 @@ export const handler = async (
       expires: 60 * 60 * 24 * 365 * 10,
       name: 'Spoonjoy',
       domain:
-        process.env.NODE_ENV === 'development' ? 'localhost' : 'spoonjoy.app',
+        process.env.NODE_ENV === 'development'
+          ? 'local.spoonjoy.app'
+          : 'spoonjoy.app',
       origin:
         process.env.NODE_ENV === 'development'
-          ? 'http://localhost:8910'
+          ? 'http://local.spoonjoy.app:8910'
           : 'https://spoonjoy.app',
       type: 'platform',
       timeout: 60000,
