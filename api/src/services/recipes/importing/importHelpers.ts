@@ -5,6 +5,7 @@ import { BulkImportResult, CreateRecipeInput } from 'types/graphql'
 import { RedwoodError } from '@redwoodjs/api'
 
 import { db } from 'src/lib/db'
+import { mapStepsMutationInputToDbCreateManyStepOutputUsesInput } from 'src/services/stepOutputUses/stepOutputUsesUtilities'
 
 import {
   createRecipeImage,
@@ -100,7 +101,6 @@ interface PrismaCreatedRecipe {
  * create the recipe - not doing it using the createRecipe resolver because:
  * - I don't want to create a recipe image if the recipe already exists
  * - I don't want to apply all the validations that the createRecipe resolver does
- * - There's no stepOutputUses in an imported recipe, so I don't need to create those
  */
 export const simpleCreateRecipe = async (
   input: CreateRecipeInput,
@@ -138,6 +138,14 @@ export const simpleCreateRecipe = async (
         })
 
         const recipeId = newRecipe.id
+
+        // 2. Create the step output uses
+        await tx.stepOutputUse.createMany({
+          data: mapStepsMutationInputToDbCreateManyStepOutputUsesInput(
+            recipeId,
+            steps
+          ),
+        })
 
         await tx.recipe.update({
           where: { id: recipeId },
