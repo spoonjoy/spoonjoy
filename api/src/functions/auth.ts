@@ -5,11 +5,6 @@ import { DbAuthHandler, DbAuthHandlerOptions } from '@redwoodjs/auth-dbauth-api'
 
 import { db } from 'src/lib/db'
 
-// tell vercel to use this as an edge function - https://vercel.com/docs/concepts/functions/edge-functions/quickstart
-export const config = {
-  runtime: 'edge',
-}
-
 export const handler = async (
   event: APIGatewayProxyEvent,
   context: Context
