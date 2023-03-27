@@ -69,7 +69,7 @@ const getS3UploadUrlHandler = async (
 }
 
 // tell vercel to use this as an edge function - https://vercel.com/docs/concepts/functions/edge-functions/quickstart
-export const config = {
+export default {
   runtime: 'edge',
 }
 
