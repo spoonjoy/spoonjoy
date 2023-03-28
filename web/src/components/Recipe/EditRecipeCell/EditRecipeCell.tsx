@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-import { applySnapshot } from 'mobx-state-tree'
 import type { EditRecipeById, UpdateRecipeInput } from 'types/graphql'
 
 import { navigate, routes } from '@redwoodjs/router'
@@ -7,10 +5,18 @@ import { CellSuccessProps, CellFailureProps, MetaTags } from '@redwoodjs/web'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
-import RecipeForm, { onUpdateRecipe } from 'src/components/Recipe/RecipeForm'
+import {
+  clearPersistedFormValues,
+  getPersistedFormValues,
+  setPersistedFormValues,
+} from 'src/components/formComponents/usePersistFormValues'
+import RecipeForm, {
+  onUpdateRecipe,
+  RecipeFormType,
+} from 'src/components/Recipe/RecipeForm'
 import { DefaultHeader, HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
-import { recipeQueryResponseToInputSnapshotIn } from 'src/stores/RecipeInputStore'
-import { useStore } from 'src/stores/RootStore'
+
+import { recipeQueryResponseToFormUpdateRecipe } from '../EditRecipeHelpers/EditRecipeHelpers'
 
 export const QUERY = gql`
   query EditRecipeById($id: String!) {
@@ -62,65 +68,74 @@ export const Failure = ({ error }: CellFailureProps) => (
   <div className="rw-cell-error">{error?.message}</div>
 )
 
-export const Success = observer(
-  ({ recipe }: CellSuccessProps<EditRecipeById>) => {
-    const { recipeInputStore } = useStore()
+export const Success = ({ recipe }: CellSuccessProps<EditRecipeById>) => {
+  const [shouldRenderForm, setShouldRenderForm] = React.useState(false)
 
-    // only want this to run on first load. what was happening is that it was resetting the inputStore even after submitting
-    // that's why it's got an empty dependency array, this is intentional
-    React.useEffect(() => {
-      if (recipeInputStore.id !== recipe.id) {
-        console.log('applying snapshot')
-        applySnapshot(
-          recipeInputStore,
-          recipeQueryResponseToInputSnapshotIn(recipe)
-        )
+  // only want this to run on first load
+  if (!shouldRenderForm) {
+    getPersistedFormValues<RecipeFormType>('recipe-form').then(
+      (persistedValues) => {
+        // if you're editing a recipe, and leave the page, and then go back to editing the recipe, we don't want to erase your work. so:
+        // set the persisted form values to the fresh values of the recipe that's being edited IF:
+        if (
+          !persistedValues || // ...there aren't already persisted values, or...
+          !('recipeId' in persistedValues) || // ...the persisted values are for a new recipe, ie no 'recipeId', or...
+          persistedValues.recipeId !== recipe.id // ...the persisted values are for editing a recipe, but that's not the recipe we're trying to edit
+        ) {
+          setPersistedFormValues(
+            'recipe-form',
+            recipeQueryResponseToFormUpdateRecipe(recipe),
+            () => setShouldRenderForm(true)
+          )
+        } else {
+          setShouldRenderForm(true)
+        }
       }
-    }, [])
-
-    const [updateRecipe, { loading, error }] = useMutation(
-      UPDATE_RECIPE_MUTATION,
-      {
-        onCompleted: () => {
-          toast.success('recipe updated!')
-          navigate(routes.recipe({ id: recipe.id }))
-          recipeInputStore.clear()
-        },
-        onError: (error) => {
-          toast.error(error.message)
-        },
-      }
-    )
-
-    const onSave: onUpdateRecipe = (
-      id: string,
-      input: UpdateRecipeInput,
-      onSaveComplete?: () => void
-    ) => {
-      updateRecipe({ variables: { id, input } }).then((response) => {
-        !response.errors && onSaveComplete && onSaveComplete()
-      })
-    }
-
-    return (
-      <>
-        <MetaTags
-          title={`Edit Recipe "${recipe.title}"`}
-          description="Edit Recipe Page"
-        />
-        <HeaderSlot.Plug id="edit-recipe">
-          <DefaultHeader title={`edit recipe "${recipe.title}"`} />
-        </HeaderSlot.Plug>
-        {/* only render the form once the store's id reflects the recipes id, aka the store has been set to the recipe that's being edited */}
-        {recipeInputStore.id === recipe.id && (
-          <RecipeForm
-            recipe={recipe}
-            onSave={onSave}
-            error={error}
-            loading={loading}
-          />
-        )}
-      </>
     )
   }
-)
+
+  const [updateRecipe, { loading, error }] = useMutation(
+    UPDATE_RECIPE_MUTATION,
+    {
+      onCompleted: () => {
+        toast.success('recipe updated!')
+        navigate(routes.recipe({ id: recipe.id }))
+        clearPersistedFormValues('recipe-form')
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    }
+  )
+
+  const onSave: onUpdateRecipe = (
+    id: string,
+    input: UpdateRecipeInput,
+    onSaveComplete?: () => void
+  ) => {
+    updateRecipe({ variables: { id, input } }).then((response) => {
+      !response.errors && onSaveComplete && onSaveComplete()
+    })
+  }
+
+  return (
+    <>
+      <MetaTags
+        title={`Edit Recipe "${recipe.title}"`}
+        description="Edit Recipe Page"
+      />
+      <HeaderSlot.Plug id="edit-recipe">
+        <DefaultHeader title={`edit recipe "${recipe.title}"`} />
+      </HeaderSlot.Plug>
+      {/* only render the form once the store's id reflects the recipes id, aka the store has been set to the recipe that's being edited */}
+      {shouldRenderForm && (
+        <RecipeForm
+          recipe={recipe}
+          onSave={onSave}
+          error={error}
+          loading={loading}
+        />
+      )}
+    </>
+  )
+}

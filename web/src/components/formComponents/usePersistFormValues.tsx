@@ -21,6 +21,22 @@ const usePersistFormValues = <FormType extends FieldValues>(
   }, [currFormState, formType])
 }
 
+/** Use this if you want to just set the value in local storage one time */
+export const setPersistedFormValues = <FormType extends FieldValues>(
+  formType: PersistableForms,
+  currFormState: FormType,
+  callback?: () => void
+) => localforage.setItem<FormType>(formType, currFormState, callback)
+
+/** Use this to clear any persisted form values */
+export const clearPersistedFormValues = (formType: PersistableForms) =>
+  localforage.setItem(formType, null)
+
+/** Use this if you just need to get the value from local storage */
+export const getPersistedFormValues = <FormType extends FieldValues>(
+  formType: PersistableForms
+) => localforage.getItem<FormType>(formType)
+
 /** set RHF defaultValues to this */
 export const getPersistedFormValuesAsDefaultValues = <
   FormType extends FieldValues
