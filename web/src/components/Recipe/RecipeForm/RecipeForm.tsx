@@ -85,64 +85,6 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
     }
   }
 
-  // const getIngredientFieldsNames = (
-  //   stepNum: number,
-  //   ingIdx: number
-  // ): Array<
-  //   | `steps.${number}.ingredients.${number}.quantity`
-  //   | `steps.${number}.ingredients.${number}.unitName`
-  //   | `steps.${number}.ingredients.${number}.ingredientName`
-  // > => {
-  //   return [
-  //     `steps.${stepNum - 1}.ingredients.${ingIdx}.quantity`,
-  //     `steps.${stepNum - 1}.ingredients.${ingIdx}.unitName`,
-  //     `steps.${stepNum - 1}.ingredients.${ingIdx}.ingredientName`,
-  //   ]
-  // }
-
-  // const getStepOutputFieldsNames = (
-  //   stepNum: number
-  // ): Array<`steps.${number}.stepOutputUses`> => {
-  //   return [`steps.${stepNum - 1}.stepOutputUses`]
-  // }
-
-  // const getStepFieldsNames = (
-  //   stepNum: number
-  // ): Array<
-  //   | `steps.${number}.recipeId`
-  //   | `steps.${number}.description`
-  //   | `steps.${number}.stepNum`
-  //   | `steps.${number}.stepTitle`
-  // > => {
-  //   return [
-  //     `steps.${stepNum - 1}.recipeId`,
-  //     `steps.${stepNum - 1}.stepNum`,
-  //     `steps.${stepNum - 1}.stepTitle`,
-  //     `steps.${stepNum - 1}.description`,
-  //   ]
-  // }
-
-  // const removeIngredientFields = (stepNum: number, ingIdx: number) => {
-  //   unregister(getIngredientFieldsNames(stepNum, ingIdx))
-  // }
-
-  // const removeStepOutputFields = (stepNum: number) => {
-  //   unregister(getStepOutputFieldsNames(stepNum))
-  // }
-
-  // const removeStepFields = (stepNum: number) => {
-  //   const numOfIngs = recipeInputStore.steps[stepNum - 1].ingredients.length
-  //   const numOfStepOutputUses =
-  //     recipeInputStore.steps[stepNum - 1].stepOutputUses.length
-  //   for (let i = 0; i < numOfIngs; i++) {
-  //     removeIngredientFields(stepNum, i)
-  //   }
-  //   for (let i = 0; i < numOfStepOutputUses; i++) {
-  //     removeStepOutputFields(stepNum)
-  //   }
-  //   unregister(getStepFieldsNames(stepNum))
-  // }
-
   /** For use by the stepOutputUse dropdown */
   const getStepTitle = (stepNum: number): string | null => {
     return steps[stepNum - 1].stepTitle || null
