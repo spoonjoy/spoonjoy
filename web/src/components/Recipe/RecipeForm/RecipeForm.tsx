@@ -6,12 +6,19 @@ import type {
   UpdateRecipeInput,
 } from 'types/graphql'
 
-import { Control, RWGqlError } from '@redwoodjs/forms'
-import { Form, FormError, Submit, useForm } from '@redwoodjs/forms'
+import { Control, HiddenField, RWGqlError } from '@redwoodjs/forms'
+import {
+  Form,
+  FormError,
+  Submit,
+  useForm,
+  FormProvider,
+} from '@redwoodjs/forms'
 import { navigate, routes } from '@redwoodjs/router'
 import { toast } from '@redwoodjs/web/dist/toast'
 
 import AddRemBtns from 'src/components/formComponents/AddRemBtns'
+import { getPersistedFormValuesAsDefaultValues } from 'src/components/formComponents/usePersistFormValues'
 import { classNames } from 'src/helpers/css'
 import { useStore } from 'src/stores/RootStore'
 
@@ -20,8 +27,16 @@ import RecipeSaveLoading from '../RecipeSaveLoading/RecipeSaveLoading'
 import RecipeBasicInfoFormFrag from './RecipeBasicInfoFormFrag'
 import StepFormFrag from './StepFormFrag'
 
-type FormUpdateRecipe = NonNullable<UpdateRecipeInput>
-type FormCreateRecipe = NonNullable<CreateRecipeInput>
+export type FormUpdateRecipe = NonNullable<UpdateRecipeInput>
+export type FormCreateRecipe = NonNullable<CreateRecipeInput>
+export type RecipeForm = FormUpdateRecipe | FormCreateRecipe
+
+const emptyRecipeFormValues: RecipeForm = {
+  title: '',
+  description: '',
+  servings: NaN,
+  steps: [],
+}
 
 export type RecipeFormControl = Control<
   UpdateRecipeInput | CreateRecipeInput,
@@ -40,8 +55,12 @@ interface RecipeFormProps {
 
 const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
   const { recipeInputStore } = useStore()
-  const formMethods = useForm<FormUpdateRecipe | FormCreateRecipe>({
+  const formMethods = useForm<RecipeForm>({
     mode: 'onTouched',
+    defaultValues: getPersistedFormValuesAsDefaultValues<RecipeForm>(
+      'recipe-form',
+      emptyRecipeFormValues
+    ),
   })
   const {
     formState: { errors },
@@ -106,18 +125,18 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
     unregister(getStepOutputFieldsNames(stepNum))
   }
 
-  const removeStepFields = (stepNum: number) => {
-    const numOfIngs = recipeInputStore.steps[stepNum - 1].ingredients.length
-    const numOfStepOutputUses =
-      recipeInputStore.steps[stepNum - 1].stepOutputUses.length
-    for (let i = 0; i < numOfIngs; i++) {
-      removeIngredientFields(stepNum, i)
-    }
-    for (let i = 0; i < numOfStepOutputUses; i++) {
-      removeStepOutputFields(stepNum)
-    }
-    unregister(getStepFieldsNames(stepNum))
-  }
+  // const removeStepFields = (stepNum: number) => {
+  //   const numOfIngs = recipeInputStore.steps[stepNum - 1].ingredients.length
+  //   const numOfStepOutputUses =
+  //     recipeInputStore.steps[stepNum - 1].stepOutputUses.length
+  //   for (let i = 0; i < numOfIngs; i++) {
+  //     removeIngredientFields(stepNum, i)
+  //   }
+  //   for (let i = 0; i < numOfStepOutputUses; i++) {
+  //     removeStepOutputFields(stepNum)
+  //   }
+  //   unregister(getStepFieldsNames(stepNum))
+  // }
 
   /** For use by the stepOutputUse dropdown */
   const getStepTitle = (stepNum: number): string | null => {
@@ -133,7 +152,7 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
   }, [error])
 
   return (
-    <>
+    <FormProvider {...formMethods}>
       {showLoadingScreen && <RecipeSaveLoading />}
       <div
         className={classNames(
@@ -153,10 +172,9 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
             listClassName="rw-form-error-list"
           />
 
-          <RecipeBasicInfoFormFrag
-            recipeInputStore={recipeInputStore}
-            errors={errors}
-          />
+          {recipe && <HiddenField name={`recipeId`} defaultValue={recipe.id} />}
+
+          <RecipeBasicInfoFormFrag errors={errors} />
 
           {recipeInputStore.steps.map((step) => {
             return (
@@ -228,7 +246,7 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
           <DevTool control={control} />
         )}
       </div>
-    </>
+    </FormProvider>
   )
 }
 

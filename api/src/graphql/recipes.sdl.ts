@@ -39,6 +39,7 @@ export const schema = gql`
   }
 
   input UpdateRecipeInput {
+    recipeId: ID!
     title: String!
     description: String
     servings: Int
@@ -47,6 +48,11 @@ export const schema = gql`
 
   type Mutation {
     createRecipe(input: CreateRecipeInput!): Recipe! @requireAuth
+    """
+    TODO: Yes yes right now you need to pass in the id both here
+    and as part of the input but that's because I decided to add
+    the id to input later on and need to update all the uses/tests for this mutation
+    """
     updateRecipe(id: String!, input: UpdateRecipeInput!): Recipe! @requireAuth
     deleteRecipe(id: String!): Recipe! @requireAuth
   }
