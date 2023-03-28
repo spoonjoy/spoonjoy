@@ -11,20 +11,18 @@ import {
   FormError,
   Submit,
   useForm,
-  useFieldArray,
   FormProvider,
 } from '@redwoodjs/forms'
 import { navigate, routes } from '@redwoodjs/router'
 import { toast } from '@redwoodjs/web/dist/toast'
 
-import AddRemBtns from 'src/components/formComponents/AddRemBtns'
 import { getPersistedFormValuesAsDefaultValues } from 'src/components/formComponents/usePersistFormValues'
 import { classNames } from 'src/helpers/css'
 
 import RecipeSaveLoading from '../RecipeSaveLoading/RecipeSaveLoading'
 
 import RecipeBasicInfoFormFrag from './RecipeBasicInfoFormFrag'
-import StepFormFrag from './StepFormFrag'
+import StepsFormFrag from './StepsFormFrag'
 
 export type FormUpdateRecipe = NonNullable<UpdateRecipeInput>
 export type FormCreateRecipe = NonNullable<CreateRecipeInput>
@@ -60,19 +58,7 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
       emptyRecipeFormValues
     ),
   })
-  const {
-    formState: { errors },
-    control,
-    reset,
-  } = formMethods
-  const {
-    fields: steps,
-    append: addToSteps,
-    remove: removeFromSteps,
-  } = useFieldArray({
-    control,
-    name: 'steps',
-  })
+  const { getValues, control, reset } = formMethods
 
   const onSubmit = (data: FormUpdateRecipe | FormCreateRecipe) => {
     console.log('onSubmit data:', data)
@@ -83,11 +69,6 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
     } else {
       ;(onSave as onCreateRecipe)(data as FormCreateRecipe)
     }
-  }
-
-  /** For use by the stepOutputUse dropdown */
-  const getStepTitle = (stepNum: number): string | null => {
-    return steps[stepNum - 1].stepTitle || null
   }
 
   const [showLoadingScreen, setShowLoadingScreen] = React.useState(false)
@@ -121,42 +102,19 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
 
           {recipe && <HiddenField name={`recipeId`} defaultValue={recipe.id} />}
 
-          <RecipeBasicInfoFormFrag errors={errors} />
+          <RecipeBasicInfoFormFrag />
 
-          {steps.map((step) => {
-            return (
-              <StepFormFrag
-                key={step.id}
-                // key={`step-${step.stepNum}`}
-                recipeId={recipe?.id}
-                step={step}
-                errors={errors}
-                control={control}
-                getStepTitle={getStepTitle}
-              />
-            )
-          })}
-
-          <AddRemBtns
-            id="add-rem-steps-btns"
-            itemName="step"
-            onAdd={() =>
-              addToSteps({ stepNum: steps.length + 1, description: '' })
-            }
-            onRem={removeFromSteps}
-            canRem={steps.length > 0}
-            containerClassName="flex items-center justify-center p-8"
-          />
+          <StepsFormFrag />
 
           <div className="flex justify-center sm:justify-end">
             <div className="flex flex-col">
-              {steps.length < 1 && (
+              {getValues('steps')?.length < 1 && (
                 <span className="mb-2 text-sm text-red-600">
                   you need to add at least 1 step.
                 </span>
               )}
               <Submit
-                disabled={loading || steps.length < 1}
+                disabled={loading || getValues('steps')?.length < 1}
                 className="btn-submit-primary"
               >
                 {recipe ? 'update recipe' : 'create new recipe'}
