@@ -1,27 +1,25 @@
 import { observer } from 'mobx-react-lite'
 
-import { NumberField, TextField, FieldError } from '@redwoodjs/forms'
+import {
+  NumberField,
+  TextField,
+  FieldError,
+  FieldArrayWithId,
+} from '@redwoodjs/forms'
 
-import { IIngredientInputStore } from 'src/stores/RecipeInputStore'
+import { RecipeFormType } from '.'
 
 interface IngredientFormFragProps {
   stepNum: number
   ingIdx: number
-  ingredient: IIngredientInputStore
+  ingredient: FieldArrayWithId<RecipeFormType, `steps.${number}.ingredients`>
 }
 const IngredientFormFrag = ({
   stepNum,
   ingIdx,
   ingredient,
 }: IngredientFormFragProps) => {
-  const {
-    quantity,
-    setQuantity,
-    unitName,
-    setUnitName,
-    ingredientName,
-    setIngredientName,
-  } = ingredient
+  const { quantity, unitName, ingredientName } = ingredient
   return (
     <>
       <div className="mt-1 max-w-sm -space-y-px rounded-md shadow-sm">
@@ -41,10 +39,6 @@ const IngredientFormFrag = ({
               placeholder="5"
               step="any"
               min={0}
-              onChange={(e) => {
-                const { value } = e.target
-                setQuantity(Number(value))
-              }}
               validation={{
                 required: { value: true, message: 'quantity is required.' },
                 valueAsNumber: true,
@@ -64,10 +58,6 @@ const IngredientFormFrag = ({
               className="relative block w-full rounded-none border-gray-300 bg-transparent focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               errorClassName="relative block w-full rounded-none border-red-300 bg-transparent focus:z-10 focus:border-red-500 focus:ring-red-500 sm:text-sm"
               placeholder="cups"
-              onChange={(e) => {
-                const { value } = e.target
-                setUnitName(value.toLowerCase())
-              }}
               validation={{
                 required: { value: true, message: 'unit is required.' },
               }}
@@ -88,10 +78,6 @@ const IngredientFormFrag = ({
               className="relative block w-full rounded-none rounded-r-md border-gray-300 bg-transparent focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               errorClassName="relative block w-full rounded-none rounded-r-md border-red-300 bg-transparent focus:z-10 focus:border-red-500 focus:ring-red-500 sm:text-sm"
               placeholder="flour"
-              onChange={(e) => {
-                const { value } = e.target
-                setIngredientName(value.toLowerCase())
-              }}
               validation={{
                 required: {
                   value: true,

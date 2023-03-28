@@ -1,22 +1,29 @@
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 
-import { useController } from '@redwoodjs/forms'
+import {
+  FieldArrayWithId,
+  useController,
+  UseFieldArrayReplace,
+} from '@redwoodjs/forms'
 
 import { classNames } from 'src/helpers/css'
-import {
-  IRecipeStepInputStore,
-  IStepUseInputStoreSnapshotIn,
-} from 'src/stores/RecipeInputStore'
 
-import { RecipeFormControl } from './RecipeForm'
+import { RecipeFormControl, RecipeFormType } from './RecipeForm'
 
 interface StepOutputUsesFormFragProps {
   stepNum: number
-  stepOutputUses: IRecipeStepInputStore['stepOutputUses']
+  stepOutputUses: FieldArrayWithId<
+    RecipeFormType,
+    `steps.${number}.stepOutputUses`,
+    'id'
+  >[]
   control: RecipeFormControl
   name: `steps.${number}.stepOutputUses`
-  setStepOutputUses: (stepOutputUses: IStepUseInputStoreSnapshotIn[]) => void
+  setStepOutputUses: UseFieldArrayReplace<
+    RecipeFormType,
+    `steps.${number}.stepOutputUses`
+  >
   getStepTitle: (stepNum: number) => string | null
 }
 const StepOutputUsesFormFrag = ({
@@ -28,7 +35,7 @@ const StepOutputUsesFormFrag = ({
   getStepTitle,
 }: StepOutputUsesFormFragProps) => {
   const {
-    field: { value, onChange: rhfOnChange },
+    field: { value },
   } = useController({
     name: name,
     control: control,
@@ -50,8 +57,7 @@ const StepOutputUsesFormFrag = ({
         name={name}
         by="outputOfStepNum"
         onChange={(e) => {
-          setStepOutputUses(e)
-          rhfOnChange(e)
+          setStepOutputUses(e || [])
         }}
         multiple
       >
