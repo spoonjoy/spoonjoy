@@ -10,7 +10,7 @@ import {
 import AddRemBtns from 'src/components/formComponents/AddRemBtns'
 import StyledTextAreaField from 'src/components/formComponents/StyledTextAreaField'
 import StyledTextField from 'src/components/formComponents/StyledTextField'
-import usePersistFormValues from 'src/components/formComponents/usePersistFormValues'
+import { usePersistValuesOnChange } from 'src/components/formComponents/usePersistFormValues'
 
 import IngredientFormFrag from './IngredientFormFrag'
 import { RecipeFormControl, RecipeFormType } from './RecipeForm'
@@ -30,7 +30,7 @@ const StepFormFrag = ({
   control,
   getStepTitle,
 }: StepFormFragProps) => {
-  usePersistFormValues()
+  const onChange = usePersistValuesOnChange()
 
   const { stepNum, description } = step
 
@@ -57,6 +57,7 @@ const StepFormFrag = ({
         <StyledTextField
           fieldName={`steps.${stepNum - 1}.stepTitle`}
           label={`step ${stepNum} title`}
+          onChange={onChange}
         />
         <legend className="block text-sm font-medium text-gray-700">
           step {stepNum} ingredients
@@ -122,6 +123,7 @@ const StepFormFrag = ({
         validation={{
           required: { value: true, message: 'description is required.' },
         }}
+        onChange={onChange}
       />
     </div>
   )

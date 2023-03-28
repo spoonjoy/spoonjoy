@@ -1,24 +1,23 @@
 import localforage from 'localforage'
+import { debounce } from 'lodash'
 
-import { useWatch, FieldValues } from '@redwoodjs/forms'
+import { FieldValues, useFormContext } from '@redwoodjs/forms'
 
 type PersistableForms = 'recipe-form'
 
-/** This hook persists all form values to local storage. You should use this as low down the component tree as possible, as it'll cause a rerender on value change */
-const usePersistFormValues = <FormType extends FieldValues>(
+/** Returns an onChange function to be used by every field that we want to refresh the persisted values on change */
+export const usePersistValuesOnChange = <FormType extends FieldValues>(
   formType: PersistableForms = 'recipe-form'
 ) => {
-  const currFormState = useWatch<FormType>()
+  const { getValues } = useFormContext<FormType>()
 
-  React.useEffect(() => {
-    // set timeout is to debounce this
-    const persistFormData = setTimeout(() => {
-      console.log('current form values are', currFormState)
-      localforage.setItem<FormType>(formType, currFormState as FormType)
-    }, 500)
+  const persistFormState = () => {
+    const values = getValues()
+    console.log('current form values are', values)
+    localforage.setItem<FormType>(formType, getValues() as FormType)
+  }
 
-    return () => clearTimeout(persistFormData)
-  }, [currFormState, formType])
+  return React.useCallback(debounce(persistFormState, 500), [])
 }
 
 /** Use this if you want to just set the value in local storage one time */
@@ -49,5 +48,3 @@ export const getPersistedFormValuesAsDefaultValues = <
       .getItem<FormType>(formType)
       .then((res) => res || fallbackDefault)
 }
-
-export default usePersistFormValues

@@ -1,18 +1,16 @@
-import { useFormContext } from '@redwoodjs/forms'
+import { useWatch } from '@redwoodjs/forms'
 
 import StyledNumberField from 'src/components/formComponents/StyledNumberField'
 import StyledTextAreaField from 'src/components/formComponents/StyledTextAreaField'
 import StyledTextField from 'src/components/formComponents/StyledTextField'
-import usePersistFormValues from 'src/components/formComponents/usePersistFormValues'
+import { usePersistValuesOnChange } from 'src/components/formComponents/usePersistFormValues'
 
 const RecipeBasicInfoFormFrag = () => {
   // Update based on Prisma schema
   const MAX_TITLE_LENGTH = 60
   const MAX_DESCRIPTION_LENGTH = 140
 
-  const { getValues } = useFormContext()
-
-  usePersistFormValues()
+  const onChange = usePersistValuesOnChange()
 
   return (
     <>
@@ -21,19 +19,22 @@ const RecipeBasicInfoFormFrag = () => {
         label="title"
         validation={{ required: true, maxLength: MAX_TITLE_LENGTH }}
         maxLength={MAX_TITLE_LENGTH}
-        currentLength={getValues('title')?.length}
+        currentLength={useWatch({ name: 'title' })?.length || 0}
+        onChange={onChange}
       />
       <StyledTextAreaField
         fieldName="description"
         label="description"
         validation={{ maxLength: MAX_DESCRIPTION_LENGTH }}
         maxLength={MAX_DESCRIPTION_LENGTH}
-        currentLength={getValues('description')?.length || 0}
+        currentLength={useWatch({ name: 'description' })?.length || 0}
+        onChange={onChange}
       />
       <StyledNumberField
         fieldName="servings"
         label="servings"
         validation={{ valueAsNumber: true }}
+        onChange={onChange}
       />
     </>
   )
