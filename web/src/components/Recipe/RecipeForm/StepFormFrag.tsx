@@ -54,9 +54,6 @@ const StepFormFrag = ({
 
         {stepNum > 1 && (
           <>
-            <legend className="mt-2 block text-sm font-medium text-gray-700">
-              in step {stepNum}, use the output of the following steps:
-            </legend>
             <StepOutputUsesFormFrag
               stepOutputUses={stepOutputUses}
               setStepOutputUses={setStepOutputUses}
