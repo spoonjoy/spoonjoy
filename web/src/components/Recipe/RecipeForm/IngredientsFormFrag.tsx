@@ -36,10 +36,12 @@ export const IngredientsFormFrag = ({ stepNum }: IIngredientsFormFragProps) => {
       {ingredients.map((ingredient, ingIdx) => {
         return (
           <IngredientFormFrag
-            key={`step-${stepNum}-ingredient-${ingIdx}`}
+            key={ingredient.id}
+            // key={`step-${stepNum}-ingredient-${ingIdx}`}
             stepNum={stepNum}
             ingIdx={ingIdx}
             ingredient={ingredient}
+            removeFromIngredients={removeFromIngredients}
           />
         )
       })}
@@ -48,12 +50,12 @@ export const IngredientsFormFrag = ({ stepNum }: IIngredientsFormFragProps) => {
         itemName="ingredient"
         onAdd={() => {
           addToIngredients({
-            quantity: NaN,
+            quantity: 0,
             ingredientName: '',
             unitName: '',
           })
         }}
-        onRem={removeFromIngredients}
+        onRem={() => removeFromIngredients(ingredients.length - 1)}
         canRem={
           (stepOutputUsesLength >= 1 || ingredients.length > 1) &&
           ingredients.length > 0

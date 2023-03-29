@@ -1,3 +1,4 @@
+import { MinusCircleIcon } from '@heroicons/react/24/outline'
 import { observer } from 'mobx-react-lite'
 
 import {
@@ -5,6 +6,7 @@ import {
   TextField,
   FieldError,
   FieldArrayWithId,
+  UseFieldArrayRemove,
 } from '@redwoodjs/forms'
 
 import { usePersistValuesOnChange } from 'src/components/formComponents/usePersistFormValues'
@@ -15,11 +17,13 @@ interface IngredientFormFragProps {
   stepNum: number
   ingIdx: number
   ingredient: FieldArrayWithId<RecipeFormType, `steps.${number}.ingredients`>
+  removeFromIngredients: UseFieldArrayRemove
 }
 const IngredientFormFrag = ({
   stepNum,
   ingIdx,
   ingredient,
+  removeFromIngredients,
 }: IngredientFormFragProps) => {
   const { quantity, unitName, ingredientName } = ingredient
 
@@ -28,8 +32,18 @@ const IngredientFormFrag = ({
   return (
     <>
       <div className="mt-1 max-w-sm -space-y-px rounded-md shadow-sm">
-        <div className="flex -space-x-px">
-          <div className="min-w-0">
+        <div className="-ml-7 flex -space-x-px">
+          <button
+            className="mr-2"
+            onClick={(e) => {
+              e.preventDefault()
+              removeFromIngredients(ingIdx)
+            }}
+          >
+            <span className="sr-only">remove ingredient {ingIdx}</span>
+            <MinusCircleIcon className="h-5 w-5 text-red-800 hover:text-red-500" />
+          </button>
+          <div>
             <label
               htmlFor={`steps.${stepNum - 1}.ingredients.${ingIdx}.quantity`}
               className="sr-only"
@@ -51,7 +65,7 @@ const IngredientFormFrag = ({
               onChange={onChange}
             />
           </div>
-          <div className="min-w-0">
+          <div>
             <label
               htmlFor={`steps.${stepNum - 1}.ingredients.${ingIdx}.unitName`}
               className="sr-only"
@@ -70,7 +84,7 @@ const IngredientFormFrag = ({
               onChange={onChange}
             />
           </div>
-          <div className="min-w-0">
+          <div>
             <label
               htmlFor={`steps.${
                 stepNum - 1
