@@ -1,5 +1,3 @@
-import { Recipe } from 'types/graphql'
-
 import { useFieldArray, useFormContext, useWatch } from '@redwoodjs/forms'
 
 import AddRemBtns from 'src/components/formComponents/AddRemBtns'
