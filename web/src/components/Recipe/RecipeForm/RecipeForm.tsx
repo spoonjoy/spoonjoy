@@ -6,13 +6,7 @@ import type {
 } from 'types/graphql'
 
 import { Control, HiddenField, RWGqlError } from '@redwoodjs/forms'
-import {
-  Form,
-  FormError,
-  Submit,
-  useForm,
-  FormProvider,
-} from '@redwoodjs/forms'
+import { Form, FormError, useForm, FormProvider } from '@redwoodjs/forms'
 import { navigate, routes } from '@redwoodjs/router'
 import { toast } from '@redwoodjs/web/dist/toast'
 
@@ -22,6 +16,7 @@ import { classNames } from 'src/helpers/css'
 import RecipeSaveLoading from '../RecipeSaveLoading/RecipeSaveLoading'
 
 import RecipeBasicInfoFormFrag from './RecipeBasicInfoFormFrag'
+import ResetSubmitRecipeBtns from './ResetSubmitRecipeBtns'
 import StepsFormFrag from './StepsFormFrag'
 
 export type FormUpdateRecipe = NonNullable<UpdateRecipeInput>
@@ -58,7 +53,7 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
       emptyRecipeFormValues
     ),
   })
-  const { getValues, control, reset } = formMethods
+  const { control, reset } = formMethods
 
   const onSubmit = (data: FormUpdateRecipe | FormCreateRecipe) => {
     console.log('onSubmit data:', data)
@@ -106,36 +101,20 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
 
           <StepsFormFrag />
 
-          <div className="flex justify-center sm:justify-end">
-            <div className="flex flex-col">
-              {getValues('steps')?.length < 1 && (
-                <span className="mb-2 text-sm text-red-600">
-                  you need to add at least 1 step.
-                </span>
-              )}
-              <Submit
-                disabled={loading || getValues('steps')?.length < 1}
-                className="btn-submit-primary"
-              >
-                {recipe ? 'update recipe' : 'create new recipe'}
-              </Submit>
-              <button
-                className="btn-error mt-2"
-                onClick={(e) => {
-                  e.preventDefault() // needed so that this button doesn't try to submit the form
-                  reset(emptyRecipeFormValues)
-                  if (recipe) {
-                    navigate(routes.recipe({ id: recipe.id }))
-                    toast('recipe changes have been discarded')
-                  } else {
-                    toast('recipe form has been reset')
-                  }
-                }}
-              >
-                {recipe ? 'discard changes' : 'reset'}
-              </button>
-            </div>
-          </div>
+          <ResetSubmitRecipeBtns
+            loading={loading}
+            mode={recipe ? 'update' : 'create'}
+            onReset={(e) => {
+              e.preventDefault() // needed so that this button doesn't try to submit the form
+              reset(emptyRecipeFormValues)
+              if (recipe) {
+                navigate(routes.recipe({ id: recipe.id }))
+                toast('recipe changes have been discarded')
+              } else {
+                toast('recipe form has been reset')
+              }
+            }}
+          />
         </Form>
         {/* this starting showing up in prod for some reason */}
         {process.env.NODE_ENV === 'development' && (
