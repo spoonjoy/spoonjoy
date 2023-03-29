@@ -7,11 +7,7 @@ import StepFormFrag from './StepFormFrag'
 import { RecipeFormType } from '.'
 
 const StepsFormFrag = () => {
-  const {
-    control,
-    formState: { errors },
-    getValues,
-  } = useFormContext<RecipeFormType>()
+  const { control, getValues } = useFormContext<RecipeFormType>()
   const {
     fields: steps,
     append: addToSteps,
@@ -20,10 +16,6 @@ const StepsFormFrag = () => {
     control,
     name: 'steps',
   })
-
-  const getStepTitle = (stepNum: number): string | null => {
-    return steps[stepNum - 1].stepTitle || null
-  }
 
   return (
     <>
@@ -34,9 +26,6 @@ const StepsFormFrag = () => {
             // key={`step-${step.stepNum}`}
             recipeId={getValues('recipeId')}
             step={step}
-            errors={errors}
-            control={control}
-            getStepTitle={getStepTitle}
           />
         )
       })}

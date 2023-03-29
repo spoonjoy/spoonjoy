@@ -2,42 +2,35 @@ import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 
 import {
-  FieldArrayWithId,
   useController,
-  UseFieldArrayReplace,
+  useFieldArray,
+  useFormContext,
+  useWatch,
 } from '@redwoodjs/forms'
 
 import { classNames } from 'src/helpers/css'
 
-import { RecipeFormControl, RecipeFormType } from './RecipeForm'
+import { RecipeFormType } from './RecipeForm'
 
 interface StepOutputUsesFormFragProps {
   stepNum: number
-  stepOutputUses: FieldArrayWithId<
-    RecipeFormType,
-    `steps.${number}.stepOutputUses`,
-    'id'
-  >[]
-  control: RecipeFormControl
-  name: `steps.${number}.stepOutputUses`
-  setStepOutputUses: UseFieldArrayReplace<
-    RecipeFormType,
-    `steps.${number}.stepOutputUses`
-  >
-  getStepTitle: (stepNum: number) => string | null
 }
-const StepOutputUsesFormFrag = ({
-  stepNum,
-  stepOutputUses,
-  setStepOutputUses,
-  control,
-  name,
-  getStepTitle,
-}: StepOutputUsesFormFragProps) => {
+const StepOutputUsesFormFrag = ({ stepNum }: StepOutputUsesFormFragProps) => {
+  // need to type this so that useFieldArray doesn't complain
+  const name: `steps.${number}.stepOutputUses` = `steps.${
+    stepNum - 1
+  }.stepOutputUses`
+
+  const { control } = useFormContext<RecipeFormType>()
+  const { fields: stepOutputUses, replace: setStepOutputUses } = useFieldArray({
+    control,
+    name,
+  })
+
   const {
     field: { value },
   } = useController({
-    name: name,
+    name,
     control: control,
     defaultValue: stepOutputUses,
   })
@@ -48,6 +41,12 @@ const StepOutputUsesFormFrag = ({
       outputOfStepNum: stepNumToUse + 1,
     })
   )
+
+  const steps = useWatch<RecipeFormType>({
+    name: 'steps',
+  }) as RecipeFormType['steps']
+
+  const stepTitles = steps.map((step) => step.stepTitle)
 
   return (
     <>
@@ -74,7 +73,7 @@ const StepOutputUsesFormFrag = ({
                     ? stepOutputUses
                         .map((outputUse) => {
                           const { outputOfStepNum } = outputUse
-                          const stepTitle = getStepTitle(outputOfStepNum)
+                          const stepTitle = stepTitles[outputOfStepNum - 1]
                           return `Step ${outputOfStepNum}${
                             stepTitle ? `: ${stepTitle}` : ''
                           }`
@@ -110,7 +109,7 @@ const StepOutputUsesFormFrag = ({
                     >
                       {({ selected, active }) => {
                         const { outputOfStepNum } = stepOutputUse
-                        const stepTitle = getStepTitle(outputOfStepNum)
+                        const stepTitle = stepTitles[outputOfStepNum - 1]
                         return (
                           <>
                             <span

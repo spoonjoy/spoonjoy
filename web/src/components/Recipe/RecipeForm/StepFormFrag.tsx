@@ -1,42 +1,24 @@
 import { observer } from 'mobx-react-lite'
 
-import {
-  FieldArrayWithId,
-  FieldErrors,
-  HiddenField,
-  useFieldArray,
-} from '@redwoodjs/forms'
+import { FieldArrayWithId, HiddenField } from '@redwoodjs/forms'
 
 import StyledTextAreaField from 'src/components/formComponents/StyledTextAreaField'
 import StyledTextField from 'src/components/formComponents/StyledTextField'
 import { usePersistValuesOnChange } from 'src/components/formComponents/usePersistFormValues'
 
 import { IngredientsFormFrag } from './IngredientsFormFrag'
-import { RecipeFormControl, RecipeFormType } from './RecipeForm'
+import { RecipeFormType } from './RecipeForm'
 import StepOutputUsesFormFrag from './StepOutputUsesFormFrag'
 
 interface StepFormFragProps {
   recipeId?: string // this is necessary when editing a recipe because eventually I'd like to be able to update steps directly etc
   step: FieldArrayWithId<RecipeFormType, 'steps', 'id'>
-  errors: FieldErrors
-  control: RecipeFormControl
-  getStepTitle: (stepNum: number) => string | null
 }
 
-const StepFormFrag = ({
-  recipeId,
-  step,
-  control,
-  getStepTitle,
-}: StepFormFragProps) => {
+const StepFormFrag = ({ recipeId, step }: StepFormFragProps) => {
   const onChange = usePersistValuesOnChange()
 
   const { stepNum, description } = step
-
-  const { fields: stepOutputUses, replace: setStepOutputUses } = useFieldArray({
-    control,
-    name: `steps.${stepNum - 1}.stepOutputUses`,
-  })
 
   return (
     <div className="mb-3">
@@ -54,14 +36,7 @@ const StepFormFrag = ({
 
         {stepNum > 1 && (
           <>
-            <StepOutputUsesFormFrag
-              stepOutputUses={stepOutputUses}
-              setStepOutputUses={setStepOutputUses}
-              stepNum={stepNum}
-              name={`steps.${stepNum - 1}.stepOutputUses`}
-              control={control}
-              getStepTitle={getStepTitle}
-            />
+            <StepOutputUsesFormFrag stepNum={stepNum} />
           </>
         )}
       </div>
