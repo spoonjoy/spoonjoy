@@ -7,6 +7,8 @@ import {
   FieldArrayWithId,
 } from '@redwoodjs/forms'
 
+import { usePersistValuesOnChange } from 'src/components/formComponents/usePersistFormValues'
+
 import { RecipeFormType } from '.'
 
 interface IngredientFormFragProps {
@@ -20,6 +22,9 @@ const IngredientFormFrag = ({
   ingredient,
 }: IngredientFormFragProps) => {
   const { quantity, unitName, ingredientName } = ingredient
+
+  const onChange = usePersistValuesOnChange()
+
   return (
     <>
       <div className="mt-1 max-w-sm -space-y-px rounded-md shadow-sm">
@@ -43,6 +48,7 @@ const IngredientFormFrag = ({
                 required: { value: true, message: 'quantity is required.' },
                 valueAsNumber: true,
               }}
+              onChange={onChange}
             />
           </div>
           <div className="min-w-0">
@@ -61,6 +67,7 @@ const IngredientFormFrag = ({
               validation={{
                 required: { value: true, message: 'unit is required.' },
               }}
+              onChange={onChange}
             />
           </div>
           <div className="min-w-0">
@@ -84,6 +91,7 @@ const IngredientFormFrag = ({
                   message: 'ingredient name is required.',
                 },
               }}
+              onChange={onChange}
             />
           </div>
         </div>
