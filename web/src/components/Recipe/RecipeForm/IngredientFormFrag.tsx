@@ -1,5 +1,5 @@
 import { useDraggable, useDndMonitor } from '@dnd-kit/core'
-import { MinusCircleIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, MinusCircleIcon } from '@heroicons/react/24/outline'
 import { observer } from 'mobx-react-lite'
 
 import {
@@ -99,7 +99,7 @@ const IngredientFormFrag = ({
     : undefined
 
   return (
-    <div ref={setNodeRef} style={draggableStyle} {...listeners} {...attributes}>
+    <div ref={setNodeRef} style={draggableStyle}>
       <div className="mt-1 max-w-sm -space-y-px rounded-md shadow-sm">
         <div className="-ml-7 flex -space-x-px">
           <button
@@ -177,6 +177,9 @@ const IngredientFormFrag = ({
               onChange={onChange}
             />
           </div>
+          <button {...listeners} {...attributes}>
+            <Bars3Icon className="ml-2 h-5 w-5 text-gray-400 hover:text-gray-500" />
+          </button>
         </div>
       </div>
       <div className="flex flex-col">
