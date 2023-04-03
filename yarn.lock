@@ -3194,6 +3194,55 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@dnd-kit/accessibility@npm:^3.0.0":
+  version: 3.0.1
+  resolution: "@dnd-kit/accessibility@npm:3.0.1"
+  dependencies:
+    tslib: ^2.0.0
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 9832223e719ebecbc7200c87d66dc3358cc3d2156e74c6629a3b61c04746188372c568b050666481d4f2e996599b328f12d6f43bbde45896ec462b81bdf1beab
+  languageName: node
+  linkType: hard
+
+"@dnd-kit/core@npm:^6.0.8":
+  version: 6.0.8
+  resolution: "@dnd-kit/core@npm:6.0.8"
+  dependencies:
+    "@dnd-kit/accessibility": ^3.0.0
+    "@dnd-kit/utilities": ^3.2.1
+    tslib: ^2.0.0
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: b94b7dbdded15ab1cb53ae50ddfefe02f325fd5fecb977a2be811a23dd564e2a4c7e013fbd54e9eda48756985b1a9d5c53d89d699641adc714f26cbbc0bac632
+  languageName: node
+  linkType: hard
+
+"@dnd-kit/modifiers@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "@dnd-kit/modifiers@npm:6.0.1"
+  dependencies:
+    "@dnd-kit/utilities": ^3.2.1
+    tslib: ^2.0.0
+  peerDependencies:
+    "@dnd-kit/core": ^6.0.6
+    react: ">=16.8.0"
+  checksum: cf2a68f4b0c35c87fa143bce0d980ec82067dc023673f27d842d185a15041b5ca19140795351d9a774d86b1a7e3df00a118c4ff61ae121696021ba5678d50363
+  languageName: node
+  linkType: hard
+
+"@dnd-kit/utilities@npm:^3.2.1":
+  version: 3.2.1
+  resolution: "@dnd-kit/utilities@npm:3.2.1"
+  dependencies:
+    tslib: ^2.0.0
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 9c816281dcc6079675239ffec83d99682a43b7d0dd5f1f54c2e88f4e041835902f2be0ff10ef2c4cf8fa13c2a26875ec5c4b7a4f164e73008df32d6da556af55
+  languageName: node
+  linkType: hard
+
 "@emotion/babel-plugin@npm:^11.10.0":
   version: 11.10.2
   resolution: "@emotion/babel-plugin@npm:11.10.2"
@@ -27402,6 +27451,8 @@ __metadata:
     "@capacitor/cli": ^4.7.0
     "@capacitor/core": ^4.7.0
     "@capacitor/ios": ^4.7.0
+    "@dnd-kit/core": ^6.0.8
+    "@dnd-kit/modifiers": ^6.0.1
     "@headlessui/react": ^1.7.9
     "@heroicons/react": ^2.0.11
     "@hookform/devtools": ^4.2.2

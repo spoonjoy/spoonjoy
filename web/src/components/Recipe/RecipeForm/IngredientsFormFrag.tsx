@@ -17,7 +17,7 @@ export const IngredientsFormFrag = ({ stepNum }: IIngredientsFormFragProps) => {
     append: addToIngredients,
     remove: removeFromIngredients,
   } = useFieldArray({
-    control,
+    control, // TODO investigate - this isn't required but without passing it in, ingredients doesn't have the right type for some reason
     name: `steps.${stepNum - 1}.ingredients`,
   })
 

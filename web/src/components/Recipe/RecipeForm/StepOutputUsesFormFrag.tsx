@@ -23,7 +23,7 @@ const StepOutputUsesFormFrag = ({ stepNum }: StepOutputUsesFormFragProps) => {
 
   const { control } = useFormContext<RecipeFormType>()
   const { fields: stepOutputUses, replace: setStepOutputUses } = useFieldArray({
-    control,
+    control, // TODO investigate - this isn't required but without passing it in, stepOutputUses doesn't have the right type for some reason
     name,
   })
 
