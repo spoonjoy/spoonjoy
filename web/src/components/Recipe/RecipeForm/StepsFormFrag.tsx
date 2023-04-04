@@ -1,5 +1,4 @@
 import { DragEndEvent, DndContext } from '@dnd-kit/core'
-import { restrictToWindowEdges } from '@dnd-kit/modifiers'
 import { cloneDeep } from 'lodash'
 
 import { useFieldArray, useFormContext } from '@redwoodjs/forms'
@@ -80,7 +79,7 @@ const StepsFormFrag = () => {
   }
 
   return (
-    <DndContext modifiers={[restrictToWindowEdges]} onDragEnd={onDragEnd}>
+    <DndContext onDragEnd={onDragEnd}>
       {steps.map((step) => {
         return (
           <StepFormFrag
