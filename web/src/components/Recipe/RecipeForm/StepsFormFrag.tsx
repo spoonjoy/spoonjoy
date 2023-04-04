@@ -1,13 +1,21 @@
+import { DragEndEvent, DndContext } from '@dnd-kit/core'
+import { restrictToWindowEdges } from '@dnd-kit/modifiers'
+import { cloneDeep } from 'lodash'
+
 import { useFieldArray, useFormContext } from '@redwoodjs/forms'
 
 import AddRemBtns from 'src/components/formComponents/AddRemBtns'
+import { usePersistValuesOnChange } from 'src/components/formComponents/usePersistFormValues'
 
-import StepFormFrag from './StepFormFrag'
+import { IDraggableIngredientData } from './IngredientFormFrag'
+import StepFormFrag, { IDroppableStepData } from './StepFormFrag'
 
 import { RecipeFormType } from '.'
 
 const StepsFormFrag = () => {
-  const { control, getValues } = useFormContext<RecipeFormType>()
+  const { control, getValues, setValue } = useFormContext<RecipeFormType>()
+  const persistValues = usePersistValuesOnChange()
+
   const {
     fields: steps,
     append: addToSteps,
@@ -17,8 +25,62 @@ const StepsFormFrag = () => {
     name: 'steps',
   })
 
+  const removeFromIngredients = (stepNum: number, ingIdx: number) => {
+    const ingsName: `steps.${number}.ingredients` = `steps.${
+      stepNum - 1
+    }.ingredients`
+    const newIngs = cloneDeep(getValues(ingsName))
+    newIngs?.splice(ingIdx, 1)
+
+    setValue(ingsName, newIngs)
+  }
+
+  const onDragEnd: (event: DragEndEvent) => void = (event) => {
+    console.log('in parent onDragEnd, event', event)
+
+    const draggableIngredientData = event.active.data
+      .current as IDraggableIngredientData
+    const droppableStepData = event.over?.data.current as
+      | IDroppableStepData
+      | undefined
+
+    const { stepNum: fromStep, ingIdx } = draggableIngredientData
+    const toStep = droppableStepData?.stepNum
+
+    const draggedIngName: `steps.${number}.ingredients.${number}` = `steps.${
+      fromStep - 1
+    }.ingredients.${ingIdx}`
+
+    if (!toStep) {
+      console.log(`dropped ${draggedIngName} on nothing`)
+      return
+    }
+    if (toStep === fromStep) {
+      console.log(`dropped ${draggedIngName} on itself`)
+      return
+    }
+
+    const destinationIngsName: `steps.${number}.ingredients` = `steps.${
+      toStep - 1
+    }.ingredients`
+
+    console.log(`dropped ${draggedIngName} on ${destinationIngsName}`)
+
+    const draggedIngValue = cloneDeep(getValues(draggedIngName))
+
+    const destinationIngsValue = cloneDeep(getValues(destinationIngsName)) || []
+
+    console.log(`draggedIngValue`, draggedIngValue)
+    console.log(`destinationIngsValue`, destinationIngsValue)
+
+    removeFromIngredients(fromStep, ingIdx)
+
+    setValue(destinationIngsName, [...destinationIngsValue, draggedIngValue])
+    persistValues()
+  }
+
   return (
-    <>
+    <DndContext modifiers={[restrictToWindowEdges]} onDragEnd={onDragEnd}>
       {steps.map((step) => {
         return (
           <StepFormFrag
@@ -38,7 +100,7 @@ const StepsFormFrag = () => {
         canRem={steps.length > 0}
         containerClassName="flex items-center justify-center p-8"
       />
-    </>
+    </DndContext>
   )
 }
 

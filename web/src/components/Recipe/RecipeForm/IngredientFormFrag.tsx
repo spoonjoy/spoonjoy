@@ -1,4 +1,4 @@
-import { useDraggable, useDndMonitor } from '@dnd-kit/core'
+import { useDraggable } from '@dnd-kit/core'
 import { Bars3Icon, MinusCircleIcon } from '@heroicons/react/24/outline'
 import { observer } from 'mobx-react-lite'
 
@@ -8,12 +8,9 @@ import {
   FieldError,
   FieldArrayWithId,
   UseFieldArrayRemove,
-  useFormContext,
 } from '@redwoodjs/forms'
 
 import { usePersistValuesOnChange } from 'src/components/formComponents/usePersistFormValues'
-
-import { IDroppableStepData } from './StepFormFrag'
 
 import { RecipeFormType } from '.'
 
@@ -47,49 +44,6 @@ const IngredientFormFrag = ({
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: `ingredient-${ingredient.id}`,
     data: draggableData,
-  })
-
-  const { getValues, setValue } = useFormContext<RecipeFormType>()
-
-  useDndMonitor({
-    onDragEnd: (event) => {
-      const draggableIngredientData = event.active.data
-        .current as IDraggableIngredientData
-      const droppableStepData = event.over?.data.current as
-        | IDroppableStepData
-        | undefined
-
-      const { stepNum: fromStep, ingIdx } = draggableIngredientData
-      const toStep = droppableStepData?.stepNum
-
-      const draggedIngName: `steps.${number}.ingredients.${number}` = `steps.${
-        fromStep - 1
-      }.ingredients.${ingIdx}`
-
-      if (!toStep) {
-        console.log(`dropped ${draggedIngName} on nothing`)
-        return
-      }
-      if (toStep === fromStep) {
-        console.log(`dropped ${draggedIngName} on itself`)
-        return
-      }
-
-      const destinationIngsName: `steps.${number}.ingredients` = `steps.${
-        toStep - 1
-      }.ingredients`
-
-      console.log(`dropped ${draggedIngName} on ${destinationIngsName}`)
-
-      const draggedIngValue = getValues(draggedIngName)
-      const destinationIngsValue = getValues(destinationIngsName) || []
-
-      console.log(`draggedIngValue`, draggedIngValue)
-      console.log(`destinationIngsValue`, destinationIngsValue)
-
-      removeFromIngredients(ingIdx)
-      setValue(destinationIngsName, [...destinationIngsValue, draggedIngValue])
-    },
   })
 
   const draggableStyle = transform

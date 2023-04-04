@@ -1,4 +1,3 @@
-import { DndContext } from '@dnd-kit/core'
 import { DevTool } from '@hookform/devtools'
 import type {
   CreateRecipeInput,
@@ -77,55 +76,51 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
 
   return (
     <FormProvider {...formMethods}>
-      <DndContext>
-        {showLoadingScreen && <RecipeSaveLoading />}
-        <div
-          className={classNames(
-            showLoadingScreen && 'h-0 overflow-hidden',
-            'p-5'
-          )}
+      {showLoadingScreen && <RecipeSaveLoading />}
+      <div
+        className={classNames(
+          showLoadingScreen && 'h-0 overflow-hidden',
+          'p-5'
+        )}
+      >
+        <Form<FormUpdateRecipe | FormCreateRecipe>
+          formMethods={formMethods}
+          onSubmit={onSubmit}
+          error={error}
         >
-          <Form<FormUpdateRecipe | FormCreateRecipe>
-            formMethods={formMethods}
-            onSubmit={onSubmit}
+          <FormError
             error={error}
-          >
-            <FormError
-              error={error}
-              wrapperClassName="rw-form-error-wrapper"
-              titleClassName="rw-form-error-title"
-              listClassName="rw-form-error-list"
-            />
+            wrapperClassName="rw-form-error-wrapper"
+            titleClassName="rw-form-error-title"
+            listClassName="rw-form-error-list"
+          />
 
-            {recipe && (
-              <HiddenField name={`recipeId`} defaultValue={recipe.id} />
-            )}
+          {recipe && <HiddenField name={`recipeId`} defaultValue={recipe.id} />}
 
-            <RecipeBasicInfoFormFrag />
+          <RecipeBasicInfoFormFrag />
 
-            <StepsFormFrag />
+          <StepsFormFrag />
 
-            <ResetSubmitRecipeBtns
-              loading={loading}
-              mode={recipe ? 'update' : 'create'}
-              onReset={(e) => {
-                e.preventDefault() // needed so that this button doesn't try to submit the form
-                reset(emptyRecipeFormValues)
-                if (recipe) {
-                  navigate(routes.recipe({ id: recipe.id }))
-                  toast('recipe changes have been discarded')
-                } else {
-                  toast('recipe form has been reset')
-                }
-              }}
-            />
-          </Form>
-          {/* this starting showing up in prod for some reason */}
-          {process.env.NODE_ENV === 'development' && (
-            <DevTool control={control} />
-          )}
-        </div>
-      </DndContext>
+          <ResetSubmitRecipeBtns
+            loading={loading}
+            mode={recipe ? 'update' : 'create'}
+            onReset={(e) => {
+              e.preventDefault() // needed so that this button doesn't try to submit the form
+              reset(emptyRecipeFormValues)
+              if (recipe) {
+                navigate(routes.recipe({ id: recipe.id }))
+                toast('recipe changes have been discarded')
+              } else {
+                toast('recipe form has been reset')
+              }
+            }}
+          />
+        </Form>
+        {/* this starting showing up in prod for some reason */}
+        {process.env.NODE_ENV === 'development' && (
+          <DevTool control={control} />
+        )}
+      </div>
     </FormProvider>
   )
 }
