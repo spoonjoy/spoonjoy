@@ -46,9 +46,11 @@ const IngredientFormFrag = ({
     data: draggableData,
   })
 
-  const draggableStyle = transform
+  const draggableStyle: React.CSSProperties | undefined = transform
     ? {
         transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+        position: 'relative',
+        zIndex: 99999,
       }
     : undefined
 
@@ -76,8 +78,8 @@ const IngredientFormFrag = ({
             <NumberField
               name={`steps.${stepNum - 1}.ingredients.${ingIdx}.quantity`}
               defaultValue={quantity}
-              className="relative block w-full rounded-none rounded-l-md border-gray-300 bg-transparent focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              errorClassName="relative block w-full rounded-none rounded-l-md border-red-300 bg-transparent focus:z-10 focus:border-red-500 focus:ring-red-500 sm:text-sm"
+              className="relative block w-full rounded-none rounded-l-md border-gray-300 bg-white focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              errorClassName="relative block w-full rounded-none rounded-l-md border-red-300 bg-white focus:z-10 focus:border-red-500 focus:ring-red-500 sm:text-sm"
               placeholder="5"
               step="any"
               min={0}
@@ -98,8 +100,8 @@ const IngredientFormFrag = ({
             <TextField
               name={`steps.${stepNum - 1}.ingredients.${ingIdx}.unitName`}
               defaultValue={unitName}
-              className="relative block w-full rounded-none border-gray-300 bg-transparent focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              errorClassName="relative block w-full rounded-none border-red-300 bg-transparent focus:z-10 focus:border-red-500 focus:ring-red-500 sm:text-sm"
+              className="relative block w-full rounded-none border-gray-300 bg-white focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              errorClassName="relative block w-full rounded-none border-red-300 bg-white focus:z-10 focus:border-red-500 focus:ring-red-500 sm:text-sm"
               placeholder="cups"
               validation={{
                 required: { value: true, message: 'unit is required.' },
@@ -119,8 +121,8 @@ const IngredientFormFrag = ({
             <TextField
               name={`steps.${stepNum - 1}.ingredients.${ingIdx}.ingredientName`}
               defaultValue={ingredientName}
-              className="relative block w-full rounded-none rounded-r-md border-gray-300 bg-transparent focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              errorClassName="relative block w-full rounded-none rounded-r-md border-red-300 bg-transparent focus:z-10 focus:border-red-500 focus:ring-red-500 sm:text-sm"
+              className="relative block w-full rounded-none rounded-r-md border-gray-300 bg-white focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              errorClassName="relative block w-full rounded-none rounded-r-md border-red-300 bg-white focus:z-10 focus:border-red-500 focus:ring-red-500 sm:text-sm"
               placeholder="flour"
               validation={{
                 required: {
@@ -132,7 +134,7 @@ const IngredientFormFrag = ({
             />
           </div>
           <button {...listeners} {...attributes}>
-            <Bars3Icon className="ml-2 h-5 w-5 touch-none text-gray-400 hover:text-gray-500" />
+            <Bars3Icon className="h-9 w-9 touch-none p-2 text-gray-400 hover:text-gray-500" />
           </button>
         </div>
       </div>
