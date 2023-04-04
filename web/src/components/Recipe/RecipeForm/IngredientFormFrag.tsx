@@ -178,7 +178,7 @@ const IngredientFormFrag = ({
             />
           </div>
           <button {...listeners} {...attributes}>
-            <Bars3Icon className="ml-2 h-5 w-5 text-gray-400 hover:text-gray-500" />
+            <Bars3Icon className="ml-2 h-5 w-5 touch-none text-gray-400 hover:text-gray-500" />
           </button>
         </div>
       </div>
