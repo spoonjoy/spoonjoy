@@ -23,6 +23,7 @@ import { ICurrentUser } from 'src/lib/auth'
 
 type SiteLayoutProps = {
   children?: React.ReactNode
+  bgColor?: 'white' | 'gray'
 }
 
 interface INavigation {
@@ -39,7 +40,7 @@ interface IUserNavigation {
 
 export const HeaderSlot = createSlot('header')
 
-const SiteLayout = ({ children }: SiteLayoutProps) => {
+const SiteLayout = ({ children, bgColor = 'white' }: SiteLayoutProps) => {
   const { isAuthenticated, currentUser, logOut } = useAuth()
 
   const navigationNotLoggedIn: INavigation[] = [
@@ -122,7 +123,12 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
   return (
     <>
       <SlotProvider>
-        <div className="min-h-full">
+        <div
+          className={classNames(
+            'min-h-full pb-20 sm:pb-10',
+            bgColor === 'white' ? 'bg-white' : 'bg-gray-200'
+          )}
+        >
           <Header
             navigation={
               isAuthenticated ? navigationLoggedIn : navigationNotLoggedIn
@@ -132,26 +138,25 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
             currentUser={currentUser as ICurrentUser | null}
           />
 
-          <div className="bg-white pb-20 sm:pb-10">
-            <header>
-              <div className="w-screen">
-                <h1 className="text-3xl font-bold leading-tight tracking-tight text-gray-900">
-                  <HeaderSlot />
-                </h1>
+          <header>
+            <div className="w-screen">
+              <h1 className="text-3xl font-bold leading-tight tracking-tight text-gray-900">
+                <HeaderSlot />
+              </h1>
+            </div>
+          </header>
+          <main>
+            <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+              {/* Replace with your content */}
+              {/* bottom padding is to offset the floating nav bar */}
+              <div className="px-4 pb-[calc(env(safe-area-inset-bottom)+3rem)] sm:px-0 sm:pb-0">
+                {children}
               </div>
-            </header>
-            <main>
-              <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                {/* Replace with your content */}
-                {/* bottom padding is to offset the floating nav bar */}
-                <div className="px-4 pb-[calc(env(safe-area-inset-bottom)+3rem)] sm:px-0 sm:pb-0">
-                  {children}
-                </div>
-                {/* /End replace */}
-              </div>
-            </main>
-          </div>
+              {/* /End replace */}
+            </div>
+          </main>
         </div>
+
         <FloatingNav />
       </SlotProvider>
     </>
