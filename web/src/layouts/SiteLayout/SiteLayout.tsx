@@ -132,7 +132,7 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
             currentUser={currentUser as ICurrentUser | null}
           />
 
-          <div className="pb-20 sm:pb-10">
+          <div className="bg-white pb-20 sm:pb-10">
             <header>
               <div className="w-screen">
                 <h1 className="text-3xl font-bold leading-tight tracking-tight text-gray-900">
@@ -170,7 +170,7 @@ export const DefaultHeader = ({
   byLine?: string
   shareButtonProps?: Omit<IShareButtonProps, 'customSize'>
 }) => (
-  <div className="mx-auto flex max-w-7xl flex-col px-4 pt-10 pb-5 sm:px-6 lg:px-8">
+  <div className="flex mx-auto max-w-7xl flex-col px-4 pt-10 pb-5 sm:px-6 lg:px-8">
     <div className="flex items-center justify-between space-x-5 lg:justify-start ">
       {title ? (
         <div className="flex gap-2">
@@ -219,7 +219,7 @@ const Header = ({
   }
 
   return (
-    <Disclosure as="nav" className=" bg-white">
+    <Disclosure as="nav" className="bg-white">
       {({ open }) => (
         <>
           <div className="mx-auto hidden max-w-7xl px-4 sm:block sm:px-6 lg:px-8">
@@ -306,7 +306,7 @@ const Header = ({
                 </div>
               )}
 
-              <div className="-mr-2 flex items-center sm:hidden">
+              <div className="flex -mr-2 items-center sm:hidden">
                 {/* Mobile menu button */}
                 <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                   <span className="sr-only">Open main menu</span>
