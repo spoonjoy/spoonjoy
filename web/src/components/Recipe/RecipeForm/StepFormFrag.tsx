@@ -1,5 +1,4 @@
 import { useDroppable } from '@dnd-kit/core'
-import { observer } from 'mobx-react-lite'
 
 import { FieldArrayWithId, HiddenField } from '@redwoodjs/forms'
 
@@ -88,4 +87,4 @@ const StepFormFrag = ({ recipeId, step }: StepFormFragProps) => {
   )
 }
 
-export default observer(StepFormFrag)
+export default StepFormFrag

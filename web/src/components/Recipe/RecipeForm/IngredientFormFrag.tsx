@@ -1,6 +1,5 @@
 import { useDraggable } from '@dnd-kit/core'
 import { Bars3Icon, MinusCircleIcon } from '@heroicons/react/24/outline'
-import { observer } from 'mobx-react-lite'
 
 import {
   NumberField,
@@ -159,4 +158,4 @@ const IngredientFormFrag = ({
   )
 }
 
-export default observer(IngredientFormFrag)
+export default IngredientFormFrag

@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { FieldError, Label, RegisterOptions } from '@redwoodjs/forms'
 
 import { classNames } from 'src/helpers/css'
@@ -56,7 +54,7 @@ const StyledFieldWrapper = ({
       >
         {children}
         {maxLength !== undefined && currentLength !== undefined && (
-          <div className="pointer-events-none absolute -inset-y-0 -right-4 flex w-2 items-center text-left text-sm text-gray-400">
+          <div className="flex pointer-events-none absolute -inset-y-0 -right-4 w-2 items-center text-left text-sm text-gray-400">
             {maxLength - currentLength}
           </div>
         )}
@@ -68,4 +66,4 @@ const StyledFieldWrapper = ({
   )
 }
 
-export default observer(StyledFieldWrapper)
+export default StyledFieldWrapper

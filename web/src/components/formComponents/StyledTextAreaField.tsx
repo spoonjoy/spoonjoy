@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { TextAreaField } from '@redwoodjs/forms'
 
 import StyledFieldWrapper, { StyledFieldProps } from './StyledFieldWrapper'
@@ -32,4 +30,4 @@ const StyledTextAreaField = ({
   )
 }
 
-export default observer(StyledTextAreaField)
+export default StyledTextAreaField

@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { PasswordField } from '@redwoodjs/forms'
 
 import StyledFieldWrapper, { StyledFieldProps } from './StyledFieldWrapper'
@@ -25,4 +23,4 @@ const StyledTextField = ({
   )
 }
 
-export default observer(StyledTextField)
+export default StyledTextField

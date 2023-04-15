@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { TextField } from '@redwoodjs/forms'
 
 import { classNames } from 'src/helpers/css'
@@ -56,4 +54,4 @@ const StyledTextField = React.forwardRef<
   }
 )
 
-export default observer(StyledTextField)
+export default StyledTextField

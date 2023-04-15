@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { NumberField } from '@redwoodjs/forms'
 
 import StyledFieldWrapper, { StyledFieldProps } from './StyledFieldWrapper'
@@ -25,4 +23,4 @@ const StyledNumberField = ({
   )
 }
 
-export default observer(StyledNumberField)
+export default StyledNumberField

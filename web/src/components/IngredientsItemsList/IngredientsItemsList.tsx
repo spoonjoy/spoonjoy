@@ -1,6 +1,5 @@
 import { BeakerIcon } from '@heroicons/react/20/solid'
 import { Square2StackIcon } from '@heroicons/react/20/solid'
-import { observer } from 'mobx-react-lite'
 
 import { classNames } from 'src/helpers/css'
 import { useStore } from 'src/stores/RootStore'
@@ -130,7 +129,7 @@ const IngredientsItemsList = ({
                     >
                       {itemInfo.itemLabel}
                     </div>
-                    <div className="ml-3 flex h-5 items-center">
+                    <div className="flex ml-3 h-5 items-center">
                       <input
                         id={`ingredient-${id}`}
                         name={`ingredient-${id}`}
@@ -216,4 +215,4 @@ const getStepOutputUseItemInfo = (
   }
 }
 
-export default observer(IngredientsItemsList)
+export default IngredientsItemsList
