@@ -10,6 +10,8 @@ import { Form, FormError, useForm, FormProvider } from '@redwoodjs/forms'
 import { navigate, routes } from '@redwoodjs/router'
 import { toast } from '@redwoodjs/web/dist/toast'
 
+import { ColumnLayoutFormSection } from 'src/components/formComponents/ColumnLayoutForm/ColumnLayoutFormSection'
+import { ColumnLayoutFormWrapper } from 'src/components/formComponents/ColumnLayoutForm/ColumnLayoutFormWrapper'
 import { getPersistedFormValuesAsDefaultValues } from 'src/components/formComponents/usePersistFormValues'
 import { classNames } from 'src/helpers/css'
 
@@ -92,9 +94,15 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
 
           {recipe && <HiddenField name={`recipeId`} defaultValue={recipe.id} />}
 
-          <RecipeBasicInfoFormFrag />
-
-          <StepsFormFrag />
+          <ColumnLayoutFormWrapper>
+            <ColumnLayoutFormSection
+              sectionTitle="recipe info"
+              sectionDescription="the most essential information about your recipe"
+            >
+              <RecipeBasicInfoFormFrag />
+            </ColumnLayoutFormSection>
+            <StepsFormFrag />
+          </ColumnLayoutFormWrapper>
 
           <ResetSubmitRecipeBtns
             loading={loading}

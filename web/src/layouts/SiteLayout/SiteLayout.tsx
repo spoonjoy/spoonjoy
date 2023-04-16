@@ -149,7 +149,7 @@ const SiteLayout = ({ children, bgColor = 'white' }: SiteLayoutProps) => {
             <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
               {/* Replace with your content */}
               {/* bottom padding is to offset the floating nav bar */}
-              <div className="px-4 pb-[calc(env(safe-area-inset-bottom)+3rem)] sm:px-0 sm:pb-0">
+              <div className="pb-[calc(env(safe-area-inset-bottom)+3rem)]sm:pb-0">
                 {children}
               </div>
               {/* /End replace */}

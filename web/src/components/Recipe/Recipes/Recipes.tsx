@@ -22,7 +22,7 @@ const Recipes = ({ recipes, withAddRecipeButton = false }: IRecipesProps) => {
     error,
   } = useMyCookbooksQuery({ username: currentUser?.username })
   return (
-    <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <ul className="grid grid-cols-1 gap-6 px-5 sm:grid-cols-2 sm:px-0 lg:grid-cols-3">
       {/* when loading, withMyCookbooksQuery will pass in an empty array (because undefined/null imply that it doesn't exist) */}
       {recipes && !loading ? (
         recipes.map((recipe) => (

@@ -4,6 +4,7 @@ import { cloneDeep } from 'lodash'
 import { useFieldArray, useFormContext } from '@redwoodjs/forms'
 
 import AddRemBtns from 'src/components/formComponents/AddRemBtns'
+import { ColumnLayoutFormSection } from 'src/components/formComponents/ColumnLayoutForm/ColumnLayoutFormSection'
 import { usePersistValuesOnChange } from 'src/components/formComponents/usePersistFormValues'
 
 import { IDraggableIngredientData } from './IngredientFormFrag'
@@ -82,12 +83,21 @@ const StepsFormFrag = () => {
     <DndContext onDragEnd={onDragEnd}>
       {steps.map((step) => {
         return (
-          <StepFormFrag
+          <ColumnLayoutFormSection
             key={step.id}
-            // key={`step-${step.stepNum}`}
-            recipeId={getValues('recipeId')}
-            step={step}
-          />
+            sectionTitle={`step ${step.stepNum} details`}
+            sectionDescription={
+              step.stepNum === 1
+                ? 'every step should have a description and use either at least one ingredient or the output of another step. you can drag ingredients between steps.'
+                : undefined
+            }
+          >
+            <StepFormFrag
+              // key={`step-${step.stepNum}`}
+              recipeId={getValues('recipeId')}
+              step={step}
+            />
+          </ColumnLayoutFormSection>
         )
       })}
 

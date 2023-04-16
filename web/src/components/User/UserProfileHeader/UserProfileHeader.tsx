@@ -9,7 +9,7 @@ const UserProfileHeader = ({ username }: { username: string }) => {
   const { currentUser } = useAuth()
   const isOwnProfile = currentUser?.username === username
   return (
-    <div className="pt-5 md:flex md:items-center md:justify-between md:space-x-5">
+    <div className="px-5 pt-5 sm:px-0 md:flex md:items-center md:justify-between md:space-x-5">
       <div className="flex items-start space-x-5">
         <div className="flex-shrink-0">
           <div className="relative">
