@@ -29,7 +29,7 @@ export const IngredientsFormFrag = ({ stepNum }: IIngredientsFormFragProps) => {
     : 0
 
   return (
-    <>
+    <div className="mx-5">
       <legend className="block text-sm font-medium text-gray-700">
         step {stepNum} ingredients
       </legend>
@@ -62,6 +62,6 @@ export const IngredientsFormFrag = ({ stepNum }: IIngredientsFormFragProps) => {
         } // need to have at least one ingredient or stepOutputUse
         containerClassName="pt-2"
       />
-    </>
+    </div>
   )
 }
