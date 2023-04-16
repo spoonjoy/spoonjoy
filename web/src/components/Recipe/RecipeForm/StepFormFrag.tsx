@@ -45,9 +45,9 @@ const StepFormFrag = ({ recipeId, step }: StepFormFragProps) => {
       >
         move to step {step.stepNum}
       </div>
-      <h2 className="block text-lg font-medium text-gray-700">
+      {/* <h2 className="block text-lg font-medium text-gray-700">
         step {stepNum}
-      </h2>
+      </h2> */}
       <div className="ml-3 mb-3">
         <StyledTextField
           fieldName={`steps.${stepNum - 1}.stepTitle`}

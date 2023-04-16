@@ -21,7 +21,7 @@ export const ColumnLayoutFormSection = ({
         </p>
       </div>
 
-      <div className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
+      <div className="overflow-clip bg-white p-5 shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2 md:p-8">
         {children}
       </div>
     </div>

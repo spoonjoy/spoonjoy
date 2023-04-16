@@ -13,7 +13,7 @@ const RecipeBasicInfoFormFrag = () => {
   const onChange = usePersistValuesOnChange()
 
   return (
-    <>
+    <div className="mr-6">
       <StyledTextField
         fieldName="title"
         label="title"
@@ -36,7 +36,7 @@ const RecipeBasicInfoFormFrag = () => {
         validation={{ valueAsNumber: true }}
         onChange={onChange}
       />
-    </>
+    </div>
   )
 }
 
