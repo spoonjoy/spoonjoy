@@ -38,13 +38,15 @@ const StepFormFrag = ({ recipeId, step }: StepFormFragProps) => {
   const { stepNum, description } = step
 
   return (
-    <div className={classNames('relative mb-3')} ref={setNodeRef}>
+    <div
+      className={classNames('form-section-padding relative mb-3')}
+      ref={setNodeRef}
+    >
       <div
-        // -left-7 is because of the negative margin for the delete btn
         className={classNames(
           'flex flex-col items-center justify-center bg-white/10 backdrop-blur-sm',
           isOver && !draggingStepNumIsThisStep
-            ? 'absolute top-0 -left-7 right-0 bottom-0 z-10'
+            ? 'absolute top-0 left-0 right-0 bottom-0 z-10 sm:rounded-xl'
             : 'hidden'
         )}
       >

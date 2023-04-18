@@ -13,7 +13,8 @@ const RecipeBasicInfoFormFrag = () => {
   const onChange = usePersistValuesOnChange()
 
   return (
-    <div className="mr-6">
+    // mr-6 is to make room for the character counter
+    <div className="form-section-padding mr-6">
       <StyledTextField
         fieldName="title"
         label="title"

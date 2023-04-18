@@ -115,6 +115,10 @@
   .form-field-error {
     @apply block w-full rounded-md border-red-300 pr-10 text-red-900 placeholder-red-200 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm
   }
+
+  .form-section-padding {
+    @apply p-5 md:p-8
+  }
 }
 
 .top-safe-cover {
