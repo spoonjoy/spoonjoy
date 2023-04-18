@@ -26,6 +26,8 @@ export interface StyledFieldWrapperProps {
   grow?: boolean
   /** Use this to make the field inline */
   inline?: boolean
+  /** Use this to mark that the field is optional */
+  markOptional?: boolean
 }
 const StyledFieldWrapper = ({
   children,
@@ -34,6 +36,7 @@ const StyledFieldWrapper = ({
   maxLength,
   currentLength,
   inline = false,
+  markOptional = false,
 }: StyledFieldWrapperProps) => {
   return (
     <div className={classNames(inline ? 'mr-10 flex-1' : 'mb-3')}>
@@ -44,6 +47,9 @@ const StyledFieldWrapper = ({
           errorClassName="block text-sm font-medium text-red-600"
         >
           {label}
+          {markOptional && (
+            <span className="text-xs uppercase text-gray-400"> - optional</span>
+          )}
         </Label>
       )}
       <div
@@ -54,7 +60,7 @@ const StyledFieldWrapper = ({
       >
         {children}
         {maxLength !== undefined && currentLength !== undefined && (
-          <div className="flex pointer-events-none absolute -inset-y-0 -right-4 w-2 items-center text-left text-sm text-gray-400">
+          <div className="pointer-events-none absolute -inset-y-0 -right-4 flex w-2 items-center text-left text-sm text-gray-400">
             {maxLength - currentLength}
           </div>
         )}

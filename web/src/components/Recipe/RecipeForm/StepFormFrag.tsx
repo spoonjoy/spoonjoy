@@ -57,7 +57,9 @@ const StepFormFrag = ({ recipeId, step }: StepFormFragProps) => {
         <StyledTextField
           fieldName={`steps.${stepNum - 1}.stepTitle`}
           label={`step ${stepNum} title`}
+          placeholder="Knead the dough like you mean it"
           onChange={onChange}
+          markOptional
         />
 
         <IngredientsFormFrag stepNum={stepNum} />
@@ -82,6 +84,7 @@ const StepFormFrag = ({ recipeId, step }: StepFormFragProps) => {
       <StyledTextAreaField
         fieldName={`steps.${stepNum - 1}.description`}
         label={`step ${step.stepNum} description`}
+        placeholder="Put on your favorite power ballad and start kneading the dough. Don't be shy - really get in there and show that dough who's boss. If you're feeling particularly aggressive, you can even punch it a few times. Just make sure it's nice and smooth before you move on to the next step."
         defaultValue={description}
         validation={{
           required: { value: true, message: 'description is required.' },

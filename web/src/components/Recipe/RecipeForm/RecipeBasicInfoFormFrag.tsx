@@ -17,6 +17,7 @@ const RecipeBasicInfoFormFrag = () => {
       <StyledTextField
         fieldName="title"
         label="title"
+        placeholder="Garlic Knots"
         validation={{ required: true, maxLength: MAX_TITLE_LENGTH }}
         maxLength={MAX_TITLE_LENGTH}
         currentLength={useWatch({ name: 'title' })?.length || 0}
@@ -25,16 +26,20 @@ const RecipeBasicInfoFormFrag = () => {
       <StyledTextAreaField
         fieldName="description"
         label="description"
+        placeholder="These garlicky, buttery knots are the perfect addition to any meal. Serve them warm and watch as your guests fight over the last one!"
         validation={{ maxLength: MAX_DESCRIPTION_LENGTH }}
         maxLength={MAX_DESCRIPTION_LENGTH}
         currentLength={useWatch({ name: 'description' })?.length || 0}
         onChange={onChange}
+        markOptional
       />
       <StyledNumberField
         fieldName="servings"
         label="servings"
+        placeholder="4"
         validation={{ valueAsNumber: true }}
         onChange={onChange}
+        markOptional
       />
     </div>
   )
