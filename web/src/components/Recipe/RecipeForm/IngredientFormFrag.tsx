@@ -57,6 +57,7 @@ const IngredientFormFrag = ({
     <div ref={setNodeRef} style={draggableStyle}>
       <div className="-ml-12 -mr-9 flex gap-1">
         <button
+          type="button"
           onClick={(e) => {
             e.preventDefault()
             removeFromIngredients(ingIdx)
@@ -138,7 +139,7 @@ const IngredientFormFrag = ({
           </div>
         </div>
 
-        <button {...listeners} {...attributes}>
+        <button type="button" {...listeners} {...attributes}>
           <span className="sr-only">move ingredient {ingIdx}</span>
           <Bars3Icon className="h-9 w-9 touch-none p-2 text-gray-400 hover:text-gray-500" />
         </button>
