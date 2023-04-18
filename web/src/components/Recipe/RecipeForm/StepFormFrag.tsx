@@ -27,10 +27,13 @@ const StepFormFrag = ({ recipeId, step }: StepFormFragProps) => {
     stepNum: step.stepNum,
   }
 
-  const { isOver, setNodeRef } = useDroppable({
+  const { isOver, setNodeRef, active } = useDroppable({
     id: `step-${step.id}`,
     data: droppableData,
   })
+
+  const draggingStepNum = (active?.data.current as IDroppableStepData)?.stepNum
+  const draggingStepNumIsThisStep = draggingStepNum === step.stepNum
 
   const { stepNum, description } = step
 
@@ -40,7 +43,9 @@ const StepFormFrag = ({ recipeId, step }: StepFormFragProps) => {
         // -left-7 is because of the negative margin for the delete btn
         className={classNames(
           'flex flex-col items-center justify-center bg-white/10 backdrop-blur-sm',
-          isOver ? 'absolute top-0 -left-7 right-0 bottom-0 z-10' : 'hidden'
+          isOver && !draggingStepNumIsThisStep
+            ? 'absolute top-0 -left-7 right-0 bottom-0 z-10'
+            : 'hidden'
         )}
       >
         move to step {step.stepNum}

@@ -10,7 +10,7 @@ export const ColumnLayoutFormSection = ({
   sectionDescription,
 }: IColumnLayoutFormSectionProps) => {
   return (
-    <div className="grid grid-cols-1 gap-x-8 gap-y-8 md:grid-cols-3">
+    <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
       {/* if first, need to add pt-10 */}
       <div className="px-4 sm:px-0">
         <h2 className="text-base font-semibold leading-7 text-gray-900">
@@ -21,7 +21,7 @@ export const ColumnLayoutFormSection = ({
         </p>
       </div>
 
-      <div className="overflow-clip bg-white p-5 shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2 md:p-8">
+      <div className="bg-white p-5 shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2 md:p-8">
         {children}
       </div>
     </div>
