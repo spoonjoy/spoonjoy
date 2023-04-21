@@ -33,7 +33,7 @@ const IngredientFormFrag = ({
 }: IngredientFormFragProps) => {
   const { quantity, unitName, ingredientName } = ingredient
 
-  const onChange = usePersistValuesOnChange()
+  const persistValues = usePersistValuesOnChange()
 
   const draggableData: IDraggableIngredientData = {
     stepNum,
@@ -61,6 +61,7 @@ const IngredientFormFrag = ({
           onClick={(e) => {
             e.preventDefault()
             removeFromIngredients(ingIdx)
+            persistValues()
           }}
         >
           <span className="sr-only">remove ingredient {ingIdx}</span>
@@ -88,7 +89,7 @@ const IngredientFormFrag = ({
                   required: { value: true, message: 'quantity is required.' },
                   valueAsNumber: true,
                 }}
-                onChange={onChange}
+                onChange={persistValues}
               />
             </div>
             <div>
@@ -107,7 +108,7 @@ const IngredientFormFrag = ({
                 validation={{
                   required: { value: true, message: 'unit is required.' },
                 }}
-                onChange={onChange}
+                onChange={persistValues}
               />
             </div>
             <div>
@@ -133,7 +134,7 @@ const IngredientFormFrag = ({
                     message: 'ingredient name is required.',
                   },
                 }}
-                onChange={onChange}
+                onChange={persistValues}
               />
             </div>
           </div>
