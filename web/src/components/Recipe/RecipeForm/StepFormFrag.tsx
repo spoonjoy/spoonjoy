@@ -1,4 +1,5 @@
 import { useDroppable } from '@dnd-kit/core'
+import { ArrowDownIcon } from '@heroicons/react/24/outline'
 
 import { FieldArrayWithId, HiddenField } from '@redwoodjs/forms'
 
@@ -39,18 +40,24 @@ const StepFormFrag = ({ recipeId, step }: StepFormFragProps) => {
 
   return (
     <div
-      className={classNames('form-section-padding relative mb-3')}
+      className={classNames('form-section-padding relative')}
       ref={setNodeRef}
     >
       <div
         className={classNames(
-          'flex flex-col items-center justify-center bg-white/10 backdrop-blur-sm',
+          'flex flex-col items-center justify-center gap-2 border-4 border-dashed border-gray-900/30 bg-white/60 backdrop-blur-[3px] sm:rounded-xl',
           isOver && !draggingStepNumIsThisStep
-            ? 'absolute top-0 left-0 right-0 bottom-0 z-10 sm:rounded-xl'
+            ? 'absolute top-0 left-0 right-0 bottom-0 z-10'
             : 'hidden'
         )}
       >
-        move to step {step.stepNum}
+        <ArrowDownIcon
+          className="h-10 w-10 text-gray-800 sm:h-8 sm:w-8"
+          aria-hidden="true"
+        />
+        <span className="text-3xl font-medium text-gray-800 sm:text-xl">
+          move to step {step.stepNum}
+        </span>
       </div>
       {/* <h2 className="block text-lg font-medium text-gray-700">
         step {stepNum}
@@ -59,7 +66,7 @@ const StepFormFrag = ({ recipeId, step }: StepFormFragProps) => {
         <StyledTextField
           fieldName={`steps.${stepNum - 1}.stepTitle`}
           label={`step ${stepNum} title`}
-          placeholder="Knead the dough like you mean it"
+          placeholder="Kneaded dough"
           onChange={onChange}
           markOptional
         />
