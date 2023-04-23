@@ -1,11 +1,7 @@
 import { Configuration, OpenAIApi } from 'openai'
-import {
-  CreateIngredientInput,
-  IngredientParse,
-  QueryResolvers,
-} from 'types/graphql'
+import { CreateIngredientInput, QueryResolvers } from 'types/graphql'
 
-import { RedwoodGraphQLError } from '@redwoodjs/graphql-server'
+import { RedwoodError } from '@redwoodjs/api'
 
 /** GPT sometimes doesn't understand that we want floats, not fractions. */
 export const replaceFractionsWithFloats = (str: string): string => {
@@ -26,6 +22,31 @@ export const replaceFractionsWithFloats = (str: string): string => {
   return result
 }
 
+const ingredientCompletionToCreateIngredientInput = (
+  str: string
+): CreateIngredientInput => {
+  try {
+    const asJson = JSON.parse(
+      replaceFractionsWithFloats(str)
+    ) as CreateIngredientInput
+    try {
+      return {
+        ingredientName: asJson.ingredientName || '',
+        quantity: asJson.quantity || 0,
+        unitName: asJson.unitName || '',
+      }
+    } catch {
+      throw new RedwoodError(
+        `Unable to parse CreateIngredientInput JSON from ${asJson}`
+      )
+    }
+  } catch {
+    throw new RedwoodError(
+      `Failed to parse ingredient completion string to JSON, input was: ${str}`
+    )
+  }
+}
+
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_KEY,
 })
@@ -39,25 +60,7 @@ export const parseIngredient: QueryResolvers['parseIngredient'] = async ({
 
   const jsonStr = response?.data.choices[0].text || '{}'
 
-  try {
-    const asJson = JSON.parse(replaceFractionsWithFloats(jsonStr))
-    try {
-      return {
-        ingredientName: asJson.ingredientName || '',
-        quantity: asJson.quantity || 0,
-        unitName: asJson.unitName || '',
-        rawJsonReturned: JSON.stringify(jsonStr),
-      } as IngredientParse
-    } catch (error) {
-      throw new RedwoodGraphQLError(
-        `Couldn't parse input ${input}, got ${asJson}`
-      )
-    }
-  } catch {
-    return {
-      rawJsonReturned: jsonStr,
-    }
-  }
+  return ingredientCompletionToCreateIngredientInput(jsonStr)
 }
 
 export const parseIngredients = async (
@@ -72,14 +75,7 @@ export const parseIngredients = async (
 
   const asJsons = jsonStrs
     .map((jsonStr) => {
-      try {
-        const asJson = JSON.parse(jsonStr)
-        return asJson as CreateIngredientInput
-      } catch {
-        console.error(
-          `Couldn't parse ingredient output ${JSON.stringify(jsonStr)}`
-        )
-      }
+      return ingredientCompletionToCreateIngredientInput(jsonStr)
     })
     .filter((json) => json !== undefined) as CreateIngredientInput[]
 
@@ -108,7 +104,7 @@ export const getIngredientCompletions = async (ingredients: string[]) => {
     console.error(
       `Couldn't get completion for ingredients ${JSON.stringify(
         ingredients
-      )}. Error: ${error.message}`
+      )}. Error: ${(error as Error).message}`
     )
   }
 }
