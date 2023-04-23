@@ -1,5 +1,5 @@
 import { Configuration, OpenAIApi } from 'openai'
-import { CreateIngredientInput, QueryResolvers } from 'types/graphql'
+import { IngredientInputType, QueryResolvers } from 'types/graphql'
 
 import { RedwoodError } from '@redwoodjs/api'
 
@@ -22,13 +22,13 @@ export const replaceFractionsWithFloats = (str: string): string => {
   return result
 }
 
-const ingredientCompletionToCreateIngredientInput = (
+const ingredientCompletionToIngredientInputType = (
   str: string
-): CreateIngredientInput => {
+): IngredientInputType => {
   try {
     const asJson = JSON.parse(
       replaceFractionsWithFloats(str)
-    ) as CreateIngredientInput
+    ) as IngredientInputType
     try {
       return {
         ingredientName: asJson.ingredientName || '',
@@ -37,7 +37,7 @@ const ingredientCompletionToCreateIngredientInput = (
       }
     } catch {
       throw new RedwoodError(
-        `Unable to parse CreateIngredientInput JSON from ${asJson}`
+        `Unable to parse IngredientInputType JSON from ${asJson}`
       )
     }
   } catch {
@@ -60,12 +60,12 @@ export const parseIngredient: QueryResolvers['parseIngredient'] = async ({
 
   const jsonStr = response?.data.choices[0].text || '{}'
 
-  return ingredientCompletionToCreateIngredientInput(jsonStr)
+  return ingredientCompletionToIngredientInputType(jsonStr)
 }
 
 export const parseIngredients = async (
   ingredients: string[]
-): Promise<CreateIngredientInput[]> => {
+): Promise<IngredientInputType[]> => {
   const response = await getIngredientCompletions(ingredients)
 
   const jsonStrs =
@@ -75,9 +75,9 @@ export const parseIngredients = async (
 
   const asJsons = jsonStrs
     .map((jsonStr) => {
-      return ingredientCompletionToCreateIngredientInput(jsonStr)
+      return ingredientCompletionToIngredientInputType(jsonStr)
     })
-    .filter((json) => json !== undefined) as CreateIngredientInput[]
+    .filter((json) => json !== undefined) as IngredientInputType[]
 
   return asJsons
 }
