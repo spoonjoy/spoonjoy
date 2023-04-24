@@ -1,5 +1,6 @@
 import { useDraggable } from '@dnd-kit/core'
 import { Bars3Icon, MinusCircleIcon } from '@heroicons/react/24/outline'
+import { PencilIcon } from '@heroicons/react/24/solid'
 import { CreateIngredientInput } from 'types/graphql'
 
 import {
@@ -29,6 +30,8 @@ export interface IDraggableIngredientData {
   stepNum: number
   ingIdx: number
 }
+
+const btnClassName = 'mt-4 h-5 w-[10%] sm:w-[5%]'
 
 const IngredientFormFrag = ({
   stepNum,
@@ -62,7 +65,7 @@ const IngredientFormFrag = ({
     <div ref={setNodeRef} style={draggableStyle}>
       <div className="flex gap-1">
         <button
-          className="w-[10%] sm:w-[5%]"
+          className={btnClassName}
           type="button"
           onClick={(e) => {
             e.preventDefault()
@@ -76,8 +79,8 @@ const IngredientFormFrag = ({
 
         <div
           className={classNames(
-            'relative mt-2  w-[80%] transition-all sm:w-[90%]',
-            usingManualInput ? 'h-[6rem]' : 'h-[4.3rem]'
+            'relative mt-2 w-[70%] transition-all sm:w-[85%]',
+            usingManualInput ? 'h-[5.2rem]' : 'h-[3.7rem]'
           )}
         >
           <div className="absolute w-full">
@@ -87,7 +90,7 @@ const IngredientFormFrag = ({
           <div
             className={classNames(
               'absolute w-full transition-all',
-              usingManualInput ? 'top-12' : 'top-0'
+              usingManualInput ? 'top-11' : 'top-0'
             )}
           >
             <IngredientFormFragManualInput
@@ -100,7 +103,18 @@ const IngredientFormFrag = ({
 
         <button
           type="button"
-          className="w-[10%] sm:w-[5%]"
+          className={btnClassName}
+          onClick={() => setUsingManualInput(!usingManualInput)}
+        >
+          <span className="sr-only">
+            toggle manual input for ingredient {ingIdx}
+          </span>
+          <PencilIcon className="m-auto mb-5 h-5 w-5 text-gray-400 hover:text-gray-500" />
+        </button>
+
+        <button
+          type="button"
+          className={btnClassName}
           {...listeners}
           {...attributes}
         >

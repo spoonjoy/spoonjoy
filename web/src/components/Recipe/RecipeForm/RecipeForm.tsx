@@ -68,7 +68,7 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
   })
   const { control, reset } = formMethods
 
-  const onSubmit = (data: FormUpdateRecipe | FormCreateRecipe) => {
+  const onSubmit = (data: RecipeFormType) => {
     console.log('onSubmit data:', data)
     setShowLoadingScreen(true)
 
@@ -91,7 +91,7 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
     <FormProvider {...formMethods}>
       {showLoadingScreen && <RecipeSaveLoading />}
       <div className={classNames(showLoadingScreen && 'h-0 overflow-hidden')}>
-        <Form<FormUpdateRecipe | FormCreateRecipe>
+        <Form<RecipeFormType>
           formMethods={formMethods}
           onSubmit={onSubmit}
           error={error}

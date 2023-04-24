@@ -65,14 +65,14 @@ export const IngredientFormFragParsedInput = ({
           onChange={debouncedOnInputChange}
           placeholder="half cup flour"
         />
-        <div className="-mt-2 flex items-center gap-1.5 pl-2 text-sm text-gray-500">
-          {ingFields.quantity || ''}
-          &nbsp;&nbsp;
-          {ingFields.unitName}
-          &nbsp;&nbsp;
-          {ingFields.ingredientName}
-          {loading && <LoadingSpinner className="h-3.5 w-3.5" />}
-        </div>
+      </div>
+      <div className="-mt-2 flex items-center gap-1.5 pl-2 text-sm text-gray-500">
+        {ingFields.quantity || ''}
+        &nbsp;&nbsp;
+        {ingFields.unitName}
+        &nbsp;&nbsp;
+        {ingFields.ingredientName}
+        {loading && <LoadingSpinner className="h-3.5 w-3.5" />}
       </div>
     </>
   )
