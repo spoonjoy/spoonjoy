@@ -71,7 +71,7 @@ const IngredientFormFrag = ({
           }}
         >
           <span className="sr-only">remove ingredient {ingIdx}</span>
-          <MinusCircleIcon className="m-auto h-5 w-5 text-red-800 hover:text-red-500" />
+          <MinusCircleIcon className="m-auto mb-5 h-5 w-5 text-red-800 hover:text-red-500" />
         </button>
 
         <div
@@ -105,7 +105,7 @@ const IngredientFormFrag = ({
           {...attributes}
         >
           <span className="sr-only">move ingredient {ingIdx}</span>
-          <Bars3Icon className="m-auto h-5 w-5 touch-none text-gray-400 hover:text-gray-500" />
+          <Bars3Icon className="m-auto mb-5 h-5 w-5 touch-none text-gray-400 hover:text-gray-500" />
         </button>
       </div>
 
