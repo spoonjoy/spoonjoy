@@ -1,5 +1,4 @@
 import { useLazyQuery } from '@apollo/client'
-import { debounce } from 'lodash'
 import { IngredientParseQuery } from 'types/graphql'
 
 const INGREDIENT_PARSE_QUERY = gql`
@@ -12,22 +11,18 @@ const INGREDIENT_PARSE_QUERY = gql`
   }
 `
 
-interface IUseIngredientParseQuery {
-  input: string
-}
-
-export const useIngredientParseQuery = ({
-  input,
-}: IUseIngredientParseQuery) => {
+export const useIngredientParseQuery = (
+  onComplete?: (data: IngredientParseQuery) => void
+) => {
   const [parseIngredient, { data, loading, error }] =
     useLazyQuery<IngredientParseQuery>(INGREDIENT_PARSE_QUERY, {
-      variables: { input },
+      onCompleted: (data) => {
+        onComplete && onComplete(data)
+      },
     })
 
-  const debouncedParseIngredient = debounce(parseIngredient, 1000)
-
   return {
-    parseIngredient: debouncedParseIngredient,
+    parseIngredient,
     data: data?.parseIngredient,
     loading,
     error,

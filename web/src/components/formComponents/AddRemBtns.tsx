@@ -1,5 +1,7 @@
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline'
 
+import { usePersistValuesOnChange } from './usePersistFormValues'
+
 interface AddRemBtnsProps {
   id: string
   itemName: string
@@ -16,11 +18,15 @@ const AddRemBtns = ({
   canRem,
   containerClassName,
 }: AddRemBtnsProps) => {
+  const persistValues = usePersistValuesOnChange()
   return (
     <div id={id} className={containerClassName}>
       <span className="isolate inline-flex rounded-md shadow-sm">
         <button
-          onClick={onAdd}
+          onClick={() => {
+            onAdd()
+            persistValues()
+          }}
           type="button"
           className="relative inline-flex items-center rounded-l-md border border-green-800 border-r-gray-500 border-opacity-25 bg-white px-4 py-2 text-sm font-medium text-green-700 hover:bg-gray-50 hover:shadow-md focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
         >
@@ -29,7 +35,10 @@ const AddRemBtns = ({
           {itemName}
         </button>
         <button
-          onClick={onRem}
+          onClick={() => {
+            onRem()
+            persistValues()
+          }}
           type="button"
           className="relative -ml-px inline-flex items-center rounded-r-md border bg-white px-4 py-2 text-sm font-medium focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 enabled:border-red-800 enabled:border-l-gray-500 enabled:border-opacity-25 enabled:text-red-700 enabled:hover:bg-gray-50 enabled:hover:shadow-md disabled:border-gray-300 disabled:text-gray-500"
           disabled={!canRem}

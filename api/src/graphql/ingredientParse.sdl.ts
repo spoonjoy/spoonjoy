@@ -8,6 +8,6 @@ export const schema = gql`
     ingredientName: String!
   }
   type Query {
-    parseIngredient(input: String!): IngredientInputType @requireAuth
+    parseIngredient(input: String!): IngredientInputType! @requireAuth
   }
 `

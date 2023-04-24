@@ -10,6 +10,7 @@ import {
 import { usePersistValuesOnChange } from 'src/components/formComponents/usePersistFormValues'
 
 import { IngredientFormFragManualInput } from './IngredientFormFragManualInput'
+import { IngredientFormFragParsedInput } from './IngredientFormFragParsedInput'
 
 import { RecipeFormType } from '.'
 
@@ -65,6 +66,8 @@ const IngredientFormFrag = ({
           <span className="sr-only">remove ingredient {ingIdx}</span>
           <MinusCircleIcon className="h-9 w-9 p-2 text-red-800 hover:text-red-500" />
         </button>
+
+        <IngredientFormFragParsedInput stepNum={stepNum} ingIdx={ingIdx} />
 
         <IngredientFormFragManualInput
           stepNum={stepNum}
