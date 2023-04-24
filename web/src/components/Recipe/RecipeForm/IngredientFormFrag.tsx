@@ -2,8 +2,6 @@ import { useDraggable } from '@dnd-kit/core'
 import { Bars3Icon, MinusCircleIcon } from '@heroicons/react/24/outline'
 
 import {
-  NumberField,
-  TextField,
   FieldError,
   FieldArrayWithId,
   UseFieldArrayRemove,
