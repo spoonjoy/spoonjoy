@@ -37,9 +37,6 @@ const IngredientFormFrag = ({
   removeFromIngredients,
 }: IngredientFormFragProps) => {
   const persistValues = usePersistValuesOnChange()
-  const ingFields = useWatch<RecipeFormType>({
-    name: `steps.${stepNum - 1}.ingredients.${ingIdx}`,
-  }) as CreateIngredientInput
 
   const [usingManualInput, setUsingManualInput] = React.useState(false)
 
@@ -84,17 +81,7 @@ const IngredientFormFrag = ({
           )}
         >
           <div className="absolute w-full">
-            <div className="relative z-20">
-              <IngredientFormFragParsedInput
-                stepNum={stepNum}
-                ingIdx={ingIdx}
-              />
-            </div>
-            <div className="-mt-2 flex items-center gap-1.5 pl-2 text-sm text-gray-500">
-              {ingFields.quantity || ''} {ingFields.unitName}{' '}
-              {ingFields.ingredientName}
-              <LoadingSpinner className="h-3.5 w-3.5" />
-            </div>
+            <IngredientFormFragParsedInput stepNum={stepNum} ingIdx={ingIdx} />
           </div>
 
           <div

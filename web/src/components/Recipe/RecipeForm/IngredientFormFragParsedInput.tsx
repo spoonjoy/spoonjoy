@@ -1,10 +1,12 @@
 import { debounce } from 'lodash'
+import { CreateIngredientInput } from 'types/graphql'
 
-import { useFormContext } from '@redwoodjs/forms'
+import { useFormContext, useWatch } from '@redwoodjs/forms'
 
 import StyledTextField from 'src/components/formComponents/StyledTextField'
 import { usePersistValuesOnChange } from 'src/components/formComponents/usePersistFormValues'
 import { useIngredientParseQuery } from 'src/components/Ingredient/useIngredientParseLazyQuery'
+import LoadingSpinner from 'src/components/Loading/LoadingSpinner'
 
 import { RecipeFormType } from '.'
 
@@ -20,6 +22,10 @@ export const IngredientFormFragParsedInput = ({
   const ingFieldNamePrefix = `steps.${
     stepNum - 1
   }.ingredients.${ingIdx}` as const
+
+  const ingFields = useWatch<RecipeFormType>({
+    name: ingFieldNamePrefix,
+  }) as CreateIngredientInput
 
   const { setValue } = useFormContext<RecipeFormType>()
   const persistValues = usePersistValuesOnChange()
@@ -52,10 +58,19 @@ export const IngredientFormFragParsedInput = ({
   const debouncedOnInputChange = debounce(onInputChange, 1000)
 
   return (
-    <StyledTextField
-      fieldName={`${ingFieldNamePrefix}.rawIngredientInput`}
-      onChange={debouncedOnInputChange}
-      placeholder="half cup flour"
-    />
+    <>
+      <div className="relative z-20">
+        <StyledTextField
+          fieldName={`${ingFieldNamePrefix}.rawIngredientInput`}
+          onChange={debouncedOnInputChange}
+          placeholder="half cup flour"
+        />
+        <div className="-mt-2 flex items-center gap-1.5 pl-2 text-sm text-gray-500">
+          {ingFields.quantity || ''} {ingFields.unitName}{' '}
+          {ingFields.ingredientName}
+          {loading && <LoadingSpinner className="h-3.5 w-3.5" />}
+        </div>
+      </div>
+    </>
   )
 }
