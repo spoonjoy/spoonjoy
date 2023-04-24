@@ -19,7 +19,7 @@ export const IngredientFormFragManualInput = ({
 
   const persistValues = usePersistValuesOnChange()
   return (
-    <div className="mt-1 max-w-sm rounded-md shadow-sm">
+    <div>
       <div className="flex -space-x-px">
         <div>
           <label
