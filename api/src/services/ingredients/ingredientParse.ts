@@ -25,6 +25,13 @@ export const replaceFractionsWithFloats = (str: string): string => {
 const ingredientCompletionToIngredientInputType = (
   str: string
 ): IngredientInputType => {
+  const MIN_INPUT_LENGTH = 4 // this is arbitrary but i figured the smallest you could have is, eg, '1g a' (where 'a' is some ingredient name - are there any 1 letter ingredient names? feh)
+  if (str.length < MIN_INPUT_LENGTH) {
+    throw new RedwoodError(
+      `Ingredient completion string is too short, input was: ${str}`
+    )
+  }
+
   try {
     const asJson = JSON.parse(
       replaceFractionsWithFloats(str)
@@ -37,7 +44,7 @@ const ingredientCompletionToIngredientInputType = (
       }
     } catch {
       throw new RedwoodError(
-        `Unable to parse IngredientInputType JSON from ${asJson}`
+        `Unable to parse IngredientInputType JSON from ${asJson} from input ${str}`
       )
     }
   } catch {
