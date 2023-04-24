@@ -21,15 +21,26 @@ import RecipeBasicInfoFormFrag from './RecipeBasicInfoFormFrag'
 import ResetSubmitRecipeBtns from './ResetSubmitRecipeBtns'
 import StepsFormFrag from './StepsFormFrag'
 
+type IngredientWithRawIngredientInput = {
+  steps: Array<{
+    ingredients: Array<{
+      rawIngredientInput?: string | null
+    }>
+  }>
+}
+
 export type FormUpdateRecipe = NonNullable<UpdateRecipeInput>
 export type FormCreateRecipe = NonNullable<CreateRecipeInput>
-export type RecipeFormType = FormUpdateRecipe | FormCreateRecipe
+export type RecipeFormType =
+  | FormUpdateRecipe
+  | FormCreateRecipe
+  | IngredientWithRawIngredientInput
 
 const emptyRecipeFormValues: RecipeFormType = {
   title: '',
   description: '',
   servings: NaN,
-  steps: [],
+  steps: [{ ingredients: [{ rawIngredientInput: '' }] }],
 }
 
 export type RecipeFormControl = Control<
