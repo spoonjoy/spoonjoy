@@ -25,6 +25,10 @@ export const schema = gql`
     quantity: Float!
     unitName: String!
     ingredientName: String!
+    """
+    This is not currently used by the resolver, which will eventually be updated to allow for this item to be used to create the ingredient so that the client doesn't need to parse it itself.
+    """
+    rawIngredientInput: String
   }
 
   input UpdateIngredientInput {
@@ -34,6 +38,10 @@ export const schema = gql`
     quantity: Float!
     unitName: String!
     ingredientName: String!
+    """
+    This is not currently used by the resolver, which will eventually be updated to allow for this item to be used to update the ingredient so that the client doesn't need to parse it itself.
+    """
+    rawIngredientInput: String
   }
 
   # type Mutation {
