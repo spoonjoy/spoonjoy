@@ -112,37 +112,21 @@ const IngredientsItemsList = ({
                 case 'recipeIngredients':
                   return <BeakerIcon {...iconProps} />
                 case 'stepOutputUses':
+                default:
                   return <Square2StackIcon {...iconProps} />
               }
             })()
 
             return (
-              <li key={itemInfo.key}>
-                <button className="h-full w-full py-4" onClick={onCheck}>
-                  <span className="flex h-full w-full items-center">
-                    {itemIcon}
-                    <div
-                      className={`min-w-0 flex-1 text-start text-sm ${
-                        selected
-                          ? 'text-gray-400 line-through decoration-indigo-600 decoration-2'
-                          : 'text-gray-700'
-                      }`}
-                    >
-                      {itemInfo.itemLabel}
-                    </div>
-                    <div className="ml-3 flex h-5 items-center">
-                      <input
-                        id={`ingredient-${id}`}
-                        name={`ingredient-${id}`}
-                        type="checkbox"
-                        checked={selected}
-                        onChange={onCheck}
-                        className="h-4 w-4 cursor-pointer rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                      />
-                    </div>
-                  </span>
-                </button>
-              </li>
+              <ListItem
+                key={itemInfo.key}
+                id={id}
+                itemInfo={itemInfo}
+                itemIcon={itemIcon}
+                selected={selected}
+                selectable
+                onCheck={onCheck}
+              />
             )
           })
         ) : (
@@ -174,6 +158,56 @@ const getIngredientItemInfo = (item: IIngredientItem) => {
       </span>
     ),
   }
+}
+
+interface IListItemProps {
+  uniqueId: string
+  itemInfo: {
+    key: string
+    itemLabel: JSX.Element
+  }
+  itemIcon: JSX.Element
+  selected: boolean
+  selectable?: boolean
+  onCheck?: () => void
+}
+
+const ListItem = ({
+  uniqueId,
+  itemInfo,
+  itemIcon,
+  selected,
+  selectable = false,
+  onCheck,
+}: IListItemProps) => {
+  return (
+    <li key={itemInfo.key}>
+      <button className="h-full w-full py-4" onClick={onCheck}>
+        <span className="flex h-full w-full items-center">
+          {itemIcon}
+          <div
+            className={`min-w-0 flex-1 text-start text-sm ${
+              selected
+                ? 'text-gray-400 line-through decoration-indigo-600 decoration-2'
+                : 'text-gray-700'
+            }`}
+          >
+            {itemInfo.itemLabel}
+          </div>
+          <div className="ml-3 flex h-5 items-center">
+            <input
+              id={`ingredient-${uniqueId}`}
+              name={`ingredient-${uniqueId}`}
+              type="checkbox"
+              checked={selected}
+              onChange={onCheck}
+              className="h-4 w-4 cursor-pointer rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+            />
+          </div>
+        </span>
+      </button>
+    </li>
+  )
 }
 
 const getShoppingListItemInfo = (item: IShoppingListItem) => {
