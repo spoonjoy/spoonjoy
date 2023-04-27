@@ -124,7 +124,7 @@ const IngredientsItemsList = ({
                 itemInfo={itemInfo}
                 itemIcon={itemIcon}
                 selected={selected}
-                // selectable
+                checkable
                 onCheck={onCheck}
               />
             )
@@ -168,7 +168,7 @@ interface IListItemProps {
   }
   itemIcon: JSX.Element
   selected: boolean
-  selectable?: boolean
+  checkable?: boolean
   onCheck?: () => void
 }
 
@@ -177,7 +177,7 @@ const ListItem = ({
   itemInfo,
   itemIcon,
   selected,
-  selectable = false,
+  checkable = false,
   onCheck,
 }: IListItemProps) => {
   return (
@@ -185,7 +185,7 @@ const ListItem = ({
       <button
         className="h-full w-full py-4"
         onClick={onCheck}
-        disabled={!selectable}
+        disabled={!checkable}
       >
         <span className="flex h-full w-full items-center">
           {itemIcon}
@@ -198,17 +198,18 @@ const ListItem = ({
           >
             {itemInfo.itemLabel}
           </div>
-          <div className="ml-3 flex h-5 items-center">
-            <input
-              id={`ingredient-${uniqueId}`}
-              name={`ingredient-${uniqueId}`}
-              type="checkbox"
-              checked={selected}
-              onChange={onCheck}
-              className="h-4 w-4 cursor-pointer rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-              disabled={!selectable}
-            />
-          </div>
+          {checkable && (
+            <div className="ml-3 flex h-5 items-center">
+              <input
+                id={`ingredient-${uniqueId}`}
+                name={`ingredient-${uniqueId}`}
+                type="checkbox"
+                checked={selected}
+                onChange={onCheck}
+                className="h-4 w-4 cursor-pointer rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+              />
+            </div>
+          )}
         </span>
       </button>
     </li>
