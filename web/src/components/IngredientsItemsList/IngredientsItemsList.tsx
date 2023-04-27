@@ -124,7 +124,7 @@ const IngredientsItemsList = ({
                 itemInfo={itemInfo}
                 itemIcon={itemIcon}
                 selected={selected}
-                selectable
+                // selectable
                 onCheck={onCheck}
               />
             )
@@ -182,7 +182,11 @@ const ListItem = ({
 }: IListItemProps) => {
   return (
     <li key={itemInfo.key}>
-      <button className="h-full w-full py-4" onClick={onCheck}>
+      <button
+        className="h-full w-full py-4"
+        onClick={onCheck}
+        disabled={!selectable}
+      >
         <span className="flex h-full w-full items-center">
           {itemIcon}
           <div
@@ -202,6 +206,7 @@ const ListItem = ({
               checked={selected}
               onChange={onCheck}
               className="h-4 w-4 cursor-pointer rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+              disabled={!selectable}
             />
           </div>
         </span>
