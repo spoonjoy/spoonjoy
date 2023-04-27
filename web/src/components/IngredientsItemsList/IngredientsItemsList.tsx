@@ -44,11 +44,13 @@ interface IStepItem {
 /** For casting on input */
 export type IStepInfoForList = IStepItem[]
 
+type ListType = 'recipeIngredients' | 'shoppingListItems' | 'stepOutputUses'
+
 interface IIngredientsItemsList {
   items?: (IIngredientItem | IStepOutputUseItem | null)[]
   /** This is used by stepOutputUses to get the step titles */
   steps?: IStepInfoForList
-  listType?: 'recipeIngredients' | 'shoppingListItems' | 'stepOutputUses'
+  listType?: ListType
 }
 
 // For use both when listing ingredients in a recipe and items in a shopping list
@@ -100,32 +102,15 @@ const IngredientsItemsList = ({
               }
             })()
 
-            const iconProps = {
-              className: `mr-3 h-5 w-5 ${
-                selected ? 'text-indigo-400' : 'text-indigo-600'
-              }`,
-              'aria-hidden': true,
-            }
-
-            const itemIcon = (() => {
-              switch (listType) {
-                case 'recipeIngredients':
-                  return <BeakerIcon {...iconProps} />
-                case 'stepOutputUses':
-                default:
-                  return <Square2StackIcon {...iconProps} />
-              }
-            })()
-
             return (
               <ListItem
                 key={itemInfo.key}
-                id={id}
+                uniqueId={id}
                 itemInfo={itemInfo}
-                itemIcon={itemIcon}
+                itemIcon={getItemIcon(listType, selected)}
                 selected={selected}
-                checkable
                 onCheck={onCheck}
+                checkable
               />
             )
           })
@@ -160,6 +145,27 @@ const getIngredientItemInfo = (item: IIngredientItem) => {
   }
 }
 
+const getItemIcon = (listType: ListType, selected?: boolean) => {
+  const iconProps = {
+    className: `mr-3 h-5 w-5 ${
+      selected ? 'text-indigo-400' : 'text-indigo-600'
+    }`,
+    'aria-hidden': true,
+  }
+
+  const itemIcon = (() => {
+    switch (listType) {
+      case 'recipeIngredients':
+        return <BeakerIcon {...iconProps} />
+      case 'stepOutputUses':
+      default:
+        return <Square2StackIcon {...iconProps} />
+    }
+  })()
+
+  return itemIcon
+}
+
 interface IListItemProps {
   uniqueId: string
   itemInfo: {
@@ -167,7 +173,7 @@ interface IListItemProps {
     itemLabel: JSX.Element
   }
   itemIcon: JSX.Element
-  selected: boolean
+  selected?: boolean
   checkable?: boolean
   onCheck?: () => void
 }
