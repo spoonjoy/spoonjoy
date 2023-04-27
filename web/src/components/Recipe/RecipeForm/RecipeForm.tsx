@@ -40,7 +40,7 @@ const emptyRecipeFormValues: RecipeFormType = {
   title: '',
   description: '',
   servings: NaN,
-  steps: [{ ingredients: [{ rawIngredientInput: '' }] }],
+  steps: [],
 }
 
 export type RecipeFormControl = Control<
