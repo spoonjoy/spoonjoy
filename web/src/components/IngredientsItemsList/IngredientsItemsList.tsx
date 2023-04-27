@@ -104,10 +104,10 @@ const IngredientsItemsList = ({
 
             return (
               <ListItem
+                listType={listType}
                 key={itemInfo.key}
                 uniqueId={id}
                 itemInfo={itemInfo}
-                itemIcon={getItemIcon(listType, selected)}
                 selected={selected}
                 onCheck={onCheck}
                 checkable
@@ -145,43 +145,22 @@ const getIngredientItemInfo = (item: IIngredientItem) => {
   }
 }
 
-const getItemIcon = (listType: ListType, selected?: boolean) => {
-  const iconProps = {
-    className: `mr-3 h-5 w-5 ${
-      selected ? 'text-indigo-400' : 'text-indigo-600'
-    }`,
-    'aria-hidden': true,
-  }
-
-  const itemIcon = (() => {
-    switch (listType) {
-      case 'recipeIngredients':
-        return <BeakerIcon {...iconProps} />
-      case 'stepOutputUses':
-      default:
-        return <Square2StackIcon {...iconProps} />
-    }
-  })()
-
-  return itemIcon
-}
-
 interface IListItemProps {
+  listType: ListType
   uniqueId: string
   itemInfo: {
     key: string
     itemLabel: JSX.Element
   }
-  itemIcon: JSX.Element
   selected?: boolean
   checkable?: boolean
   onCheck?: () => void
 }
 
 const ListItem = ({
+  listType,
   uniqueId,
   itemInfo,
-  itemIcon,
   selected,
   checkable = false,
   onCheck,
@@ -194,7 +173,7 @@ const ListItem = ({
         disabled={!checkable}
       >
         <span className="flex h-full w-full items-center">
-          {itemIcon}
+          {getItemIcon(listType, selected)}
           <div
             className={`min-w-0 flex-1 text-start text-sm ${
               selected
@@ -220,6 +199,27 @@ const ListItem = ({
       </button>
     </li>
   )
+}
+
+const getItemIcon = (listType: ListType, selected?: boolean) => {
+  const iconProps = {
+    className: `mr-3 h-5 w-5 ${
+      selected ? 'text-indigo-400' : 'text-indigo-600'
+    }`,
+    'aria-hidden': true,
+  }
+
+  const itemIcon = (() => {
+    switch (listType) {
+      case 'recipeIngredients':
+        return <BeakerIcon {...iconProps} />
+      case 'stepOutputUses':
+      default:
+        return <Square2StackIcon {...iconProps} />
+    }
+  })()
+
+  return itemIcon
 }
 
 const getShoppingListItemInfo = (item: IShoppingListItem) => {
