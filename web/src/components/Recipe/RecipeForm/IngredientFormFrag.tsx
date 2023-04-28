@@ -80,7 +80,7 @@ const IngredientFormFrag = ({
         <div
           className={classNames(
             'relative mt-2 w-[70%] transition-all sm:w-[85%]',
-            usingManualInput ? 'h-[5.2rem]' : 'h-[3.7rem]'
+            usingManualInput ? 'h-[5.2rem]' : 'h-[5.2rem]'
           )}
         >
           <div className="absolute w-full">

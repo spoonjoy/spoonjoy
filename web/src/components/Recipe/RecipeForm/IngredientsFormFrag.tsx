@@ -29,7 +29,7 @@ export const IngredientsFormFrag = ({ stepNum }: IIngredientsFormFragProps) => {
     : 0
 
   return (
-    <div className="mx-5">
+    <div className="sm:mx-5">
       <legend className="block text-sm font-medium text-gray-700">
         step {stepNum} ingredients
       </legend>
@@ -60,7 +60,7 @@ export const IngredientsFormFrag = ({ stepNum }: IIngredientsFormFragProps) => {
           (stepOutputUsesLength >= 1 || ingredients.length > 1) &&
           ingredients.length > 0
         } // need to have at least one ingredient or stepOutputUse
-        containerClassName="pt-2"
+        containerClassName="pt-2 flex items-center justify-center"
       />
     </div>
   )

@@ -126,38 +126,16 @@ const IngredientsItemsList = ({
   )
 }
 
-const getIngredientItemInfo = (item: IIngredientItem) => {
-  const { quantity, unit, ingredientRef, id } = item
-  return {
-    key: `${quantity}-${unit.name}-${ingredientRef.name}`,
-    itemLabel: (
-      <span
-        id={`ingredient-${id}-label`}
-        className="flex select-none justify-between"
-      >
-        <span className="font-medium">{ingredientRef.name}</span>
-        <span className="font-normal">
-          {' '}
-          {quantity} {unit.name}{' '}
-        </span>
-      </span>
-    ),
-  }
-}
-
 interface IListItemProps {
   listType: ListType
   uniqueId: string
-  itemInfo: {
-    key: string
-    itemLabel: JSX.Element
-  }
+  itemInfo: IListItemInfo
   selected?: boolean
   checkable?: boolean
   onCheck?: () => void
 }
 
-const ListItem = ({
+export const ListItem = ({
   listType,
   uniqueId,
   itemInfo,
@@ -222,7 +200,33 @@ const getItemIcon = (listType: ListType, selected?: boolean) => {
   return itemIcon
 }
 
-const getShoppingListItemInfo = (item: IShoppingListItem) => {
+export interface IListItemInfo {
+  key: string
+  itemLabel: JSX.Element
+}
+
+export const getIngredientItemInfo = (item: IIngredientItem): IListItemInfo => {
+  const { quantity, unit, ingredientRef, id } = item
+  return {
+    key: `${quantity}-${unit.name}-${ingredientRef.name}`,
+    itemLabel: (
+      <span
+        id={`ingredient-${id}-label`}
+        className="flex select-none justify-between"
+      >
+        <span className="font-medium">{ingredientRef.name}</span>
+        <span className="font-normal">
+          {' '}
+          {quantity} {unit.name}{' '}
+        </span>
+      </span>
+    ),
+  }
+}
+
+export const getShoppingListItemInfo = (
+  item: IShoppingListItem
+): IListItemInfo => {
   const { quantity, unit, ingredientRef, id } = item
   return {
     key: `${ingredientRef.name}`,
@@ -243,10 +247,10 @@ const getShoppingListItemInfo = (item: IShoppingListItem) => {
   }
 }
 
-const getStepOutputUseItemInfo = (
+export const getStepOutputUseItemInfo = (
   item: IStepOutputUseItem,
   getStepTitle: (stepNum: number) => string | null | undefined
-) => {
+): IListItemInfo => {
   const { id, outputOfStep } = item
   const { stepNum } = outputOfStep
   const stepTitle = getStepTitle(stepNum)
