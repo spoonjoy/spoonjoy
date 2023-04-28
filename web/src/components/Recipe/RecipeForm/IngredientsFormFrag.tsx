@@ -2,6 +2,7 @@ import { useFieldArray, useFormContext, useWatch } from '@redwoodjs/forms'
 
 import AddRemBtns from 'src/components/formComponents/AddRemBtns'
 
+import { AddToIngsParsedInput } from './AddToIngsParsedInput'
 import IngredientFormFrag from './IngredientFormFrag'
 
 import { RecipeFormType } from '.'
@@ -33,19 +34,22 @@ export const IngredientsFormFrag = ({ stepNum }: IIngredientsFormFragProps) => {
       <legend className="block text-sm font-medium text-gray-700">
         step {stepNum} ingredients
       </legend>
-      {ingredients.map((ingredient, ingIdx) => {
-        return (
-          <IngredientFormFrag
-            key={ingredient.id}
-            // key={`step-${stepNum}-ingredient-${ingIdx}`}
-            stepNum={stepNum}
-            ingIdx={ingIdx}
-            ingredient={ingredient}
-            removeFromIngredients={removeFromIngredients}
-          />
-        )
-      })}
-      <AddRemBtns
+      <ul>
+        {ingredients.map((ingredient, ingIdx) => {
+          return (
+            <IngredientFormFrag
+              key={ingredient.id}
+              // key={`step-${stepNum}-ingredient-${ingIdx}`}
+              stepNum={stepNum}
+              ingIdx={ingIdx}
+              ingredient={ingredient}
+              removeFromIngredients={removeFromIngredients}
+            />
+          )
+        })}
+      </ul>
+      <AddToIngsParsedInput addToIngredients={addToIngredients} />
+      {/* <AddRemBtns
         id="add-rem-ings-btns"
         itemName="ingredient"
         onAdd={() => {
@@ -61,7 +65,7 @@ export const IngredientsFormFrag = ({ stepNum }: IIngredientsFormFragProps) => {
           ingredients.length > 0
         } // need to have at least one ingredient or stepOutputUse
         containerClassName="pt-2 flex items-center justify-center"
-      />
+      /> */}
     </div>
   )
 }

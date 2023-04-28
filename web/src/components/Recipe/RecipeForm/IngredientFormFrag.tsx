@@ -62,7 +62,7 @@ const IngredientFormFrag = ({
     : undefined
 
   return (
-    <div ref={setNodeRef} style={draggableStyle}>
+    <li ref={setNodeRef} style={draggableStyle}>
       <div className="flex gap-1">
         <button
           className={btnClassName}
@@ -78,16 +78,12 @@ const IngredientFormFrag = ({
         </button>
 
         <div
-          className={classNames(
-            'relative mt-2 w-[70%] transition-all sm:w-[85%]',
-            usingManualInput ? 'h-[5.2rem]' : 'h-[5.2rem]'
-          )}
+        // className={classNames(
+        //   'relative mt-2 w-[70%] transition-all sm:w-[85%]',
+        //   usingManualInput ? 'h-[5.2rem]' : 'h-[5.2rem]'
+        // )}
         >
-          <div className="absolute w-full">
-            <IngredientFormFragParsedInput stepNum={stepNum} ingIdx={ingIdx} />
-          </div>
-
-          <div
+          {/* <div
             className={classNames(
               'absolute w-full transition-all',
               usingManualInput ? 'top-11' : 'top-0'
@@ -98,7 +94,7 @@ const IngredientFormFrag = ({
               ingIdx={ingIdx}
               ingredient={ingredient}
             />
-          </div>
+          </div> */}
         </div>
 
         <button
@@ -137,7 +133,7 @@ const IngredientFormFrag = ({
           className="mt-1 text-sm text-red-600"
         />
       </div>
-    </div>
+    </li>
   )
 }
 

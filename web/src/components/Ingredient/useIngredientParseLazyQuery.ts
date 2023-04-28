@@ -1,4 +1,4 @@
-import { useLazyQuery } from '@apollo/client'
+import { useLazyQuery, ApolloError } from '@apollo/client'
 import { IngredientParseQuery } from 'types/graphql'
 
 const INGREDIENT_PARSE_QUERY = gql`
@@ -12,12 +12,16 @@ const INGREDIENT_PARSE_QUERY = gql`
 `
 
 export const useIngredientParseQuery = (
-  onComplete?: (data: IngredientParseQuery) => void
+  onComplete?: (data: IngredientParseQuery) => void,
+  onError?: (error: ApolloError) => void
 ) => {
   const [parseIngredient, { data, loading, error }] =
     useLazyQuery<IngredientParseQuery>(INGREDIENT_PARSE_QUERY, {
       onCompleted: (data) => {
         onComplete && onComplete(data)
+      },
+      onError: (error) => {
+        onError && onError(error)
       },
     })
 

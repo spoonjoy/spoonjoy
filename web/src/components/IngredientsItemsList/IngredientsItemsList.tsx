@@ -205,20 +205,33 @@ export interface IListItemInfo {
   itemLabel: JSX.Element
 }
 
-export const getIngredientItemInfo = (item: IIngredientItem): IListItemInfo => {
-  const { quantity, unit, ingredientRef, id } = item
+export const getIngredientItemInfo = (
+  item?: IIngredientItem,
+  placeholder?: string
+): IListItemInfo => {
+  const { quantity, unit, ingredientRef, id } = item || {}
   return {
-    key: `${quantity}-${unit.name}-${ingredientRef.name}`,
+    key: item
+      ? `${quantity}-${unit?.name}-${ingredientRef?.name}`
+      : placeholder || 'iteminfo-key',
     itemLabel: (
       <span
         id={`ingredient-${id}-label`}
         className="flex select-none justify-between"
       >
-        <span className="font-medium">{ingredientRef.name}</span>
-        <span className="font-normal">
-          {' '}
-          {quantity} {unit.name}{' '}
+        <span
+          className={classNames(
+            item !== undefined ? 'font-medium' : 'font-normal text-gray-500'
+          )}
+        >
+          {ingredientRef ? ingredientRef.name : placeholder}
         </span>
+        {quantity && unit && (
+          <span className="font-normal">
+            {' '}
+            {quantity} {unit.name}{' '}
+          </span>
+        )}
       </span>
     ),
   }

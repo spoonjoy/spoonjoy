@@ -8,6 +8,7 @@ import { usePersistValuesOnChange } from 'src/components/formComponents/usePersi
 import { useIngredientParseQuery } from 'src/components/Ingredient/useIngredientParseLazyQuery'
 import {
   getIngredientItemInfo,
+  IListItemInfo,
   ListItem,
 } from 'src/components/IngredientsItemsList/IngredientsItemsList'
 import LoadingSpinner from 'src/components/Loading/LoadingSpinner'
@@ -15,35 +16,47 @@ import LoadingSpinner from 'src/components/Loading/LoadingSpinner'
 import { RecipeFormType } from '.'
 
 interface IngredientFormFragParsedInputProps {
-  stepNum: number
-  ingIdx: number
+  uniqueId: string
+  setNewIngFields: React.Dispatch<
+    React.SetStateAction<CreateIngredientInput | undefined>
+  >
+  setNewIngItemInfo: React.Dispatch<React.SetStateAction<IListItemInfo>>
+  placeholderIngItemInfo: IListItemInfo
 }
 
 export const IngredientFormFragParsedInput = ({
-  stepNum,
-  ingIdx,
+  uniqueId,
+  setNewIngFields,
+  setNewIngItemInfo,
+  placeholderIngItemInfo,
 }: IngredientFormFragParsedInputProps) => {
-  const ingFieldNamePrefix = `steps.${
-    stepNum - 1
-  }.ingredients.${ingIdx}` as const
-
-  const ingFields = useWatch<RecipeFormType>({
-    name: ingFieldNamePrefix,
-  }) as CreateIngredientInput
-
-  const { setValue } = useFormContext<RecipeFormType>()
-  const persistValues = usePersistValuesOnChange()
-
   const { parseIngredient, loading, error } = useIngredientParseQuery(
     (data) => {
       console.log('parseIngredient:', data.parseIngredient)
       const { quantity, unitName, ingredientName } = data.parseIngredient
 
-      setValue(`${ingFieldNamePrefix}.quantity`, quantity)
-      setValue(`${ingFieldNamePrefix}.unitName`, unitName)
-      setValue(`${ingFieldNamePrefix}.ingredientName`, ingredientName)
+      setNewIngFields({
+        quantity,
+        unitName,
+        ingredientName,
+      })
 
-      persistValues()
+      setNewIngItemInfo(
+        getIngredientItemInfo({
+          id: uniqueId,
+          quantity,
+          unit: {
+            name: unitName,
+          },
+          ingredientRef: {
+            name: ingredientName,
+          },
+        })
+      )
+    },
+    () => {
+      setNewIngFields(undefined)
+      setNewIngItemInfo(placeholderIngItemInfo)
     }
   )
 
@@ -61,49 +74,17 @@ export const IngredientFormFragParsedInput = ({
 
   const debouncedOnInputChange = debounce(onInputChange, 1000)
 
-  const uniqueId = `step-${stepNum}-ing-${ingIdx}`
-
-  const shouldRenderListItemPreview =
-    !!ingFields.quantity && !!ingFields.unitName && !!ingFields.ingredientName
-
-  const itemInfo = shouldRenderListItemPreview
-    ? getIngredientItemInfo({
-        id: uniqueId,
-        quantity: ingFields.quantity,
-        unit: {
-          name: ingFields.unitName,
-        },
-        ingredientRef: {
-          name: ingFields.ingredientName,
-        },
-      })
-    : null
-
   return (
     <>
+      <div className="flex items-center gap-1.5 pl-2 text-sm text-gray-500">
+        {loading && <LoadingSpinner className="h-3.5 w-3.5" />}
+      </div>
       <div className="relative z-20">
         <StyledTextField
-          fieldName={`${ingFieldNamePrefix}.rawIngredientInput`}
+          fieldName={`${uniqueId}.rawIngredientInput`}
           onChange={debouncedOnInputChange}
           placeholder="half cup flour"
         />
-      </div>
-      <div className="-mt-5 flex items-center gap-1.5 pl-2 text-sm text-gray-500">
-        {itemInfo && (
-          <ul className="min-w-[200px]">
-            <ListItem
-              listType="recipeIngredients"
-              uniqueId={uniqueId}
-              itemInfo={itemInfo}
-            />
-          </ul>
-        )}
-        {/* {ingFields.quantity || ''}
-        &nbsp;&nbsp;
-        {ingFields.unitName}
-        &nbsp;&nbsp;
-        {ingFields.ingredientName} */}
-        {loading && <LoadingSpinner className="h-3.5 w-3.5" />}
       </div>
     </>
   )
