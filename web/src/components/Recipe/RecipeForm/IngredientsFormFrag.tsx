@@ -1,6 +1,7 @@
 import { useFieldArray, useFormContext, useWatch } from '@redwoodjs/forms'
 
 import AddRemBtns from 'src/components/formComponents/AddRemBtns'
+import { classNames } from 'src/helpers/css'
 
 import { AddToIngsParsedInput } from './AddToIngsParsedInput'
 import IngredientFormFrag from './IngredientFormFrag'
@@ -34,7 +35,12 @@ export const IngredientsFormFrag = ({ stepNum }: IIngredientsFormFragProps) => {
       <legend className="block text-sm font-medium text-gray-700">
         step {stepNum} ingredients
       </legend>
-      <ul>
+      <ul
+        className={classNames(
+          'divide-y',
+          ingredients.length ? 'divide-gray-200' : 'divide-gray-100'
+        )}
+      >
         {ingredients.map((ingredient, ingIdx) => {
           return (
             <IngredientFormFrag
