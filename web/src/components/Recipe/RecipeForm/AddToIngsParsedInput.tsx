@@ -18,12 +18,14 @@ interface IAddToIngsParsedInputProps {
     RecipeFormType,
     `steps.${number}.ingredients`
   >
+  stepNum: number
 }
 
 export const AddToIngsParsedInput = ({
   addToIngredients,
+  stepNum,
 }: IAddToIngsParsedInputProps) => {
-  const uniqueId = `ing-new`
+  const uniqueId = `step-${stepNum}-ing-new`
 
   const [newIngFields, setNewIngFields] = React.useState<
     CreateIngredientInput | undefined

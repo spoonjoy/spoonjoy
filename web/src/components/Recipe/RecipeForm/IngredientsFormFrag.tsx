@@ -61,7 +61,10 @@ export const IngredientsFormFrag = ({ stepNum }: IIngredientsFormFragProps) => {
           })}
         </ul>
       </fieldset>
-      <AddToIngsParsedInput addToIngredients={addToIngredients} />
+      <AddToIngsParsedInput
+        addToIngredients={addToIngredients}
+        stepNum={stepNum}
+      />
       {/* <AddRemBtns
         id="add-rem-ings-btns"
         itemName="ingredient"
