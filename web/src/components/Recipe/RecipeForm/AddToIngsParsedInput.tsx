@@ -51,7 +51,7 @@ export const AddToIngsParsedInput = ({
 
   return (
     <div className="mt-3 max-w-sm">
-      <ul>
+      <ul className="mr-5">
         <ListItem
           listType="recipeIngredients"
           uniqueId={fieldName}
