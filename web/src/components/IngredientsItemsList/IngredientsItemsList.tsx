@@ -3,6 +3,7 @@ import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities'
 import { BeakerIcon } from '@heroicons/react/20/solid'
 import { Square2StackIcon } from '@heroicons/react/20/solid'
 import { Bars3Icon, MinusCircleIcon } from '@heroicons/react/24/outline'
+import { PencilIcon } from '@heroicons/react/24/solid'
 import { observer } from 'mobx-react-lite'
 
 import { classNames } from 'src/helpers/css'
@@ -141,6 +142,11 @@ interface IDraggableListItemConfig {
   style: React.CSSProperties | undefined
 }
 
+interface IEditableListItemConfig {
+  isEditable: boolean
+  editInterface: JSX.Element
+}
+
 interface IListItemProps {
   /** Used to provide info about how the item should be rendered, eg what icon to use.  */
   listType: ListType
@@ -156,6 +162,7 @@ interface IListItemProps {
   onCheck?: () => void
   deletableConfig?: IDeletableListItemConfig
   draggableConfig?: IDraggableListItemConfig
+  editableConfig?: IEditableListItemConfig
 }
 
 export const ListItem = React.forwardRef<HTMLLIElement | null, IListItemProps>(
@@ -169,9 +176,11 @@ export const ListItem = React.forwardRef<HTMLLIElement | null, IListItemProps>(
       onCheck,
       deletableConfig,
       draggableConfig,
+      editableConfig,
     },
     ref
   ) => {
+    const [isEditing, setIsEditing] = React.useState(false)
     return (
       <li
         key={itemInfo.key}
@@ -179,6 +188,9 @@ export const ListItem = React.forwardRef<HTMLLIElement | null, IListItemProps>(
         style={draggableConfig && draggableConfig.style}
         className="flex gap-1"
       >
+        {isEditing &&
+          editableConfig?.isEditable &&
+          editableConfig.editInterface}
         {deletableConfig && deletableConfig.isDeletable && (
           <button
             className="mt-4 h-5"
@@ -219,6 +231,18 @@ export const ListItem = React.forwardRef<HTMLLIElement | null, IListItemProps>(
             )}
           </span>
         </button>
+        {editableConfig && editableConfig.isEditable && (
+          <button
+            type="button"
+            className="mt-4 h-5"
+            onClick={() => setIsEditing(!isEditing)}
+          >
+            <span className="sr-only">
+              toggle manual input for item {itemInfo.itemLabel}
+            </span>
+            <PencilIcon className="m-auto mb-5 h-5 w-5 text-gray-400 hover:text-gray-500" />
+          </button>
+        )}
         {draggableConfig && draggableConfig.isDraggable && (
           <button
             type="button"
