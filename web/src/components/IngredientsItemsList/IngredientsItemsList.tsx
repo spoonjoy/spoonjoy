@@ -188,9 +188,6 @@ export const ListItem = React.forwardRef<HTMLLIElement | null, IListItemProps>(
         style={draggableConfig && draggableConfig.style}
         className="flex gap-1"
       >
-        {isEditing &&
-          editableConfig?.isEditable &&
-          editableConfig.editInterface}
         {deletableConfig && deletableConfig.isDeletable && (
           <button
             className="mt-4 h-5"
@@ -201,36 +198,49 @@ export const ListItem = React.forwardRef<HTMLLIElement | null, IListItemProps>(
             <MinusCircleIcon className="m-auto mb-5 h-5 w-5 text-red-800 hover:text-red-500" />
           </button>
         )}
-        <button
-          className="h-full w-full py-4"
-          onClick={onCheck}
-          disabled={!checkable}
-        >
-          <span className="flex h-full w-full items-center">
-            {getItemIcon(listType, selected)}
-            <div
-              className={`min-w-0 flex-1 text-start text-sm ${
-                selected
-                  ? 'text-gray-400 line-through decoration-indigo-600 decoration-2'
-                  : 'text-gray-700'
-              }`}
-            >
-              {itemInfo.itemLabel}
-            </div>
-            {checkable && (
-              <div className="ml-3 flex h-5 items-center">
-                <input
-                  id={`ingredient-${uniqueId}`}
-                  name={`ingredient-${uniqueId}`}
-                  type="checkbox"
-                  checked={selected}
-                  onChange={onCheck}
-                  className="h-4 w-4 cursor-pointer rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                />
-              </div>
+        <div className="relative flex h-14 w-full items-center">
+          <div
+            className={classNames(
+              'absolute w-full transition-all',
+              isEditing ? 'visible' : 'invisible opacity-0'
             )}
-          </span>
-        </button>
+          >
+            {editableConfig?.editInterface}
+          </div>
+          <button
+            className={classNames(
+              'absolute w-full py-4 transition-all',
+              isEditing ? 'invisible opacity-0' : 'visible'
+            )}
+            onClick={onCheck}
+            disabled={!checkable}
+          >
+            <span className="flex h-full w-full items-center">
+              {getItemIcon(listType, selected)}
+              <div
+                className={`min-w-0 flex-1 text-start text-sm ${
+                  selected
+                    ? 'text-gray-400 line-through decoration-indigo-600 decoration-2'
+                    : 'text-gray-700'
+                }`}
+              >
+                {itemInfo.itemLabel}
+              </div>
+              {checkable && (
+                <div className="ml-3 flex h-5 items-center">
+                  <input
+                    id={`ingredient-${uniqueId}`}
+                    name={`ingredient-${uniqueId}`}
+                    type="checkbox"
+                    checked={selected}
+                    onChange={onCheck}
+                    className="h-4 w-4 cursor-pointer rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                  />
+                </div>
+              )}
+            </span>
+          </button>
+        </div>
         {editableConfig && editableConfig.isEditable && (
           <button
             type="button"
@@ -240,7 +250,7 @@ export const ListItem = React.forwardRef<HTMLLIElement | null, IListItemProps>(
             <span className="sr-only">
               toggle manual input for item {itemInfo.itemLabel}
             </span>
-            <PencilIcon className="m-auto mb-5 h-5 w-5 text-gray-400 hover:text-gray-500" />
+            <PencilIcon className="m-auto my-0.5 h-4 text-gray-400 hover:text-gray-500" />
           </button>
         )}
         {draggableConfig && draggableConfig.isDraggable && (
@@ -251,7 +261,7 @@ export const ListItem = React.forwardRef<HTMLLIElement | null, IListItemProps>(
             {...draggableConfig.attributes}
           >
             <span className="sr-only">move item {itemInfo.itemLabel}</span>
-            <Bars3Icon className="m-auto mb-5 h-5 w-5 touch-none text-gray-400 hover:text-gray-500" />
+            <Bars3Icon className="m-auto h-5 w-5 touch-none text-gray-400 hover:text-gray-500" />
           </button>
         )}
       </li>

@@ -67,9 +67,7 @@ const IngredientFormFrag = ({
 
   const uniqueId = `ing-${ingredient.id}`
 
-  const { quantity, unitName, ingredientName } = ingredient as
-    | CreateIngredientInput
-    | UpdateIngredientInput
+  const { quantity, unitName, ingredientName } = ingredient
 
   return (
     <>
