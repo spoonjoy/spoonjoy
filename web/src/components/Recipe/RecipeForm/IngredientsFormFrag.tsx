@@ -32,7 +32,7 @@ export const IngredientsFormFrag = ({ stepNum }: IIngredientsFormFragProps) => {
 
   return (
     <div className="sm:mx-5">
-      <legend className="block text-sm font-medium text-gray-700">
+      <legend className="mb-2 block text-sm font-medium text-gray-700">
         step {stepNum} ingredients
       </legend>
       <fieldset
