@@ -22,6 +22,7 @@ interface IngredientFormFragParsedInputProps {
   >
   setNewIngItemInfo: React.Dispatch<React.SetStateAction<IListItemInfo>>
   placeholderIngItemInfo: IListItemInfo
+  submitBtn?: JSX.Element
 }
 
 export const IngredientFormFragParsedInput = ({
@@ -29,6 +30,7 @@ export const IngredientFormFragParsedInput = ({
   setNewIngFields,
   setNewIngItemInfo,
   placeholderIngItemInfo,
+  submitBtn,
 }: IngredientFormFragParsedInputProps) => {
   const { parseIngredient, loading, error } = useIngredientParseQuery(
     (data) => {
@@ -75,17 +77,19 @@ export const IngredientFormFragParsedInput = ({
   const debouncedOnInputChange = debounce(onInputChange, 1000)
 
   return (
-    <>
-      <div className="relative z-20">
-        <StyledTextField
-          fieldName={fieldName}
-          onChange={debouncedOnInputChange}
-          placeholder="half cup flour"
-        />
-        <div className="absolute right-2 top-[50%] bottom-0 -translate-y-1/2">
-          {loading && <LoadingSpinner className="h-3.5 w-3.5" />}
-        </div>
+    <div className="relative z-20">
+      <StyledTextField
+        fieldName={fieldName}
+        onChange={debouncedOnInputChange}
+        placeholder="half cup flour"
+      />
+      <div className="absolute right-2 top-[50%] bottom-0 -translate-y-1/2">
+        {loading ? (
+          <LoadingSpinner className="h-3.5 w-3.5" />
+        ) : (
+          submitBtn && submitBtn
+        )}
       </div>
-    </>
+    </div>
   )
 }
