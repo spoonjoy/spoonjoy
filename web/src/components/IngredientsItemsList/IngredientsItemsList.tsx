@@ -127,57 +127,75 @@ const IngredientsItemsList = ({
 }
 
 interface IListItemProps {
+  /** Used to provide info about how the item should be rendered, eg what icon to use.  */
   listType: ListType
+  /** Used to provide a unique id for the item, eg for the checkbox. */
   uniqueId: string
+  /** The actual item info, including the  key and label. Use the ItemInfo helpers to get this, for example `getIngredientItemInfo`.  */
   itemInfo: IListItemInfo
+  /** Whether the item is selected. */
   selected?: boolean
+  /** Whether the checkbox is checkable. */
   checkable?: boolean
+  /** What to do when the checkbox is clicked. */
   onCheck?: () => void
+  /** Any extra styles to apply to the list item, especially useful if you're making this component draggable. */
+  style?: React.CSSProperties | undefined
+  /** An element to render before the item, horizontally. */
+  beforeElement?: JSX.Element
+  /** An element to render after the item, horizontally. */
+  afterElement?: JSX.Element
 }
 
-export const ListItem = ({
-  listType,
-  uniqueId,
-  itemInfo,
-  selected,
-  checkable = false,
-  onCheck,
-}: IListItemProps) => {
-  return (
-    <li key={itemInfo.key}>
-      <button
-        className="h-full w-full py-4"
-        onClick={onCheck}
-        disabled={!checkable}
-      >
-        <span className="flex h-full w-full items-center">
-          {getItemIcon(listType, selected)}
-          <div
-            className={`min-w-0 flex-1 text-start text-sm ${
-              selected
-                ? 'text-gray-400 line-through decoration-indigo-600 decoration-2'
-                : 'text-gray-700'
-            }`}
-          >
-            {itemInfo.itemLabel}
-          </div>
-          {checkable && (
-            <div className="ml-3 flex h-5 items-center">
-              <input
-                id={`ingredient-${uniqueId}`}
-                name={`ingredient-${uniqueId}`}
-                type="checkbox"
-                checked={selected}
-                onChange={onCheck}
-                className="h-4 w-4 cursor-pointer rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-              />
+export const ListItem = React.forwardRef<HTMLLIElement | null, IListItemProps>(
+  (
+    {
+      listType,
+      uniqueId,
+      itemInfo,
+      selected,
+      checkable = false,
+      onCheck,
+      style,
+    },
+    ref
+  ) => {
+    return (
+      <li key={itemInfo.key} ref={ref} style={style}>
+        <button
+          className="h-full w-full py-4"
+          onClick={onCheck}
+          disabled={!checkable}
+        >
+          <span className="flex h-full w-full items-center">
+            {getItemIcon(listType, selected)}
+            <div
+              className={`min-w-0 flex-1 text-start text-sm ${
+                selected
+                  ? 'text-gray-400 line-through decoration-indigo-600 decoration-2'
+                  : 'text-gray-700'
+              }`}
+            >
+              {itemInfo.itemLabel}
             </div>
-          )}
-        </span>
-      </button>
-    </li>
-  )
-}
+            {checkable && (
+              <div className="ml-3 flex h-5 items-center">
+                <input
+                  id={`ingredient-${uniqueId}`}
+                  name={`ingredient-${uniqueId}`}
+                  type="checkbox"
+                  checked={selected}
+                  onChange={onCheck}
+                  className="h-4 w-4 cursor-pointer rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                />
+              </div>
+            )}
+          </span>
+        </button>
+      </li>
+    )
+  }
+)
 
 const getItemIcon = (listType: ListType, selected?: boolean) => {
   const iconProps = {

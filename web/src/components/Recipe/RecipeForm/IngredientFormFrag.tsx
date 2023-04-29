@@ -72,92 +72,96 @@ const IngredientFormFrag = ({
     | UpdateIngredientInput
 
   return (
-    <ListItem
-      listType="recipeIngredients"
-      uniqueId={uniqueId}
-      itemInfo={getIngredientItemInfo({
-        id: uniqueId,
-        quantity,
-        unit: {
-          name: unitName,
-        },
-        ingredientRef: {
-          name: ingredientName,
-        },
-      })}
-    />
-    // <div ref={setNodeRef} style={draggableStyle}>
-    //   <div className="flex gap-1">
-    //     <button
-    //       className={btnClassName}
-    //       type="button"
-    //       onClick={(e) => {
-    //         e.preventDefault()
-    //         removeFromIngredients(ingIdx)
-    //         persistValues()
-    //       }}
-    //     >
-    //       <span className="sr-only">remove ingredient {ingIdx}</span>
-    //       <MinusCircleIcon className="m-auto mb-5 h-5 w-5 text-red-800 hover:text-red-500" />
-    //     </button>
+    <>
+      <ListItem
+        ref={setNodeRef}
+        listType="recipeIngredients"
+        uniqueId={uniqueId}
+        itemInfo={getIngredientItemInfo({
+          id: uniqueId,
+          quantity,
+          unit: {
+            name: unitName,
+          },
+          ingredientRef: {
+            name: ingredientName,
+          },
+        })}
+        style={draggableStyle}
+      />
+      <div ref={setNodeRef} style={draggableStyle}>
+        <div className="flex gap-1">
+          <button
+            className={btnClassName}
+            type="button"
+            onClick={(e) => {
+              e.preventDefault()
+              removeFromIngredients(ingIdx)
+              persistValues()
+            }}
+          >
+            <span className="sr-only">remove ingredient {ingIdx}</span>
+            <MinusCircleIcon className="m-auto mb-5 h-5 w-5 text-red-800 hover:text-red-500" />
+          </button>
 
-    //     <div
-    //     // className={classNames(
-    //     //   'relative mt-2 w-[70%] transition-all sm:w-[85%]',
-    //     //   usingManualInput ? 'h-[5.2rem]' : 'h-[5.2rem]'
-    //     // )}
-    //     >
-    //       {/* <div
-    //         className={classNames(
-    //           'absolute w-full transition-all',
-    //           usingManualInput ? 'top-11' : 'top-0'
-    //         )}
-    //       >
-    //         <IngredientFormFragManualInput
-    //           stepNum={stepNum}
-    //           ingIdx={ingIdx}
-    //           ingredient={ingredient}
-    //         />
-    //       </div> */}
-    //     </div>
+          <div
+          // className={classNames(
+          //   'relative mt-2 w-[70%] transition-all sm:w-[85%]',
+          //   usingManualInput ? 'h-[5.2rem]' : 'h-[5.2rem]'
+          // )}
+          >
+            {/* <div
+            className={classNames(
+              'absolute w-full transition-all',
+              usingManualInput ? 'top-11' : 'top-0'
+            )}
+          >
+            <IngredientFormFragManualInput
+              stepNum={stepNum}
+              ingIdx={ingIdx}
+              ingredient={ingredient}
+            />
+          </div> */}
+          </div>
 
-    //     <button
-    //       type="button"
-    //       className={btnClassName}
-    //       onClick={() => setUsingManualInput(!usingManualInput)}
-    //     >
-    //       <span className="sr-only">
-    //         toggle manual input for ingredient {ingIdx}
-    //       </span>
-    //       <PencilIcon className="m-auto mb-5 h-5 w-5 text-gray-400 hover:text-gray-500" />
-    //     </button>
+          <button
+            type="button"
+            className={btnClassName}
+            onClick={() => setUsingManualInput(!usingManualInput)}
+          >
+            <span className="sr-only">
+              toggle manual input for ingredient {ingIdx}
+            </span>
+            <PencilIcon className="m-auto mb-5 h-5 w-5 text-gray-400 hover:text-gray-500" />
+          </button>
 
-    //     <button
-    //       type="button"
-    //       className={btnClassName}
-    //       {...listeners}
-    //       {...attributes}
-    //     >
-    //       <span className="sr-only">move ingredient {ingIdx}</span>
-    //       <Bars3Icon className="m-auto mb-5 h-5 w-5 touch-none text-gray-400 hover:text-gray-500" />
-    //     </button>
-    //   </div>
+          <button
+            type="button"
+            className={btnClassName}
+            {...listeners}
+            {...attributes}
+          >
+            <span className="sr-only">move ingredient {ingIdx}</span>
+            <Bars3Icon className="m-auto mb-5 h-5 w-5 touch-none text-gray-400 hover:text-gray-500" />
+          </button>
+        </div>
 
-    //   <div className="flex flex-col">
-    //     <FieldError
-    //       name={`steps.${stepNum - 1}.ingredients.${ingIdx}.quantity`}
-    //       className="mt-1 text-sm text-red-600"
-    //     />
-    //     <FieldError
-    //       name={`steps.${stepNum - 1}.ingredients.${ingIdx}.unitName`}
-    //       className="mt-1 text-sm text-red-600"
-    //     />
-    //     <FieldError
-    //       name={`steps.${stepNum - 1}.ingredients.${ingIdx}.ingredientName`}
-    //       className="mt-1 text-sm text-red-600"
-    //     />
-    //   </div>
-    // </div>
+        <div className="flex flex-col">
+          <FieldError
+            name={`steps.${stepNum - 1}.ingredients.${ingIdx}.quantity`}
+            className="mt-1 text-sm text-red-600"
+          />
+          <FieldError
+            name={`steps.${stepNum - 1}.ingredients.${ingIdx}.unitName`}
+            className="mt-1 text-sm text-red-600"
+          />
+          <FieldError
+            name={`steps.${stepNum - 1}.ingredients.${ingIdx}.ingredientName`}
+            className="mt-1 text-sm text-red-600"
+          />
+        </div>
+      </div>
+    </>
   )
 }
 
