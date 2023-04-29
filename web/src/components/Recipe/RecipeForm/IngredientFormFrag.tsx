@@ -111,7 +111,7 @@ const IngredientFormFrag = ({
         }}
       />
 
-      <div className="flex flex-col">
+      {/* <div className="flex flex-col">
         <FieldError
           name={`steps.${stepNum - 1}.ingredients.${ingIdx}.quantity`}
           className="mt-1 text-sm text-red-600"
@@ -124,7 +124,7 @@ const IngredientFormFrag = ({
           name={`steps.${stepNum - 1}.ingredients.${ingIdx}.ingredientName`}
           className="mt-1 text-sm text-red-600"
         />
-      </div>
+      </div> */}
     </>
   )
 }

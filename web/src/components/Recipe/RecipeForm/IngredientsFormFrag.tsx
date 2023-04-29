@@ -35,25 +35,32 @@ export const IngredientsFormFrag = ({ stepNum }: IIngredientsFormFragProps) => {
       <legend className="block text-sm font-medium text-gray-700">
         step {stepNum} ingredients
       </legend>
-      <ul
+      <fieldset
         className={classNames(
-          'divide-y',
-          ingredients.length ? 'divide-gray-200' : 'divide-gray-100'
+          'border-t border-b',
+          ingredients.length ? 'border-gray-200' : 'border-white'
         )}
       >
-        {ingredients.map((ingredient, ingIdx) => {
-          return (
-            <IngredientFormFrag
-              key={ingredient.id}
-              // key={`step-${stepNum}-ingredient-${ingIdx}`}
-              stepNum={stepNum}
-              ingIdx={ingIdx}
-              ingredient={ingredient}
-              removeFromIngredients={removeFromIngredients}
-            />
-          )
-        })}
-      </ul>
+        <ul
+          className={classNames(
+            'divide-y',
+            ingredients.length ? 'divide-gray-200' : 'divide-gray-100'
+          )}
+        >
+          {ingredients.map((ingredient, ingIdx) => {
+            return (
+              <IngredientFormFrag
+                key={ingredient.id}
+                // key={`step-${stepNum}-ingredient-${ingIdx}`}
+                stepNum={stepNum}
+                ingIdx={ingIdx}
+                ingredient={ingredient}
+                removeFromIngredients={removeFromIngredients}
+              />
+            )
+          })}
+        </ul>
+      </fieldset>
       <AddToIngsParsedInput addToIngredients={addToIngredients} />
       {/* <AddRemBtns
         id="add-rem-ings-btns"
