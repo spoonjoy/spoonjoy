@@ -139,7 +139,7 @@ const Recipe = ({ recipe }: Props) => {
           itemIds={listItemIds}
         />
       </div>
-      <div className="m-auto mb-7 max-w-xl">
+      <div className="mx-3 mb-7 max-w-xl sm:m-auto">
         {recipe?.steps ? (
           recipe.steps.map((step) => {
             const {
