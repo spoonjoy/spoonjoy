@@ -16,7 +16,7 @@ import LoadingSpinner from 'src/components/Loading/LoadingSpinner'
 import { RecipeFormType } from '.'
 
 interface IngredientFormFragParsedInputProps {
-  uniqueId: string
+  fieldName: string
   setNewIngFields: React.Dispatch<
     React.SetStateAction<CreateIngredientInput | undefined>
   >
@@ -25,7 +25,7 @@ interface IngredientFormFragParsedInputProps {
 }
 
 export const IngredientFormFragParsedInput = ({
-  uniqueId,
+  fieldName,
   setNewIngFields,
   setNewIngItemInfo,
   placeholderIngItemInfo,
@@ -43,7 +43,7 @@ export const IngredientFormFragParsedInput = ({
 
       setNewIngItemInfo(
         getIngredientItemInfo({
-          id: uniqueId,
+          id: fieldName,
           quantity,
           unit: {
             name: unitName,
@@ -81,7 +81,7 @@ export const IngredientFormFragParsedInput = ({
       </div>
       <div className="relative z-20">
         <StyledTextField
-          fieldName={`${uniqueId}.rawIngredientInput`}
+          fieldName={fieldName}
           onChange={debouncedOnInputChange}
           placeholder="half cup flour"
         />

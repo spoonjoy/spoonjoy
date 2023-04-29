@@ -25,7 +25,7 @@ export const AddToIngsParsedInput = ({
   addToIngredients,
   stepNum,
 }: IAddToIngsParsedInputProps) => {
-  const uniqueId = `step-${stepNum}-ing-new`
+  const fieldName = `steps.${stepNum - 1}.newIngRawInput`
 
   const [newIngFields, setNewIngFields] = React.useState<
     CreateIngredientInput | undefined
@@ -50,17 +50,17 @@ export const AddToIngsParsedInput = ({
   )
 
   return (
-    <div className="mt-3">
-      <ul className="max-w-xs">
+    <div className="mt-3 max-w-sm">
+      <ul>
         <ListItem
           listType="recipeIngredients"
-          uniqueId={uniqueId}
+          uniqueId={fieldName}
           itemInfo={newIngItemInfo}
           isPlaceholder
         />
       </ul>
       <IngredientFormFragParsedInput
-        uniqueId={uniqueId}
+        fieldName={fieldName}
         setNewIngFields={setNewIngFields}
         setNewIngItemInfo={setNewIngItemInfo}
         placeholderIngItemInfo={placeholderIngItemInfo}

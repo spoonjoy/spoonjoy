@@ -21,6 +21,10 @@ export const schema = gql`
     description: String!
     ingredients: [CreateIngredientInput!]
     stepOutputUses: [CreateStepOutputUseInput!]
+    """
+    TODO: This is not currently used by the resolver, but is rather here to support the form type. Need to figure out how to move this out of the SDL, which shouldn't know about this.
+    """
+    newIngRawInput: String
   }
 
   """
@@ -33,6 +37,10 @@ export const schema = gql`
     description: String!
     ingredients: [UpdateIngredientInput!]
     stepOutputUses: [UpdateStepOutputUseInput!]
+    """
+    TODO: This is not currently used by the resolver, but is rather here to support the form type. Need to figure out how to move this out of the SDL, which shouldn't know about this.
+    """
+    newIngRawInput: String
   }
 
   # type Mutation {
