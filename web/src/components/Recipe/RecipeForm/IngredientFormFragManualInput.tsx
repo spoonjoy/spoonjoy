@@ -19,7 +19,7 @@ export const IngredientFormFragManualInput = ({
 
   const persistValues = usePersistValuesOnChange()
   return (
-    <div className="h-full w-full">
+    <div className="h-full w-full -space-x-px">
       <div className="inline-block w-[20%]">
         <label
           htmlFor={`steps.${stepNum - 1}.ingredients.${ingIdx}.quantity`}
