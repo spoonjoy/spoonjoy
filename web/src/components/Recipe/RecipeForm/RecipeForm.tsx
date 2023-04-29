@@ -12,7 +12,10 @@ import { toast } from '@redwoodjs/web/dist/toast'
 
 import { ColumnLayoutFormSection } from 'src/components/formComponents/ColumnLayoutForm/ColumnLayoutFormSection'
 import { ColumnLayoutFormWrapper } from 'src/components/formComponents/ColumnLayoutForm/ColumnLayoutFormWrapper'
-import { getPersistedFormValuesAsDefaultValues } from 'src/components/formComponents/usePersistFormValues'
+import {
+  clearPersistedFormValues,
+  getPersistedFormValuesAsDefaultValues,
+} from 'src/components/formComponents/usePersistFormValues'
 import { classNames } from 'src/helpers/css'
 
 import RecipeSaveLoading from '../RecipeSaveLoading/RecipeSaveLoading'
@@ -121,6 +124,7 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
             onReset={(e) => {
               e.preventDefault() // needed so that this button doesn't try to submit the form
               reset(emptyRecipeFormValues)
+              clearPersistedFormValues('recipe-form')
               if (recipe) {
                 navigate(routes.recipe({ id: recipe.id }))
                 toast('recipe changes have been discarded')
