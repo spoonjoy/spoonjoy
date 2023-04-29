@@ -31,13 +31,13 @@ export const IngredientsFormFrag = ({ stepNum }: IIngredientsFormFragProps) => {
     : 0
 
   return (
-    <div className="sm:mx-5">
+    <div className="m-auto">
       <legend className="mb-2 block text-sm font-medium text-gray-700">
         step {stepNum} ingredients
       </legend>
       <fieldset
         className={classNames(
-          'border-t border-b',
+          'm-auto max-w-sm border-t border-b',
           ingredients.length ? 'border-gray-200' : 'border-white'
         )}
       >

@@ -48,12 +48,13 @@ export const AddToIngsParsedInput = ({
   )
 
   return (
-    <>
-      <ul className="min-w-[200px]">
+    <div className="mt-3">
+      <ul className="max-w-xs">
         <ListItem
           listType="recipeIngredients"
           uniqueId={uniqueId}
           itemInfo={newIngItemInfo}
+          isPlaceholder
         />
       </ul>
       <IngredientFormFragParsedInput
@@ -62,6 +63,6 @@ export const AddToIngsParsedInput = ({
         setNewIngItemInfo={setNewIngItemInfo}
         placeholderIngItemInfo={placeholderIngItemInfo}
       />
-    </>
+    </div>
   )
 }

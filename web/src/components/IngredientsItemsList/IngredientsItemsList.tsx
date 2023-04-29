@@ -160,6 +160,8 @@ interface IListItemProps {
   checkable?: boolean
   /** What to do when the checkbox is clicked. */
   onCheck?: () => void
+  /** Whether the item is a placeholder. */
+  isPlaceholder?: boolean
   deletableConfig?: IDeletableListItemConfig
   draggableConfig?: IDraggableListItemConfig
   editableConfig?: IEditableListItemConfig
@@ -177,6 +179,7 @@ export const ListItem = React.forwardRef<HTMLLIElement | null, IListItemProps>(
       deletableConfig,
       draggableConfig,
       editableConfig,
+      isPlaceholder,
     },
     ref
   ) => {
@@ -198,7 +201,12 @@ export const ListItem = React.forwardRef<HTMLLIElement | null, IListItemProps>(
             <MinusCircleIcon className="m-auto mb-5 h-5 w-5 text-red-800 hover:text-red-500" />
           </button>
         )}
-        <div className="relative flex h-14 w-full items-center">
+        <div
+          className={classNames(
+            'relative flex w-full items-center',
+            isPlaceholder ? 'h-9' : 'h-14'
+          )}
+        >
           <div
             className={classNames(
               'absolute w-full transition-all',
@@ -209,14 +217,14 @@ export const ListItem = React.forwardRef<HTMLLIElement | null, IListItemProps>(
           </div>
           <button
             className={classNames(
-              'absolute w-full py-4 transition-all',
+              'absolute w-full transition-all',
               isEditing ? 'invisible opacity-0' : 'visible'
             )}
             onClick={onCheck}
             disabled={!checkable}
           >
             <span className="flex h-full w-full items-center">
-              {getItemIcon(listType, selected)}
+              {getItemIcon(listType, selected || isPlaceholder)}
               <div
                 className={`min-w-0 flex-1 text-start text-sm ${
                   selected
