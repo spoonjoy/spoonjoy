@@ -1,5 +1,8 @@
+import { DraggableAttributes } from '@dnd-kit/core'
+import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities'
 import { BeakerIcon } from '@heroicons/react/20/solid'
 import { Square2StackIcon } from '@heroicons/react/20/solid'
+import { Bars3Icon, MinusCircleIcon } from '@heroicons/react/24/outline'
 import { observer } from 'mobx-react-lite'
 
 import { classNames } from 'src/helpers/css'
@@ -126,6 +129,18 @@ const IngredientsItemsList = ({
   )
 }
 
+interface IDeletableListItemConfig {
+  isDeletable: boolean
+  onClickDelete: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+}
+
+interface IDraggableListItemConfig {
+  isDraggable: boolean
+  listeners: SyntheticListenerMap | undefined
+  attributes: DraggableAttributes
+  style: React.CSSProperties | undefined
+}
+
 interface IListItemProps {
   /** Used to provide info about how the item should be rendered, eg what icon to use.  */
   listType: ListType
@@ -139,12 +154,8 @@ interface IListItemProps {
   checkable?: boolean
   /** What to do when the checkbox is clicked. */
   onCheck?: () => void
-  /** Any extra styles to apply to the list item, especially useful if you're making this component draggable. */
-  style?: React.CSSProperties | undefined
-  /** An element to render before the item, horizontally. */
-  beforeElement?: JSX.Element
-  /** An element to render after the item, horizontally. */
-  afterElement?: JSX.Element
+  deletableConfig?: IDeletableListItemConfig
+  draggableConfig?: IDraggableListItemConfig
 }
 
 export const ListItem = React.forwardRef<HTMLLIElement | null, IListItemProps>(
@@ -156,12 +167,28 @@ export const ListItem = React.forwardRef<HTMLLIElement | null, IListItemProps>(
       selected,
       checkable = false,
       onCheck,
-      style,
+      deletableConfig,
+      draggableConfig,
     },
     ref
   ) => {
     return (
-      <li key={itemInfo.key} ref={ref} style={style}>
+      <li
+        key={itemInfo.key}
+        ref={ref}
+        style={draggableConfig && draggableConfig.style}
+        className="flex gap-1"
+      >
+        {deletableConfig && deletableConfig.isDeletable && (
+          <button
+            className="mt-4 h-5"
+            type="button"
+            onClick={deletableConfig.onClickDelete}
+          >
+            <span className="sr-only">remove item {itemInfo.itemLabel}</span>
+            <MinusCircleIcon className="m-auto mb-5 h-5 w-5 text-red-800 hover:text-red-500" />
+          </button>
+        )}
         <button
           className="h-full w-full py-4"
           onClick={onCheck}
@@ -192,6 +219,17 @@ export const ListItem = React.forwardRef<HTMLLIElement | null, IListItemProps>(
             )}
           </span>
         </button>
+        {draggableConfig && draggableConfig.isDraggable && (
+          <button
+            type="button"
+            className="mt-4 h-5"
+            {...draggableConfig.listeners}
+            {...draggableConfig.attributes}
+          >
+            <span className="sr-only">move item {itemInfo.itemLabel}</span>
+            <Bars3Icon className="m-auto mb-5 h-5 w-5 touch-none text-gray-400 hover:text-gray-500" />
+          </button>
+        )}
       </li>
     )
   }

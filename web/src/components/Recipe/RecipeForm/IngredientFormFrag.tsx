@@ -87,23 +87,23 @@ const IngredientFormFrag = ({
             name: ingredientName,
           },
         })}
-        style={draggableStyle}
+        draggableConfig={{
+          isDraggable: true,
+          style: draggableStyle,
+          attributes,
+          listeners,
+        }}
+        deletableConfig={{
+          isDeletable: true,
+          onClickDelete: (e) => {
+            e.preventDefault()
+            removeFromIngredients(ingIdx)
+            persistValues()
+          },
+        }}
       />
       <div ref={setNodeRef} style={draggableStyle}>
         <div className="flex gap-1">
-          <button
-            className={btnClassName}
-            type="button"
-            onClick={(e) => {
-              e.preventDefault()
-              removeFromIngredients(ingIdx)
-              persistValues()
-            }}
-          >
-            <span className="sr-only">remove ingredient {ingIdx}</span>
-            <MinusCircleIcon className="m-auto mb-5 h-5 w-5 text-red-800 hover:text-red-500" />
-          </button>
-
           <div
           // className={classNames(
           //   'relative mt-2 w-[70%] transition-all sm:w-[85%]',
@@ -123,7 +123,6 @@ const IngredientFormFrag = ({
             />
           </div> */}
           </div>
-
           <button
             type="button"
             className={btnClassName}
@@ -133,16 +132,6 @@ const IngredientFormFrag = ({
               toggle manual input for ingredient {ingIdx}
             </span>
             <PencilIcon className="m-auto mb-5 h-5 w-5 text-gray-400 hover:text-gray-500" />
-          </button>
-
-          <button
-            type="button"
-            className={btnClassName}
-            {...listeners}
-            {...attributes}
-          >
-            <span className="sr-only">move ingredient {ingIdx}</span>
-            <Bars3Icon className="m-auto mb-5 h-5 w-5 touch-none text-gray-400 hover:text-gray-500" />
           </button>
         </div>
 
