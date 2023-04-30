@@ -42,6 +42,8 @@ export const AddToIngsParsedInput = ({
     'start typing to add an ingredient'
   )
 
+  const fieldRef = React.useRef<HTMLInputElement>(null)
+
   const onAddToIngredients = () => {
     if (newIngFields) {
       addToIngredients(newIngFields)
@@ -50,6 +52,7 @@ export const AddToIngsParsedInput = ({
       setNewIngItemInfo(placeholderIngItemInfo)
       resetField(fieldName)
     }
+    fieldRef.current?.focus()
   }
 
   const [newIngItemInfo, setNewIngItemInfo] = React.useState<IListItemInfo>(
@@ -69,6 +72,7 @@ export const AddToIngsParsedInput = ({
       <div>
         <IngredientFormFragParsedInput
           fieldName={fieldName}
+          ref={fieldRef}
           setNewIngFields={setNewIngFields}
           setNewIngItemInfo={setNewIngItemInfo}
           placeholderIngItemInfo={placeholderIngItemInfo}
