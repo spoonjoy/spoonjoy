@@ -189,16 +189,17 @@ export const ListItem = React.forwardRef<HTMLLIElement | null, IListItemProps>(
         key={itemInfo.key}
         ref={ref}
         style={draggableConfig && draggableConfig.style}
-        className="flex gap-1"
+        className="flex gap-2"
       >
-        {deletableConfig && deletableConfig.isDeletable && (
+        {deletableConfig && (
           <button
-            className="mt-4 h-5"
             type="button"
             onClick={deletableConfig.onClickDelete}
+            disabled={!deletableConfig.isDeletable}
+            className="text-red-800 hover:text-red-500 disabled:cursor-not-allowed disabled:text-gray-300"
           >
             <span className="sr-only">remove item {itemInfo.itemLabel}</span>
-            <MinusCircleIcon className="m-auto mb-5 h-5 w-5 text-red-800 hover:text-red-500" />
+            <MinusCircleIcon className="h-5 w-5" />
           </button>
         )}
         <div
@@ -250,26 +251,22 @@ export const ListItem = React.forwardRef<HTMLLIElement | null, IListItemProps>(
           </button>
         </div>
         {editableConfig && editableConfig.isEditable && (
-          <button
-            type="button"
-            className="mt-4 h-5"
-            onClick={() => setIsEditing(!isEditing)}
-          >
+          <button type="button" onClick={() => setIsEditing(!isEditing)}>
             <span className="sr-only">
               toggle manual input for item {itemInfo.itemLabel}
             </span>
-            <PencilIcon className="m-auto my-0.5 h-4 text-gray-400 hover:text-gray-500" />
+            {/* Weird margin and height on this one is to make it just a smidge smaller */}
+            <PencilIcon className="my-0.5 h-4 text-gray-400 hover:text-gray-500" />
           </button>
         )}
         {draggableConfig && draggableConfig.isDraggable && (
           <button
             type="button"
-            className="mt-4 h-5"
             {...draggableConfig.listeners}
             {...draggableConfig.attributes}
           >
             <span className="sr-only">move item {itemInfo.itemLabel}</span>
-            <Bars3Icon className="m-auto h-5 w-5 touch-none text-gray-400 hover:text-gray-500" />
+            <Bars3Icon className="h-5 w-5 touch-none text-gray-400 hover:text-gray-500" />
           </button>
         )}
       </li>
