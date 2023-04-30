@@ -7,6 +7,7 @@ export interface StyledFieldProps<T = Element>
   extends Omit<StyledFieldWrapperProps, 'children'> {
   defaultValue?: string | number | readonly string[]
   onChange?: (e: React.ChangeEvent<T>) => void
+  onKeyDown?: (e: React.KeyboardEvent<T>) => void
   validation?: RegisterOptions
   placeholder?: string
   disabled?: boolean
