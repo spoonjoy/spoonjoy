@@ -44,7 +44,7 @@ const ListCardBase = ({
             ? ' rounded-lg border-2 border-dashed border-gray-300 text-gray-500 group-hover:border-gray-400 group-hover:text-gray-700 group-focus:outline-none group-focus:ring-2 group-focus:ring-indigo-500 group-focus:ring-offset-2'
             : ' group-focus:outline-none group-focus:ring-indigo-500',
 
-          'flex-center flex relative h-full w-full justify-center text-center'
+          'flex-center relative flex h-full w-full justify-center text-center'
         )}
         to={linkTo}
         title={linkTitle}
