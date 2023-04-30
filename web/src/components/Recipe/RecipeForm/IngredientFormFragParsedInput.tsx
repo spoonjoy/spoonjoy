@@ -1,19 +1,13 @@
 import { debounce } from 'lodash'
 import { CreateIngredientInput } from 'types/graphql'
 
-import { useFormContext, useWatch } from '@redwoodjs/forms'
-
 import StyledTextField from 'src/components/formComponents/StyledTextField'
-import { usePersistValuesOnChange } from 'src/components/formComponents/usePersistFormValues'
 import { useIngredientParseQuery } from 'src/components/Ingredient/useIngredientParseLazyQuery'
 import {
   getIngredientItemInfo,
   IListItemInfo,
-  ListItem,
 } from 'src/components/IngredientsItemsList/IngredientsItemsList'
 import LoadingSpinner from 'src/components/Loading/LoadingSpinner'
-
-import { RecipeFormType } from '.'
 
 interface IngredientFormFragParsedInputProps {
   fieldName: string
