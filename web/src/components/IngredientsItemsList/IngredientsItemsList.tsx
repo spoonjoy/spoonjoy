@@ -68,18 +68,8 @@ const IngredientsItemsList = ({
     return steps && steps[stepNum - 1].stepTitle
   }
   return (
-    <fieldset
-      className={classNames(
-        'border-t border-b',
-        items ? 'border-gray-200' : 'border-white'
-      )}
-    >
-      <ul
-        className={classNames(
-          'divide-y',
-          items ? 'divide-gray-200' : 'divide-gray-100'
-        )}
-      >
+    <fieldset>
+      <ul>
         {items && listType ? (
           items.map((item) => {
             const { id } = item!
@@ -189,7 +179,10 @@ export const ListItem = React.forwardRef<HTMLLIElement | null, IListItemProps>(
         key={itemInfo.key}
         ref={ref}
         style={draggableConfig && draggableConfig.style}
-        className="flex gap-2"
+        className={classNames(
+          'flex gap-2',
+          !isPlaceholder && '-mt-[1px]  border-y-[1px] border-gray-200 bg-white'
+        )}
       >
         {deletableConfig && (
           <button

@@ -35,18 +35,8 @@ export const IngredientsFormFrag = ({ stepNum }: IIngredientsFormFragProps) => {
       <legend className="mb-2 block text-sm font-medium text-gray-700">
         step {stepNum} ingredients
       </legend>
-      <fieldset
-        className={classNames(
-          'm-auto max-w-sm border-t border-b',
-          ingredients.length ? 'border-gray-200' : 'border-white'
-        )}
-      >
-        <ul
-          className={classNames(
-            'divide-y',
-            ingredients.length ? 'divide-gray-200' : 'divide-gray-100'
-          )}
-        >
+      <fieldset className={classNames('m-auto max-w-sm ')}>
+        <ul className={classNames('-space-y-py')}>
           {ingredients.map((ingredient, ingIdx) => {
             return (
               <IngredientFormFrag
