@@ -28,6 +28,7 @@ interface IngredientFormFragProps {
   ingIdx: number
   ingredient: FieldArrayWithId<RecipeFormType, `steps.${number}.ingredients`>
   removeFromIngredients: UseFieldArrayRemove
+  isRemovable?: boolean
 }
 
 export interface IDraggableIngredientData {
@@ -42,10 +43,9 @@ const IngredientFormFrag = ({
   ingIdx,
   ingredient,
   removeFromIngredients,
+  isRemovable = true,
 }: IngredientFormFragProps) => {
   const persistValues = usePersistValuesOnChange()
-
-  const [usingManualInput, setUsingManualInput] = React.useState(false)
 
   const draggableData: IDraggableIngredientData = {
     stepNum,
@@ -92,7 +92,7 @@ const IngredientFormFrag = ({
           listeners,
         }}
         deletableConfig={{
-          isDeletable: true,
+          isDeletable: isRemovable,
           onClickDelete: (e) => {
             e.preventDefault()
             removeFromIngredients(ingIdx)
