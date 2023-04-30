@@ -72,11 +72,17 @@ export const AddToIngsParsedInput = ({
           setNewIngFields={setNewIngFields}
           setNewIngItemInfo={setNewIngItemInfo}
           placeholderIngItemInfo={placeholderIngItemInfo}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              onAddToIngredients()
+            }
+          }}
           submitBtn={
             <button
               type="button"
               className="inline-block"
               onClick={onAddToIngredients}
+              disabled={!newIngFields}
             >
               <PlusIcon
                 className={classNames(

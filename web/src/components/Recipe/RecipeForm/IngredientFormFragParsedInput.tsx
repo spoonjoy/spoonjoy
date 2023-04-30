@@ -23,6 +23,7 @@ interface IngredientFormFragParsedInputProps {
   setNewIngItemInfo: React.Dispatch<React.SetStateAction<IListItemInfo>>
   placeholderIngItemInfo: IListItemInfo
   submitBtn?: JSX.Element
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
 }
 
 export const IngredientFormFragParsedInput = ({
@@ -31,6 +32,7 @@ export const IngredientFormFragParsedInput = ({
   setNewIngItemInfo,
   placeholderIngItemInfo,
   submitBtn,
+  onKeyDown,
 }: IngredientFormFragParsedInputProps) => {
   const { parseIngredient, loading, error } = useIngredientParseQuery(
     (data) => {
@@ -81,6 +83,7 @@ export const IngredientFormFragParsedInput = ({
       <StyledTextField
         fieldName={fieldName}
         onChange={debouncedOnInputChange}
+        onKeyDown={onKeyDown}
         placeholder="half cup flour"
       />
       <div className="absolute right-2 top-[50%] bottom-0 -translate-y-1/2">

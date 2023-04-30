@@ -14,6 +14,7 @@ const StyledTextField = React.forwardRef<
       label,
       defaultValue,
       onChange,
+      onKeyDown,
       validation,
       maxLength,
       currentLength,
@@ -45,6 +46,7 @@ const StyledTextField = React.forwardRef<
           )}
           validation={validation}
           onChange={onChange}
+          onKeyDown={onKeyDown}
           ref={ref}
           disabled={disabled}
         />
