@@ -1,6 +1,5 @@
 import { useFieldArray, useFormContext, useWatch } from '@redwoodjs/forms'
 
-import AddRemBtns from 'src/components/formComponents/AddRemBtns'
 import { classNames } from 'src/helpers/css'
 
 import { AddToIngsParsedInput } from './AddToIngsParsedInput'
@@ -57,23 +56,6 @@ export const IngredientsFormFrag = ({ stepNum }: IIngredientsFormFragProps) => {
         addToIngredients={addToIngredients}
         stepNum={stepNum}
       />
-      {/* <AddRemBtns
-        id="add-rem-ings-btns"
-        itemName="ingredient"
-        onAdd={() => {
-          addToIngredients({
-            quantity: 0,
-            ingredientName: '',
-            unitName: '',
-          })
-        }}
-        onRem={() => removeFromIngredients(ingredients.length - 1)}
-        canRem={
-          (stepOutputUsesLength >= 1 || ingredients.length > 1) &&
-          ingredients.length > 0
-        } // need to have at least one ingredient or stepOutputUse
-        containerClassName="pt-2 flex items-center justify-center"
-      /> */}
     </div>
   )
 }
