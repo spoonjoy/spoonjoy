@@ -5,11 +5,13 @@ export const schema = gql`
     username: String!
     createdAt: DateTime!
     recipes: [Recipe]!
+    fellowChefs: [User]!
   }
 
   type Query {
     users: [User!]! @requireAuth
     user(id: String!): User @requireAuth
+    usersFellowChefs(username: String!): [User]! @skipAuth
   }
 
   input CreateUserInput {

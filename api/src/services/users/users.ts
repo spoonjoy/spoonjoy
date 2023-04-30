@@ -23,6 +23,30 @@ export const user: QueryResolvers['user'] = ({ id }) => {
   return cache(getUserCacheKey(id), () => db.user.findUnique({ where: { id } }))
 }
 
+export const usersFellowChefs: QueryResolvers['usersFellowChefs'] = ({
+  username,
+}) => {
+  return db.user.findMany({
+    where: {
+      username: {
+        not: username,
+      },
+      recipes: {
+        some: {
+          cookbooks: {
+            some: {
+              addedBy: {
+                username,
+              },
+            },
+          },
+        },
+      },
+    },
+    distinct: ['username'],
+  })
+}
+
 export const createUser: MutationResolvers['createUser'] = ({ input }) => {
   return db.user.create({
     data: input,
@@ -49,5 +73,8 @@ export const deleteUser: MutationResolvers['deleteUser'] = ({ id }) => {
 export const User: UserRelationResolvers = {
   recipes: (_obj, { root }) => {
     return usersRecipes({ username: root.username })
+  },
+  fellowChefs: (_obj, { root }) => {
+    return usersFellowChefs({ username: root.username })
   },
 }
