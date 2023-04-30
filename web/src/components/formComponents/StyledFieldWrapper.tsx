@@ -29,6 +29,8 @@ export interface StyledFieldWrapperProps {
   inline?: boolean
   /** Use this to mark that the field is optional */
   markOptional?: boolean
+  /** Use this to include a custom component that will be placed inside the input, at the end */
+  endComponent?: JSX.Element
 }
 const StyledFieldWrapper = ({
   children,
@@ -38,6 +40,7 @@ const StyledFieldWrapper = ({
   currentLength,
   inline = false,
   markOptional = false,
+  endComponent,
 }: StyledFieldWrapperProps) => {
   return (
     <div className={classNames(inline ? 'mr-10 flex-1' : 'mb-3')}>
@@ -60,6 +63,9 @@ const StyledFieldWrapper = ({
         )}
       >
         {children}
+        <div className="absolute right-2 top-[50%] bottom-0 -translate-y-1/2">
+          {endComponent}
+        </div>
         {maxLength !== undefined && currentLength !== undefined && (
           <div className="pointer-events-none absolute -inset-y-0 -right-4 flex w-2 items-center text-left text-sm text-gray-400">
             {maxLength - currentLength}

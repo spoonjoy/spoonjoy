@@ -23,6 +23,7 @@ const StyledTextField = React.forwardRef<
       grow,
       inline = false,
       markOptional,
+      endComponent,
     },
     ref
   ) => {
@@ -34,6 +35,7 @@ const StyledTextField = React.forwardRef<
         currentLength={currentLength}
         inline={inline}
         markOptional={markOptional}
+        endComponent={endComponent}
       >
         <TextField
           name={fieldName}

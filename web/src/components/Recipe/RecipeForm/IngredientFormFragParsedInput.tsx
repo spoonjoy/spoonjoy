@@ -1,6 +1,8 @@
 import { debounce } from 'lodash'
 import { CreateIngredientInput } from 'types/graphql'
 
+import { useFormContext } from '@redwoodjs/forms'
+
 import StyledTextField from 'src/components/formComponents/StyledTextField'
 import { useIngredientParseQuery } from 'src/components/Ingredient/useIngredientParseLazyQuery'
 import {
@@ -9,8 +11,10 @@ import {
 } from 'src/components/IngredientsItemsList/IngredientsItemsList'
 import LoadingSpinner from 'src/components/Loading/LoadingSpinner'
 
+import { RecipeFormType } from '.'
+
 interface IngredientFormFragParsedInputProps {
-  fieldName: string
+  fieldName: `steps.${number}.newIngRawInput`
   setNewIngFields: React.Dispatch<
     React.SetStateAction<CreateIngredientInput | undefined>
   >
@@ -35,6 +39,7 @@ export const IngredientFormFragParsedInput = React.forwardRef<
     },
     ref
   ) => {
+    const { setError } = useFormContext<RecipeFormType>()
     const { parseIngredient, loading, error } = useIngredientParseQuery(
       (data) => {
         console.log('parseIngredient:', data.parseIngredient)
@@ -62,6 +67,10 @@ export const IngredientFormFragParsedInput = React.forwardRef<
       () => {
         setNewIngFields(undefined)
         setNewIngItemInfo(placeholderIngItemInfo)
+        setError(fieldName, {
+          type: 'custom',
+          message: 'there was an error parsing the input',
+        })
       }
     )
 
@@ -80,21 +89,21 @@ export const IngredientFormFragParsedInput = React.forwardRef<
     const debouncedOnInputChange = debounce(onInputChange, 1000)
 
     return (
-      <div className="relative z-20">
+      <div>
         <StyledTextField
           ref={ref}
           fieldName={fieldName}
           onChange={debouncedOnInputChange}
           onKeyDown={onKeyDown}
           placeholder="half cup flour"
+          endComponent={
+            loading ? (
+              <LoadingSpinner className="h-3.5 w-3.5" />
+            ) : (
+              submitBtn && submitBtn
+            )
+          }
         />
-        <div className="absolute right-2 top-[50%] bottom-0 -translate-y-1/2">
-          {loading ? (
-            <LoadingSpinner className="h-3.5 w-3.5" />
-          ) : (
-            submitBtn && submitBtn
-          )}
-        </div>
       </div>
     )
   }
