@@ -7,6 +7,7 @@ import { CheckIcon, PencilIcon } from '@heroicons/react/24/solid'
 import { observer } from 'mobx-react-lite'
 
 import { classNames } from 'src/helpers/css'
+import { numberToPrettyFraction } from 'src/helpers/numbers'
 import { useStore } from 'src/stores/RootStore'
 
 // Ingredient items and shopping list items are the same, but shopping list items should have quantity and unit optional. That's a TODO
@@ -330,7 +331,7 @@ export const getIngredientItemInfo = (
         {quantity && unit && (
           <span className="font-normal">
             {' '}
-            {quantity} {unit.name}{' '}
+            {numberToPrettyFraction(quantity)} {unit.name}{' '}
           </span>
         )}
       </span>
