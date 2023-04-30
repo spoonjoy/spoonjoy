@@ -134,6 +134,8 @@ interface IDraggableListItemConfig {
 
 interface IEditableListItemConfig {
   isEditable: boolean
+  /** Use this to optionally include code to run when edit mode is toggled. One example use is to update any fields. */
+  onToggleEditCallback?: () => void
   editInterface: JSX.Element
 }
 
@@ -244,7 +246,14 @@ export const ListItem = React.forwardRef<HTMLLIElement | null, IListItemProps>(
           </button>
         </div>
         {editableConfig && editableConfig.isEditable && (
-          <button type="button" onClick={() => setIsEditing(!isEditing)}>
+          <button
+            type="button"
+            onClick={() => {
+              editableConfig.onToggleEditCallback &&
+                editableConfig.onToggleEditCallback()
+              setIsEditing(!isEditing)
+            }}
+          >
             <span className="sr-only">
               toggle manual input for item {itemInfo.itemLabel}
             </span>

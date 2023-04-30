@@ -1,32 +1,20 @@
 import { useDraggable } from '@dnd-kit/core'
-import { Bars3Icon, MinusCircleIcon } from '@heroicons/react/24/outline'
-import { PencilIcon } from '@heroicons/react/24/solid'
-import { CreateIngredientInput, UpdateIngredientInput } from 'types/graphql'
 
-import {
-  FieldError,
-  FieldArrayWithId,
-  UseFieldArrayRemove,
-  useWatch,
-} from '@redwoodjs/forms'
+import { UseFieldArrayRemove, useFormContext } from '@redwoodjs/forms'
 
 import { usePersistValuesOnChange } from 'src/components/formComponents/usePersistFormValues'
 import {
   getIngredientItemInfo,
   ListItem,
 } from 'src/components/IngredientsItemsList/IngredientsItemsList'
-import LoadingSpinner from 'src/components/Loading/LoadingSpinner'
-import { classNames } from 'src/helpers/css'
 
 import { IngredientFormFragManualInput } from './IngredientFormFragManualInput'
-import { IngredientFormFragParsedInput } from './IngredientFormFragParsedInput'
 
 import { RecipeFormType } from '.'
 
 interface IngredientFormFragProps {
   stepNum: number
   ingIdx: number
-  ingredient: FieldArrayWithId<RecipeFormType, `steps.${number}.ingredients`>
   removeFromIngredients: UseFieldArrayRemove
   isRemovable?: boolean
 }
@@ -36,15 +24,20 @@ export interface IDraggableIngredientData {
   ingIdx: number
 }
 
-const btnClassName = 'mt-4 h-5 w-[10%] sm:w-[5%]'
-
 const IngredientFormFrag = ({
   stepNum,
   ingIdx,
-  ingredient,
   removeFromIngredients,
   isRemovable = true,
 }: IngredientFormFragProps) => {
+  const { getValues } = useFormContext<RecipeFormType>()
+  const ingredientFieldName = `steps.${
+    stepNum - 1
+  }.ingredients.${ingIdx}` as const
+  const [ingredient, setIngredient] = React.useState(
+    getValues(ingredientFieldName)
+  )
+
   const persistValues = usePersistValuesOnChange()
 
   const draggableData: IDraggableIngredientData = {
@@ -53,7 +46,7 @@ const IngredientFormFrag = ({
   }
 
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: `ingredient-${ingredient.id}`,
+    id: ingredientFieldName,
     data: draggableData,
   })
 
@@ -65,8 +58,6 @@ const IngredientFormFrag = ({
       }
     : undefined
 
-  const uniqueId = `ing-${ingredient.id}`
-
   const { quantity, unitName, ingredientName } = ingredient
 
   return (
@@ -74,9 +65,9 @@ const IngredientFormFrag = ({
       <ListItem
         ref={setNodeRef}
         listType="recipeIngredients"
-        uniqueId={uniqueId}
+        uniqueId={ingredientFieldName}
         itemInfo={getIngredientItemInfo({
-          id: uniqueId,
+          id: ingredientFieldName,
           quantity,
           unit: {
             name: unitName,
@@ -101,12 +92,11 @@ const IngredientFormFrag = ({
         }}
         editableConfig={{
           isEditable: true,
+          onToggleEditCallback: () => {
+            setIngredient({ ...getValues(ingredientFieldName) })
+          },
           editInterface: (
-            <IngredientFormFragManualInput
-              stepNum={stepNum}
-              ingIdx={ingIdx}
-              ingredient={ingredient}
-            />
+            <IngredientFormFragManualInput stepNum={stepNum} ingIdx={ingIdx} />
           ),
         }}
       />

@@ -43,7 +43,6 @@ export const IngredientsFormFrag = ({ stepNum }: IIngredientsFormFragProps) => {
                 key={ingredient.id}
                 stepNum={stepNum}
                 ingIdx={ingIdx}
-                ingredient={ingredient}
                 removeFromIngredients={removeFromIngredients}
                 isRemovable={
                   (stepOutputUsesLength >= 1 || ingredients.length > 1) &&
