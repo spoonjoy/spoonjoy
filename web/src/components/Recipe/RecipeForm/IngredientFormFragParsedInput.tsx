@@ -74,6 +74,13 @@ export const IngredientFormFragParsedInput = React.forwardRef<
       }
     )
 
+    if (error) {
+      setError(fieldName, {
+        type: 'custom',
+        message: 'there was an error parsing the input',
+      })
+    }
+
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value
       const MIN_INPUT_LENGTH = 4 // this is arbitrary but i figured the smallest you could have is, eg, '1g a' (where 'a' is some ingredient name - are there any 1 letter ingredient names? feh)
