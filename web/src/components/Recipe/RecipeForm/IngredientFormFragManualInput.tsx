@@ -14,7 +14,7 @@ export const IngredientFormFragManualInput = ({
   const persistValues = usePersistValuesOnChange()
   return (
     <div className="h-full w-full -space-x-px">
-      <div className="inline-block w-[20%]">
+      <div className="inline-block w-[30%]">
         <label
           htmlFor={`steps.${stepNum - 1}.ingredients.${ingIdx}.quantity`}
           className="sr-only"
@@ -35,7 +35,7 @@ export const IngredientFormFragManualInput = ({
           onChange={persistValues}
         />
       </div>
-      <div className="inline-block w-[40%]">
+      <div className="inline-block w-[35%]">
         <label
           htmlFor={`steps.${stepNum - 1}.ingredients.${ingIdx}.unitName`}
           className="sr-only"
@@ -53,7 +53,7 @@ export const IngredientFormFragManualInput = ({
           onChange={persistValues}
         />
       </div>
-      <div className="inline-block w-[40%]">
+      <div className="inline-block w-[35%]">
         <label
           htmlFor={`steps.${stepNum - 1}.ingredients.${ingIdx}.ingredientName`}
           className="sr-only"

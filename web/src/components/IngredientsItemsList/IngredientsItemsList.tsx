@@ -3,7 +3,7 @@ import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities'
 import { BeakerIcon } from '@heroicons/react/20/solid'
 import { Square2StackIcon } from '@heroicons/react/20/solid'
 import { Bars3Icon, MinusCircleIcon } from '@heroicons/react/24/outline'
-import { PencilIcon } from '@heroicons/react/24/solid'
+import { CheckIcon, PencilIcon } from '@heroicons/react/24/solid'
 import { observer } from 'mobx-react-lite'
 
 import { classNames } from 'src/helpers/css'
@@ -258,7 +258,11 @@ export const ListItem = React.forwardRef<HTMLLIElement | null, IListItemProps>(
               toggle manual input for item {itemInfo.itemLabel}
             </span>
             {/* Weird margin and height on this one is to make it just a smidge smaller */}
-            <PencilIcon className="my-0.5 h-4 text-gray-400 hover:text-gray-500" />
+            {isEditing ? (
+              <CheckIcon className="h-5 text-green-600 hover:text-green-700" />
+            ) : (
+              <PencilIcon className="my-0.5 h-4 text-gray-400 hover:text-gray-500" />
+            )}
           </button>
         )}
         {draggableConfig && draggableConfig.isDraggable && (

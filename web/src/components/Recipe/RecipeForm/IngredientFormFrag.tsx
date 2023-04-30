@@ -61,61 +61,44 @@ const IngredientFormFrag = ({
   const { quantity, unitName, ingredientName } = ingredient
 
   return (
-    <>
-      <ListItem
-        ref={setNodeRef}
-        listType="recipeIngredients"
-        uniqueId={ingredientFieldName}
-        itemInfo={getIngredientItemInfo({
-          id: ingredientFieldName,
-          quantity,
-          unit: {
-            name: unitName,
-          },
-          ingredientRef: {
-            name: ingredientName,
-          },
-        })}
-        draggableConfig={{
-          isDraggable: true,
-          style: draggableStyle,
-          attributes,
-          listeners,
-        }}
-        deletableConfig={{
-          isDeletable: isRemovable,
-          onClickDelete: (e) => {
-            e.preventDefault()
-            removeFromIngredients(ingIdx)
-            persistValues()
-          },
-        }}
-        editableConfig={{
-          isEditable: true,
-          onToggleEditCallback: () => {
-            setIngredient({ ...getValues(ingredientFieldName) })
-          },
-          editInterface: (
-            <IngredientFormFragManualInput stepNum={stepNum} ingIdx={ingIdx} />
-          ),
-        }}
-      />
-
-      {/* <div className="flex flex-col">
-        <FieldError
-          name={`steps.${stepNum - 1}.ingredients.${ingIdx}.quantity`}
-          className="mt-1 text-sm text-red-600"
-        />
-        <FieldError
-          name={`steps.${stepNum - 1}.ingredients.${ingIdx}.unitName`}
-          className="mt-1 text-sm text-red-600"
-        />
-        <FieldError
-          name={`steps.${stepNum - 1}.ingredients.${ingIdx}.ingredientName`}
-          className="mt-1 text-sm text-red-600"
-        />
-      </div> */}
-    </>
+    <ListItem
+      ref={setNodeRef}
+      listType="recipeIngredients"
+      uniqueId={ingredientFieldName}
+      itemInfo={getIngredientItemInfo({
+        id: ingredientFieldName,
+        quantity,
+        unit: {
+          name: unitName,
+        },
+        ingredientRef: {
+          name: ingredientName,
+        },
+      })}
+      draggableConfig={{
+        isDraggable: true,
+        style: draggableStyle,
+        attributes,
+        listeners,
+      }}
+      deletableConfig={{
+        isDeletable: isRemovable,
+        onClickDelete: (e) => {
+          e.preventDefault()
+          removeFromIngredients(ingIdx)
+          persistValues()
+        },
+      }}
+      editableConfig={{
+        isEditable: true,
+        onToggleEditCallback: () => {
+          setIngredient({ ...getValues(ingredientFieldName) })
+        },
+        editInterface: (
+          <IngredientFormFragManualInput stepNum={stepNum} ingIdx={ingIdx} />
+        ),
+      }}
+    />
   )
 }
 
