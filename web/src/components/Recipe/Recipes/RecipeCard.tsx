@@ -4,7 +4,6 @@ import { routes } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
 import AddToCookbookButton from 'src/components/Cookbook/AddToCookbook/AddToCookbookButton'
-import AddToCookbookButtonCell from 'src/components/Cookbook/AddToCookbookButtonCell'
 import ActionButtonsContainer from 'src/components/shared/ActionButtons/ActionButtonsContainer/ActionButtonsContainer'
 import ShareButton from 'src/components/shared/ActionButtons/ShareButton/ShareButton'
 import ListCardBase from 'src/components/shared/ListCard/ListCardBase'
