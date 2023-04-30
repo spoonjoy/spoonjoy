@@ -63,8 +63,8 @@ const Cookbook = ({ cookbook }: Props) => {
               shareButtonProps={{
                 title: description,
                 text: isOwner
-                  ? `check out my "${title}" cookbook on spoonjoy!`
-                  : `check out ${author.username}'s "${title}" cookbook on spoonjoy!`,
+                  ? `i LOVE the recipes in my ${title} cookbook`
+                  : `i LOVE ${author.username}'s ${title} cookbook`,
                 url: routes.cookbook({ id: cookbook.id }),
                 onLightBackground: true,
               }}

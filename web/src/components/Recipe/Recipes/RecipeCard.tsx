@@ -23,8 +23,8 @@ const RecipeCard = ({
         title={`"${recipe.title}" by ${recipe.chef.username}`}
         text={
           currentUser?.id === recipe.chef.id
-            ? `check out my "${recipe.title}" recipe on spoonjoy!`
-            : `check out ari's "${recipe.title} recipe on spoonjoy!`
+            ? `i LOVE my ${recipe.title} recipe`
+            : `i LOVE ari's ${recipe.title} recipe`
         }
         url={routes.recipe({ id: recipe.id })}
       />
