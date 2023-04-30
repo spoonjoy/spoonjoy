@@ -8,7 +8,6 @@ import CreateEditCookbookDialog from 'src/components/Cookbook/CreateEditCookbook
 import RecipesCell from 'src/components/Recipe/RecipesCell'
 import { classNames } from 'src/helpers/css'
 
-import UserProfileBottomBar from '../UserProfileBottomBar'
 import UserProfileHeader from '../UserProfileHeader'
 
 interface IUserProfileProps {
@@ -78,7 +77,6 @@ const UserProfile = ({ username }: IUserProfileProps) => {
             <RecipesCell username={username} />
           </Tab.Panel>
         </Tab.Panels>
-        {/* <UserProfileBottomBar /> */}
       </Tab.Group>
     </>
   )
