@@ -46,7 +46,7 @@ const ChangePasswordForm = () => {
         placeholder="new password"
         validation={{ required: true }}
       />
-      <div className="flex justify-center">
+      <div className="flex justify-center sm:justify-end">
         <Submit disabled={loading} className="btn-secondary">
           change password
         </Submit>
