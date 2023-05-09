@@ -10,6 +10,7 @@ export const handler = async (
   context: Context
 ) => {
   const forgotPasswordOptions: DbAuthHandlerOptions['forgotPassword'] = {
+    enabled: false,
     // handler() is invoked after verifying that a user was found with the given
     // username. This is where you can send the user an email with a link to
     // reset their password. With the default dbAuth routes and field names, the
