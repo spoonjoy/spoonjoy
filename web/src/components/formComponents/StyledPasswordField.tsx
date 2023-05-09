@@ -9,6 +9,7 @@ const StyledTextField = ({
   onChange,
   validation,
   markOptional,
+  placeholder,
 }: StyledFieldProps<HTMLInputElement>) => {
   return (
     <StyledFieldWrapper
@@ -19,6 +20,7 @@ const StyledTextField = ({
       <PasswordField
         name={fieldName}
         defaultValue={defaultValue}
+        placeholder={placeholder}
         className="form-field"
         errorClassName="block w-full rounded-md border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
         validation={validation}
