@@ -4,9 +4,9 @@
   "private": true,
   "dependencies": {
     "@aws-sdk/s3-request-presigner": "^3.279.0",
-    "@redwoodjs/api": "4.2.0",
-    "@redwoodjs/auth-dbauth-api": "4.2.0",
-    "@redwoodjs/graphql-server": "4.2.0",
+    "@redwoodjs/api": "5.1.0",
+    "@redwoodjs/auth-dbauth-api": "5.1.0",
+    "@redwoodjs/graphql-server": "5.1.0",
     "@simplewebauthn/server": "^6",
     "@sparticuz/chromium-min": "111",
     "@tailwindcss/forms": "^0.5.3",

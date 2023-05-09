@@ -8,8 +8,8 @@
     ]
   },
   "devDependencies": {
-    "@redwoodjs/auth-dbauth-setup": "4.2.0",
-    "@redwoodjs/core": "4.2.0",
+    "@redwoodjs/auth-dbauth-setup": "5.1.0",
+    "@redwoodjs/core": "5.1.0",
     "clipboardy": "^2.3.0",
     "graphql-2-json-schema": "^0.10.0",
     "prettier-plugin-tailwindcss": "^0.1.13"
