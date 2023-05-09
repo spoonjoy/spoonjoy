@@ -51,7 +51,10 @@ export const Failure = ({ error }: CellFailureProps) => (
 
 export const Success = ({
   recipes,
-  variables,
+
+  queryResult: {
+    variables,
+  },
 }: CellSuccessProps<FindRecipesByUser, FindCookbooksByUserVariables>) => {
   const { currentUser } = useAuth()
   return (

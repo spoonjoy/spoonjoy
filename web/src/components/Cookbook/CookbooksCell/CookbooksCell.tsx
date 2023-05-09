@@ -29,7 +29,10 @@ export const Failure = ({ error }: CellFailureProps) => (
 
 export const Success = ({
   cookbooks,
-  variables,
+
+  queryResult: {
+    variables,
+  },
 }: CellSuccessProps<FindCookbooksByUser, FindCookbooksByUserVariables>) => {
   return <Cookbooks cookbooks={cookbooks} ownerUsername={variables?.username} />
 }
