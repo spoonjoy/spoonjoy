@@ -47,7 +47,7 @@ const ChangePasswordForm = () => {
         validation={{ required: true }}
       />
       <div className="flex justify-center">
-        <Submit disabled={loading} className="btn-submit-primary">
+        <Submit disabled={loading} className="btn-secondary">
           change password
         </Submit>
       </div>
