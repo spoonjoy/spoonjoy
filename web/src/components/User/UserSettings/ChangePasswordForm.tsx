@@ -1,6 +1,6 @@
 import type { UpdateUserPasswordInput } from 'types/graphql'
 
-import { Form, Submit } from '@redwoodjs/forms'
+import { Form, Submit, useForm } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
@@ -20,9 +20,11 @@ const CHANGE_PASSWORD_MUTATION = gql`
 
 const ChangePasswordForm = () => {
   const { currentUser } = useAuth()
+  const formMethods = useForm<UpdateUserPasswordInput>()
   const [changePassword, { loading }] = useMutation(CHANGE_PASSWORD_MUTATION, {
     onCompleted: () => {
       toast.success('password updated!')
+      formMethods.reset()
     },
     onError: (error) => {
       toast.error(error.message)
@@ -39,6 +41,7 @@ const ChangePasswordForm = () => {
           },
         })
       }}
+      formMethods={formMethods}
     >
       <StyledPasswordField
         label="new password"
