@@ -43,7 +43,7 @@ const StyledFieldWrapper = ({
   endComponent,
 }: StyledFieldWrapperProps) => {
   return (
-    <div className={classNames(inline ? 'mr-10 flex-1' : 'mb-3')}>
+    <div className={classNames('text-left', inline ? 'mr-10 flex-1' : 'mb-3')}>
       {label && (
         <Label
           name={fieldName}

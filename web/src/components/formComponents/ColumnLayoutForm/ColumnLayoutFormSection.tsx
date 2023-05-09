@@ -1,13 +1,18 @@
+import { classNames } from 'src/helpers/css'
+
 export interface IColumnLayoutFormSectionProps {
   children: JSX.Element
   sectionTitle: string
   sectionDescription?: string
+  /** Use this if your child component isn't handling padding itself */
+  withPadding?: boolean
 }
 
 export const ColumnLayoutFormSection = ({
   children,
   sectionTitle,
   sectionDescription,
+  withPadding,
 }: IColumnLayoutFormSectionProps) => {
   return (
     <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
@@ -21,7 +26,9 @@ export const ColumnLayoutFormSection = ({
       </div>
 
       <div className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
-        {children}
+        <div className={classNames(withPadding ? 'form-section-padding' : '')}>
+          {children}
+        </div>
       </div>
     </div>
   )

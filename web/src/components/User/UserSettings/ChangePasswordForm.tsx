@@ -41,7 +41,7 @@ const ChangePasswordForm = () => {
       }}
     >
       <StyledPasswordField
-        label="change password"
+        label="new password"
         fieldName="newPassword"
         placeholder="new password"
         validation={{ required: true }}

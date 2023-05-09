@@ -32,9 +32,9 @@ const Routes = () => {
         <Private wrap={SiteLayout} unauthenticated="welcome" whileLoadingAuth={LoadingPage}>
           <Route path="/cookbooks/{id}/edit" page={CookbookEditCookbookPage} name="editCookbook" />
           <Route path="/shopping-list" page={ShoppingListPage} name="shoppingList" />
-          <Route path="/settings" page={UserUserSettingsPage} name="settings" />
         </Private>
         <Private wrap={SiteLayout} unauthenticated="welcome" whileLoadingAuth={LoadingPage} bgColor="gray">
+          <Route path="/settings" page={UserUserSettingsPage} name="settings" />
           <Route path="/recipes/{id}/edit" page={RecipeEditRecipePage} name="editRecipe" />
         </Private>
 
