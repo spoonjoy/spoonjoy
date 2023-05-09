@@ -23,6 +23,18 @@ const UserSettingsPage = () => {
             <ChangePasswordForm />
           </ColumnLayoutFormSection>
         </ColumnLayoutFormWrapper>
+        <div className="mx-5 mt-20 text-center">
+          more coming soon, if you need anything email us at{' '}
+          <a
+            href={`mailto:${encodeURI(
+              'spoonjoy team<hi@spoonjoy.app>?subject=I want more settings!&body=(what do you need help with?)'
+            )}`}
+          >
+            <span className="link group-hover:text-indigo-500">
+              hi@spoonjoy.app
+            </span>
+          </a>
+        </div>
         <div className="mx-auto mt-20 mb-10 text-center">
           <LogOutBtn />
         </div>
