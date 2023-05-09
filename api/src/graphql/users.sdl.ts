@@ -27,11 +27,6 @@ export const schema = gql`
   input UpdateUserInput {
     email: String
     username: String
-    hashedPassword: String
-    salt: String
-    resetToken: String
-    resetTokenExpiresAt: DateTime
-    webAuthnChallenge: String
   }
 
   type Mutation {

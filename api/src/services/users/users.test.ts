@@ -34,8 +34,7 @@ describe('users', () => {
 
     expect(result.email).toEqual('String5792369')
     expect(result.username).toEqual('String1926639')
-    expect(result.hashedPassword).toEqual('String')
-    expect(result.salt).toEqual('String')
+    expect(result).toEqual('String')
   })
 
   scenario('updates a user', async (scenario: StandardScenario) => {

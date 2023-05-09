@@ -59,7 +59,10 @@ export const updateUser: MutationResolvers['updateUser'] = async ({
 }) => {
   await deleteCacheKey(getUserCacheKey(id))
   return db.user.update({
-    data: input,
+    data: {
+      email: input.email || undefined,
+      username: input.username || undefined,
+    },
     where: { id },
   })
 }
