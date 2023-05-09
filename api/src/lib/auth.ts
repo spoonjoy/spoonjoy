@@ -199,3 +199,23 @@ export const requireCookbookAuth = async (cookbookId: string) => {
     throw new ForbiddenError('You can only modify your own cookbooks!')
   }
 }
+
+/**
+ * Use requireChangeUserInfoAuth for checking that a user can modify/delete a user
+ *
+ * @param userId - The ID of the user for which we are checking auth
+ *
+ * @returns - If the currentUser is authenticated (and allowed to make changes to the given user)
+ *
+ * @throws {@link AuthenticationError} - If the currentUser is not authenticated
+ * @throws {@link ForbiddenError} If the currentUser is not allowed due to the user not being them
+ */
+export const requireChangeUserInfoAuth = async (userId: string) => {
+  if (!isAuthenticated()) {
+    throw new AuthenticationError('You are not logged in!')
+  }
+
+  if (context.currentUser!.id !== userId) {
+    throw new ForbiddenError('You can only change your own information!')
+  }
+}

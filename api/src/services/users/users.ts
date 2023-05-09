@@ -4,6 +4,9 @@ import type {
   UserRelationResolvers,
 } from 'types/graphql'
 
+import { hashPassword } from '@redwoodjs/auth-dbauth-api'
+
+import { requireChangeUserInfoAuth } from 'src/lib/auth'
 import {
   cache,
   cacheFindMany,
@@ -66,6 +69,23 @@ export const updateUser: MutationResolvers['updateUser'] = async ({
     where: { id },
   })
 }
+
+export const updateUserPassword: MutationResolvers['updateUserPassword'] =
+  async ({ id, input }) => {
+    requireChangeUserInfoAuth(id)
+
+    const { newPassword } = input
+
+    const [hashedPassword, salt] = hashPassword(newPassword)
+
+    return db.user.update({
+      data: {
+        hashedPassword,
+        salt,
+      },
+      where: { id },
+    })
+  }
 
 export const deleteUser: MutationResolvers['deleteUser'] = ({ id }) => {
   return db.user.delete({
