@@ -35,8 +35,10 @@ const ImportRecipesPage = () => {
       )}
       <MetaTags title="import recipes" description="Import Recipes page" />
       <HeaderSlot.Plug id="recipe-import">
-        <div className="w-screen text-center">
-          <span className="text-xl text-indigo-700 sm:text-2xl">import to</span>
+        <div className="w-screen pt-20 text-center xl:pt-40">
+          <span className="pt-20 text-xl text-indigo-700 sm:text-2xl">
+            import to
+          </span>
           <br />
           <span className="text-5xl sm:text-6xl">spoonjoy</span>
         </div>
