@@ -14,6 +14,7 @@ const StyledTextField = ({
   placeholder,
 }: StyledFieldProps<HTMLInputElement>) => {
   const [showPassword, setShowPassword] = React.useState(false)
+  const pwFieldRef = React.useRef<HTMLInputElement>(null)
 
   return (
     <StyledFieldWrapper
@@ -21,16 +22,23 @@ const StyledTextField = ({
       fieldName={fieldName}
       markOptional={markOptional}
       endComponent={
-        <button type="button" onClick={() => setShowPassword(!showPassword)}>
+        <button
+          type="button"
+          onClick={() => {
+            setShowPassword(!showPassword)
+            pwFieldRef.current?.focus()
+          }}
+        >
           {showPassword ? (
-            <EyeSlashIcon className="h-5" />
+            <EyeSlashIcon className="h-5 text-gray-500" />
           ) : (
-            <EyeIcon className="h-5" />
+            <EyeIcon className="h-5 text-gray-500" />
           )}
         </button>
       }
     >
       <PasswordField
+        ref={pwFieldRef}
         name={fieldName}
         defaultValue={defaultValue}
         placeholder={placeholder}
