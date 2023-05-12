@@ -49,9 +49,11 @@ export const importRecipeFromWebsite: MutationResolvers['importRecipeFromWebsite
         e
       )
 
-      throw new RedwoodError(
-        'Error importing recipe via structured data, site not yet supported'
-      )
+      // throw new RedwoodError(
+      //   'Error importing recipe via structured data, site not yet supported'
+      // )
+
+      // uncomment the above to disable importing with GPT4
 
       const imageUrl = await getImageFromHtml(webPageString)
 
