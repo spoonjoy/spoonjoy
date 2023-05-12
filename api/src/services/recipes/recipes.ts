@@ -233,28 +233,31 @@ export const updateRecipe: MutationResolvers['updateRecipe'] = async ({
     steps: mapStepsMutationInputToDbUpdateInputNoStepOutputUses(steps, id),
   }
 
-  const updatedRecipe = await db.$transaction(async (tx) => {
-    // 1. Update the recipe
-    const updatedRecipeNoStepOutputUses = await tx.recipe.update({
-      where: { id },
-      data: recipeNoStepOutputUsesDbInput,
-    })
+  const updatedRecipe = await db.$transaction(
+    async (tx) => {
+      // 1. Update the recipe
+      const updatedRecipeNoStepOutputUses = await tx.recipe.update({
+        where: { id },
+        data: recipeNoStepOutputUsesDbInput,
+      })
 
-    const recipeId = updatedRecipeNoStepOutputUses.id
+      const recipeId = updatedRecipeNoStepOutputUses.id
 
-    // 2. Delete any existing step output uses. Doing it this way because it's the easiest way to figure out which should be deleted :)
-    await tx.stepOutputUse.deleteMany({ where: { recipeId: recipeId } })
+      // 2. Delete any existing step output uses. Doing it this way because it's the easiest way to figure out which should be deleted :)
+      await tx.stepOutputUse.deleteMany({ where: { recipeId: recipeId } })
 
-    // 3. Create the step output uses
-    await tx.stepOutputUse.createMany({
-      data: mapStepsMutationInputToDbCreateManyStepOutputUsesInput(
-        recipeId,
-        steps
-      ),
-    })
+      // 3. Create the step output uses
+      await tx.stepOutputUse.createMany({
+        data: mapStepsMutationInputToDbCreateManyStepOutputUsesInput(
+          recipeId,
+          steps
+        ),
+      })
 
-    return updatedRecipeNoStepOutputUses
-  })
+      return updatedRecipeNoStepOutputUses
+    },
+    { maxWait: 5000, timeout: 15000 }
+  )
 
   await deleteCacheKey(getRecipeCacheKey(id))
   return updatedRecipe
