@@ -33,7 +33,9 @@ export const createRecipeImage = async (
       const sjUrl = uploadFileToCloudinary(openaiUrl, recipeId)
       return sjUrl
     } else {
-      throw new Error(`Couldn't get image from OpenAI for recipe ${title}.`)
+      throw new Error(
+        `Couldn't get image from OpenAI for recipe ${title}. Got following response: ${imageResponse}`
+      )
     }
   } catch (e) {
     throw new Error(
