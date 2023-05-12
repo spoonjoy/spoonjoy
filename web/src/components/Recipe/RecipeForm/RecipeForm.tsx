@@ -124,9 +124,9 @@ const RecipeForm = ({ recipe, onSave, error, loading }: RecipeFormProps) => {
           />
         </Form>
         {/* this starting showing up in prod for some reason */}
-        {/* {process.env.NODE_ENV === 'development' && (
+        {process.env.NODE_ENV === 'development' && (
           <DevTool control={control} />
-        )} */}
+        )}
       </div>
     </FormProvider>
   )
