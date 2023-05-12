@@ -185,7 +185,7 @@ export const createRecipe: MutationResolvers['createRecipe'] = async ({
 
       return newRecipeNoStepOutputUses
     },
-    { timeout: 15000 }
+    { maxWait: 5000, timeout: 15000 }
   )
 }
 
