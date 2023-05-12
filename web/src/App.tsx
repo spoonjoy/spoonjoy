@@ -1,5 +1,3 @@
-import { Analytics } from '@vercel/analytics/react'
-
 import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/dist/apollo'
 import { Toaster } from '@redwoodjs/web/dist/toast'
@@ -45,7 +43,6 @@ const App = () => {
           </AuthProvider>
         </RedwoodProvider>
       </FatalErrorBoundary>
-      <Analytics />
     </>
   )
 }
