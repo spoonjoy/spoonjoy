@@ -8,7 +8,7 @@ import type {
   UpdateRecipeInput,
 } from 'types/graphql'
 
-import { validateWith } from '@redwoodjs/api'
+import { validateWithSync } from '@redwoodjs/api'
 
 import { requireAuth, requireRecipeAuth } from 'src/lib/auth'
 import {
@@ -142,7 +142,7 @@ export const createRecipe: MutationResolvers['createRecipe'] = async ({
   requireAuth()
 
   const { title, description, servings, steps } = input
-  validateWith(() => {
+  validateWithSync(() => {
     stepValidations(steps)
   })
 
@@ -219,7 +219,7 @@ export const updateRecipe: MutationResolvers['updateRecipe'] = async ({
   await requireRecipeAuth(id)
 
   const { title, description, servings, steps } = input
-  validateWith(() => {
+  validateWithSync(() => {
     stepValidations(steps)
   })
 
