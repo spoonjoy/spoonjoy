@@ -4765,9 +4765,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hookform/devtools@npm:4.2.2":
-  version: 4.2.2
-  resolution: "@hookform/devtools@npm:4.2.2"
+"@hookform/devtools@npm:^4.3.1":
+  version: 4.3.1
+  resolution: "@hookform/devtools@npm:4.3.1"
   dependencies:
     "@emotion/react": ^11.1.5
     "@emotion/styled": ^11.3.0
@@ -4778,28 +4778,9 @@ __metadata:
     use-deep-compare-effect: ^1.8.1
     uuid: ^8.3.2
   peerDependencies:
-    react: ">=17.0.2"
-    react-dom: ">=17.0.2"
-  checksum: 1e405a86e8f4ea053b469f3ccd62c2ad2b4f6423b47f76698ecdbc61616a2d3300a0f9d76636826b382e3e921baaff660447fcac5828c2b82a0cc81b55777abc
-  languageName: node
-  linkType: hard
-
-"@hookform/devtools@patch:@hookform/devtools@npm%3A4.2.2#./.yarn/patches/@hookform-devtools-npm-4.2.2-aafab2382b.patch::locator=root-workspace-0b6124%40workspace%3A.":
-  version: 4.2.2
-  resolution: "@hookform/devtools@patch:@hookform/devtools@npm%3A4.2.2#./.yarn/patches/@hookform-devtools-npm-4.2.2-aafab2382b.patch::version=4.2.2&hash=246c22&locator=root-workspace-0b6124%40workspace%3A."
-  dependencies:
-    "@emotion/react": ^11.1.5
-    "@emotion/styled": ^11.3.0
-    "@types/lodash": ^4.14.168
-    little-state-machine: ^4.1.0
-    lodash: ^4.17.21
-    react-simple-animate: ^3.3.12
-    use-deep-compare-effect: ^1.8.1
-    uuid: ^8.3.2
-  peerDependencies:
-    react: ">=17.0.2"
-    react-dom: ">=17.0.2"
-  checksum: b255a84a11a36c2a21932dc5346c69b31a49f5ebce96b7437ba9518e09f5d4e6c5a7a89c62f4e27b8e11ca3badd2210bf70f4d88bc63a8477b61b34f93062a19
+    react: ^16.8.0 || ^17 || ^18
+    react-dom: ^16.8.0 || ^17 || ^18
+  checksum: 4155e4c5da69b397e7a0aea9c674def5cb92e9d21f420be6cbb32d3c893a239e890d3a17f8a31fb194493696230806f8d77b8b2be1b7a9c797a3f89477c3c9f5
   languageName: node
   linkType: hard
 
@@ -27550,7 +27531,7 @@ __metadata:
     "@dnd-kit/modifiers": ^6.0.1
     "@headlessui/react": ^1.7.9
     "@heroicons/react": ^2.0.11
-    "@hookform/devtools": ^4.2.2
+    "@hookform/devtools": ^4.3.1
     "@redwoodjs/auth-dbauth-web": 5.1.4
     "@redwoodjs/forms": 5.1.4
     "@redwoodjs/router": 5.1.4
