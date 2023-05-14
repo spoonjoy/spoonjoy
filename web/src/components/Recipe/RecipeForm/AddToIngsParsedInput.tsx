@@ -37,10 +37,9 @@ export const AddToIngsParsedInput = ({
 
   const persistValues = usePersistValuesOnChange()
 
-  const placeholderIngItemInfo = getIngredientItemInfo(
-    undefined,
-    'start typing to add an ingredient'
-  )
+  const placeholderIngItemInfo = getIngredientItemInfo({
+    placeholder: 'start typing to add an ingredient',
+  })
 
   const fieldRef = React.useRef<HTMLInputElement>(null)
 

@@ -17,6 +17,7 @@ import { classNames } from 'src/helpers/css'
 import { HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
 
 import RecipeControlBar from './RecipeControlBar'
+import RecipeScaleFactor from './RecipeScaleFactor'
 
 interface Props {
   recipe?: NonNullable<FindRecipeById['recipe']>
@@ -25,6 +26,8 @@ interface Props {
 const Recipe = ({ recipe }: Props) => {
   const { currentUser } = useAuth()
   const isOwnRecipe = recipe && recipe.chef.id === currentUser?.id
+
+  const [scaleFactor, setScaleFactor] = React.useState(1)
 
   const listItemIds =
     recipe &&
@@ -133,10 +136,14 @@ const Recipe = ({ recipe }: Props) => {
           )}
         </div>
       </HeaderSlot.Plug>
-      <div className="my-6 flex justify-center">
+      <div className="my-6 flex justify-center gap-5">
         <ReloadIngredientsItemsList
           label={'clear progress'}
           itemIds={listItemIds}
+        />
+        <RecipeScaleFactor
+          scaleFactor={scaleFactor}
+          setScaleFactor={setScaleFactor}
         />
       </div>
       <div className="mx-3 mb-7 max-w-xl sm:m-auto">
@@ -173,6 +180,7 @@ const Recipe = ({ recipe }: Props) => {
                       <IngredientsItemsList
                         items={ingredients}
                         listType="recipeIngredients"
+                        scaleFactor={scaleFactor}
                       />
                     )}
                     {stepOutputUses.length > 0 && (

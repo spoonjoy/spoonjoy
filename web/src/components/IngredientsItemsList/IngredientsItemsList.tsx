@@ -56,6 +56,8 @@ interface IIngredientsItemsList {
   /** This is used by stepOutputUses to get the step titles */
   steps?: IStepInfoForList
   listType?: ListType
+  /** This scales all the quantities by the given factor */
+  scaleFactor?: number
 }
 
 // For use both when listing ingredients in a recipe and items in a shopping list
@@ -63,6 +65,7 @@ const IngredientsItemsList = ({
   items,
   steps,
   listType,
+  scaleFactor,
 }: IIngredientsItemsList) => {
   const { listItemsStore } = useStore()
   const getStepTitle = (stepNum: number) => {
@@ -86,7 +89,10 @@ const IngredientsItemsList = ({
             const itemInfo = (() => {
               switch (listType) {
                 case 'recipeIngredients':
-                  return getIngredientItemInfo(item as IIngredientItem)
+                  return getIngredientItemInfo({
+                    item: item as IIngredientItem,
+                    scaleFactor,
+                  })
                 case 'stepOutputUses':
                   return getStepOutputUseItemInfo(
                     item as IStepOutputUseItem,
@@ -307,10 +313,17 @@ export interface IListItemInfo {
   itemLabel: JSX.Element
 }
 
-export const getIngredientItemInfo = (
-  item?: IIngredientItem,
+interface IGetIngredientItemInfo {
+  item?: IIngredientItem
   placeholder?: string
-): IListItemInfo => {
+  scaleFactor?: number
+}
+
+export const getIngredientItemInfo = ({
+  item,
+  placeholder,
+  scaleFactor = 1,
+}: IGetIngredientItemInfo): IListItemInfo => {
   const { quantity, unit, ingredientRef, id } = item || {}
   return {
     key: item
@@ -331,7 +344,7 @@ export const getIngredientItemInfo = (
         {quantity && unit && (
           <span className="font-normal">
             {' '}
-            {numberToPrettyFraction(quantity)} {unit.name}{' '}
+            {numberToPrettyFraction(quantity * scaleFactor)} {unit.name}{' '}
           </span>
         )}
       </span>

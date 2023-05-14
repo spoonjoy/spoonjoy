@@ -53,13 +53,15 @@ export const IngredientFormFragParsedInput = React.forwardRef<
 
         setNewIngItemInfo(
           getIngredientItemInfo({
-            id: fieldName,
-            quantity,
-            unit: {
-              name: unitName,
-            },
-            ingredientRef: {
-              name: ingredientName,
+            item: {
+              id: fieldName,
+              quantity,
+              unit: {
+                name: unitName,
+              },
+              ingredientRef: {
+                name: ingredientName,
+              },
             },
           })
         )

@@ -66,13 +66,15 @@ const IngredientFormFrag = ({
       listType="recipeIngredients"
       uniqueId={ingredientFieldName}
       itemInfo={getIngredientItemInfo({
-        id: ingredientFieldName,
-        quantity,
-        unit: {
-          name: unitName,
-        },
-        ingredientRef: {
-          name: ingredientName,
+        item: {
+          id: ingredientFieldName,
+          quantity,
+          unit: {
+            name: unitName,
+          },
+          ingredientRef: {
+            name: ingredientName,
+          },
         },
       })}
       draggableConfig={{
