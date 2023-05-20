@@ -1,3 +1,5 @@
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+
 import { useFieldArray, useFormContext, useWatch } from '@redwoodjs/forms'
 
 import { classNames } from 'src/helpers/css'
@@ -29,13 +31,18 @@ export const IngredientsFormFrag = ({ stepNum }: IIngredientsFormFragProps) => {
     ? stepOutputUses.length
     : 0
 
+  const animationParentRef = useAutoAnimate({})
+
   return (
     <div className="m-auto">
       <legend className="mb-2 block text-sm font-medium text-gray-700">
         step {stepNum} ingredients
       </legend>
       <fieldset className={classNames('m-auto max-w-sm ')}>
-        <ul className={classNames('-space-y-py')}>
+        <ul
+          ref={animationParentRef as React.RefObject<HTMLUListElement>}
+          className={classNames('-space-y-py')}
+        >
           {ingredients.map((ingredient, ingIdx) => {
             return (
               <IngredientFormFrag

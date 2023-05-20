@@ -17,6 +17,7 @@
     "@capacitor/ios": "^4.7.0",
     "@dnd-kit/core": "^6.0.8",
     "@dnd-kit/modifiers": "^6.0.1",
+    "@formkit/auto-animate": "^1.0.0-beta.6",
     "@headlessui/react": "^1.7.9",
     "@heroicons/react": "^2.0.11",
     "@redwoodjs/auth-dbauth-web": "5.1.4",

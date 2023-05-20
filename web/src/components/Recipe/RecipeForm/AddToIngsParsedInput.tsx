@@ -1,3 +1,4 @@
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { PlusIcon } from '@heroicons/react/20/solid'
 import { CreateIngredientInput } from 'types/graphql'
 
@@ -66,8 +67,13 @@ export const AddToIngsParsedInput = ({
     }, 2000)
   }
 
+  const animationParentRef = useAutoAnimate({})
+
   return (
-    <div className="mt-3 max-w-sm">
+    <div
+      className="mt-3 max-w-sm"
+      ref={animationParentRef as React.RefObject<HTMLDivElement>}
+    >
       <ul className="mr-5">
         <ListItem
           listType="recipeIngredients"
