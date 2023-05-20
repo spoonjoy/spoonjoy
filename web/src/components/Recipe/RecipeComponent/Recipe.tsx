@@ -148,6 +148,7 @@ const Recipe = ({ recipe }: Props) => {
           itemIds={listItemIds}
         />
         <RecipeScaleFactor
+          loading={!recipe}
           scaleFactor={scaleFactor}
           setScaleFactor={setScaleFactor}
         />
