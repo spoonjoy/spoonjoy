@@ -14,6 +14,7 @@ import ActionButtonsContainer from 'src/components/shared/ActionButtons/ActionBu
 import ShareButton from 'src/components/shared/ActionButtons/ShareButton/ShareButton'
 import UserInfo from 'src/components/shared/UserInfo/UserInfo'
 import { classNames } from 'src/helpers/css'
+import { multiplyNumbersInString } from 'src/helpers/numbers'
 import { HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
 
 import RecipeControlBar from './RecipeControlBar'
@@ -94,9 +95,9 @@ const Recipe = ({ recipe }: Props) => {
                       </span>
                     </a>
                   )}
-                  <span className="block text-sm font-normal leading-snug tracking-wide opacity-[85%]">
+                  <article className="block text-sm font-normal leading-snug tracking-wide opacity-[85%]">
                     {recipe.description}
-                  </span>
+                  </article>
                 </div>
                 {/* Chef info and cookbook dropdown */}
                 <div className="flex justify-between">
@@ -136,6 +137,11 @@ const Recipe = ({ recipe }: Props) => {
           )}
         </div>
       </HeaderSlot.Plug>
+      {recipe?.servings && (
+        <div className="-mb-3 mt-5 text-center text-sm italic">
+          makes {multiplyNumbersInString(recipe.servings, scaleFactor)}
+        </div>
+      )}
       <div className="my-6 flex justify-center gap-5">
         <ReloadIngredientsItemsList
           label={'clear progress'}
