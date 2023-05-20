@@ -22,6 +22,7 @@ interface IngredientFormFragParsedInputProps {
   placeholderIngItemInfo: IListItemInfo
   submitBtn?: JSX.Element
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
+  onParseComplete: () => void
 }
 
 export const IngredientFormFragParsedInput = React.forwardRef<
@@ -36,11 +37,14 @@ export const IngredientFormFragParsedInput = React.forwardRef<
       placeholderIngItemInfo,
       submitBtn,
       onKeyDown,
+      onParseComplete,
     },
     ref
   ) => {
     const { setError } = useFormContext<RecipeFormType>()
+
     const { parseIngredient, loading, error } = useIngredientParseQuery(
+      // on complete
       (data) => {
         console.log('parseIngredient:', data.parseIngredient)
         const { quantity, unitName, ingredientName } = data.parseIngredient
@@ -65,7 +69,10 @@ export const IngredientFormFragParsedInput = React.forwardRef<
             },
           })
         )
+
+        onParseComplete()
       },
+      // on error
       () => {
         setNewIngFields(undefined)
         setNewIngItemInfo(placeholderIngItemInfo)

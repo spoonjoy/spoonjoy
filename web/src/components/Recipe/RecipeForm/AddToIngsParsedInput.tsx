@@ -10,6 +10,7 @@ import {
   getIngredientItemInfo,
 } from 'src/components/IngredientsItemsList/IngredientsItemsList'
 import { classNames } from 'src/helpers/css'
+import useStateRef from 'src/helpers/useStateRef'
 
 import { IngredientFormFragParsedInput } from './IngredientFormFragParsedInput'
 
@@ -28,18 +29,21 @@ export const AddToIngsParsedInput = ({
   stepNum,
 }: IAddToIngsParsedInputProps) => {
   const fieldName = `steps.${stepNum - 1}.newIngRawInput` as const
+  const placeholderIngItemInfo = getIngredientItemInfo({
+    placeholder: 'start typing to add an ingredient',
+  })
 
-  const [newIngFields, setNewIngFields] = React.useState<
+  const [newIngFields, setNewIngFields, newIngFieldsRef] = useStateRef<
     CreateIngredientInput | undefined
   >()
+  const [newIngItemInfo, setNewIngItemInfo] = React.useState<IListItemInfo>(
+    placeholderIngItemInfo
+  )
+  const [showHint, setShowHint] = React.useState(false)
 
   const { resetField } = useFormContext<RecipeFormType>()
 
   const persistValues = usePersistValuesOnChange()
-
-  const placeholderIngItemInfo = getIngredientItemInfo({
-    placeholder: 'start typing to add an ingredient',
-  })
 
   const fieldRef = React.useRef<HTMLInputElement>(null)
 
@@ -50,13 +54,17 @@ export const AddToIngsParsedInput = ({
       setNewIngFields(undefined)
       setNewIngItemInfo(placeholderIngItemInfo)
       resetField(fieldName)
+      setShowHint(false)
     }
     fieldRef.current?.focus()
   }
 
-  const [newIngItemInfo, setNewIngItemInfo] = React.useState<IListItemInfo>(
-    placeholderIngItemInfo
-  )
+  /** If the new ingredient is parsed but hasn't been added after a bit, show the hint */
+  const nudgeToAdd = () => {
+    setTimeout(() => {
+      newIngFieldsRef.current !== undefined && setShowHint(true)
+    }, 2000)
+  }
 
   return (
     <div className="mt-3 max-w-sm">
@@ -74,6 +82,7 @@ export const AddToIngsParsedInput = ({
           ref={fieldRef}
           setNewIngFields={setNewIngFields}
           setNewIngItemInfo={setNewIngItemInfo}
+          onParseComplete={nudgeToAdd}
           placeholderIngItemInfo={placeholderIngItemInfo}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
@@ -97,6 +106,7 @@ export const AddToIngsParsedInput = ({
           }
         />
       </div>
+      {showHint && <div>press enter to add</div>}
     </div>
   )
 }
