@@ -1,4 +1,5 @@
 import { DragEndEvent, DndContext } from '@dnd-kit/core'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { cloneDeep } from 'lodash'
 
 import { useFieldArray, useFormContext } from '@redwoodjs/forms'
@@ -79,40 +80,44 @@ const StepsFormFrag = () => {
     persistValues()
   }
 
+  const animationParentRef = useAutoAnimate({})
+
   return (
     <DndContext onDragEnd={onDragEnd}>
-      {steps.map((step) => {
-        return (
-          <ColumnLayoutFormSection
-            key={step.id}
-            sectionTitle={`step ${step.stepNum} details`}
-            sectionDescription={
-              <span>
-                every step must have an <strong>output</strong>,{' '}
-                <strong>inputs</strong> and <strong>instructions</strong>:
-                <ul className="ml-6 list-disc">
-                  <li>
-                    <strong>output:</strong> what are you making in this step?
-                  </li>
-                  <li>
-                    <strong>inputs:</strong> what are you using in this step?
-                  </li>
-                  <li>
-                    <strong>instructions:</strong> how are you using those
-                    inputs to make that output?
-                  </li>
-                </ul>
-              </span>
-            }
-          >
-            <StepFormFrag
-              // key={`step-${step.stepNum}`}
-              recipeId={getValues('recipeId')}
-              step={step}
-            />
-          </ColumnLayoutFormSection>
-        )
-      })}
+      <div ref={animationParentRef as React.RefObject<HTMLDivElement>}>
+        {steps.map((step) => {
+          return (
+            <ColumnLayoutFormSection
+              key={step.id}
+              sectionTitle={`step ${step.stepNum} details`}
+              sectionDescription={
+                <span>
+                  every step must have an <strong>output</strong>,{' '}
+                  <strong>inputs</strong> and <strong>instructions</strong>:
+                  <ul className="ml-6 list-disc">
+                    <li>
+                      <strong>output:</strong> what are you making in this step?
+                    </li>
+                    <li>
+                      <strong>inputs:</strong> what are you using in this step?
+                    </li>
+                    <li>
+                      <strong>instructions:</strong> how are you using those
+                      inputs to make that output?
+                    </li>
+                  </ul>
+                </span>
+              }
+            >
+              <StepFormFrag
+                // key={`step-${step.stepNum}`}
+                recipeId={getValues('recipeId')}
+                step={step}
+              />
+            </ColumnLayoutFormSection>
+          )
+        })}
+      </div>
 
       <AddRemBtns
         id="add-rem-steps-btns"
