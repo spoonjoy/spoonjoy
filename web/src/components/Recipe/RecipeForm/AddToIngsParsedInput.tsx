@@ -106,7 +106,14 @@ export const AddToIngsParsedInput = ({
           }
         />
       </div>
-      {showHint && <div>press enter to add</div>}
+
+      {showHint && (
+        <div className="-mt-2 ml-2 text-xs italic text-gray-500">
+          press <strong>enter/return</strong> or the{' '}
+          <PlusIcon className="mb-[0.15rem] inline-block h-5 text-green-700" />{' '}
+          to add
+        </div>
+      )}
     </div>
   )
 }
