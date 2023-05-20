@@ -65,7 +65,7 @@ const StepFormFrag = ({ recipeId, step }: StepFormFragProps) => {
       <div className="ml-3 mb-3">
         <StyledTextField
           fieldName={`steps.${stepNum - 1}.stepTitle`}
-          label={`step ${stepNum} title`}
+          label={`output of step ${stepNum}`}
           placeholder="Kneaded dough"
           onChange={onChange}
           markOptional
@@ -92,7 +92,7 @@ const StepFormFrag = ({ recipeId, step }: StepFormFragProps) => {
       />
       <StyledTextAreaField
         fieldName={`steps.${stepNum - 1}.description`}
-        label={`step ${step.stepNum} description`}
+        label={`instructions for step ${step.stepNum}`}
         placeholder="Put on your favorite power ballad and start kneading the dough. Don't be shy - really get in there and show that dough who's boss. If you're feeling particularly aggressive, you can even punch it a few times. Just make sure it's nice and smooth before you move on to the next step."
         defaultValue={description}
         validation={{

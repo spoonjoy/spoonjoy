@@ -87,9 +87,22 @@ const StepsFormFrag = () => {
             key={step.id}
             sectionTitle={`step ${step.stepNum} details`}
             sectionDescription={
-              step.stepNum === 1
-                ? 'every step should have a description and use either at least one ingredient or the output of another step. you can drag ingredients between steps.'
-                : undefined
+              <span>
+                every step must have an <strong>output</strong>,{' '}
+                <strong>inputs</strong> and <strong>instructions</strong>:
+                <ul className="ml-6 list-disc">
+                  <li>
+                    <strong>output:</strong> what are you making in this step?
+                  </li>
+                  <li>
+                    <strong>inputs:</strong> what are you using in this step?
+                  </li>
+                  <li>
+                    <strong>instructions:</strong> how are you using those
+                    inputs to make that output?
+                  </li>
+                </ul>
+              </span>
             }
           >
             <StepFormFrag
