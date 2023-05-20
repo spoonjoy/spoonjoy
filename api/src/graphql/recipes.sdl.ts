@@ -3,7 +3,7 @@ export const schema = gql`
     id: ID!
     title: String!
     description: String
-    servings: Int
+    servings: String
     chefId: String!
     chef: User!
     createdAt: DateTime!
@@ -34,7 +34,7 @@ export const schema = gql`
     """
     sourceUrl: String
     description: String
-    servings: Int
+    servings: String
     steps: [CreateRecipeStepInput!]!
   }
 
@@ -42,7 +42,7 @@ export const schema = gql`
     recipeId: ID!
     title: String!
     description: String
-    servings: Int
+    servings: String
     steps: [UpdateRecipeStepInput!]!
   }
 

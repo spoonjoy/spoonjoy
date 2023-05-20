@@ -1,6 +1,5 @@
 import { useWatch } from '@redwoodjs/forms'
 
-import StyledNumberField from 'src/components/formComponents/StyledNumberField'
 import StyledTextAreaField from 'src/components/formComponents/StyledTextAreaField'
 import StyledTextField from 'src/components/formComponents/StyledTextField'
 import { usePersistValuesOnChange } from 'src/components/formComponents/usePersistFormValues'
@@ -9,6 +8,7 @@ const RecipeBasicInfoFormFrag = () => {
   // Update based on Prisma schema
   const MAX_TITLE_LENGTH = 60
   const MAX_DESCRIPTION_LENGTH = 140
+  const MAX_SERVINGS_LENGTH = 40
 
   const onChange = usePersistValuesOnChange()
 
@@ -34,11 +34,13 @@ const RecipeBasicInfoFormFrag = () => {
         onChange={onChange}
         markOptional
       />
-      <StyledNumberField
+      <StyledTextField
         fieldName="servings"
         label="servings"
-        placeholder="4"
-        validation={{ valueAsNumber: true }}
+        placeholder="4 normal garlic knots, or 1 giant one"
+        validation={{ maxLength: MAX_SERVINGS_LENGTH }}
+        maxLength={MAX_SERVINGS_LENGTH}
+        currentLength={useWatch({ name: 'servings' })?.length || 0}
         onChange={onChange}
         markOptional
       />
