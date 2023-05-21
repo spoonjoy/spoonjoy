@@ -31,7 +31,7 @@ export type RecipeFormType = FormUpdateRecipe | FormCreateRecipe
 const emptyRecipeFormValues: RecipeFormType = {
   title: '',
   description: '',
-  servings: NaN,
+  servings: undefined,
   steps: [],
 }
 
