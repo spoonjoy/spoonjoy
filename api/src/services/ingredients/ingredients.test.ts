@@ -26,10 +26,7 @@ describe('ingredients', () => {
     'returns a single ingredient',
     async (scenario: StandardScenario) => {
       const result = await ingredient({
-        recipeId: scenario.ingredient.one.recipeId,
-        stepNum: scenario.ingredient.one.stepNum,
-        unitId: scenario.ingredient.one.unitId,
-        ingredientRefId: scenario.ingredient.one.ingredientRefId,
+        id: scenario.ingredient.one.id,
       })
 
       expect(result).toEqual(scenario.ingredient.one)

@@ -10,24 +10,16 @@ import { RedwoodGraphQLContext } from '@redwoodjs/graphql-server/dist/functions/
 
 import { db } from 'src/lib/db'
 
+import { recipeStep } from '../recipeSteps/recipeSteps'
+
 export const ingredients: QueryResolvers['ingredients'] = () => {
   return db.ingredient.findMany()
 }
 
-export const ingredient: QueryResolvers['ingredient'] = ({
-  recipeId,
-  stepNum,
-  unitId,
-  ingredientRefId,
-}) => {
+export const ingredient: QueryResolvers['ingredient'] = ({ id }) => {
   return db.ingredient.findUnique({
     where: {
-      recipeId_stepNum_unitId_ingredientRefId: {
-        recipeId,
-        stepNum,
-        unitId,
-        ingredientRefId,
-      },
+      id,
     },
   })
 }
@@ -78,18 +70,10 @@ type RequiredIngredientRelationResolvers = {
 
 export const Ingredient: RequiredIngredientRelationResolvers = {
   recipeStep: async (_obj, { root }) => {
-    const maybeRecipeStep = await db.ingredient
-      .findUnique({
-        where: {
-          recipeId_stepNum_unitId_ingredientRefId: {
-            recipeId: root.recipeId,
-            stepNum: root.stepNum,
-            unitId: root.unitId,
-            ingredientRefId: root.ingredientRefId,
-          },
-        },
-      })
-      .recipeStep()
+    const maybeRecipeStep = await recipeStep({
+      recipeId: root.recipeId,
+      stepNum: root.stepNum,
+    })
     if (!maybeRecipeStep) {
       throw new Error('Could not resolve recipeStep')
     }

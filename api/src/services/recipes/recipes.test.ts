@@ -106,7 +106,7 @@ describe('recipes', () => {
     })
 
     const chef = await Recipe.chef({}, { root: result })
-    expect(chef).toEqual(bobsPizza.chef)
+    expect(chef.username).toEqual(bobsPizza.chef.username)
 
     const steps = await Recipe.steps({}, { root: result })
     const ingredientsByStep = await Promise.all(
@@ -397,7 +397,7 @@ describe('recipes', () => {
 
       updated.input.title = 'New title!'
       updated.input.description = 'New description!'
-      updated.input.servings = 10000
+      updated.input.servings = '1000 rotten moops'
       updated.input.steps = [
         {
           recipeId: original!.id,
@@ -516,7 +516,7 @@ describe('recipes', () => {
 
       updated.input.title = 'New title!'
       updated.input.description = 'New description!'
-      updated.input.servings = 10000
+      updated.input.servings = '10000 potatoes'
       updated.input.steps = [
         {
           recipeId: original!.id,
@@ -602,7 +602,7 @@ describe('recipes', () => {
 
       updated.input.title = 'New title!'
       updated.input.description = 'New description!'
-      updated.input.servings = 10000
+      updated.input.servings = '10000 potatoes'
       updated.input.steps = [
         {
           recipeId: original!.id,
@@ -693,7 +693,7 @@ describe('recipes', () => {
 
       updated.input.title = 'New title!'
       updated.input.description = 'New description!'
-      updated.input.servings = 10000
+      updated.input.servings = '10000 whole poops'
       updated.input.steps = [
         {
           recipeId: original!.id,

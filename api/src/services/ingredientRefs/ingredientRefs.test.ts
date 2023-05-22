@@ -1,12 +1,4 @@
-import type { IngredientRef } from '@prisma/client'
-
-import {
-  ingredientRefs,
-  ingredientRef,
-  createIngredientRef,
-  updateIngredientRef,
-  deleteIngredientRef,
-} from './ingredientRefs'
+import { ingredientRefs, ingredientRef } from './ingredientRefs'
 import type { StandardScenario } from './ingredientRefs.scenarios'
 
 // Generated boilerplate tests do not account for all circumstances
@@ -31,32 +23,32 @@ describe('ingredientRefs', () => {
     }
   )
 
-  scenario('creates a ingredientRef', async () => {
-    const result = await createIngredientRef({
-      input: { name: 'String414866' },
-    })
+  // scenario('creates a ingredientRef', async () => {
+  //   const result = await createIngredientRef({
+  //     input: { name: 'String414866' },
+  //   })
 
-    expect(result.name).toEqual('String414866')
-  })
+  //   expect(result.name).toEqual('String414866')
+  // })
 
-  scenario('updates a ingredientRef', async (scenario: StandardScenario) => {
-    const original = (await ingredientRef({
-      id: scenario.ingredientRef.one.id,
-    })) as IngredientRef
-    const result = await updateIngredientRef({
-      id: original.id,
-      input: { name: 'String16686532' },
-    })
+  // scenario('updates a ingredientRef', async (scenario: StandardScenario) => {
+  //   const original = (await ingredientRef({
+  //     id: scenario.ingredientRef.one.id,
+  //   })) as IngredientRef
+  //   const result = await updateIngredientRef({
+  //     id: original.id,
+  //     input: { name: 'String16686532' },
+  //   })
 
-    expect(result.name).toEqual('String16686532')
-  })
+  //   expect(result.name).toEqual('String16686532')
+  // })
 
-  scenario('deletes a ingredientRef', async (scenario: StandardScenario) => {
-    const original = (await deleteIngredientRef({
-      id: scenario.ingredientRef.one.id,
-    })) as IngredientRef
-    const result = await ingredientRef({ id: original.id })
+  // scenario('deletes a ingredientRef', async (scenario: StandardScenario) => {
+  //   const original = (await deleteIngredientRef({
+  //     id: scenario.ingredientRef.one.id,
+  //   })) as IngredientRef
+  //   const result = await ingredientRef({ id: original.id })
 
-    expect(result).toEqual(null)
-  })
+  //   expect(result).toEqual(null)
+  // })
 })

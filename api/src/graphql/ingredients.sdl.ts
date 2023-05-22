@@ -13,12 +13,7 @@ export const schema = gql`
 
   type Query {
     ingredients: [Ingredient] @requireAuth
-    ingredient(
-      recipeId: String!
-      stepNum: Int!
-      unitId: String!
-      ingredientRefId: String!
-    ): Ingredient @requireAuth
+    ingredient(id: ID!): Ingredient @requireAuth
   }
 
   input CreateIngredientInput {

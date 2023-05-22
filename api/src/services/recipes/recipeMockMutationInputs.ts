@@ -4,7 +4,7 @@ export const recipeMutationInputIngsOnly: { input: CreateRecipeInput } = {
   input: {
     title: 'Pizza!',
     description: "The yummiest pizza you've ever had.",
-    servings: 2,
+    servings: '2 pizzas',
     steps: [
       {
         stepNum: 1,
@@ -47,7 +47,7 @@ export const recipeMutationInputIngsAndStepUses: { input: CreateRecipeInput } =
     input: {
       title: 'Pizza!',
       description: "The yummiest pizza you've ever had.",
-      servings: 2,
+      servings: '2 pizzas',
       steps: [
         {
           stepNum: 1,
@@ -82,7 +82,7 @@ export const recipeMutationInputWrongStepNums: { input: CreateRecipeInput } = {
   input: {
     title: 'Pizza!',
     description: "The yummiest pizza you've ever had.",
-    servings: 2,
+    servings: '2 pizzas',
     steps: [
       {
         stepNum: 1,
@@ -124,7 +124,7 @@ export const recipeMutationInputWrongStepUses: { input: CreateRecipeInput } = {
   input: {
     title: 'Pizza!',
     description: "The yummiest pizza you've ever had.",
-    servings: 2,
+    servings: '2 pizzas',
     steps: [
       {
         stepNum: 1,
@@ -177,7 +177,7 @@ export const recipeMutationInputNoIngOrStepUses: { input: CreateRecipeInput } =
     input: {
       title: 'French Toast!',
       description: 'Fruit salad, yummy yummy',
-      servings: 2,
+      servings: '2 pizzas',
       steps: [
         {
           stepNum: 1,

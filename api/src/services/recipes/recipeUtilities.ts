@@ -138,9 +138,10 @@ export type IRecipeResponse = Recipe & {
 export const mapRecipeDbResponseToMutationInput = (
   recipe: IRecipeResponse
 ): { input: UpdateRecipeInput } => {
-  const { title, description, servings, steps } = recipe
+  const { title, description, servings, steps, id } = recipe
   return {
     input: {
+      recipeId: id,
       title: title,
       description,
       servings,

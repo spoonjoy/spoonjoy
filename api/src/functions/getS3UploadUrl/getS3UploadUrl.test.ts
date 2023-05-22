@@ -1,5 +1,7 @@
 import { mockHttpEvent } from '@redwoodjs/testing/api'
 
+import { StandardScenario as UserScenario } from '../../services/users/users.scenarios'
+
 import { handler } from './getS3UploadUrl'
 
 //   Improve this test with help from the Redwood Testing Doc:

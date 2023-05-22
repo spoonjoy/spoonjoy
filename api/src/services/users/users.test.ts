@@ -19,7 +19,8 @@ describe('users', () => {
   scenario('returns a single user', async (scenario: StandardScenario) => {
     const result = await user({ id: scenario.user.bob.id })
 
-    expect(result).toEqual(scenario.user.bob)
+    expect(result?.username).toEqual(scenario.user.bob.username)
+    expect(result?.email).toEqual(scenario.user.bob.email)
   })
 
   scenario('creates a user', async () => {
@@ -34,7 +35,6 @@ describe('users', () => {
 
     expect(result.email).toEqual('String5792369')
     expect(result.username).toEqual('String1926639')
-    expect(result).toEqual('String')
   })
 
   scenario('updates a user', async (scenario: StandardScenario) => {

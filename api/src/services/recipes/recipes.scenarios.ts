@@ -41,7 +41,7 @@ export const getPizzaScenarioData = (
   chefId,
   title: 'Yummy pizza',
   description: "The yummiest pizza you've ever had.",
-  servings: 2,
+  servings: '2 pizzas',
   steps: {
     create: [
       {
@@ -118,7 +118,7 @@ export const getDeletedPizzaScenarioData = (
   deletedAt: new Date(), // This is otherwise the same as the above recipe
   title: 'Yummy deleted pizza',
   description: "The yummiest pizza you've ever had.",
-  servings: 2,
+  servings: '2 pizzas',
   steps: {
     create: [
       {
