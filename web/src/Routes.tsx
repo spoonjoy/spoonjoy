@@ -48,6 +48,7 @@ const Routes = () => {
           <Route path="/forgot-password" page={AuthForgotPasswordPage} name="forgotPassword" />
           <Route path="/reset-password" page={AuthResetPasswordPage} name="resetPassword" />
           <Route path="/users/{username}" page={UserUserProfilePage} name="user" />
+          <Route path="/users/{username}/fellow-chefs" page={FellowChefsPage} name="fellowChefs" />
           <Route path="/cookbook/{id}" page={CookbookCookbookPage} name="cookbook" />
           <Route path="/recipes/{id}" page={RecipeRecipePage} name="recipe" />
         </Set>
