@@ -14,7 +14,7 @@ import RecipeForm, {
   onUpdateRecipe,
   RecipeFormType,
 } from 'src/components/Recipe/RecipeForm'
-import { DefaultHeader, HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
+import { SimpleHeader, HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
 
 import { recipeQueryResponseToFormUpdateRecipe } from '../EditRecipeHelpers/EditRecipeHelpers'
 
@@ -125,7 +125,7 @@ export const Success = ({ recipe }: CellSuccessProps<EditRecipeById>) => {
         description="Edit Recipe Page"
       />
       <HeaderSlot.Plug id="edit-recipe">
-        <DefaultHeader title={`edit recipe "${recipe.title}"`} />
+        <SimpleHeader title={`edit recipe "${recipe.title}"`} />
       </HeaderSlot.Plug>
       {/* only render the form once the store's id reflects the recipes id, aka the store has been set to the recipe that's being edited */}
       {shouldRenderForm && (

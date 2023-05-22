@@ -1,14 +1,14 @@
 import { MetaTags } from '@redwoodjs/web'
 
 import NewRecipe from 'src/components/Recipe/NewRecipe'
-import { DefaultHeader, HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
+import { SimpleHeader, HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
 
 const NewRecipePage = () => {
   return (
     <>
-      <MetaTags title="new recipe" description="New recipe page" />
+      <MetaTags title="new recipe" description="Add a new recipe" />
       <HeaderSlot.Plug id="new-recipe">
-        <DefaultHeader title="new recipe" />
+        <SimpleHeader title="new recipe" />
       </HeaderSlot.Plug>
       <NewRecipe />
     </>

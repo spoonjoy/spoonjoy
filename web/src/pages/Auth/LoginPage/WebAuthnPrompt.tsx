@@ -20,7 +20,7 @@ export const AuthWebAuthnPrompt = ({
       <p>log in with your fingerprint, face or PIN</p>
     </div>
     <div className="mt-5">
-      <button className="btn-primary w-full" onClick={onAuthenticate}>
+      <button className="btn-form-primary w-full" onClick={onAuthenticate}>
         open authenticator
       </button>
     </div>
@@ -60,13 +60,13 @@ export const RegisterWebAuthnPrompt = ({
     </div>
     <div className="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
       <button
-        className="btn-primary inline-flex w-full justify-center sm:col-start-2"
+        className="btn-form-primary inline-flex w-full justify-center sm:col-start-2"
         onClick={onRegister}
       >
         turn on
       </button>
       <button
-        className="btn-dismiss mt-2 inline-flex w-full justify-center sm:col-start-1 sm:mt-0"
+        className="btn-form-dismiss mt-2 inline-flex w-full justify-center sm:col-start-1 sm:mt-0"
         onClick={onSkip}
       >
         skip for now

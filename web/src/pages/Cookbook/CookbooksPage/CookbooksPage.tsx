@@ -1,7 +1,7 @@
 import { MetaTags } from '@redwoodjs/web'
 
 import CookbooksCell from 'src/components/Cookbook/CookbooksCell'
-import { HeaderSlot, DefaultHeader } from 'src/layouts/SiteLayout/SiteLayout'
+import { HeaderSlot, SimpleHeader } from 'src/layouts/SiteLayout/SiteLayout'
 
 interface ICookbooksPageProps {
   username: string
@@ -15,7 +15,7 @@ const CookbooksPage = ({ username }: ICookbooksPageProps) => {
         description={`${username}'s cookbooks page`}
       />
       <HeaderSlot.Plug id="cookbooks">
-        <DefaultHeader title={`${username}'s cookbooks`} />
+        <SimpleHeader title={`${username}'s cookbooks`} />
       </HeaderSlot.Plug>
       <CookbooksCell username={username} />
     </>

@@ -8,7 +8,7 @@ import { useAuth } from 'src/auth'
 import DeleteCookbook from 'src/components/Dialogs/ConfirmationDialogs/DeleteCookbook/DeleteCookbook'
 import Recipes from 'src/components/Recipe/Recipes'
 import EmptyState from 'src/components/shared/EmptyState'
-import { HeaderSlot, DefaultHeader } from 'src/layouts/SiteLayout/SiteLayout'
+import { HeaderSlot, SimpleHeader } from 'src/layouts/SiteLayout/SiteLayout'
 
 import CreateEditCookbookDialog from '../CreateEditCookbook/CreateEditCookbookDialog'
 
@@ -26,7 +26,7 @@ const Cookbook = ({ cookbook }: Props) => {
     return (
       <>
         <HeaderSlot.Plug id="loading">
-          <DefaultHeader />
+          <SimpleHeader />
         </HeaderSlot.Plug>
         <Recipes />
       </>
@@ -58,7 +58,7 @@ const Cookbook = ({ cookbook }: Props) => {
         <MetaTags title={`${description}`} description={description} />
         <HeaderSlot.Plug id="cookbooks" deps={[title]}>
           <>
-            <DefaultHeader
+            <SimpleHeader
               title={title}
               shareButtonProps={{
                 title: description,

@@ -163,8 +163,8 @@ const SiteLayout = ({ children, bgColor = 'white' }: SiteLayoutProps) => {
   )
 }
 
-/** Use DefaultHeader when you don't need a specifically styled header  */
-export const DefaultHeader = ({
+/** Use SimpleHeader when you need a header that doesn't take up much space  */
+export const SimpleHeader = ({
   title,
   endChild,
   byLine,
@@ -175,7 +175,7 @@ export const DefaultHeader = ({
   byLine?: string
   shareButtonProps?: Omit<IShareButtonProps, 'customSize'>
 }) => (
-  <div className="flex mx-auto max-w-7xl flex-col px-4 pt-10 pb-5 sm:px-6 lg:px-8">
+  <div className="mx-auto flex max-w-7xl flex-col px-4 pt-10 pb-5 sm:px-6 lg:px-8">
     <div className="flex items-center justify-between space-x-5 lg:justify-start ">
       {title ? (
         <div className="flex gap-2">
@@ -199,6 +199,25 @@ export const DefaultHeader = ({
         by {byLine}
       </Link>
     )}
+  </div>
+)
+
+/**
+ * Use this when you need a prominent header that says SPOONJOY in giant letters underneath the action,
+ * eg on the recipe importing page
+ */
+export const ProminentBrandedHeader = ({
+  actionTitle,
+}: {
+  /** title of action, will be in small letters above the 'spoonjoy' */
+  actionTitle: string
+}) => (
+  <div className="w-screen pt-20 text-center xl:pt-40">
+    <span className="pt-20 text-xl text-indigo-700 sm:text-2xl">
+      {actionTitle}
+    </span>
+    <br />
+    <span className="text-5xl sm:text-6xl">spoonjoy</span>
   </div>
 )
 
@@ -311,7 +330,7 @@ const Header = ({
                 </div>
               )}
 
-              <div className="flex -mr-2 items-center sm:hidden">
+              <div className="-mr-2 flex items-center sm:hidden">
                 {/* Mobile menu button */}
                 <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                   <span className="sr-only">Open main menu</span>

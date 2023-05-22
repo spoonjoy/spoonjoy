@@ -8,7 +8,7 @@ import SignupForm from 'src/components/Auth/SignupForm'
 import useAddRemoveCookbookMutations from 'src/components/Cookbook/useAddRemoveCookbookMutations'
 import useNewCookbookMutation from 'src/components/Cookbook/useNewCookbookMutation'
 import RecipeCell from 'src/components/Recipe/RecipeCell'
-import { HeaderSlot, DefaultHeader } from 'src/layouts/SiteLayout/SiteLayout'
+import { HeaderSlot, SimpleHeader } from 'src/layouts/SiteLayout/SiteLayout'
 
 import AuthHeader from '../shared/AuthHeader'
 
@@ -60,7 +60,7 @@ const SignupAndCreateCookbookPage = ({
         </div>
       </div>
       <HeaderSlot.Plug id="cookbooks">
-        <DefaultHeader title={'My First Cookbook'} />
+        <SimpleHeader title={'My First Cookbook'} />
       </HeaderSlot.Plug>
       <RecipeCell shortRecipe id={recipeId} />
     </>

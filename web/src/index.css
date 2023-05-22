@@ -65,8 +65,14 @@
   .btn {
     @apply inline-flex items-center justify-center gap-x-1.5 rounded-md border border-transparent shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2;
   }
-  .btn-primary {
+  .btn-form-primary {
     @apply btn px-4 py-2 text-base font-medium  text-white focus:ring-indigo-500 enabled:bg-indigo-600 enabled:hover:bg-indigo-800 disabled:bg-gray-400 sm:text-sm;
+  }
+  .btn-primary {
+    @apply btn px-4 py-2 text-base font-medium  text-white focus:ring-indigo-500 bg-indigo-600 hover:bg-indigo-800 sm:text-sm;
+  }
+  .btn-primary-justified {
+    @apply btn-primary flex justify-between m-auto;
   }
   .btn-secondary {
     @apply btn bg-indigo-100 px-4 py-2 text-base font-medium text-indigo-700 hover:bg-indigo-200 focus:ring-indigo-500;
@@ -74,7 +80,7 @@
   .btn-tertiary {
     @apply btn border-indigo-100 bg-white px-4 py-2 text-sm font-normal text-indigo-700 hover:bg-indigo-200 focus:ring-indigo-500;
   }
-  .btn-dismiss {
+  .btn-form-dismiss {
     @apply btn border-gray-300 px-4 py-2 text-base font-medium focus:ring-indigo-500  enabled:bg-white enabled:hover:bg-gray-50 disabled:bg-gray-400 sm:text-sm;
   }
   .btn-submit-primary {
