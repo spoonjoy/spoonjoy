@@ -2,7 +2,6 @@ import { Dialog } from '@headlessui/react'
 import { FindCookbooksForDropdown } from 'types/graphql'
 
 import DialogBase from 'src/components/Dialogs/DialogBase'
-import { classNames } from 'src/helpers/css'
 
 import NewCookbook from '../NewCookbook/NewCookbook'
 import useAddRemoveCookbookMutations from '../useAddRemoveCookbookMutations'
@@ -97,21 +96,17 @@ const AddToCookbookDialog = ({
                   </p>
                 </div>
                 <div>
-                  <button
-                    onClick={getOnToggleRecipe(
+                  <input
+                    type="checkbox"
+                    checked={!!alreadyInCookbook}
+                    onChange={getOnToggleRecipe(
                       cookbook.id,
                       !!alreadyInCookbook
                     )}
                     disabled={loadingAdd || loadingRemove}
-                    className={classNames(
-                      alreadyInCookbook
-                        ? 'btn-small-rounded-secondary'
-                        : 'btn-small-rounded-primary'
-                    )}
+                    className="save-checkbox"
                     ref={idx === 0 ? addButtonRef : undefined}
-                  >
-                    {alreadyInCookbook ? 'saved' : 'save'}
-                  </button>
+                  />
                 </div>
               </div>
             </li>

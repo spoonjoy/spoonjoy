@@ -94,15 +94,22 @@ const CookbookForm = ({
         >
           <Submit
             disabled={loading}
-            className={
-              inline ? 'btn-small-rounded-primary' : 'btn-submit-primary'
-            }
+            className={inline ? '' : 'btn-submit-primary'}
           >
-            {cookbook === undefined
-              ? inline
-                ? 'save'
-                : 'create new cookbook'
-              : 'update cookbook'}
+            {cookbook === undefined ? (
+              inline ? (
+                <input
+                  type="checkbox"
+                  checked
+                  className="save-checkbox"
+                  disabled={loading}
+                />
+              ) : (
+                'create new cookbook'
+              )
+            ) : (
+              'update cookbook'
+            )}
           </Submit>
         </div>
       </Form>
