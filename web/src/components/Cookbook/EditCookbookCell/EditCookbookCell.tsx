@@ -47,7 +47,7 @@ export const Success = ({ cookbook }: CellSuccessProps<EditCookbookById>) => {
     UPDATE_COOKBOOK_MUTATION,
     {
       onCompleted: () => {
-        toast.success('Cookbook updated')
+        toast.success('cookbook updated')
         navigate(routes.cookbook({ id: cookbook.id }))
       },
       onError: (error) => {
