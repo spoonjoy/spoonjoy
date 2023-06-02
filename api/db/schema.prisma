@@ -159,7 +159,7 @@ model Cookbook {
 model RecipeInCookbook {
   id         String   @id @default(cuid())
   cookbookId String
-  cookbook   Cookbook @relation(fields: [cookbookId], references: [id])
+  cookbook   Cookbook @relation(fields: [cookbookId], references: [id], onDelete: Cascade)
   recipeId   String
   recipe     Recipe   @relation(fields: [recipeId], references: [id])
   addedById  String
