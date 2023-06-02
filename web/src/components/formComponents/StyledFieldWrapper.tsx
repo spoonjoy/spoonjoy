@@ -1,3 +1,5 @@
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+
 import { FieldError, Label, RegisterOptions } from '@redwoodjs/forms'
 
 import { classNames } from 'src/helpers/css'
@@ -42,8 +44,12 @@ const StyledFieldWrapper = ({
   markOptional = false,
   endComponent,
 }: StyledFieldWrapperProps) => {
+  const animationParentRef = useAutoAnimate({})
   return (
-    <div className={classNames('text-left', inline ? 'mr-10 flex-1' : 'mb-3')}>
+    <div
+      ref={animationParentRef as React.RefObject<HTMLDivElement>}
+      className={classNames('text-left', inline ? 'mr-10 flex-1' : 'mb-3')}
+    >
       {label && (
         <Label
           name={fieldName}
