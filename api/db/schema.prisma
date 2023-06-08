@@ -23,6 +23,7 @@ model User {
   resetTokenExpiresAt DateTime?
   webAuthnChallenge   String?            @unique
   credentials         UserCredential[]
+  OAuth               OAuth[]
   recipes             Recipe[]
   shoppingList        ShoppingList?
   cookbooks           Cookbook[]
@@ -39,6 +40,17 @@ model UserCredential {
   publicKey  Bytes
   transports String?
   counter    BigInt
+
+  @@index([userId])
+}
+
+model OAuth {
+  state         String   @id
+  codeChallenge String
+  codeVerifier  String
+  createdAt     DateTime @default(now())
+  user          User?    @relation(fields: [userId], references: [id])
+  userId        String?
 
   @@index([userId])
 }

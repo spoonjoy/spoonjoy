@@ -2,6 +2,7 @@ import { MetaTags } from '@redwoodjs/web'
 
 import { ColumnLayoutFormSection } from 'src/components/formComponents/ColumnLayoutForm/ColumnLayoutFormSection'
 import { ColumnLayoutFormWrapper } from 'src/components/formComponents/ColumnLayoutForm/ColumnLayoutFormWrapper'
+import AddAuth from 'src/components/User/UserSettings/AddAuth'
 import ChangePasswordForm from 'src/components/User/UserSettings/ChangePasswordForm'
 import LogOutBtn from 'src/components/User/UserSettings/LogOutBtn'
 import { SimpleHeader, HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
@@ -21,6 +22,15 @@ const UserSettingsPage = () => {
             withPadding
           >
             <ChangePasswordForm />
+          </ColumnLayoutFormSection>
+        </ColumnLayoutFormWrapper>
+        <ColumnLayoutFormWrapper>
+          <ColumnLayoutFormSection
+            sectionTitle="connect other auth providers"
+            sectionDescription="connect other ways to log into Spoonjoy"
+            withPadding
+          >
+            <AddAuth />
           </ColumnLayoutFormSection>
         </ColumnLayoutFormWrapper>
         <div className="mx-5 mt-20 text-center">
