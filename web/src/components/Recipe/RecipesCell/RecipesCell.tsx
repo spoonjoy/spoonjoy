@@ -25,9 +25,11 @@ export const QUERY = () => {
 
 export const Loading = () => <Recipes />
 
-export const Empty = (props: { variables: FindCookbooksByUserVariables }) => {
+export const Empty = ({
+  queryResult,
+}: CellSuccessProps<FindRecipesByUser, FindCookbooksByUserVariables>) => {
   const { currentUser } = useAuth()
-  const isOwner = currentUser?.username === props.variables.username
+  const isOwner = currentUser?.username === queryResult?.variables?.username
   return isOwner ? (
     <EmptyState
       header="No recipes yet"
@@ -40,7 +42,7 @@ export const Empty = (props: { variables: FindCookbooksByUserVariables }) => {
   ) : (
     <EmptyState
       header="No recipes yet"
-      subHeader={`${props.variables.username} hasn't created any recipes yet.`}
+      subHeader={`${queryResult?.variables?.username} hasn't created any recipes yet.`}
     />
   )
 }
@@ -51,16 +53,15 @@ export const Failure = ({ error }: CellFailureProps) => (
 
 export const Success = ({
   recipes,
-
-  queryResult: {
-    variables,
-  },
+  queryResult,
 }: CellSuccessProps<FindRecipesByUser, FindCookbooksByUserVariables>) => {
   const { currentUser } = useAuth()
   return (
     <Recipes
       recipes={recipes}
-      withAddRecipeButton={currentUser?.username === variables?.username}
+      withAddRecipeButton={
+        currentUser?.username === queryResult?.variables?.username
+      }
     />
   )
 }
