@@ -14,6 +14,7 @@ export const schema = gql`
   }
 
   type Mutation {
-    linkAccount(provider: Provider!, code: String!): User! @skipAuth
+    linkAccount(provider: Provider!, code: String!): OAuth! @skipAuth
+    unlinkAccount(provider: Provider!): OAuth! @requireAuth
   }
 `

@@ -7,6 +7,7 @@ import {
 
 import { hashPassword } from '@redwoodjs/auth-dbauth-api'
 
+import { requireChangeUserInfoAuth } from 'src/lib/auth'
 import { db } from 'src/lib/db'
 
 import { user } from '../users/users'
@@ -113,15 +114,13 @@ const linkGoogleAccount = async (code: string) => {
   if (!currentUser) {
     // if there's already a user with this email, link to that user.
     if (maybeExistingUser) {
-      await db.oAuth
-        .create({
-          data: {
-            provider: 'GOOGLE',
-            providerUserId: googleUserInfo.id,
-            userId: maybeExistingUser.id,
-          },
-        })
-        .user()
+      return await db.oAuth.create({
+        data: {
+          provider: 'GOOGLE',
+          providerUserId: googleUserInfo.id,
+          userId: maybeExistingUser.id,
+        },
+      })
     }
     // if there isn't, create a new user and link to that user.
     else {
@@ -138,15 +137,13 @@ const linkGoogleAccount = async (code: string) => {
         },
       })
 
-      return await db.oAuth
-        .create({
-          data: {
-            provider: 'GOOGLE',
-            providerUserId: googleUserInfo.id,
-            userId: newUser.id,
-          },
-        })
-        .user()
+      return await db.oAuth.create({
+        data: {
+          provider: 'GOOGLE',
+          providerUserId: googleUserInfo.id,
+          userId: newUser.id,
+        },
+      })
     }
   }
 
@@ -158,19 +155,15 @@ const linkGoogleAccount = async (code: string) => {
     }
     // otherwise, link it to the current account.
     else {
-      return await db.oAuth
-        .create({
-          data: {
-            provider: 'GOOGLE',
-            providerUserId: googleUserInfo.id,
-            userId: currentUser.id,
-          },
-        })
-        .user()
+      return await db.oAuth.create({
+        data: {
+          provider: 'GOOGLE',
+          providerUserId: googleUserInfo.id,
+          userId: currentUser.id,
+        },
+      })
     }
   }
-
-  throw new Error('Unable to link Google account.')
 }
 
 export const getAuthUrl: QueryResolvers['getAuthUrl'] = ({ provider }) => {
@@ -193,6 +186,21 @@ export const linkAccount: MutationResolvers['linkAccount'] = async ({
     default:
       throw new Error(`Unknown provider: ${provider}`)
   }
+}
+
+export const unlinkAccount: MutationResolvers['unlinkAccount'] = ({
+  provider,
+}) => {
+  requireChangeUserInfoAuth(context.currentUser?.id || '')
+
+  return db.oAuth.delete({
+    where: {
+      userId_provider: {
+        userId: context.currentUser!.id,
+        provider,
+      },
+    },
+  })
 }
 
 export const OAuth: OAuthRelationResolvers = {

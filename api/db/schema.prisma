@@ -58,6 +58,7 @@ model OAuth {
   createdAt DateTime @default(now())
 
   @@unique([provider, providerUserId])
+  @@unique([userId, provider])
   @@index([userId])
 }
 
