@@ -4,11 +4,20 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import AddOAuth from '../AddOAuth'
 
-export const QUERY = gql`
+export const OAUTH_CONNECTION_INFO = gql`
+  fragment OAuthConnectionInfo on OAuth {
+    provider
+    userId
+  }
+`
+
+// this is a function because redwoodjs has a fragments bug and can't handle them otherwise
+export const QUERY = () => gql`
+  ${OAUTH_CONNECTION_INFO}
   query UserOAuthConnectionsQuery($id: String!) {
     user(id: $id) {
       oAuth {
-        provider
+        ...OAuthConnectionInfo
       }
     }
   }
@@ -25,5 +34,5 @@ export const Failure = ({ error }: CellFailureProps) => (
 export const Success = ({
   user: { oAuth: oAuthConnections },
 }: CellSuccessProps<UserOAuthConnectionsQuery>) => {
-  return <AddOAuth oAuth={oAuthConnections} />
+  return <AddOAuth oAuthConnections={oAuthConnections} />
 }

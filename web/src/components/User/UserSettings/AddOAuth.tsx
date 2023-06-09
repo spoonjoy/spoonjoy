@@ -1,14 +1,17 @@
-import { OAuth } from 'types/graphql'
+import { OAuth, OAuthConnectionInfo } from 'types/graphql'
 
 import { useGoogleAuthQuery } from 'src/components/Auth/OAuthHelpers'
 
 interface IAddOAuthProps {
-  oAuthConnections: Pick<OAuth, 'provider'>[]
+  oAuthConnections: OAuthConnectionInfo[]
 }
 
 const AddOAuth = ({ oAuthConnections }: IAddOAuthProps) => {
   const { data: connectGoogleUrl } = useGoogleAuthQuery()
 
+  const hasGoogle = oAuthConnections.some(
+    (connection) => connection.provider === 'GOOGLE'
+  )
   return (
     <div>
       <a href={connectGoogleUrl}>Connect Google</a>
