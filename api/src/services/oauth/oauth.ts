@@ -1,6 +1,10 @@
 import { fetch } from '@whatwg-node/fetch'
 import { MutationResolvers, QueryResolvers } from 'types/graphql'
 
+import { hashPassword } from '@redwoodjs/auth-dbauth-api'
+
+import { db } from 'src/lib/db'
+
 const getGoogleAuthUrl = () => {
   const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth'
   const options = {
@@ -88,8 +92,70 @@ const getGoogleUserInfo = async (code: string): Promise<GoogleUserInfo> => {
       `Unable to get Google user info, got: ${JSON.stringify(response)}`
     )
   }
+}
 
-  return response
+const linkGoogleAccount = async (googleUserInfo: GoogleUserInfo) => {
+  const { currentUser } = context
+
+  // check if there is already a user with this email.
+  const maybeExistingUser = await db.user.findUnique({
+    where: { email: googleUserInfo.email },
+  })
+
+  // if NOT logged in:
+  if (!currentUser) {
+    // if there's already a user with this email, link to that user.
+    if (maybeExistingUser) {
+      await db.oAuth.create({
+        data: {
+          provider: 'GOOGLE',
+          providerUserId: googleUserInfo.id,
+          userId: maybeExistingUser.id,
+        },
+      })
+    }
+    // if there isn't, create a new user and link to that user.
+    else {
+      const generatedPass = new Crypto()
+        .getRandomValues(new Uint8Array(32))
+        .toString()
+      const [hashedPassword, salt] = hashPassword(generatedPass)
+      const newUser = await db.user.create({
+        data: {
+          email: googleUserInfo.email,
+          username: googleUserInfo.name,
+          hashedPassword,
+          salt,
+        },
+      })
+
+      await db.oAuth.create({
+        data: {
+          provider: 'GOOGLE',
+          providerUserId: googleUserInfo.id,
+          userId: newUser.id,
+        },
+      })
+    }
+  }
+
+  // if logged in:
+  else {
+    // if there's already a user with this email, check if it's the same as the user that's logged in - if it's not, throw an error that there's already an account using this email.
+    if (maybeExistingUser && maybeExistingUser.email !== currentUser.email) {
+      throw new Error('There is already an account using this email.')
+    }
+    // otherwise, link it to the current account.
+    else {
+      await db.oAuth.create({
+        data: {
+          provider: 'GOOGLE',
+          providerUserId: googleUserInfo.id,
+          userId: currentUser.id,
+        },
+      })
+    }
+  }
 }
 
 export const getAuthUrl: QueryResolvers['getAuthUrl'] = ({ provider }) => {
