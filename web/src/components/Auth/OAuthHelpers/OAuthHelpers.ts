@@ -3,6 +3,9 @@ import { GoogleAuthUrlQuery, LinkGoogleAccountMutation } from 'types/graphql'
 import { useMutation, useQuery } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/dist/toast'
 
+import { useAuth } from 'src/auth'
+import { USER_OAUTH_CONNECTIONS_QUERY } from 'src/components/User/UserSettings/UserOAuthConnectionsCell/UserOAuthConnectionsQuery'
+
 const GOOGLE_AUTH_URL_QUERY = gql`
   query GoogleAuthUrlQuery {
     getAuthUrl(provider: GOOGLE)
@@ -52,6 +55,7 @@ export const useLinkGoogleAccountMutation = () => {
 }
 
 export const useUnlinkGoogleAccountMutation = () => {
+  const { currentUser } = useAuth()
   const [unlinkAccount, { loading, error }] = useMutation(
     UNLINK_GOOGLE_ACCOUNT_MUTATION,
     {
@@ -63,6 +67,12 @@ export const useUnlinkGoogleAccountMutation = () => {
           `successfully unlinked ${data.unlinkAccount.provider.toLowerCase()} account`
         )
       },
+      refetchQueries: [
+        {
+          query: USER_OAUTH_CONNECTIONS_QUERY,
+          variables: { id: currentUser?.id },
+        },
+      ],
     }
   )
 
