@@ -1,6 +1,7 @@
 import { GoogleAuthUrlQuery, LinkGoogleAccountMutation } from 'types/graphql'
 
 import { useMutation, useQuery } from '@redwoodjs/web'
+import { toast } from '@redwoodjs/web/dist/toast'
 
 const GOOGLE_AUTH_URL_QUERY = gql`
   query GoogleAuthUrlQuery {
@@ -11,8 +12,17 @@ const GOOGLE_AUTH_URL_QUERY = gql`
 const LINK_GOOGLE_ACCOUNT_MUTATION = gql`
   mutation LinkGoogleAccountMutation($code: String!) {
     linkAccount(provider: GOOGLE, code: $code) {
-      id
-      username
+      provider
+      userId
+    }
+  }
+`
+
+const UNLINK_GOOGLE_ACCOUNT_MUTATION = gql`
+  mutation UnlinkGoogleAccountMutation {
+    unlinkAccount(provider: GOOGLE) {
+      provider
+      userId
     }
   }
 `
@@ -27,7 +37,34 @@ export const useGoogleAuthQuery = () => {
 
 export const useLinkGoogleAccountMutation = () => {
   const [linkAccount, { loading, error }] =
-    useMutation<LinkGoogleAccountMutation>(LINK_GOOGLE_ACCOUNT_MUTATION)
+    useMutation<LinkGoogleAccountMutation>(LINK_GOOGLE_ACCOUNT_MUTATION, {
+      onError: (error) => {
+        toast.error(error.message)
+      },
+      onCompleted: (data) => {
+        toast.success(
+          `successfully linked ${data.linkAccount.provider.toLowerCase()} account`
+        )
+      },
+    })
 
   return { linkAccount, loading, error }
+}
+
+export const useUnlinkGoogleAccountMutation = () => {
+  const [unlinkAccount, { loading, error }] = useMutation(
+    UNLINK_GOOGLE_ACCOUNT_MUTATION,
+    {
+      onError: (error) => {
+        toast.error(error.message)
+      },
+      onCompleted: (data) => {
+        toast.success(
+          `successfully unlinked ${data.unlinkAccount.provider.toLowerCase()} account`
+        )
+      },
+    }
+  )
+
+  return { unlinkAccount, loading, error }
 }

@@ -1,7 +1,7 @@
 import { useParams } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
-import { useLinkGoogleAccountMutation } from 'src/components/Auth/useOAuthQueries'
+import { useLinkGoogleAccountMutation } from 'src/components/Auth/OAuthHelpers'
 
 const AuthPage = () => {
   const [initialLoad, setInitialLoad] = React.useState(true)
