@@ -7,6 +7,7 @@ export const schema = gql`
 
   enum Provider {
     GOOGLE
+    APPLE
   }
 
   type Query {

@@ -9950,6 +9950,7 @@ __metadata:
     cheerio: ^1.0.0-rc.12
     cloudinary: ^1.33.0
     html-minifier: ^4.0.0
+    jsonwebtoken: ^9.0.0
     openai: ^3.2.0
     puppeteer-core: 19.7.0
     redis: ^4.6.5

@@ -1,4 +1,5 @@
 import { fetch } from '@whatwg-node/fetch'
+import jwt from 'jsonwebtoken'
 import {
   MutationResolvers,
   OAuthRelationResolvers,
@@ -24,6 +25,43 @@ const getGoogleAuthUrl = () => {
       'https://www.googleapis.com/auth/userinfo.profile',
       'https://www.googleapis.com/auth/userinfo.email',
     ].join(' '),
+  }
+
+  const queryString = new URLSearchParams(options).toString()
+
+  return `${rootUrl}?${queryString}`
+}
+
+// based on https://developer.apple.com/documentation/sign_in_with_apple/generate_and_validate_tokens
+const GetAppleAuthClientSecret = () => {
+  const timeInSeconds = new Date().getTime() / 1000
+  const token = jwt.sign(
+    {
+      iss: process.env.APPLE_TEAM_ID || '',
+      iat: timeInSeconds,
+      exp: timeInSeconds + 86400, // 1 day
+      aud: 'https://appleid.apple.com',
+      sub: process.env.APPLE_CLIENT_ID || '',
+    },
+    process.env.APPLE_PRIVATE_KEY || '',
+    {
+      algorithm: 'ES256',
+      keyid: process.env.APPLE_KEY_ID || '',
+    }
+  )
+  return token
+}
+
+// based on https://developer.apple.com/documentation/sign_in_with_apple/sign_in_with_apple_js/incorporating_sign_in_with_apple_into_other_platforms#3332113
+const AppleAuthUrl = () => {
+  const rootUrl = 'https://appleid.apple.com/auth/authorize'
+  const options = {
+    redirect_uri: `${process.env.FE_URL}/auth?provider=apple`,
+    client_id: process.env.APPLE_CLIENT_ID || '',
+    response_type: 'code',
+    response_mode: 'query',
+    // response_mode: 'form_post',
+    // scope: 'name email',
   }
 
   const queryString = new URLSearchParams(options).toString()
@@ -170,6 +208,8 @@ export const getAuthUrl: QueryResolvers['getAuthUrl'] = ({ provider }) => {
   switch (provider) {
     case 'GOOGLE':
       return getGoogleAuthUrl()
+    case 'APPLE':
+      return AppleAuthUrl()
     default:
       throw new Error(`Unknown provider: ${provider}`)
   }

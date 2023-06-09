@@ -1,7 +1,7 @@
 import { OAuthConnectionInfo } from 'types/graphql'
 
 import {
-  useGoogleAuthQuery,
+  useAuthQuery,
   useUnlinkGoogleAccountMutation,
 } from 'src/components/Auth/OAuthHelpers'
 
@@ -10,21 +10,34 @@ interface IAddOAuthProps {
 }
 
 const AddOAuth = ({ oAuthConnections }: IAddOAuthProps) => {
-  const { data: connectGoogleUrl } = useGoogleAuthQuery()
+  const { data: connectGoogleUrl } = useAuthQuery('GOOGLE')
+  const { data: connectAppleUrl } = useAuthQuery('APPLE')
 
   const { unlinkAccount: unlinkGoogle } = useUnlinkGoogleAccountMutation()
 
   const hasGoogle = oAuthConnections.some(
     (connection) => connection.provider === 'GOOGLE'
   )
+  const hasApple = oAuthConnections.some(
+    (connection) => connection.provider === 'APPLE'
+  )
   return (
-    <div>
-      {hasGoogle ? (
-        <button onClick={() => unlinkGoogle()}>Disconnect Google</button>
-      ) : (
-        <a href={connectGoogleUrl}>Connect Google</a>
-      )}
-    </div>
+    <ul>
+      <li>
+        {hasGoogle ? (
+          <button onClick={() => unlinkGoogle()}>Disconnect Google</button>
+        ) : (
+          <a href={connectGoogleUrl}>Connect Google</a>
+        )}
+      </li>
+      <li>
+        {hasApple ? (
+          <button onClick={() => {}}>Disconnect Apple</button>
+        ) : (
+          <a href={connectAppleUrl}>Connect Apple</a>
+        )}
+      </li>
+    </ul>
   )
 }
 

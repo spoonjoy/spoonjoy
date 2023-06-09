@@ -1,4 +1,8 @@
-import { GoogleAuthUrlQuery, LinkGoogleAccountMutation } from 'types/graphql'
+import {
+  GoogleAuthUrlQuery,
+  LinkGoogleAccountMutation,
+  Provider,
+} from 'types/graphql'
 
 import { useMutation, useQuery } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/dist/toast'
@@ -6,9 +10,9 @@ import { toast } from '@redwoodjs/web/dist/toast'
 import { useAuth } from 'src/auth'
 import { USER_OAUTH_CONNECTIONS_QUERY } from 'src/components/User/UserSettings/UserOAuthConnectionsCell/UserOAuthConnectionsQuery'
 
-const GOOGLE_AUTH_URL_QUERY = gql`
-  query GoogleAuthUrlQuery {
-    getAuthUrl(provider: GOOGLE)
+const AUTH_URL_QUERY = gql`
+  query GoogleAuthUrlQuery($provider: Provider!) {
+    getAuthUrl(provider: $provider)
   }
 `
 
@@ -30,9 +34,12 @@ const UNLINK_GOOGLE_ACCOUNT_MUTATION = gql`
   }
 `
 
-export const useGoogleAuthQuery = () => {
+export const useAuthQuery = (provider: Provider) => {
   const { data, loading, error } = useQuery<GoogleAuthUrlQuery>(
-    GOOGLE_AUTH_URL_QUERY
+    AUTH_URL_QUERY,
+    {
+      variables: { provider },
+    }
   )
 
   return { data: data?.getAuthUrl, loading, error }
