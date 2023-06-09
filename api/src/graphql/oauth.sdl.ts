@@ -1,5 +1,6 @@
 export const schema = gql`
   type OAuth {
+    provider: Provider!
     userId: String!
     user: User!
   }

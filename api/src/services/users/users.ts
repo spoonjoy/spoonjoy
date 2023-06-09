@@ -100,4 +100,11 @@ export const User: UserRelationResolvers = {
   fellowChefs: (_obj, { root }) => {
     return usersFellowChefs({ username: root.username })
   },
+  oAuth: (_obj, { root }) => {
+    return db.oAuth.findMany({
+      where: {
+        userId: root.id,
+      },
+    })
+  },
 }
