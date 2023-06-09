@@ -10,7 +10,10 @@ const GOOGLE_AUTH_URL_QUERY = gql`
 
 const LINK_GOOGLE_ACCOUNT_MUTATION = gql`
   mutation LinkGoogleAccountMutation($code: String!) {
-    linkAccount(provider: GOOGLE, code: $code)
+    linkAccount(provider: GOOGLE, code: $code) {
+      id
+      username
+    }
   }
 `
 

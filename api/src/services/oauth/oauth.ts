@@ -1,5 +1,5 @@
 import { fetch } from '@whatwg-node/fetch'
-import { MutationResolvers, QueryResolvers } from 'types/graphql'
+import { MutationResolvers, QueryResolvers, User } from 'types/graphql'
 
 import { hashPassword } from '@redwoodjs/auth-dbauth-api'
 
@@ -94,7 +94,7 @@ const getGoogleUserInfo = async (code: string): Promise<GoogleUserInfo> => {
   }
 }
 
-const linkGoogleAccount = async (code: string) => {
+const linkGoogleAccount = async (code: string): Promise<Partial<User>> => {
   const googleUserInfo = await getGoogleUserInfo(code)
   const { currentUser } = context
 
@@ -107,13 +107,15 @@ const linkGoogleAccount = async (code: string) => {
   if (!currentUser) {
     // if there's already a user with this email, link to that user.
     if (maybeExistingUser) {
-      await db.oAuth.create({
-        data: {
-          provider: 'GOOGLE',
-          providerUserId: googleUserInfo.id,
-          userId: maybeExistingUser.id,
-        },
-      })
+      await db.oAuth
+        .create({
+          data: {
+            provider: 'GOOGLE',
+            providerUserId: googleUserInfo.id,
+            userId: maybeExistingUser.id,
+          },
+        })
+        .user()
     }
     // if there isn't, create a new user and link to that user.
     else {
@@ -130,13 +132,15 @@ const linkGoogleAccount = async (code: string) => {
         },
       })
 
-      await db.oAuth.create({
-        data: {
-          provider: 'GOOGLE',
-          providerUserId: googleUserInfo.id,
-          userId: newUser.id,
-        },
-      })
+      return await db.oAuth
+        .create({
+          data: {
+            provider: 'GOOGLE',
+            providerUserId: googleUserInfo.id,
+            userId: newUser.id,
+          },
+        })
+        .user()
     }
   }
 
@@ -148,13 +152,15 @@ const linkGoogleAccount = async (code: string) => {
     }
     // otherwise, link it to the current account.
     else {
-      await db.oAuth.create({
-        data: {
-          provider: 'GOOGLE',
-          providerUserId: googleUserInfo.id,
-          userId: currentUser.id,
-        },
-      })
+      return await db.oAuth
+        .create({
+          data: {
+            provider: 'GOOGLE',
+            providerUserId: googleUserInfo.id,
+            userId: currentUser.id,
+          },
+        })
+        .user()
     }
   }
 }
@@ -175,8 +181,7 @@ export const linkAccount: MutationResolvers['linkAccount'] = async ({
   console.log('linkAccount', provider, code)
   switch (provider) {
     case 'GOOGLE':
-      await linkGoogleAccount(code)
-      return 'replace me'
+      return await linkGoogleAccount(code)
     default:
       throw new Error(`Unknown provider: ${provider}`)
   }

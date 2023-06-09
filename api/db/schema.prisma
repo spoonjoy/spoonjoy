@@ -52,8 +52,8 @@ model OAuth {
   provider       OAuthProvider
   // The ID of the user on the OAuth provider's system
   providerUserId String
-  user           User?         @relation(fields: [userId], references: [id])
-  userId         String?
+  user           User          @relation(fields: [userId], references: [id])
+  userId         String
 
   createdAt DateTime @default(now())
 
