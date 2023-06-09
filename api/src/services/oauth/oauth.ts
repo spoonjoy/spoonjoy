@@ -94,7 +94,8 @@ const getGoogleUserInfo = async (code: string): Promise<GoogleUserInfo> => {
   }
 }
 
-const linkGoogleAccount = async (googleUserInfo: GoogleUserInfo) => {
+const linkGoogleAccount = async (code: string) => {
+  const googleUserInfo = await getGoogleUserInfo(code)
   const { currentUser } = context
 
   // check if there is already a user with this email.
@@ -174,7 +175,7 @@ export const linkAccount: MutationResolvers['linkAccount'] = async ({
   console.log('linkAccount', provider, code)
   switch (provider) {
     case 'GOOGLE':
-      await getGoogleUserInfo(code)
+      await linkGoogleAccount(code)
       return 'replace me'
     default:
       throw new Error(`Unknown provider: ${provider}`)
