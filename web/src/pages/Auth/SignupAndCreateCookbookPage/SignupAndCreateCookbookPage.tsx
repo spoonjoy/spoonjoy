@@ -30,8 +30,9 @@ const SignupAndCreateCookbookPage = ({
   const onAddToCookbookComplete = (cookbookId: string) => {
     navigate(routes.cookbook({ id: cookbookId }))
   }
-  const { onAddToCookbook, onRemoveFromCookbook, loadingAdd, loadingRemove } =
-    useAddRemoveCookbookMutations({ onAddToCookbookComplete })
+  const { onAddToCookbook } = useAddRemoveCookbookMutations({
+    onAddToCookbookComplete,
+  })
 
   const onCreateCookbookComplete = (newCookbookId: string) => {
     onAddToCookbook(newCookbookId, recipeId)
