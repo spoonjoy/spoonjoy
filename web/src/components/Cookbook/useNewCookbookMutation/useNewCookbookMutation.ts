@@ -23,9 +23,7 @@ export interface IUseNewCookbookMutationOutput {
 }
 
 interface IUseNewCookbookMutation {
-  onCreateCookbookComplete?: (
-    newCookbook: CreateCookbookMutation['cookbook']
-  ) => void
+  onCreateCookbookComplete?: (newCookbookId: string) => void
 }
 
 const useNewCookbookMutation = ({
@@ -35,7 +33,7 @@ const useNewCookbookMutation = ({
     useMutation<CreateCookbookMutation>(CREATE_COOKBOOK_MUTATION, {
       onCompleted: (data) => {
         toast.success('cookbook created')
-        onCreateCookbookComplete && onCreateCookbookComplete(data.cookbook)
+        onCreateCookbookComplete && onCreateCookbookComplete(data.cookbook.id)
       },
       onError: (error) => {
         toast.error(error.message)

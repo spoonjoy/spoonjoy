@@ -19,8 +19,10 @@ export const QUERY = () => gql`
 
 export const Loading = () => <Cookbooks />
 
-export const Empty = (props: { variables: FindCookbooksByUserVariables }) => (
-  <Cookbooks cookbooks={[]} ownerUsername={props.variables.username} />
+export const Empty = ({
+  queryResult,
+}: CellSuccessProps<FindCookbooksByUser, FindCookbooksByUserVariables>) => (
+  <Cookbooks cookbooks={[]} ownerUsername={queryResult?.variables?.username} />
 )
 
 export const Failure = ({ error }: CellFailureProps) => (
@@ -29,10 +31,12 @@ export const Failure = ({ error }: CellFailureProps) => (
 
 export const Success = ({
   cookbooks,
-
-  queryResult: {
-    variables,
-  },
+  queryResult,
 }: CellSuccessProps<FindCookbooksByUser, FindCookbooksByUserVariables>) => {
-  return <Cookbooks cookbooks={cookbooks} ownerUsername={variables?.username} />
+  return (
+    <Cookbooks
+      cookbooks={cookbooks}
+      ownerUsername={queryResult?.variables?.username}
+    />
+  )
 }
