@@ -1,9 +1,15 @@
 import { fetch } from '@whatwg-node/fetch'
-import { MutationResolvers, QueryResolvers, User } from 'types/graphql'
+import {
+  MutationResolvers,
+  OAuthRelationResolvers,
+  QueryResolvers,
+} from 'types/graphql'
 
 import { hashPassword } from '@redwoodjs/auth-dbauth-api'
 
 import { db } from 'src/lib/db'
+
+import { user } from '../users/users'
 
 const getGoogleAuthUrl = () => {
   const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth'
@@ -94,7 +100,7 @@ const getGoogleUserInfo = async (code: string): Promise<GoogleUserInfo> => {
   }
 }
 
-const linkGoogleAccount = async (code: string): Promise<Partial<User>> => {
+const linkGoogleAccount = async (code: string) => {
   const googleUserInfo = await getGoogleUserInfo(code)
   const { currentUser } = context
 
@@ -163,6 +169,8 @@ const linkGoogleAccount = async (code: string): Promise<Partial<User>> => {
         .user()
     }
   }
+
+  throw new Error('Unable to link Google account.')
 }
 
 export const getAuthUrl: QueryResolvers['getAuthUrl'] = ({ provider }) => {
@@ -185,4 +193,16 @@ export const linkAccount: MutationResolvers['linkAccount'] = async ({
     default:
       throw new Error(`Unknown provider: ${provider}`)
   }
+}
+
+export const OAuth: OAuthRelationResolvers = {
+  user: async (_obj, { root }) => {
+    const maybeUser = await user({ id: root.userId })
+
+    if (!maybeUser) {
+      throw new Error('Could not resolve user')
+    }
+
+    return maybeUser
+  },
 }

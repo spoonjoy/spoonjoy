@@ -1,4 +1,9 @@
 export const schema = gql`
+  type OAuth {
+    userId: String!
+    user: User!
+  }
+
   enum Provider {
     GOOGLE
   }
