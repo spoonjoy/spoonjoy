@@ -1,4 +1,4 @@
-import LogoBlack from 'public/logos/sj_black.svg'
+import logoblack from 'public/logos/sj_black.svg'
 
 import { Link, routes } from '@redwoodjs/router'
 
@@ -11,7 +11,7 @@ interface IAuthHeaderProps {
 const AuthHeader = ({ location }: IAuthHeaderProps) => (
   <div className="sm:mx-auto sm:w-full sm:max-w-md">
     {location !== 'new-cookbook' && (
-      <LogoBlack className="mx-auto h-12 w-auto" />
+      <img src={logoblack} alt="spoonjoy logo" className="mx-auto h-12 w-auto" />
     )}
 
     <h2

@@ -4,7 +4,7 @@ import {
   ArchiveBoxArrowDownIcon,
   FolderPlusIcon,
 } from '@heroicons/react/24/solid'
-import LogoWhite from 'public/logos/sj_white.svg'
+import logowhite from 'public/logos/sj_white.svg'
 
 import { Link, routes, useMatch } from '@redwoodjs/router'
 
@@ -87,7 +87,7 @@ const FloatingNav = () => {
           })}
           className="z-10 flex h-[4rem] w-[4rem] flex-shrink-0 flex-col items-center justify-center rounded-full bg-black/70 shadow-md ring-indigo-700 ring-offset-2 backdrop-blur hover:bg-black/90 focus:ring-2"
         >
-          <LogoWhite className="h-8 w-8" />
+          <img src={logowhite} alt="spoonjoy logo" className="h-8 w-8" />
         </Link>
         <div
           style={{

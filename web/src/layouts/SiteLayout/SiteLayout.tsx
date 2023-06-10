@@ -7,7 +7,7 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import ChefRJ from 'public/images/chef-rj.png'
-import LogoBlack from 'public/logos/sj_black.svg'
+import logoblack from 'public/logos/sj_black.svg'
 import { SlotProvider, createSlot } from 'react-view-slot'
 
 import { Link, navigate, routes, useMatch } from '@redwoodjs/router'
@@ -253,7 +253,7 @@ const Header = ({
                   to={routes.welcome()}
                   className="flex flex-shrink-0 items-center"
                 >
-                  <LogoBlack className="block h-8 w-auto" />
+                  <img src={logoblack} alt="spoonjoy logo" className="block h-8 w-auto" />
                 </Link>
                 <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
                   {navigation.map((item) => (
