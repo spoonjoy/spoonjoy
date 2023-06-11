@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
 
+import { CreateCookbookMutation } from 'types/graphql'
+
 import { navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
@@ -34,14 +36,16 @@ const SignupAndCreateCookbookPage = ({
     onAddToCookbookComplete,
   })
 
-  const onCreateCookbookComplete = (newCookbookId: string) => {
-    onAddToCookbook(newCookbookId, recipeId)
+  const onCreateCookbookComplete = (
+    newCookbook: CreateCookbookMutation['cookbook']
+  ) => {
+    onAddToCookbook(newCookbook.id, recipeId)
   }
 
   const {
     onSave: createCookbook,
-    loading,
-    error,
+    // loading,
+    // error,
   } = useNewCookbookMutation({ onCreateCookbookComplete })
 
   const onSignupComplete = () => {
