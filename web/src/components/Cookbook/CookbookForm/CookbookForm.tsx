@@ -57,6 +57,10 @@ const CookbookForm = ({
     }
   }
 
+  // this is used only for new cookbooks when the form is inline
+  const [isSubmitButtonChecked, setIsSubmitButtonChecked] =
+    React.useState(false)
+
   // Update based on Prisma schema
   const MAX_TITLE_LENGTH = 60
 
@@ -100,9 +104,13 @@ const CookbookForm = ({
               inline ? (
                 <input
                   type="checkbox"
-                  checked
+                  checked={isSubmitButtonChecked}
                   className="save-checkbox"
                   disabled={loading}
+                  onChange={() => {
+                    setIsSubmitButtonChecked(true)
+                    onSubmit(watch())
+                  }}
                 />
               ) : (
                 'create new cookbook'
