@@ -13,9 +13,13 @@ interface IAddOAuthProps {
 const AddOAuth = ({ oAuthConnections }: IAddOAuthProps) => {
   const { getGoogleAuthUrl } = useAuth()
 
-  const connectGoogleUrl = getGoogleAuthUrl ? getGoogleAuthUrl() : undefined
+  if (getGoogleAuthUrl) {
+    getGoogleAuthUrl().then((res) => {
+      console.log(res)
+    })
+  }
 
-  // const { data: connectGoogleUrl } = useAuthQuery('GOOGLE')
+  const { data: connectGoogleUrl } = useAuthQuery('GOOGLE')
   const { data: connectAppleUrl } = useAuthQuery('APPLE')
 
   const { unlinkAccount: unlinkGoogle } = useUnlinkGoogleAccountMutation()
