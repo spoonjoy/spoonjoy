@@ -1,4 +1,4 @@
-import { test } from '@arimendelow/redwoodjs-dbauth-oauth-web'
+import { createOAuth } from '@arimendelow/redwoodjs-dbauth-oauth-web'
 
 import { createDbAuthClient, createAuth } from '@redwoodjs/auth-dbauth-web'
 import WebAuthnClient from '@redwoodjs/auth-dbauth-web/webAuthn'
@@ -9,3 +9,4 @@ const dbAuthClient = createDbAuthClient({
 })
 
 export const { AuthProvider, useAuth } = createAuth(dbAuthClient)
+export const { OAuthProvider, useOAuth } = createOAuth()

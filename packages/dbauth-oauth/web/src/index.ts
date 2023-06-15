@@ -1,3 +1,2 @@
-export const test = () => {
-  console.log('in dbauth oauth web side')
-}
+export * from './oauth'
+export * from './oauthContext'
