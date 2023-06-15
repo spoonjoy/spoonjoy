@@ -10,7 +10,8 @@
     "baseUrl": "./",
     "rootDirs": [
       "./src",
-      "../.redwood/types/mirror/api/src"
+      "../.redwood/types/mirror/api/src",
+      "../packages/dbauth-oauth/api/src",
     ],
     "paths": {
       "src/*": [

@@ -12,7 +12,8 @@
       "./src",
       "../.redwood/types/mirror/web/src",
       "../api/src",
-      "../.redwood/types/mirror/api/src"
+      "../.redwood/types/mirror/api/src",
+      "../packages/dbauth-oauth/web/src",
     ],
     "paths": {
       "src/*": [
