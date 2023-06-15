@@ -135,6 +135,36 @@ export const handler = async (
     },
   }
 
+  // See https://redwoodjs.com/docs/auth/dbauth#webauthn for options
+  const webAuthnOptions: DbAuthHandlerOptions['webAuthn'] = {
+    enabled: true,
+    // How long to allow re-auth via WebAuthn in seconds (default is 10 years).
+    // The `login.expires` time denotes how many seconds before a user will be
+    // logged out, and this value is how long they'll be to continue to use a
+    // fingerprint/face scan to log in again. When this one expires they
+    // *must* re-enter username and password to authenticate (WebAuthn will
+    // then be re-enabled for this amount of time).
+    expires: 60 * 60 * 24 * 365 * 10,
+    name: 'Spoonjoy',
+    domain:
+      process.env.NODE_ENV === 'development'
+        ? 'local.spoonjoy.app'
+        : 'spoonjoy.app',
+    origin:
+      process.env.NODE_ENV === 'development'
+        ? 'https://local.spoonjoy.app:8910'
+        : 'https://spoonjoy.app',
+    type: 'platform',
+    timeout: 60000,
+    credentialFields: {
+      id: 'id',
+      userId: 'userId',
+      publicKey: 'publicKey',
+      transports: 'transports',
+      counter: 'counter',
+    },
+  }
+
   const authHandler = new DbAuthHandler(event, context, {
     // Provide prisma db client
     db: db,
@@ -186,37 +216,28 @@ export const handler = async (
     login: loginOptions,
     resetPassword: resetPasswordOptions,
     signup: signupOptions,
-
-    // See https://redwoodjs.com/docs/auth/dbauth#webauthn for options
-    webAuthn: {
-      enabled: true,
-      // How long to allow re-auth via WebAuthn in seconds (default is 10 years).
-      // The `login.expires` time denotes how many seconds before a user will be
-      // logged out, and this value is how long they'll be to continue to use a
-      // fingerprint/face scan to log in again. When this one expires they
-      // *must* re-enter username and password to authenticate (WebAuthn will
-      // then be re-enabled for this amount of time).
-      expires: 60 * 60 * 24 * 365 * 10,
-      name: 'Spoonjoy',
-      domain:
-        process.env.NODE_ENV === 'development'
-          ? 'local.spoonjoy.app'
-          : 'spoonjoy.app',
-      origin:
-        process.env.NODE_ENV === 'development'
-          ? 'https://local.spoonjoy.app:8910'
-          : 'https://spoonjoy.app',
-      type: 'platform',
-      timeout: 60000,
-      credentialFields: {
-        id: 'id',
-        userId: 'userId',
-        publicKey: 'publicKey',
-        transports: 'transports',
-        counter: 'counter',
-      },
-    },
+    webAuthn: webAuthnOptions,
   })
 
-  return await authHandler.invoke()
+  console.log('event.path', event.path)
+
+  switch (event.path) {
+    case '/auth':
+      return await authHandler.invoke()
+    case '/auth/oauth':
+      console.log('at oauth handler')
+      return {
+        statusCode: 200,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: {
+            message: 'oauth handler goes here',
+          },
+        }),
+      }
+    default:
+      throw new Error('Unknown path')
+  }
 }
