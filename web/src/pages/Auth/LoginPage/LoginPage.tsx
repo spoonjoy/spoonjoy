@@ -21,11 +21,13 @@ interface ILoginPageProps {
 const LoginPage = ({ type }: ILoginPageProps) => {
   const {
     isAuthenticated,
-    client: webAuthn,
+    client: dbAuthClientExtras,
     loading,
     logIn,
     reauthenticate,
   } = useAuth()
+  const webAuthn = dbAuthClientExtras?.webAuthn
+
   const [shouldShowWebAuthn, setShouldShowWebAuthn] = useState(false)
   const [showWebAuthn, setShowWebAuthn] = useState(
     webAuthn?.isEnabled() && type !== 'password'

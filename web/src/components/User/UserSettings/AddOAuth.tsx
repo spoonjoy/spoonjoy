@@ -11,15 +11,11 @@ interface IAddOAuthProps {
 }
 
 const AddOAuth = ({ oAuthConnections }: IAddOAuthProps) => {
-  const { getGoogleAuthUrl } = useAuth()
+  const { client: dbAuthClientExtras } = useAuth()
+  const oAuthClient = dbAuthClientExtras?.oAuth
 
-  if (getGoogleAuthUrl) {
-    getGoogleAuthUrl().then((res) => {
-      console.log(res)
-    })
-  }
+  const oAuthUrls = oAuthClient?.getOAuthUrls()
 
-  const { data: connectGoogleUrl } = useAuthQuery('GOOGLE')
   const { data: connectAppleUrl } = useAuthQuery('APPLE')
 
   const { unlinkAccount: unlinkGoogle } = useUnlinkGoogleAccountMutation()
@@ -36,7 +32,7 @@ const AddOAuth = ({ oAuthConnections }: IAddOAuthProps) => {
         {hasGoogle ? (
           <button onClick={() => unlinkGoogle()}>Disconnect Google</button>
         ) : (
-          <a href={connectGoogleUrl}>Connect Google</a>
+          <a href={oAuthUrls?.google}>Connect Google</a>
         )}
       </li>
       <li>

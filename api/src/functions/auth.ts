@@ -204,7 +204,7 @@ export const handler = async (
           : 'spoonjoy.app',
       origin:
         process.env.NODE_ENV === 'development'
-          ? 'http://local.spoonjoy.app:8910'
+          ? 'https://local.spoonjoy.app:8910'
           : 'https://spoonjoy.app',
       type: 'platform',
       timeout: 60000,
