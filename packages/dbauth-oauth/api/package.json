@@ -1,0 +1,5 @@
+{
+  "name": "@arimendelow/redwoodjs-dbauth-oauth-api",
+  "version": "0.0.0",
+  "main": "./src/index.ts"
+}

@@ -1,3 +1,4 @@
+import { test } from '@arimendelow/redwoodjs-dbauth-oauth-api'
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda'
 import { IExtraSignupAttributes } from 'types/auth'
 
@@ -226,6 +227,7 @@ export const handler = async (
       return await authHandler.invoke()
     case '/auth/oauth':
       console.log('at oauth handler')
+      test()
       return {
         statusCode: 200,
         headers: {
