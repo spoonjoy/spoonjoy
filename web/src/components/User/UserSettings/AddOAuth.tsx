@@ -28,20 +28,24 @@ const AddOAuth = ({ oAuthConnections }: IAddOAuthProps) => {
   )
   return (
     <ul>
-      <li>
-        {hasGoogle ? (
-          <button onClick={() => unlinkGoogle()}>Disconnect Google</button>
-        ) : (
-          <a href={oAuthUrls?.google}>Connect Google</a>
-        )}
-      </li>
-      <li>
-        {hasApple ? (
-          <button onClick={() => {}}>Disconnect Apple</button>
-        ) : (
-          <a href={connectAppleUrl}>Connect Apple</a>
-        )}
-      </li>
+      {oAuthUrls?.google && (
+        <li>
+          {hasGoogle ? (
+            <button onClick={() => unlinkGoogle()}>Disconnect Google</button>
+          ) : (
+            <a href={oAuthUrls.google}>Connect Google</a>
+          )}
+        </li>
+      )}
+      {oAuthUrls?.apple && (
+        <li>
+          {hasApple ? (
+            <button onClick={() => {}}>Disconnect Apple</button>
+          ) : (
+            <a href={connectAppleUrl}>Connect Apple</a>
+          )}
+        </li>
+      )}
     </ul>
   )
 }
