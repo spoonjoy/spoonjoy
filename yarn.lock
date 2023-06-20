@@ -298,23 +298,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@arimendelow/redwoodjs-dbauth-oauth-api@0.0.0, @arimendelow/redwoodjs-dbauth-oauth-api@workspace:packages/dbauth-oauth/api":
-  version: 0.0.0-use.local
-  resolution: "@arimendelow/redwoodjs-dbauth-oauth-api@workspace:packages/dbauth-oauth/api"
-  dependencies:
-    ts-loader: ^9.4.3
-    typescript: ^5.1.3
-    webpack: ^5.87.0
-    webpack-cli: ^5.1.4
-  languageName: unknown
-  linkType: soft
-
-"@arimendelow/redwoodjs-dbauth-oauth-web@workspace:packages/dbauth-oauth/web":
-  version: 0.0.0-use.local
-  resolution: "@arimendelow/redwoodjs-dbauth-oauth-web@workspace:packages/dbauth-oauth/web"
-  languageName: unknown
-  linkType: soft
-
 "@aws-crypto/crc32@npm:3.0.0":
   version: 3.0.0
   resolution: "@aws-crypto/crc32@npm:3.0.0"
@@ -7249,6 +7232,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@spoonjoy/redwoodjs-dbauth-oauth-api@file:.yalc/@spoonjoy/redwoodjs-dbauth-oauth-api::locator=api%40workspace%3Aapi":
+  version: 0.0.0
+  resolution: "@spoonjoy/redwoodjs-dbauth-oauth-api@file:.yalc/@spoonjoy/redwoodjs-dbauth-oauth-api#.yalc/@spoonjoy/redwoodjs-dbauth-oauth-api::hash=b74919&locator=api%40workspace%3Aapi"
+  checksum: 2a09a596a9e228e9ce8f0c3501139c98463b1f33aa7bdc95493212d22d75e1674163dc255aa4fa19f96ffb9fcb637b5767ea3b3596c2e9d9895280a198c30b82
+  languageName: node
+  linkType: hard
+
+"@spoonjoy/redwoodjs-dbauth-oauth-web@file:.yalc/@spoonjoy/redwoodjs-dbauth-oauth-web::locator=web%40workspace%3Aweb":
+  version: 0.0.0
+  resolution: "@spoonjoy/redwoodjs-dbauth-oauth-web@file:.yalc/@spoonjoy/redwoodjs-dbauth-oauth-web#.yalc/@spoonjoy/redwoodjs-dbauth-oauth-web::hash=9e7ca1&locator=web%40workspace%3Aweb"
+  checksum: 66fde4f8ccbe42b906d0cc4c49df5688ef153f89181a797594127a660f37af66e5ca8ec93899fa73196575a1062100201562bd62ea07ffd299b0b9926f3fd55f
+  languageName: node
+  linkType: hard
+
 "@storybook/addon-a11y@npm:6.5.17-alpha.0":
   version: 6.5.17-alpha.0
   resolution: "@storybook/addon-a11y@npm:6.5.17-alpha.0"
@@ -10663,13 +10660,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "api@workspace:api"
   dependencies:
-    "@arimendelow/redwoodjs-dbauth-oauth-api": 0.0.0
     "@aws-sdk/s3-request-presigner": ^3.279.0
     "@redwoodjs/api": 5.3.0
     "@redwoodjs/auth-dbauth-api": 5.3.0
     "@redwoodjs/graphql-server": 5.3.0
     "@simplewebauthn/server": ^7
     "@sparticuz/chromium-min": 111
+    "@spoonjoy/redwoodjs-dbauth-oauth-api": "file:.yalc/@spoonjoy/redwoodjs-dbauth-oauth-api"
     "@tailwindcss/forms": ^0.5.3
     "@types/unzipper": ^0.10.5
     "@whatwg-node/fetch": ^0.8.1
@@ -15161,16 +15158,6 @@ __metadata:
     memory-fs: ^0.5.0
     tapable: ^1.0.0
   checksum: d95fc630606ea35bed21c4a029bbb1681919571a2d1d2011c7fc42a26a9e48ed3d74a89949ce331e1fd3229850a303e3218b887b92951330f16bdfbb93a10e64
-  languageName: node
-  linkType: hard
-
-"enhanced-resolve@npm:^5.0.0, enhanced-resolve@npm:^5.15.0":
-  version: 5.15.0
-  resolution: "enhanced-resolve@npm:5.15.0"
-  dependencies:
-    graceful-fs: ^4.2.4
-    tapable: ^2.2.0
-  checksum: 69984a7990913948b4150855aed26a84afb4cb1c5a94fb8e3a65bd00729a73fc2eaff6871fb8e345377f294831afe349615c93560f2f54d61b43cdfdf668f19a
   languageName: node
   linkType: hard
 
@@ -21720,7 +21707,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"micromatch@npm:^4.0.0, micromatch@npm:^4.0.2, micromatch@npm:^4.0.4, micromatch@npm:^4.0.5":
+"micromatch@npm:^4.0.2, micromatch@npm:^4.0.4, micromatch@npm:^4.0.5":
   version: 4.0.5
   resolution: "micromatch@npm:4.0.5"
   dependencies:
@@ -26613,17 +26600,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"schema-utils@npm:^3.2.0":
-  version: 3.3.0
-  resolution: "schema-utils@npm:3.3.0"
-  dependencies:
-    "@types/json-schema": ^7.0.8
-    ajv: ^6.12.5
-    ajv-keywords: ^3.5.2
-  checksum: fafdbde91ad8aa1316bc543d4b61e65ea86970aebbfb750bfb6d8a6c287a23e415e0e926c2498696b242f63af1aab8e585252637fabe811fd37b604351da6500
-  languageName: node
-  linkType: hard
-
 "schema-utils@npm:^4.0.0":
   version: 4.0.0
   resolution: "schema-utils@npm:4.0.0"
@@ -28600,21 +28576,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-loader@npm:^9.4.3":
-  version: 9.4.3
-  resolution: "ts-loader@npm:9.4.3"
-  dependencies:
-    chalk: ^4.1.0
-    enhanced-resolve: ^5.0.0
-    micromatch: ^4.0.0
-    semver: ^7.3.4
-  peerDependencies:
-    typescript: "*"
-    webpack: ^5.0.0
-  checksum: 01f49cb016a14f9502ce34d2c8ec370694f16b627a85867e074654f495458047a90574190c592aa2a28a30fd7d01ef83cdd39a61075268058b3a2f3bceaab868
-  languageName: node
-  linkType: hard
-
 "ts-log@npm:^2.2.3":
   version: 2.2.5
   resolution: "ts-log@npm:2.2.5"
@@ -28888,7 +28849,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.1.3, typescript@npm:>=3 < 6, typescript@npm:^5.1.3":
+"typescript@npm:5.1.3, typescript@npm:>=3 < 6":
   version: 5.1.3
   resolution: "typescript@npm:5.1.3"
   bin:
@@ -28898,7 +28859,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@5.1.3#~builtin<compat/typescript>, typescript@patch:typescript@>=3 < 6#~builtin<compat/typescript>, typescript@patch:typescript@^5.1.3#~builtin<compat/typescript>":
+"typescript@patch:typescript@5.1.3#~builtin<compat/typescript>, typescript@patch:typescript@>=3 < 6#~builtin<compat/typescript>":
   version: 5.1.3
   resolution: "typescript@patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=701156"
   bin:
@@ -29902,7 +29863,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "web@workspace:web"
   dependencies:
-    "@arimendelow/redwoodjs-dbauth-oauth-web": "workspace:packages/dbauth-oauth/web"
     "@capacitor/cli": ^4.7.0
     "@capacitor/core": ^4.7.0
     "@capacitor/ios": ^4.7.0
@@ -29918,6 +29878,7 @@ __metadata:
     "@redwoodjs/vite": 5.3.0
     "@redwoodjs/web": 5.3.0
     "@simplewebauthn/browser": ^7
+    "@spoonjoy/redwoodjs-dbauth-oauth-web": "file:.yalc/@spoonjoy/redwoodjs-dbauth-oauth-web"
     "@tailwindcss/line-clamp": ^0.4.2
     autoprefixer: ^10.4.12
     axios: ^1.3.4
@@ -30016,38 +29977,6 @@ __metadata:
   bin:
     webpack-cli: bin/cli.js
   checksum: f5c49fc1cdaf5a694d2bbab5a42a19b6e5ca7dde7e5c29d3b434122d071d47241aee439bf6dfe2c7a30ce722b08605b24b3dbb85778c68cca472660e93905547
-  languageName: node
-  linkType: hard
-
-"webpack-cli@npm:^5.1.4":
-  version: 5.1.4
-  resolution: "webpack-cli@npm:5.1.4"
-  dependencies:
-    "@discoveryjs/json-ext": ^0.5.0
-    "@webpack-cli/configtest": ^2.1.1
-    "@webpack-cli/info": ^2.0.2
-    "@webpack-cli/serve": ^2.0.5
-    colorette: ^2.0.14
-    commander: ^10.0.1
-    cross-spawn: ^7.0.3
-    envinfo: ^7.7.3
-    fastest-levenshtein: ^1.0.12
-    import-local: ^3.0.2
-    interpret: ^3.1.1
-    rechoir: ^0.8.0
-    webpack-merge: ^5.7.3
-  peerDependencies:
-    webpack: 5.x.x
-  peerDependenciesMeta:
-    "@webpack-cli/generators":
-      optional: true
-    webpack-bundle-analyzer:
-      optional: true
-    webpack-dev-server:
-      optional: true
-  bin:
-    webpack-cli: bin/cli.js
-  checksum: 4266909ae5e2e662c8790ac286e965b2c7fd5a4a2f07f48e28576234c9a5f631847ccddc18e1b3281c7b4be04a7ff4717d2636033a322dde13ac995fd0d9de10
   languageName: node
   linkType: hard
 
@@ -30322,43 +30251,6 @@ __metadata:
   bin:
     webpack: bin/webpack.js
   checksum: 9a518f2ae249aa93a40325e1cf0a03fbae56a3d068a94c689e80bb490523eca45d7133bbe2dca57b29a50c44003a55a260e8ea760f6f5bf1e4472bf136a288bb
-  languageName: node
-  linkType: hard
-
-"webpack@npm:^5.87.0":
-  version: 5.87.0
-  resolution: "webpack@npm:5.87.0"
-  dependencies:
-    "@types/eslint-scope": ^3.7.3
-    "@types/estree": ^1.0.0
-    "@webassemblyjs/ast": ^1.11.5
-    "@webassemblyjs/wasm-edit": ^1.11.5
-    "@webassemblyjs/wasm-parser": ^1.11.5
-    acorn: ^8.7.1
-    acorn-import-assertions: ^1.9.0
-    browserslist: ^4.14.5
-    chrome-trace-event: ^1.0.2
-    enhanced-resolve: ^5.15.0
-    es-module-lexer: ^1.2.1
-    eslint-scope: 5.1.1
-    events: ^3.2.0
-    glob-to-regexp: ^0.4.1
-    graceful-fs: ^4.2.9
-    json-parse-even-better-errors: ^2.3.1
-    loader-runner: ^4.2.0
-    mime-types: ^2.1.27
-    neo-async: ^2.6.2
-    schema-utils: ^3.2.0
-    tapable: ^2.1.1
-    terser-webpack-plugin: ^5.3.7
-    watchpack: ^2.4.0
-    webpack-sources: ^3.2.3
-  peerDependenciesMeta:
-    webpack-cli:
-      optional: true
-  bin:
-    webpack: bin/webpack.js
-  checksum: 47209597b7f6bd64fdbaa61817cef6c397cb233dd78c33c958c03db61cf09b9f75a48a25342f05f78cf078b76f8eb680aeda6d76565339a935ea9884928c49e4
   languageName: node
   linkType: hard
 
