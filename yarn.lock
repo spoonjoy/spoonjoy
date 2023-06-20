@@ -7234,15 +7234,17 @@ __metadata:
 
 "@spoonjoy/redwoodjs-dbauth-oauth-api@file:.yalc/@spoonjoy/redwoodjs-dbauth-oauth-api::locator=api%40workspace%3Aapi":
   version: 0.0.0
-  resolution: "@spoonjoy/redwoodjs-dbauth-oauth-api@file:.yalc/@spoonjoy/redwoodjs-dbauth-oauth-api#.yalc/@spoonjoy/redwoodjs-dbauth-oauth-api::hash=b74919&locator=api%40workspace%3Aapi"
-  checksum: 2a09a596a9e228e9ce8f0c3501139c98463b1f33aa7bdc95493212d22d75e1674163dc255aa4fa19f96ffb9fcb637b5767ea3b3596c2e9d9895280a198c30b82
+  resolution: "@spoonjoy/redwoodjs-dbauth-oauth-api@file:.yalc/@spoonjoy/redwoodjs-dbauth-oauth-api#.yalc/@spoonjoy/redwoodjs-dbauth-oauth-api::hash=b7d71a&locator=api%40workspace%3Aapi"
+  checksum: fc154eb5b9d2d04093ba2faf1ff5882b50f1f0d50ad2b0236b97eca7501482bc85fa6bac21e2492cccaf26eabd63644b75560fa424e2022c62bcb149ff6404d1
   languageName: node
   linkType: hard
 
 "@spoonjoy/redwoodjs-dbauth-oauth-web@file:.yalc/@spoonjoy/redwoodjs-dbauth-oauth-web::locator=web%40workspace%3Aweb":
   version: 0.0.0
-  resolution: "@spoonjoy/redwoodjs-dbauth-oauth-web@file:.yalc/@spoonjoy/redwoodjs-dbauth-oauth-web#.yalc/@spoonjoy/redwoodjs-dbauth-oauth-web::hash=9e7ca1&locator=web%40workspace%3Aweb"
-  checksum: 66fde4f8ccbe42b906d0cc4c49df5688ef153f89181a797594127a660f37af66e5ca8ec93899fa73196575a1062100201562bd62ea07ffd299b0b9926f3fd55f
+  resolution: "@spoonjoy/redwoodjs-dbauth-oauth-web@file:.yalc/@spoonjoy/redwoodjs-dbauth-oauth-web#.yalc/@spoonjoy/redwoodjs-dbauth-oauth-web::hash=00193f&locator=web%40workspace%3Aweb"
+  dependencies:
+    react: 18.2.0
+  checksum: dd4df59410ff6d79ed67c7bba9f8976a62cbe5da2abbeecbfda8908d4b4ef9ed68dd8c3d3f63b8924d92501c7e3af47c2280fbfa2f8b668a3b032c0a585b1bbd
   languageName: node
   linkType: hard
 
