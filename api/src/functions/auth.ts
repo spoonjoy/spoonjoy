@@ -1,3 +1,4 @@
+import { OAuthHandler } from '@spoonjoy/redwoodjs-dbauth-oauth-api'
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda'
 import { IExtraSignupAttributes } from 'types/auth'
 
@@ -219,25 +220,15 @@ export const handler = async (
     webAuthn: webAuthnOptions,
   })
 
+  const oAuthHandler = new OAuthHandler(event, context, authHandler)
+
   console.log('event.path', event.path)
 
   switch (event.path) {
     case '/auth':
       return await authHandler.invoke()
     case '/auth/oauth':
-      console.log('at oauth handler')
-
-      return {
-        statusCode: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          data: {
-            message: 'oauth handler goes here',
-          },
-        }),
-      }
+      return await oAuthHandler.invoke()
     default:
       throw new Error('Unknown path')
   }
