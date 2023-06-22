@@ -13,7 +13,7 @@ interface IAddOAuthProps {
 const AddOAuth = ({ oAuthConnections }: IAddOAuthProps) => {
   const { getOAuthUrls } = useOAuth()
 
-  const oAuthUrls = getOAuthUrls()
+  const oAuthUrls = getOAuthUrls(window.location.href)
 
   const { data: connectAppleUrl } = useAuthQuery('APPLE')
 
@@ -32,7 +32,9 @@ const AddOAuth = ({ oAuthConnections }: IAddOAuthProps) => {
           {hasGoogle ? (
             <button onClick={() => unlinkGoogle()}>Disconnect Google</button>
           ) : (
-            <a href={oAuthUrls.google}>Connect Google</a>
+            <a href={oAuthUrls.google} rel="noreferrer">
+              Connect Google
+            </a>
           )}
         </li>
       )}
@@ -41,7 +43,9 @@ const AddOAuth = ({ oAuthConnections }: IAddOAuthProps) => {
           {hasApple ? (
             <button onClick={() => {}}>Disconnect Apple</button>
           ) : (
-            <a href={connectAppleUrl}>Connect Apple</a>
+            <a href={connectAppleUrl} rel="noreferrer">
+              Connect Apple
+            </a>
           )}
         </li>
       )}
