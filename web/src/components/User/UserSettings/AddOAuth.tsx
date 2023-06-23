@@ -1,5 +1,6 @@
 import { OAuthConnectionInfo } from 'types/graphql'
 
+import { useParams } from '@redwoodjs/router'
 import { toast } from '@redwoodjs/web/toast'
 
 import { useOAuth } from 'src/auth'
@@ -9,7 +10,36 @@ interface IAddOAuthProps {
 }
 
 const AddOAuth = ({ oAuthConnections }: IAddOAuthProps) => {
+  const urlWithoutQSPs = window.location.origin + window.location.pathname
+
   const { getOAuthUrls, unlinkAccount } = useOAuth()
+
+  const oAuthUrls = getOAuthUrls(urlWithoutQSPs)
+
+  const hasGoogle = oAuthConnections.some(
+    (connection) => connection.provider === 'GOOGLE'
+  )
+  const hasApple = oAuthConnections.some(
+    (connection) => connection.provider === 'APPLE'
+  )
+  const [linkedAccounts, setLinkedAccounts] = React.useState({
+    google: hasGoogle,
+    apple: hasApple,
+  })
+
+  const { linkedAccount } = useParams()
+  // if this is here, it means the user just connected an account
+  if (linkedAccount) {
+    if (
+      Object.keys(linkedAccounts).includes(linkedAccount) &&
+      linkedAccounts[linkedAccount as 'google' | 'apple'] === true
+    ) {
+      toast.success(`successfully connected ${linkedAccount.toLowerCase()}`)
+      window.history.replaceState(null, '', urlWithoutQSPs)
+    } else {
+      window.history.replaceState(null, '', urlWithoutQSPs)
+    }
+  }
 
   const onUnlinkAccount = async (provider: 'apple' | 'google') => {
     const response = await unlinkAccount(provider)
@@ -18,24 +48,17 @@ const AddOAuth = ({ oAuthConnections }: IAddOAuthProps) => {
       toast.error(`failed to disconnect ${provider}`)
     } else if (response.provider.toUpperCase() === provider.toUpperCase()) {
       toast.success(`successfully disconnected ${provider}`)
+      setLinkedAccounts((prev) => ({ ...prev, [provider]: false }))
     } else {
       toast(`something might have gone wrong`)
     }
   }
 
-  const oAuthUrls = getOAuthUrls(window.location.href)
-
-  const hasGoogle = oAuthConnections.some(
-    (connection) => connection.provider === 'GOOGLE'
-  )
-  const hasApple = oAuthConnections.some(
-    (connection) => connection.provider === 'APPLE'
-  )
   return (
     <ul>
       {oAuthUrls?.google && (
         <li>
-          {hasGoogle ? (
+          {linkedAccounts.google ? (
             <button onClick={() => onUnlinkAccount('google')}>
               Disconnect Google
             </button>
@@ -48,7 +71,7 @@ const AddOAuth = ({ oAuthConnections }: IAddOAuthProps) => {
       )}
       {oAuthUrls?.apple && (
         <li>
-          {hasApple ? (
+          {linkedAccounts.apple ? (
             <button
               onClick={() => {
                 onUnlinkAccount('apple')
