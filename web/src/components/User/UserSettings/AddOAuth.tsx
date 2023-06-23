@@ -1,21 +1,29 @@
 import { OAuthConnectionInfo } from 'types/graphql'
 
+import { toast } from '@redwoodjs/web/toast'
+
 import { useOAuth } from 'src/auth'
-import {
-  useAuthQuery,
-  useUnlinkGoogleAccountMutation,
-} from 'src/components/Auth/OAuthHelpers'
 
 interface IAddOAuthProps {
   oAuthConnections: OAuthConnectionInfo[]
 }
 
 const AddOAuth = ({ oAuthConnections }: IAddOAuthProps) => {
-  const { getOAuthUrls } = useOAuth()
+  const { getOAuthUrls, unlinkAccount } = useOAuth()
+
+  const onUnlinkAccount = async (provider: 'apple' | 'google') => {
+    const response = await unlinkAccount(provider)
+    if (response.error) {
+      console.log('error unlinking account', response.error)
+      toast.error(`failed to disconnect ${provider}`)
+    } else if (response.provider.toUpperCase() === provider.toUpperCase()) {
+      toast.success(`successfully disconnected ${provider}`)
+    } else {
+      toast(`something might have gone wrong`)
+    }
+  }
 
   const oAuthUrls = getOAuthUrls(window.location.href)
-
-  const { unlinkAccount: unlinkGoogle } = useUnlinkGoogleAccountMutation()
 
   const hasGoogle = oAuthConnections.some(
     (connection) => connection.provider === 'GOOGLE'
@@ -28,7 +36,9 @@ const AddOAuth = ({ oAuthConnections }: IAddOAuthProps) => {
       {oAuthUrls?.google && (
         <li>
           {hasGoogle ? (
-            <button onClick={() => unlinkGoogle()}>Disconnect Google</button>
+            <button onClick={() => onUnlinkAccount('google')}>
+              Disconnect Google
+            </button>
           ) : (
             <a href={oAuthUrls.google} rel="noreferrer">
               Connect Google
@@ -39,7 +49,13 @@ const AddOAuth = ({ oAuthConnections }: IAddOAuthProps) => {
       {oAuthUrls?.apple && (
         <li>
           {hasApple ? (
-            <button onClick={() => {}}>Disconnect Apple</button>
+            <button
+              onClick={() => {
+                onUnlinkAccount('apple')
+              }}
+            >
+              Disconnect Apple
+            </button>
           ) : (
             <a href={oAuthUrls.apple} rel="noreferrer">
               Connect Apple
