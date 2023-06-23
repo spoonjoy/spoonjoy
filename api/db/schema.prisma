@@ -46,6 +46,7 @@ model UserCredential {
 
 enum OAuthProvider {
   GOOGLE
+  APPLE
 }
 
 model OAuth {

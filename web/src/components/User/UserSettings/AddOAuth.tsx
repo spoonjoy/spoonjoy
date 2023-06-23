@@ -15,8 +15,6 @@ const AddOAuth = ({ oAuthConnections }: IAddOAuthProps) => {
 
   const oAuthUrls = getOAuthUrls(window.location.href)
 
-  const { data: connectAppleUrl } = useAuthQuery('APPLE')
-
   const { unlinkAccount: unlinkGoogle } = useUnlinkGoogleAccountMutation()
 
   const hasGoogle = oAuthConnections.some(
@@ -43,7 +41,7 @@ const AddOAuth = ({ oAuthConnections }: IAddOAuthProps) => {
           {hasApple ? (
             <button onClick={() => {}}>Disconnect Apple</button>
           ) : (
-            <a href={connectAppleUrl} rel="noreferrer">
+            <a href={oAuthUrls.apple} rel="noreferrer">
               Connect Apple
             </a>
           )}
