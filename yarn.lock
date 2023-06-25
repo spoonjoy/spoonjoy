@@ -7295,23 +7295,26 @@ __metadata:
 
 "@spoonjoy/redwoodjs-dbauth-oauth-api@file:.yalc/@spoonjoy/redwoodjs-dbauth-oauth-api::locator=api%40workspace%3Aapi":
   version: 0.0.0
-  resolution: "@spoonjoy/redwoodjs-dbauth-oauth-api@file:.yalc/@spoonjoy/redwoodjs-dbauth-oauth-api#.yalc/@spoonjoy/redwoodjs-dbauth-oauth-api::hash=cc82fa&locator=api%40workspace%3Aapi"
+  resolution: "@spoonjoy/redwoodjs-dbauth-oauth-api@file:.yalc/@spoonjoy/redwoodjs-dbauth-oauth-api#.yalc/@spoonjoy/redwoodjs-dbauth-oauth-api::hash=b63866&locator=api%40workspace%3Aapi"
   dependencies:
     "@prisma/client": 4.15.0
     "@redwoodjs/api": 5.0.0
     "@redwoodjs/auth-dbauth-api": 5.3.0
+    "@types/uuid": ^9.0.2
     aws-lambda: ^1.0.7
     jsonwebtoken: ^9.0.0
-  checksum: 35bf066d3edf1d6ffddb1ceb181f99c3d76f1718c43b8cfa3cd54ff352d248e113dc49b285cb8cd6d3135a5062beaf158052fe0e9f1fb9779e550360bb5e8ac7
+    md5: ^2.3.0
+    uuid: ^9.0.0
+  checksum: 3b94c94e050e97b325ac9aa3f4338e2b229579d117439121be8ed4adc872b050f4efd5a6bdef63f92a59c7f97efcd50b6aa2583727d1a24b2cffe0c0b8ed0cb3
   languageName: node
   linkType: hard
 
 "@spoonjoy/redwoodjs-dbauth-oauth-web@file:.yalc/@spoonjoy/redwoodjs-dbauth-oauth-web::locator=web%40workspace%3Aweb":
   version: 0.0.0
-  resolution: "@spoonjoy/redwoodjs-dbauth-oauth-web@file:.yalc/@spoonjoy/redwoodjs-dbauth-oauth-web#.yalc/@spoonjoy/redwoodjs-dbauth-oauth-web::hash=1835c4&locator=web%40workspace%3Aweb"
+  resolution: "@spoonjoy/redwoodjs-dbauth-oauth-web@file:.yalc/@spoonjoy/redwoodjs-dbauth-oauth-web#.yalc/@spoonjoy/redwoodjs-dbauth-oauth-web::hash=a1e626&locator=web%40workspace%3Aweb"
   dependencies:
     react: 18.2.0
-  checksum: a415e8e2d3a2eaf66c9361a3cc406f13e2471d8ac19de779d1c900bb86d50eb0c8839ea5e2d0d8c2d8e382f1962a4bb10c3db9172f65f4c8cb2f5e2350cda486
+  checksum: 041463da0c3d96b33df145f63cc96686c733685c32813542181b86f53b4d200e80e31de91cd9504df1679e916339755b19bff5197eb975a48cb62b58706b2dad
   languageName: node
   linkType: hard
 
@@ -9498,6 +9501,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: 3075fab45ba16932cde6d25e9156f1c8ad5ae6d87272f9095913c0bf02849a3ed3e82c371342752e2cc107a1613b8fb2b20a92e9bf54f692c26578b6abb46b69
+  languageName: node
+  linkType: hard
+
+"@types/uuid@npm:^9.0.2":
+  version: 9.0.2
+  resolution: "@types/uuid@npm:9.0.2"
+  checksum: 4c4834f9738575a69db1179589cf397830dc205850b491216697afb254764c79c96a63b92f76e81b6d03515bed9227adf184fa4d33bb04970e6377e2f7c5bab9
   languageName: node
   linkType: hard
 
@@ -21610,7 +21620,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"md5@npm:2.3.0":
+"md5@npm:2.3.0, md5@npm:^2.3.0":
   version: 2.3.0
   resolution: "md5@npm:2.3.0"
   dependencies:

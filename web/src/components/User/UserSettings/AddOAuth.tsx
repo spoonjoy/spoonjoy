@@ -14,7 +14,10 @@ const AddOAuth = ({ oAuthConnections }: IAddOAuthProps) => {
 
   const { getOAuthUrls, unlinkAccount } = useOAuth()
 
-  const oAuthUrls = getOAuthUrls(urlWithoutQSPs)
+  const oAuthUrls = getOAuthUrls({
+    currentUrl: urlWithoutQSPs,
+    method: 'link',
+  })
 
   const hasGoogle = oAuthConnections.some(
     (connection) => connection.provider === 'GOOGLE'
@@ -46,11 +49,13 @@ const AddOAuth = ({ oAuthConnections }: IAddOAuthProps) => {
     if (response.error) {
       console.log('error unlinking account', response.error)
       toast.error(`failed to disconnect ${provider}`)
-    } else if (response.provider.toUpperCase() === provider.toUpperCase()) {
+    } else if (response.provider?.toUpperCase() === provider.toUpperCase()) {
       toast.success(`successfully disconnected ${provider}`)
       setLinkedAccounts((prev) => ({ ...prev, [provider]: false }))
     } else {
-      toast(`something might have gone wrong`)
+      toast(
+        `something might have gone wrong unlinking account, response was ${response}`
+      )
     }
   }
 

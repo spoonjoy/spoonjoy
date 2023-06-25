@@ -1,3 +1,4 @@
+import { PrismaClient } from '@prisma/client'
 import { OAuthHandler } from '@spoonjoy/redwoodjs-dbauth-oauth-api'
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda'
 import { IExtraSignupAttributes } from 'types/auth'
@@ -196,7 +197,8 @@ export const handler = async (
 
   const authHandler = new DbAuthHandler(event, context, {
     // Provide prisma db client
-    db: db,
+    // TODO: There are type issues for reasons that I don't feel like investigating
+    db: db as unknown as PrismaClient,
 
     // The name of the property you'd call on `db` to access your user table.
     // ie. if your Prisma model is named `User` this value would be `user`, as in `db.user`
@@ -249,7 +251,8 @@ export const handler = async (
   })
 
   const oAuthHandler = new OAuthHandler(event, context, authHandler, {
-    db,
+    // TODO: There are type issues for reasons that I don't feel like investigating
+    db: db as unknown as PrismaClient,
     userModelAccessor: 'user',
   })
 
