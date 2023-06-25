@@ -9,6 +9,7 @@ import { toast } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
 
+import LoginWithOAuth from './LoginWithOAuth'
 import { PasswordForm } from './PasswordForm'
 import { AuthWebAuthnPrompt, RegisterWebAuthnPrompt } from './WebAuthnPrompt'
 
@@ -119,7 +120,12 @@ const LoginPage = ({ type }: ILoginPageProps) => {
         )
       }
     } else {
-      return <PasswordForm onSubmit={onSubmit} loading={loading} />
+      return (
+        <>
+          <PasswordForm onSubmit={onSubmit} loading={loading} />
+          <LoginWithOAuth />
+        </>
+      )
     }
   }
 
