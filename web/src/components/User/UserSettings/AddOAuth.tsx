@@ -15,7 +15,6 @@ const AddOAuth = ({ oAuthConnections }: IAddOAuthProps) => {
   const { getOAuthUrls, unlinkAccount } = useOAuth()
 
   const oAuthUrls = getOAuthUrls({
-    currentUrl: urlWithoutQSPs,
     method: 'link',
   })
 
@@ -61,7 +60,7 @@ const AddOAuth = ({ oAuthConnections }: IAddOAuthProps) => {
 
   return (
     <ul>
-      {oAuthUrls?.google && (
+      {oAuthUrls.google && (
         <li>
           {linkedAccounts.google ? (
             <button onClick={() => onUnlinkAccount('google')}>
@@ -74,7 +73,7 @@ const AddOAuth = ({ oAuthConnections }: IAddOAuthProps) => {
           )}
         </li>
       )}
-      {oAuthUrls?.apple && (
+      {oAuthUrls.apple && (
         <li>
           {linkedAccounts.apple ? (
             <button

@@ -11,7 +11,9 @@ const dbAuthClient = createDbAuthClient({
   fetchConfig: { credentials: 'include' },
 })
 
-const oAuthClient = createOAuthClient()
+const oAuthClient = createOAuthClient({
+  enabledProviders: ['apple', 'google'],
+})
 
 export const { AuthProvider, useAuth } = createAuth(dbAuthClient)
 export const { OAuthProvider, useOAuth } = createOAuth(oAuthClient)

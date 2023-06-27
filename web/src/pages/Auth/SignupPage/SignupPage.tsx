@@ -9,6 +9,8 @@ import SignupForm from 'src/components/Auth/SignupForm'
 import AuthFormWrapper from '../shared/AuthFormWrapper'
 import AuthHeader from '../shared/AuthHeader'
 
+import SignupWithOAuth from './SignupWithOAuth'
+
 const SignupPage = () => {
   const { currentUser } = useAuth()
 
@@ -27,6 +29,7 @@ const SignupPage = () => {
         <AuthFormWrapper>
           <SignupForm />
         </AuthFormWrapper>
+        <SignupWithOAuth />
       </div>
     </>
   )
