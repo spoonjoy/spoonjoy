@@ -50,8 +50,8 @@ const OAuthBtn: React.FC<OAuthBtnProps> = ({
     <ButtonComponent
       href={href}
       onClick={onClick}
-      className="relative h-[41px] w-[260px] justify-center rounded border border-gray-200 bg-white
-      text-gray-900 transition-colors duration-200 ease-in-out hover:bg-gray-200"
+      className="relative h-[41px] w-[260px] justify-center rounded-md border border-gray-200 bg-white
+      text-gray-900 transition-colors ease-in-out hover:bg-gray-50 hover:shadow-sm active:bg-gray-100"
     >
       <div className="absolute top-[50%] -translate-y-1/2">
         {logos[provider]}
