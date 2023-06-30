@@ -6,7 +6,6 @@ export const schema = gql`
     createdAt: DateTime!
     recipes: [Recipe!]!
     fellowChefs: [User!]!
-    oAuth: [OAuth!]!
   }
 
   type Query {
