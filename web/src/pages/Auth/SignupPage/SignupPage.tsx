@@ -6,10 +6,9 @@ import { MetaTags } from '@redwoodjs/web'
 import { useAuth } from 'src/auth'
 import SignupForm from 'src/components/Auth/SignupForm'
 
+import SignupWithOAuth from '../../../components/OAuth/SignupWithOAuth'
 import AuthFormWrapper from '../shared/AuthFormWrapper'
 import AuthHeader from '../shared/AuthHeader'
-
-import SignupWithOAuth from './SignupWithOAuth'
 
 const SignupPage = () => {
   const { currentUser } = useAuth()

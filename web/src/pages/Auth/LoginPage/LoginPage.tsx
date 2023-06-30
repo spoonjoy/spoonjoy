@@ -9,7 +9,8 @@ import { toast } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
 
-import LoginWithOAuth from './LoginWithOAuth'
+import LoginWithOAuth from '../../../components/OAuth/LoginWithOAuth'
+
 import { PasswordForm } from './PasswordForm'
 import { AuthWebAuthnPrompt, RegisterWebAuthnPrompt } from './WebAuthnPrompt'
 
