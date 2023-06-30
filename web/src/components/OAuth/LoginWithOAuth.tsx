@@ -1,16 +1,9 @@
-import { useOAuth } from 'src/auth'
-
 import OAuthBtn from './OAuthBtn'
+import { IOAuthBtnsProps } from './types'
 
-const LoginWithOAuth = () => {
-  const { getOAuthUrls } = useOAuth()
-
-  const oAuthUrls = getOAuthUrls({
-    method: 'login',
-  })
-
+const LoginWithOAuth = ({ oAuthUrls }: IOAuthBtnsProps) => {
   return (
-    <ul className="flex flex-col gap-2">
+    <>
       {oAuthUrls?.apple && (
         <li>
           <OAuthBtn provider="apple" action="login" href={oAuthUrls.apple} />
@@ -21,7 +14,7 @@ const LoginWithOAuth = () => {
           <OAuthBtn provider="google" action="login" href={oAuthUrls.google} />
         </li>
       )}
-    </ul>
+    </>
   )
 }
 

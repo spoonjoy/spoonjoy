@@ -2,25 +2,35 @@ import { useOAuth } from 'src/auth'
 
 import LinkOAuth from './LinkOAuth'
 import LoginWithOAuth from './LoginWithOAuth'
-import { Action } from './OAuthBtn'
 import SignupWithOAuth from './SignupWithOAuth'
 
 interface IOAuthBtnsProps {
-  action: Action
+  /**
+   * The action to perform with the OAuth provider.
+   * - `login` - login with the OAuth provider
+   * - `signup` - sign up with the OAuth provider
+   * - `link` - link (or unlink) the OAuth provider to/from the current user
+   */
+  action: 'login' | 'signup' | 'link'
 }
 
 const OAuthBtns = ({ action }: IOAuthBtnsProps) => {
   const { getOAuthUrls } = useOAuth()
   const oAuthUrls = getOAuthUrls({ method: action })
-  switch (action) {
-    case 'login':
-      return <LoginWithOAuth />
-    case 'signUp':
-      return <SignupWithOAuth />
-    case 'link':
-    case 'unlink':
-      return <LinkOAuth />
-  }
+  return (
+    <ul className="flex flex-col gap-2">
+      {(() => {
+        switch (action) {
+          case 'login':
+            return <LoginWithOAuth oAuthUrls={oAuthUrls} />
+          case 'signup':
+            return <SignupWithOAuth oAuthUrls={oAuthUrls} />
+          case 'link':
+            return <LinkOAuth oAuthUrls={oAuthUrls} />
+        }
+      })()}
+    </ul>
+  )
 }
 
 export default OAuthBtns

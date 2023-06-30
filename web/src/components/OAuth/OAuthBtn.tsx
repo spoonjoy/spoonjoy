@@ -1,10 +1,11 @@
 import React, { MouseEvent } from 'react'
 
+import { Provider } from '@spoonjoy/redwoodjs-dbauth-oauth-web'
+
 import AppleLogo from './assets/logos/AppleLogo'
 import GoogleLogo from './assets/logos/GoogleLogo'
 
-export type Provider = 'apple' | 'google'
-export type Action = 'login' | 'signUp' | 'link' | 'unlink'
+export type Action = 'login' | 'signup' | 'link' | 'unlink'
 
 type ClickEvent = MouseEvent<HTMLButtonElement | HTMLAnchorElement>
 
@@ -28,7 +29,7 @@ const OAuthBtn: React.FC<OAuthBtnProps> = ({
 
   const actions = {
     login: 'Sign in with',
-    signUp: 'Sign up with',
+    signup: 'Sign up with',
     link: 'Link to',
     unlink: 'Unlink from',
   }

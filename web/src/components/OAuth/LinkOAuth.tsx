@@ -6,15 +6,12 @@ import { toast } from '@redwoodjs/web/toast'
 import { useOAuth } from 'src/auth'
 
 import OAuthBtn from './OAuthBtn'
+import { IOAuthBtnsProps } from './types'
 
-const LinkOAuth = () => {
+const LinkOAuth = ({ oAuthUrls }: IOAuthBtnsProps) => {
   const urlWithoutQSPs = window.location.origin + window.location.pathname
 
-  const { getOAuthUrls, unlinkAccount, getConnectedAccounts } = useOAuth()
-
-  const oAuthUrls = getOAuthUrls({
-    method: 'link',
-  })
+  const { unlinkAccount, getConnectedAccounts } = useOAuth()
 
   const [linkedAccounts, setLinkedAccounts] = React.useState<{
     [key in Provider]: boolean | undefined
@@ -77,7 +74,7 @@ const LinkOAuth = () => {
   }
 
   return (
-    <ul className="flex flex-col gap-2">
+    <>
       {oAuthUrls.apple && (
         <li>
           {linkedAccounts.apple ? (
@@ -104,7 +101,7 @@ const LinkOAuth = () => {
           )}
         </li>
       )}
-    </ul>
+    </>
   )
 }
 
