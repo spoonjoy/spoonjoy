@@ -8,8 +8,7 @@ import { MetaTags } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
-
-import LoginWithOAuth from '../../../components/OAuth/LoginWithOAuth'
+import OAuthBtns from 'src/components/OAuth/OAuthBtns'
 
 import { PasswordForm } from './PasswordForm'
 import { AuthWebAuthnPrompt, RegisterWebAuthnPrompt } from './WebAuthnPrompt'
@@ -124,7 +123,7 @@ const LoginPage = ({ type }: ILoginPageProps) => {
       return (
         <>
           <PasswordForm onSubmit={onSubmit} loading={loading} />
-          <LoginWithOAuth />
+          <OAuthBtns action="login" />
         </>
       )
     }
