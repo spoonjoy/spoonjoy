@@ -5,6 +5,8 @@ import { toast } from '@redwoodjs/web/toast'
 
 import { useOAuth } from 'src/auth'
 
+import OAuthBtn from './OAuthBtn'
+
 const ConnectOAuth = () => {
   const urlWithoutQSPs = window.location.origin + window.location.pathname
 
@@ -75,34 +77,38 @@ const ConnectOAuth = () => {
   }
 
   return (
-    <ul>
+    <ul className="flex flex-col gap-2">
       {oAuthUrls.google && (
         <li>
           {linkedAccounts.google ? (
-            <button onClick={() => onUnlinkAccount('google')}>
-              Disconnect Google
-            </button>
+            <OAuthBtn
+              provider="google"
+              action="disconnect"
+              onClick={() => onUnlinkAccount('google')}
+            />
           ) : (
-            <a href={oAuthUrls.google} rel="noreferrer">
-              Connect Google
-            </a>
+            <OAuthBtn
+              provider="google"
+              action="connect"
+              href={oAuthUrls.google}
+            />
           )}
         </li>
       )}
       {oAuthUrls.apple && (
         <li>
           {linkedAccounts.apple ? (
-            <button
-              onClick={() => {
-                onUnlinkAccount('apple')
-              }}
-            >
-              Disconnect Apple
-            </button>
+            <OAuthBtn
+              provider="apple"
+              action="disconnect"
+              onClick={() => onUnlinkAccount('apple')}
+            />
           ) : (
-            <a href={oAuthUrls.apple} rel="noreferrer">
-              Connect Apple
-            </a>
+            <OAuthBtn
+              provider="apple"
+              action="connect"
+              href={oAuthUrls.apple}
+            />
           )}
         </li>
       )}
