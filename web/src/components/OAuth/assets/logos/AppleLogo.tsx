@@ -1,12 +1,13 @@
 import React from 'react'
 
-function AppleLogo() {
+function AppleLogo({ className }: { className?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="17"
       height="20"
       viewBox="0 0 17 20"
+      className={className}
     >
       <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
         <g fill="#000" fillRule="nonzero" transform="translate(-10 -41)">

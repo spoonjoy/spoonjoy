@@ -1,12 +1,13 @@
 import React from 'react'
 
-function GoogleLogo() {
+function GoogleLogo({ className }: { className?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="18"
       height="18"
       viewBox="0 0 18 18"
+      className={className}
     >
       <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
         <g transform="translate(-10 -13)">

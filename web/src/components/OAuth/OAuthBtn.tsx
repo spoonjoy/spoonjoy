@@ -22,15 +22,15 @@ const OAuthBtn: React.FC<OAuthBtnProps> = ({
   onClick,
 }) => {
   const logos = {
-    apple: <AppleLogo />,
-    google: <GoogleLogo />,
+    apple: <AppleLogo className="ml-[0.6rem] pt-[.1rem] pb-[.1rem]" />,
+    google: <GoogleLogo className="ml-[0.6rem] pt-[.1rem] pb-[.1rem]" />,
   }
 
   const actions = {
-    signIn: 'Sign In with',
-    signUp: 'Sign Up with',
-    connect: 'Connect with',
-    disconnect: 'Disconnect from',
+    signIn: 'Sign in with',
+    signUp: 'Sign up with',
+    connect: 'Connect to',
+    disconnect: 'Disconnect',
   }
 
   const ButtonComponent = href ? 'a' : 'button'
@@ -50,11 +50,13 @@ const OAuthBtn: React.FC<OAuthBtnProps> = ({
     <ButtonComponent
       href={href}
       onClick={onClick}
-      className={`flex w-[16.4rem] items-center justify-start gap-2 rounded border border-gray-300 bg-white px-4 py-2
-      text-black transition-colors duration-200 ease-in-out hover:bg-gray-200`}
+      className="relative h-[41px] w-[260px] justify-center rounded border border-gray-200 bg-white
+      text-gray-900 transition-colors duration-200 ease-in-out hover:bg-gray-200"
     >
-      {logos[provider]}
-      <span className="ml-2">{`${actions[action]} ${providerName}`}</span>
+      <div className="absolute top-[50%] -translate-y-1/2">
+        {logos[provider]}
+      </div>
+      <div className="font-medium">{`${actions[action]} ${providerName}`}</div>
     </ButtonComponent>
   )
 }
