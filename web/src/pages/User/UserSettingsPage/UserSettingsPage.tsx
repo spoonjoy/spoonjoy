@@ -5,7 +5,6 @@ import { ColumnLayoutFormWrapper } from 'src/components/formComponents/ColumnLay
 import AddOAuth from 'src/components/User/UserSettings/AddOAuth'
 import ChangePasswordForm from 'src/components/User/UserSettings/ChangePasswordForm'
 import LogOutBtn from 'src/components/User/UserSettings/LogOutBtn'
-import UserOAuthConnectionsCell from 'src/components/User/UserSettings/UserOAuthConnectionsCell'
 import { SimpleHeader, HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
 
 const UserSettingsPage = () => {
