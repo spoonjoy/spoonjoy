@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
 
+import { OAuthButtons } from '@spoonjoy/redwoodjs-dbauth-oauth-web'
 import { IFormSignin } from 'types/auth'
 
 import { navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
-import { useAuth } from 'src/auth'
-import OAuthBtns from 'src/components/OAuth/OAuthBtns'
+import { useAuth, useOAuth } from 'src/auth'
 
 import { PasswordForm } from './PasswordForm'
 import { AuthWebAuthnPrompt, RegisterWebAuthnPrompt } from './WebAuthnPrompt'
@@ -27,6 +27,7 @@ const LoginPage = ({ type }: ILoginPageProps) => {
     logIn,
     reauthenticate,
   } = useAuth()
+  const { getOAuthUrls } = useOAuth()
 
   const [shouldShowWebAuthn, setShouldShowWebAuthn] = useState(false)
   const [showWebAuthn, setShowWebAuthn] = useState(
@@ -123,7 +124,7 @@ const LoginPage = ({ type }: ILoginPageProps) => {
       return (
         <>
           <PasswordForm onSubmit={onSubmit} loading={loading} />
-          <OAuthBtns action="login" />
+          <OAuthButtons action="login" getOAuthUrls={getOAuthUrls} />
         </>
       )
     }

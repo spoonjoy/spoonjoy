@@ -1,17 +1,19 @@
 import { useEffect } from 'react'
 
+import { OAuthButtons } from '@spoonjoy/redwoodjs-dbauth-oauth-web'
+
 import { navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
-import { useAuth } from 'src/auth'
+import { useAuth, useOAuth } from 'src/auth'
 import SignupForm from 'src/components/Auth/SignupForm'
-import OAuthBtns from 'src/components/OAuth/OAuthBtns'
 
 import AuthFormWrapper from '../shared/AuthFormWrapper'
 import AuthHeader from '../shared/AuthHeader'
 
 const SignupPage = () => {
   const { currentUser } = useAuth()
+  const { getOAuthUrls } = useOAuth()
 
   useEffect(() => {
     if (currentUser) {
@@ -28,7 +30,7 @@ const SignupPage = () => {
         <AuthFormWrapper>
           <SignupForm />
         </AuthFormWrapper>
-        <OAuthBtns action="signup" />
+        <OAuthButtons action="signup" getOAuthUrls={getOAuthUrls} />
       </div>
     </>
   )
