@@ -7,7 +7,7 @@ import { useOAuth } from 'src/auth'
 
 import OAuthBtn from './OAuthBtn'
 
-const ConnectOAuth = () => {
+const LinkOAuth = () => {
   const urlWithoutQSPs = window.location.origin + window.location.pathname
 
   const { getOAuthUrls, unlinkAccount, getConnectedAccounts } = useOAuth()
@@ -83,15 +83,11 @@ const ConnectOAuth = () => {
           {linkedAccounts.apple ? (
             <OAuthBtn
               provider="apple"
-              action="disconnect"
+              action="unlink"
               onClick={() => onUnlinkAccount('apple')}
             />
           ) : (
-            <OAuthBtn
-              provider="apple"
-              action="connect"
-              href={oAuthUrls.apple}
-            />
+            <OAuthBtn provider="apple" action="link" href={oAuthUrls.apple} />
           )}
         </li>
       )}
@@ -100,15 +96,11 @@ const ConnectOAuth = () => {
           {linkedAccounts.google ? (
             <OAuthBtn
               provider="google"
-              action="disconnect"
+              action="unlink"
               onClick={() => onUnlinkAccount('google')}
             />
           ) : (
-            <OAuthBtn
-              provider="google"
-              action="connect"
-              href={oAuthUrls.google}
-            />
+            <OAuthBtn provider="google" action="link" href={oAuthUrls.google} />
           )}
         </li>
       )}
@@ -116,4 +108,4 @@ const ConnectOAuth = () => {
   )
 }
 
-export default ConnectOAuth
+export default LinkOAuth

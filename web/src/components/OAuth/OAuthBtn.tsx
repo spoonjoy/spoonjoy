@@ -3,8 +3,8 @@ import React, { MouseEvent } from 'react'
 import AppleLogo from './assets/logos/AppleLogo'
 import GoogleLogo from './assets/logos/GoogleLogo'
 
-type Provider = 'apple' | 'google'
-type Action = 'signIn' | 'signUp' | 'connect' | 'disconnect'
+export type Provider = 'apple' | 'google'
+export type Action = 'login' | 'signUp' | 'link' | 'unlink'
 
 type ClickEvent = MouseEvent<HTMLButtonElement | HTMLAnchorElement>
 
@@ -27,10 +27,10 @@ const OAuthBtn: React.FC<OAuthBtnProps> = ({
   }
 
   const actions = {
-    signIn: 'Sign in with',
+    login: 'Sign in with',
     signUp: 'Sign up with',
-    connect: 'Connect to',
-    disconnect: 'Disconnect from',
+    link: 'Link to',
+    unlink: 'Unlink from',
   }
 
   const ButtonComponent = href ? 'a' : 'button'
