@@ -78,23 +78,6 @@ const ConnectOAuth = () => {
 
   return (
     <ul className="flex flex-col gap-2">
-      {oAuthUrls.google && (
-        <li>
-          {linkedAccounts.google ? (
-            <OAuthBtn
-              provider="google"
-              action="disconnect"
-              onClick={() => onUnlinkAccount('google')}
-            />
-          ) : (
-            <OAuthBtn
-              provider="google"
-              action="connect"
-              href={oAuthUrls.google}
-            />
-          )}
-        </li>
-      )}
       {oAuthUrls.apple && (
         <li>
           {linkedAccounts.apple ? (
@@ -108,6 +91,23 @@ const ConnectOAuth = () => {
               provider="apple"
               action="connect"
               href={oAuthUrls.apple}
+            />
+          )}
+        </li>
+      )}
+      {oAuthUrls.google && (
+        <li>
+          {linkedAccounts.google ? (
+            <OAuthBtn
+              provider="google"
+              action="disconnect"
+              onClick={() => onUnlinkAccount('google')}
+            />
+          ) : (
+            <OAuthBtn
+              provider="google"
+              action="connect"
+              href={oAuthUrls.google}
             />
           )}
         </li>

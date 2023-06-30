@@ -1,5 +1,7 @@
 import { useOAuth } from 'src/auth'
 
+import OAuthBtn from './OAuthBtn'
+
 const LoginWithOAuth = () => {
   const { getOAuthUrls } = useOAuth()
 
@@ -8,15 +10,15 @@ const LoginWithOAuth = () => {
   })
 
   return (
-    <ul>
-      {oAuthUrls?.google && (
-        <li>
-          <a href={oAuthUrls.google}>Login with Google</a>
-        </li>
-      )}
+    <ul className="flex flex-col gap-2">
       {oAuthUrls?.apple && (
         <li>
-          <a href={oAuthUrls.apple}>Login with Apple</a>
+          <OAuthBtn provider="apple" action="signUp" href={oAuthUrls.apple} />
+        </li>
+      )}
+      {oAuthUrls?.google && (
+        <li>
+          <OAuthBtn provider="google" action="signUp" href={oAuthUrls.google} />
         </li>
       )}
     </ul>
