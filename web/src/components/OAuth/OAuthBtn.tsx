@@ -30,7 +30,7 @@ const OAuthBtn: React.FC<OAuthBtnProps> = ({
     signIn: 'Sign in with',
     signUp: 'Sign up with',
     connect: 'Connect to',
-    disconnect: 'Disconnect',
+    disconnect: 'Disconnect from',
   }
 
   const ButtonComponent = href ? 'a' : 'button'
@@ -50,13 +50,12 @@ const OAuthBtn: React.FC<OAuthBtnProps> = ({
     <ButtonComponent
       href={href}
       onClick={onClick}
-      className="relative h-[41px] w-[260px] justify-center rounded-md border border-gray-200 bg-white
-      text-gray-900 transition-colors ease-in-out hover:bg-gray-50 hover:shadow-sm active:bg-gray-100"
+      className="relative block h-[41px] w-[260px] rounded-md border border-gray-200 bg-white text-gray-900 transition-colors ease-in-out hover:bg-gray-50 hover:shadow-sm active:bg-gray-100"
     >
       <div className="absolute top-[50%] -translate-y-1/2">
         {logos[provider]}
       </div>
-      <div className="font-medium">{`${actions[action]} ${providerName}`}</div>
+      <div className="absolute top-[50%] left-[50%] w-full -translate-y-1/2 -translate-x-1/2 text-center">{`${actions[action]} ${providerName}`}</div>
     </ButtonComponent>
   )
 }
