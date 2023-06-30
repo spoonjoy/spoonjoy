@@ -12,13 +12,23 @@ interface IOAuthBtnsProps {
    * - `link` - link (or unlink) the OAuth provider to/from the current user
    */
   action: 'login' | 'signup' | 'link'
+  /**
+   * The layout classes to apply to the `<ul>` element.
+   * Note that the default is TailwindCSS classes, but you can use any CSS classes you want.
+   * If you want to use your own TailwindCSS classes, you must have TailwindCSS installed and configured.
+   * @default 'flex flex-col gap-2'
+   */
+  layoutClasses?: string
 }
 
-const OAuthBtns = ({ action }: IOAuthBtnsProps) => {
+const OAuthBtns = ({
+  action,
+  layoutClasses = 'flex flex-col gap-2',
+}: IOAuthBtnsProps) => {
   const { getOAuthUrls } = useOAuth()
   const oAuthUrls = getOAuthUrls({ method: action })
   return (
-    <ul className="flex flex-col gap-2">
+    <ul className={layoutClasses}>
       {(() => {
         switch (action) {
           case 'login':
