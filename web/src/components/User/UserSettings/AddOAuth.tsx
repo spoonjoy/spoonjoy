@@ -1,33 +1,49 @@
-import { OAuthConnectionInfo } from 'types/graphql'
+import { Provider } from '@spoonjoy/redwoodjs-dbauth-oauth-web'
 
 import { useParams } from '@redwoodjs/router'
 import { toast } from '@redwoodjs/web/toast'
 
 import { useOAuth } from 'src/auth'
 
-interface IAddOAuthProps {
-  oAuthConnections: OAuthConnectionInfo[]
-}
-
-const AddOAuth = ({ oAuthConnections }: IAddOAuthProps) => {
+const AddOAuth = () => {
   const urlWithoutQSPs = window.location.origin + window.location.pathname
 
-  const { getOAuthUrls, unlinkAccount } = useOAuth()
+  const { getOAuthUrls, unlinkAccount, getConnectedAccounts } = useOAuth()
 
   const oAuthUrls = getOAuthUrls({
     method: 'link',
   })
 
-  const hasGoogle = oAuthConnections.some(
-    (connection) => connection.provider === 'GOOGLE'
-  )
-  const hasApple = oAuthConnections.some(
-    (connection) => connection.provider === 'APPLE'
-  )
-  const [linkedAccounts, setLinkedAccounts] = React.useState({
-    google: hasGoogle,
-    apple: hasApple,
+  const [linkedAccounts, setLinkedAccounts] = React.useState<{
+    [key in Provider]: boolean | undefined
+  }>({
+    google: undefined,
+    apple: undefined,
   })
+
+  React.useEffect(() => {
+    const fetchConnectedAccounts = async () => {
+      try {
+        const response = await getConnectedAccounts()
+        const hasApple = response.some(
+          (connection) => connection.provider === 'apple'
+        )
+        const hasGoogle = response.some(
+          (connection) => connection.provider === 'google'
+        )
+        setLinkedAccounts({
+          apple: hasApple,
+          google: hasGoogle,
+        })
+      } catch (error) {
+        console.error('Failed to fetch connected accounts:', error)
+      }
+    }
+
+    fetchConnectedAccounts()
+    // this is intentionally empty, we only want to run this on initial render
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const { linkedAccount } = useParams()
   // if this is here, it means the user just connected an account

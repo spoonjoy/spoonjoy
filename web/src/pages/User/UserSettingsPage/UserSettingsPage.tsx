@@ -1,15 +1,14 @@
 import { MetaTags } from '@redwoodjs/web'
 
-import { useAuth } from 'src/auth'
 import { ColumnLayoutFormSection } from 'src/components/formComponents/ColumnLayoutForm/ColumnLayoutFormSection'
 import { ColumnLayoutFormWrapper } from 'src/components/formComponents/ColumnLayoutForm/ColumnLayoutFormWrapper'
+import AddOAuth from 'src/components/User/UserSettings/AddOAuth'
 import ChangePasswordForm from 'src/components/User/UserSettings/ChangePasswordForm'
 import LogOutBtn from 'src/components/User/UserSettings/LogOutBtn'
 import UserOAuthConnectionsCell from 'src/components/User/UserSettings/UserOAuthConnectionsCell'
 import { SimpleHeader, HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
 
 const UserSettingsPage = () => {
-  const { currentUser } = useAuth()
   return (
     <>
       <MetaTags title="settings" description="Settings page" />
@@ -32,8 +31,7 @@ const UserSettingsPage = () => {
             sectionDescription="connect other ways to log into Spoonjoy"
             withPadding
           >
-            {/* this is an auth required route so this will always be present */}
-            <UserOAuthConnectionsCell id={currentUser!.id} />
+            <AddOAuth />
           </ColumnLayoutFormSection>
         </ColumnLayoutFormWrapper>
         <div className="mx-5 mt-20 text-center">

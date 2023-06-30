@@ -15,7 +15,7 @@ import { user } from '../users/users'
 
 const GetConnectedOAuthAccounts = async () => {
   const currentUser = context.currentUser
-  await db.oAuth.findMany({
+  const records = await db.oAuth.findMany({
     where: { userId: currentUser!.id },
   })
 }
