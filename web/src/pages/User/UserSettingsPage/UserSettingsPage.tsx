@@ -39,6 +39,7 @@ const UserSettingsPage = () => {
             withPadding
           >
             <OAuthButtons
+              layoutClasses="flex gap-2 flex-wrap justify-center md:justify-start"
               action="link"
               getOAuthUrls={getOAuthUrls}
               linkOAuthConfig={{
