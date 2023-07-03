@@ -7311,13 +7311,13 @@ __metadata:
 
 "@spoonjoy/redwoodjs-dbauth-oauth-web@file:.yalc/@spoonjoy/redwoodjs-dbauth-oauth-web::locator=web%40workspace%3Aweb":
   version: 0.0.0
-  resolution: "@spoonjoy/redwoodjs-dbauth-oauth-web@file:.yalc/@spoonjoy/redwoodjs-dbauth-oauth-web#.yalc/@spoonjoy/redwoodjs-dbauth-oauth-web::hash=9f6ef1&locator=web%40workspace%3Aweb"
+  resolution: "@spoonjoy/redwoodjs-dbauth-oauth-web@file:.yalc/@spoonjoy/redwoodjs-dbauth-oauth-web#.yalc/@spoonjoy/redwoodjs-dbauth-oauth-web::hash=4b23e8&locator=web%40workspace%3Aweb"
   peerDependencies:
     "@redwoodjs/core": ^5.4.1
     "@redwoodjs/router": ^5.4.1
     react: 18.2.0
     react-dom: 18.2.0
-  checksum: 22024985e2dba8472eef071cd1253fcb66b8f524235018e90465cfd0ea6b5690769603981eb75a52025dd2ed3592eec8d12667bdf114d3eef7d4fb40c7011574
+  checksum: e472b27217974da6399d309e3c194fe11fefc8196835fb417d51d8e7e95ccd142a3d6d0b33d35e44fbaf30e7b2d3ccc62707daf27cc5c598df6c0dc32c13488f
   languageName: node
   linkType: hard
 
