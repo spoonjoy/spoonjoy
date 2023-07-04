@@ -250,7 +250,9 @@ export const handler = async (
     webAuthn: webAuthnOptions,
   })
 
-  const oAuthHandler = new OAuthHandler(event, context, authHandler, {})
+  const oAuthHandler = new OAuthHandler(event, context, authHandler, {
+    oAuthModelAccessor: 'oAuth',
+  })
 
   console.log('event.path', event.path)
 
