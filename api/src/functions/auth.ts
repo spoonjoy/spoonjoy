@@ -250,11 +250,7 @@ export const handler = async (
     webAuthn: webAuthnOptions,
   })
 
-  const oAuthHandler = new OAuthHandler(event, context, authHandler, {
-    // TODO: There are type issues for reasons that I don't feel like investigating
-    db: db as unknown as PrismaClient,
-    userModelAccessor: 'user',
-  })
+  const oAuthHandler = new OAuthHandler(event, context, authHandler, {})
 
   console.log('event.path', event.path)
 
