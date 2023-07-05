@@ -14,7 +14,7 @@
   # host = '0.0.0.0' # Bind to all network instances/allow access from anywhere
   apiUrl = "/.redwood/functions"
   # apiUrl = "/.redwood/functions"
-  includeEnvironmentVariables = ["FE_URL", "RWJS_API_URL", "GOOGLE_CLIENT_ID", "APPLE_CLIENT_ID"] # any ENV vars that should be available to the web side, see https://redwoodjs.com/docs/environment-variables#web
+  includeEnvironmentVariables = ["FE_URL", "RWJS_API_URL", "GOOGLE_CLIENT_ID", "APPLE_CLIENT_ID", "GITHUB_CLIENT_ID"] # any ENV vars that should be available to the web side, see https://redwoodjs.com/docs/environment-variables#web
 [api]
   port = 8911
 [browser]
