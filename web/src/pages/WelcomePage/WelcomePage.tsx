@@ -2,13 +2,13 @@ import { Fragment } from 'react'
 
 import { Popover, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import logoblack from 'public/logos/sj_black.svg'
 
 import { Link, Redirect, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
 import Loading from 'src/components/Loading/Loading'
+import SJLogo from 'src/components/Logos/SJLogo'
 
 // import WelcomeHeaderImg from './sj-welcome-header.jpg'
 
@@ -66,7 +66,7 @@ const WelcomePage = () => {
                       <div className="flex w-full items-center justify-between md:w-auto">
                         <a href={routes.welcome()}>
                           <span className="sr-only">Spoonjoy</span>
-                          <img src={logoblack} alt="spoonjoy logo" className="h-8 w-auto sm:h-10" />
+                          <SJLogo className="h-8 w-auto sm:h-10" />
                         </a>
                         <div className="-mr-2 flex items-center md:hidden">
                           <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
@@ -106,7 +106,7 @@ const WelcomePage = () => {
                     <div className="overflow-hidden rounded-lg bg-white shadow-md ring-1 ring-black ring-opacity-5">
                       <div className="flex items-center justify-between px-5 pt-4">
                         <div>
-                          <img src={logoblack} alt="spoonjoy logo" className="h-8 w-auto" />
+                          <SJLogo className="h-8 w-auto" />
                         </div>
                         <div className="-mr-2">
                           <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
