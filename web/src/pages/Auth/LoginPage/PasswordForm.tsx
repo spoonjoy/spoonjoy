@@ -7,9 +7,6 @@ import { Form, Submit } from '@redwoodjs/forms'
 import StyledPasswordField from 'src/components/formComponents/StyledPasswordField'
 import StyledTextField from 'src/components/formComponents/StyledTextField'
 
-import AuthFormWrapper from '../shared/AuthFormWrapper'
-import AuthHeader from '../shared/AuthHeader'
-
 interface IPasswordFormProps {
   onSubmit: (data: IFormSignin) => void
   loading: boolean
