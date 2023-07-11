@@ -1,4 +1,4 @@
-import { OAuthButtons, Provider } from '@spoonjoy/redwoodjs-dbauth-oauth-web'
+import { OAuthButtons } from '@spoonjoy/redwoodjs-dbauth-oauth-web'
 
 import { MetaTags } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
@@ -12,10 +12,7 @@ import { SimpleHeader, HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
 
 const UserSettingsPage = () => {
   const { getOAuthUrls, unlinkAccount, getConnectedAccounts } = useOAuth()
-  const newUnlinkAccount = async (provider: Provider) => {
-    const response = await unlinkAccount(provider)
-    return response
-  }
+
   return (
     <>
       <MetaTags title="settings" description="Settings page" />
@@ -43,7 +40,7 @@ const UserSettingsPage = () => {
               action="link"
               getOAuthUrls={getOAuthUrls}
               linkOAuthConfig={{
-                unlinkAccount: newUnlinkAccount,
+                unlinkAccount,
                 getConnectedAccounts,
                 onLinkSuccess(linkedAccount) {
                   toast.success(`successfully connected ${linkedAccount}`)
