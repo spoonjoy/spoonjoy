@@ -26,35 +26,31 @@ export const PasswordForm = ({ onSubmit, loading }: IPasswordFormProps) => {
   }, [usernameRef])
 
   return (
-    <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <AuthHeader location="login" />
+    <>
+      <Form<IFormSignin> onSubmit={onSubmit} className="space-y-6">
+        <StyledTextField
+          label="username"
+          fieldName="username"
+          validation={{ required: true }}
+          ref={usernameRef}
+        />
+        <StyledPasswordField
+          label="password"
+          fieldName="password"
+          validation={{ required: true }}
+        />
 
-      <AuthFormWrapper>
-        <Form<IFormSignin> onSubmit={onSubmit} className="space-y-6">
-          <StyledTextField
-            label="username"
-            fieldName="username"
-            validation={{ required: true }}
-            ref={usernameRef}
-          />
-          <StyledPasswordField
-            label="password"
-            fieldName="password"
-            validation={{ required: true }}
-          />
-
-          {/* TODO forgot password flow */}
-          {/* <div className="text-right text-xs text-gray-500 hover:text-indigo-700 hover:underline">
+        {/* TODO forgot password flow */}
+        {/* <div className="text-right text-xs text-gray-500 hover:text-indigo-700 hover:underline">
           <Link to={routes.forgotPassword()}>Forgot Password?</Link>
         </div> */}
 
-          <div className="flex justify-center">
-            <Submit disabled={loading} className="btn-submit-primary">
-              sign In
-            </Submit>
-          </div>
-        </Form>
-      </AuthFormWrapper>
-    </div>
+        <div className="flex justify-center">
+          <Submit disabled={loading} className="btn-submit-primary">
+            sign In
+          </Submit>
+        </div>
+      </Form>
+    </>
   )
 }
