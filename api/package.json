@@ -9,7 +9,7 @@
     "@redwoodjs/graphql-server": "5.3.0",
     "@simplewebauthn/server": "^7",
     "@sparticuz/chromium-min": "111",
-    "@spoonjoy/redwoodjs-dbauth-oauth-api": "file:.yalc/@spoonjoy/redwoodjs-dbauth-oauth-api",
+    "@spoonjoy/redwoodjs-dbauth-oauth-api": "^1.0.0",
     "@tailwindcss/forms": "^0.5.3",
     "@types/unzipper": "^0.10.5",
     "@whatwg-node/fetch": "^0.8.1",
