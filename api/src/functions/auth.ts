@@ -252,7 +252,7 @@ export const handler = async (
 
   const oAuthHandler = new OAuthHandler(event, context, authHandler, {
     oAuthModelAccessor: 'oAuth',
-    enabledFor: { apple: true, github: true, google: true },
+    enabledFor: { apple: true, github: true, google: false },
   })
 
   console.log('event.path', event.path)

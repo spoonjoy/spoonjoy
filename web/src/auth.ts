@@ -13,7 +13,7 @@ const dbAuthClient = createDbAuthClient({
 })
 
 const oAuthClient = createOAuthClient({
-  enabledProviders: { apple: true, github: true, google: true },
+  enabledProviders: { apple: true, github: true, google: false },
 })
 
 export const { AuthProvider, useAuth } = createAuth(dbAuthClient)
