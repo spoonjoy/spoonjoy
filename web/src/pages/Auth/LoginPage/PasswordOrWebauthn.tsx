@@ -9,14 +9,10 @@ import { useAuth } from 'src/auth'
 import { PasswordForm } from './PasswordForm'
 import { AuthWebAuthnPrompt, RegisterWebAuthnPrompt } from './WebAuthnPrompt'
 
-interface IPasswordOrWebauthnProps {
-  type: string
-}
-
 const WELCOME_MESSAGE = 'welcome back!'
 const REDIRECT = routes.welcome()
 
-const PasswordOrWebauthn = ({ type }: IPasswordOrWebauthnProps) => {
+const PasswordOrWebAuthn = () => {
   const {
     isAuthenticated,
     client: webAuthn,
@@ -26,9 +22,7 @@ const PasswordOrWebauthn = ({ type }: IPasswordOrWebauthnProps) => {
   } = useAuth()
 
   const [shouldShowWebAuthn, setShouldShowWebAuthn] = React.useState(false)
-  const [showWebAuthn, setShowWebAuthn] = React.useState(
-    webAuthn?.isEnabled() && type !== 'password'
-  )
+  const [showWebAuthn, setShowWebAuthn] = React.useState(webAuthn?.isEnabled())
 
   const onAuthenticate = React.useCallback(async () => {
     try {
@@ -39,7 +33,7 @@ const PasswordOrWebauthn = ({ type }: IPasswordOrWebauthnProps) => {
     } catch (e: any) {
       if (e.name === 'WebAuthnDeviceNotFoundError') {
         toast.error(
-          'Device not found, log in with username/password to continue'
+          'device not found, log in with username/password to continue'
         )
         setShowWebAuthn(false)
       } else {
@@ -99,7 +93,12 @@ const PasswordOrWebauthn = ({ type }: IPasswordOrWebauthnProps) => {
 
   if (showWebAuthn) {
     if (webAuthn?.isEnabled()) {
-      return <AuthWebAuthnPrompt onAuthenticate={onAuthenticate} />
+      return (
+        <AuthWebAuthnPrompt
+          onAuthenticate={onAuthenticate}
+          onDismiss={() => setShowWebAuthn(false)}
+        />
+      )
     } else {
       return (
         <RegisterWebAuthnPrompt
@@ -117,4 +116,4 @@ const PasswordOrWebauthn = ({ type }: IPasswordOrWebauthnProps) => {
   }
 }
 
-export default PasswordOrWebauthn
+export default PasswordOrWebAuthn

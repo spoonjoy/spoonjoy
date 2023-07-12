@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import { OAuthButtons } from '@spoonjoy/redwoodjs-dbauth-oauth-web'
 
 import { MetaTags } from '@redwoodjs/web'
@@ -9,39 +7,42 @@ import { useOAuth } from 'src/auth'
 import AuthFormWrapper from '../shared/AuthFormWrapper'
 import AuthHeader from '../shared/AuthHeader'
 
-import PasswordOrWebauthn from './PasswordOrWebauthn'
+import PasswordOrWebAuthn from './PasswordOrWebAuthn'
 
 interface ILoginPageProps {
-  type: string
+  type: 'oauth' | 'password' | undefined
 }
 const LoginPage = ({ type }: ILoginPageProps) => {
-  const [loginMethod, setLoginMethod] = useState<'oauth' | 'password'>('oauth')
-
   const { getOAuthUrls } = useOAuth()
 
   return (
-    <>
+    <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
       <MetaTags title="sign in" />
       <AuthHeader location="login" />
 
       <AuthFormWrapper>
-        {loginMethod === 'oauth' ? (
-          <OAuthButtons action="login" getOAuthUrls={getOAuthUrls} />
+        {type === 'oauth' || type === undefined ? (
+          <div>
+            <OAuthButtons action="login" getOAuthUrls={getOAuthUrls} />
+          </div>
         ) : (
-          <PasswordOrWebauthn type={type} />
+          <PasswordOrWebAuthn />
         )}
-        <button
-          className="w-full text-center text-sm"
-          onClick={() =>
-            setLoginMethod(loginMethod === 'oauth' ? 'password' : 'oauth')
-          }
-        >
-          {loginMethod === 'oauth'
-            ? 'use your username and password'
-            : 'sign in with a provider'}
-        </button>
+        <p className="mt-10 text-center text-sm text-gray-600">
+          or{' '}
+          <a
+            href={`?type=${
+              type === 'oauth' || type === undefined ? 'password' : 'oauth'
+            }`}
+            className="link text-center font-medium"
+          >
+            {type === 'oauth' || type === undefined
+              ? 'use your username and password'
+              : 'sign in with a provider'}
+          </a>
+        </p>
       </AuthFormWrapper>
-    </>
+    </div>
   )
 }
 
