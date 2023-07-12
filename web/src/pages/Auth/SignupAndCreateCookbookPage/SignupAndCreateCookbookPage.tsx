@@ -10,7 +10,7 @@ import useNewCookbookMutation from 'src/components/Cookbook/useNewCookbookMutati
 import RecipeCell from 'src/components/Recipe/RecipeCell'
 import { HeaderSlot, SimpleHeader } from 'src/layouts/SiteLayout/SiteLayout'
 
-import AuthHeader from '../shared/AuthHeader'
+import AuthHeader from '../../../components/Auth/AuthHeader'
 
 interface ISignupAndCreateCookbookPageProps {
   recipeId: string

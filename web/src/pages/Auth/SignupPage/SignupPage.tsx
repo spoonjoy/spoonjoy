@@ -8,8 +8,8 @@ import { MetaTags } from '@redwoodjs/web'
 import { useAuth, useOAuth } from 'src/auth'
 import SignupForm from 'src/components/Auth/SignupForm'
 
-import AuthFormWrapper from '../shared/AuthFormWrapper'
-import AuthHeader from '../shared/AuthHeader'
+import AuthFormWrapper from '../../../components/Auth/AuthFormWrapper'
+import AuthHeader from '../../../components/Auth/AuthHeader'
 
 const SignupPage = () => {
   const { currentUser } = useAuth()
@@ -28,9 +28,9 @@ const SignupPage = () => {
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <AuthHeader location="signup" />
         <AuthFormWrapper>
+          <OAuthButtons action="signup" getOAuthUrls={getOAuthUrls} />
           <SignupForm />
         </AuthFormWrapper>
-        <OAuthButtons action="signup" getOAuthUrls={getOAuthUrls} />
       </div>
     </>
   )

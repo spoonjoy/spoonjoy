@@ -4,10 +4,9 @@ import { MetaTags } from '@redwoodjs/web'
 
 import { useOAuth } from 'src/auth'
 
-import AuthFormWrapper from '../shared/AuthFormWrapper'
-import AuthHeader from '../shared/AuthHeader'
-
-import PasswordOrWebAuthn from './PasswordOrWebAuthn'
+import AuthFormWrapper from '../../../components/Auth/AuthFormWrapper'
+import AuthHeader from '../../../components/Auth/AuthHeader'
+import PasswordOrWebAuthn from '../../../components/Auth/PasswordOrWebAuthn'
 
 interface ILoginPageProps {
   type: 'oauth' | 'password' | undefined

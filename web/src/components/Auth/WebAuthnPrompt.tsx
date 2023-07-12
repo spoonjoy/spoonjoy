@@ -1,6 +1,6 @@
 import { FingerPrintIcon } from '@heroicons/react/24/outline'
 
-import AuthFormWrapper from '../shared/AuthFormWrapper'
+import AuthFormWrapper from './AuthFormWrapper'
 
 interface IAuthWebAuthnPromptProps {
   onAuthenticate: () => Promise<void>
