@@ -8,9 +8,14 @@ import SignupForm from './SignupForm'
 interface IOAuthOrPasswordProps {
   type: 'oauth' | 'password' | undefined
   location: 'login' | 'signup' | 'new-cookbook'
+  onSignupComplete?: () => void
 }
 
-const OAuthOrPassword = ({ type, location }: IOAuthOrPasswordProps) => {
+const OAuthOrPassword = ({
+  type,
+  location,
+  onSignupComplete,
+}: IOAuthOrPasswordProps) => {
   const { getOAuthUrls } = useOAuth()
   return (
     <>
@@ -24,7 +29,7 @@ const OAuthOrPassword = ({ type, location }: IOAuthOrPasswordProps) => {
       ) : location === 'login' ? (
         <PasswordOrWebAuthn />
       ) : (
-        <SignupForm />
+        <SignupForm onComplete={onSignupComplete} />
       )}
       <p className="mt-10 text-center text-sm text-gray-600">
         or{' '}
