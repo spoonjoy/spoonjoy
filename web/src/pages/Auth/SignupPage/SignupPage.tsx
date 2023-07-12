@@ -4,12 +4,16 @@ import { navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
-import SignupForm from 'src/components/Auth/SignupForm'
+import OAuthOrPassword from 'src/components/Auth/OAuthOrPassword'
 
-import AuthFormWrapper from '../shared/AuthFormWrapper'
-import AuthHeader from '../shared/AuthHeader'
+import AuthFormWrapper from '../../../components/Auth/AuthFormWrapper'
+import AuthHeader from '../../../components/Auth/AuthHeader'
 
-const SignupPage = () => {
+interface ISignupPageProps {
+  type: 'oauth' | 'password' | undefined
+}
+
+const SignupPage = ({ type }: ISignupPageProps) => {
   const { currentUser } = useAuth()
 
   useEffect(() => {
@@ -19,16 +23,14 @@ const SignupPage = () => {
   }, [currentUser])
 
   return (
-    <>
-      <MetaTags title="signup" />
+    <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <MetaTags title="sign up" />
+      <AuthHeader location="signup" />
 
-      <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
-        <AuthHeader location="signup" />
-        <AuthFormWrapper>
-          <SignupForm />
-        </AuthFormWrapper>
-      </div>
-    </>
+      <AuthFormWrapper>
+        <OAuthOrPassword type={type} location="signup" />
+      </AuthFormWrapper>
+    </div>
   )
 }
 

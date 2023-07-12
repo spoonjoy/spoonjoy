@@ -6,20 +6,23 @@ import { navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
+import OAuthOrPassword from 'src/components/Auth/OAuthOrPassword'
 import SignupForm from 'src/components/Auth/SignupForm'
 import useAddRemoveCookbookMutations from 'src/components/Cookbook/useAddRemoveCookbookMutations'
 import useNewCookbookMutation from 'src/components/Cookbook/useNewCookbookMutation'
 import RecipeCell from 'src/components/Recipe/RecipeCell'
 import { HeaderSlot, SimpleHeader } from 'src/layouts/SiteLayout/SiteLayout'
 
-import AuthHeader from '../shared/AuthHeader'
+import AuthHeader from '../../../components/Auth/AuthHeader'
 
 interface ISignupAndCreateCookbookPageProps {
   recipeId: string
+  type: 'oauth' | 'password' | undefined
 }
 
 const SignupAndCreateCookbookPage = ({
   recipeId, // this is the recipeId that will be added to the new cookbook
+  type,
 }: ISignupAndCreateCookbookPageProps) => {
   const { currentUser } = useAuth()
 
@@ -61,6 +64,12 @@ const SignupAndCreateCookbookPage = ({
           <AuthHeader location="new-cookbook" />
           <div className="mx-8 mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <SignupForm onComplete={onSignupComplete} />
+            {/* The below can't be enabled until we enable callbacks from the oauth signups */}
+            {/* <OAuthOrPassword
+              type={type}
+              location="signup"
+              onSignupComplete={onSignupComplete}
+            /> */}
           </div>
         </div>
       </div>

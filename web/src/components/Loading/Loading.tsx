@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import LogoBlack from 'public/logos/sj_black.svg'
+import SJLogo from 'src/components/Logos/SJLogo'
 
 interface LoadingProps {
   subText?: string[]
@@ -28,7 +28,7 @@ const Loading = ({ subText }: LoadingProps) => {
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 z-50 flex h-screen flex-col items-center justify-center bg-white">
       <div className="flex flex-col items-center justify-center gap-2">
-        <LogoBlack className="h-12 w-auto animate-pulse" />
+        <SJLogo className="h-12 w-auto animate-pulse" />
         <div>
           <span
             className={`text-gray-500 ${

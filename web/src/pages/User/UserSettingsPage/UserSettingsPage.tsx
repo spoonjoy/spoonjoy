@@ -1,5 +1,9 @@
-import { MetaTags } from '@redwoodjs/web'
+import { OAuthButtons } from '@spoonjoy/redwoodjs-dbauth-oauth-web'
 
+import { MetaTags } from '@redwoodjs/web'
+import { toast } from '@redwoodjs/web/toast'
+
+import { useOAuth } from 'src/auth'
 import { ColumnLayoutFormSection } from 'src/components/formComponents/ColumnLayoutForm/ColumnLayoutFormSection'
 import { ColumnLayoutFormWrapper } from 'src/components/formComponents/ColumnLayoutForm/ColumnLayoutFormWrapper'
 import ChangePasswordForm from 'src/components/User/UserSettings/ChangePasswordForm'
@@ -7,6 +11,8 @@ import LogOutBtn from 'src/components/User/UserSettings/LogOutBtn'
 import { SimpleHeader, HeaderSlot } from 'src/layouts/SiteLayout/SiteLayout'
 
 const UserSettingsPage = () => {
+  const { getOAuthUrls, unlinkAccount, getConnectedAccounts } = useOAuth()
+
   return (
     <>
       <MetaTags title="settings" description="Settings page" />
@@ -21,6 +27,32 @@ const UserSettingsPage = () => {
             withPadding
           >
             <ChangePasswordForm />
+          </ColumnLayoutFormSection>
+        </ColumnLayoutFormWrapper>
+        <ColumnLayoutFormWrapper>
+          <ColumnLayoutFormSection
+            sectionTitle="connect other auth providers"
+            sectionDescription="connect other ways to log into Spoonjoy"
+            withPadding
+          >
+            <OAuthButtons
+              layoutClasses="flex gap-2 flex-wrap justify-center md:justify-start"
+              action="link"
+              getOAuthUrls={getOAuthUrls}
+              linkOAuthConfig={{
+                unlinkAccount,
+                getConnectedAccounts,
+                onLinkSuccess(linkedAccount) {
+                  toast.success(`successfully connected ${linkedAccount}`)
+                },
+                onUnlinkSuccess(unlinkedAccount) {
+                  toast.success(`successfully disconnected ${unlinkedAccount}`)
+                },
+                onUnlinkError(provider, error) {
+                  toast.error(`error disconnecting ${provider}: ${error}`)
+                },
+              }}
+            />
           </ColumnLayoutFormSection>
         </ColumnLayoutFormWrapper>
         <div className="mx-5 mt-20 text-center">

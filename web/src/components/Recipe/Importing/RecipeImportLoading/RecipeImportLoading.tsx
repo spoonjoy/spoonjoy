@@ -2,11 +2,11 @@ import {
   PencilSquareIcon,
   PresentationChartLineIcon,
 } from '@heroicons/react/24/solid'
-import LogoBlack from 'public/logos/sj_black.svg'
 
 import { navigate } from '@redwoodjs/router'
 
 import ProgressBar from 'src/components/Loading/ProgressBar'
+import SJLogo from 'src/components/Logos/SJLogo'
 import { classNames } from 'src/helpers/css'
 
 export interface IRecipeImportLoadingProps {
@@ -30,7 +30,7 @@ const RecipeImportLoading = ({
 }: IRecipeImportLoadingProps) => {
   return (
     <div className="fixed bottom-0 top-0 left-0 right-0 z-50 flex flex-col items-center justify-center gap-2 bg-white">
-      <LogoBlack
+      <SJLogo
         className={classNames(
           'h-12 w-auto',
           !redirectUrl && !hasError && 'animate-pulse'

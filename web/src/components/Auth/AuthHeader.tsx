@@ -1,7 +1,6 @@
-import LogoBlack from 'public/logos/sj_black.svg'
-
 import { Link, routes } from '@redwoodjs/router'
 
+import SJLogo from 'src/components/Logos/SJLogo'
 import { classNames } from 'src/helpers/css'
 
 interface IAuthHeaderProps {
@@ -10,9 +9,7 @@ interface IAuthHeaderProps {
 
 const AuthHeader = ({ location }: IAuthHeaderProps) => (
   <div className="sm:mx-auto sm:w-full sm:max-w-md">
-    {location !== 'new-cookbook' && (
-      <LogoBlack className="mx-auto h-12 w-auto" />
-    )}
+    {location !== 'new-cookbook' && <SJLogo className="mx-auto h-12 w-auto" />}
 
     <h2
       className={classNames(

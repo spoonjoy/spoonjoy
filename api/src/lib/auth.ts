@@ -6,6 +6,7 @@ import { db } from './db'
 export interface ICurrentUser {
   id: string
   username: string
+  email: string
 }
 
 /**
@@ -35,7 +36,7 @@ export const getCurrentUser = async (
 
   const user = await db.user.findUnique({
     where: { id: session.id },
-    select: { id: true, username: true },
+    select: { id: true, username: true, email: true },
   })
   if (!user) throw new AuthenticationError('You are not logged in.')
   else return user

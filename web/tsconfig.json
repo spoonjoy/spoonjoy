@@ -12,7 +12,7 @@
       "./src",
       "../.redwood/types/mirror/web/src",
       "../api/src",
-      "../.redwood/types/mirror/api/src"
+      "../.redwood/types/mirror/api/src",
     ],
     "paths": {
       "src/*": [
@@ -35,5 +35,5 @@
     "../.redwood/types/includes/web-*",
     "../types",
     "./types"
-  ]
+  ],
 }

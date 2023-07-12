@@ -4,8 +4,8 @@ export const schema = gql`
     email: String!
     username: String!
     createdAt: DateTime!
-    recipes: [Recipe]!
-    fellowChefs: [User]!
+    recipes: [Recipe!]!
+    fellowChefs: [User!]!
   }
 
   type Query {

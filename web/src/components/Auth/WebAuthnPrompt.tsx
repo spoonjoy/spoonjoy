@@ -1,15 +1,17 @@
 import { FingerPrintIcon } from '@heroicons/react/24/outline'
 
-import AuthFormWrapper from '../shared/AuthFormWrapper'
+import AuthFormWrapper from './AuthFormWrapper'
 
 interface IAuthWebAuthnPromptProps {
   onAuthenticate: () => Promise<void>
+  onDismiss: () => void
 }
 
 export const AuthWebAuthnPrompt = ({
   onAuthenticate,
+  onDismiss,
 }: IAuthWebAuthnPromptProps) => (
-  <AuthFormWrapper>
+  <>
     <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gray-50">
       <FingerPrintIcon className="h-8 w-8 text-red-400" aria-hidden="true" />
     </div>
@@ -24,16 +26,13 @@ export const AuthWebAuthnPrompt = ({
         open authenticator
       </button>
     </div>
-    <div className=" mt-5 text-center text-sm text-gray-300">
-      <span>or login with </span>{' '}
-      <a
-        href="?type=password"
-        className="text-indigo-500 hover:text-indigo-700 hover:underline"
-      >
+    <div className=" mt-5 text-center text-sm text-gray-600">
+      <span>or sign in with </span>{' '}
+      <button onClick={onDismiss} className="link font-medium">
         username and password
-      </a>
+      </button>
     </div>
-  </AuthFormWrapper>
+  </>
 )
 
 interface IRegisterWebAuthnPromptProps {

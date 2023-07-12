@@ -17,12 +17,14 @@ model User {
   id                  String             @id @default(cuid())
   email               String             @unique
   username            String             @unique
-  hashedPassword      String
-  salt                String
+  // this and salt are optional because we allow OAuth only users to not have a password
+  hashedPassword      String?
+  salt                String?
   resetToken          String?
   resetTokenExpiresAt DateTime?
   webAuthnChallenge   String?            @unique
   credentials         UserCredential[]
+  OAuth               OAuth[]
   recipes             Recipe[]
   shoppingList        ShoppingList?
   cookbooks           Cookbook[]
@@ -40,6 +42,28 @@ model UserCredential {
   transports String?
   counter    BigInt
 
+  @@index([userId])
+}
+
+enum OAuthProvider {
+  google
+  github
+  apple
+}
+
+model OAuth {
+  provider         OAuthProvider
+  // The ID of the user on the OAuth provider's system
+  providerUserId   String
+  // The username of the user on the OAuth provider's system. Useful for helping users identify their linked accounts
+  providerUsername String
+  user             User          @relation(fields: [userId], references: [id])
+  userId           String
+
+  createdAt DateTime @default(now())
+
+  @@unique([provider, providerUserId])
+  @@unique([userId, provider])
   @@index([userId])
 }
 

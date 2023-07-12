@@ -15,6 +15,9 @@ const isProd = process.env.NODE_ENV === 'production'
  * @type {import('vite').UserConfig}
  */
 const viteConfig: UserConfig = {
+  optimizeDeps: {
+    force: true,
+  },
   plugins: [redwood()],
   server: {
     https: isProd
