@@ -160,12 +160,18 @@ export const convertRecipeHtmlToInputUsingOpenAi = (html: string) => {
       })
       .catch((error) => {
         throw new RedwoodError(
-          `Couldn't get completion for recipe html ${html}. Error: ${error.message}`
+          `Couldn't get completion for recipe html (${html.substring(
+            0,
+            100
+          )}...). Error: ${error.message}`
         )
       })
   } catch (error) {
     throw new RedwoodError(
-      `Couldn't get completion for recipe html ${html}. Error: ${error.message}`
+      `Couldn't get completion for recipe html (${html.substring(
+        0,
+        100
+      )}...). Error: ${error.message}`
     )
   }
 }
