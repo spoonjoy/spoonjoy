@@ -22,6 +22,7 @@ export const createRecipeImage = async (
 
   try {
     const imageResponse = await openai.images.generate({
+      model: 'dall-e-3',
       prompt,
     })
 

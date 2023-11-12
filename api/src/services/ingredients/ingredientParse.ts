@@ -54,8 +54,6 @@ const ingredientCompletionToIngredientInputType = (
   }
 }
 
-
-
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_KEY,
 })
@@ -65,7 +63,7 @@ export const parseIngredient: QueryResolvers['parseIngredient'] = async ({
 }) => {
   const response = await getIngredientCompletions([input])
 
-  const jsonStr = response?.data.choices[0].text || '{}'
+  const jsonStr = response?.choices[0].text || '{}'
 
   return ingredientCompletionToIngredientInputType(jsonStr)
 }
@@ -76,7 +74,7 @@ export const parseIngredients = async (
   const response = await getIngredientCompletions(ingredients)
 
   const jsonStrs =
-    response?.data.choices.map((choice) => {
+    response?.choices.map((choice) => {
       return choice.text || '{}'
     }) || []
 

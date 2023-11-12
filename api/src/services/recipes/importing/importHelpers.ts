@@ -86,7 +86,7 @@ export const getImageFromHtml = async (
 
 interface PrismaCreatedRecipe {
   title: string
-  servings: number | null
+  servings: string | null
   description: string | null
   sourceUrl: string | null
   id: string
