@@ -1,4 +1,4 @@
-import { Configuration, OpenAIApi } from 'openai'
+import OpenAI from 'openai'
 import { IngredientInputType, QueryResolvers } from 'types/graphql'
 
 import { RedwoodError } from '@redwoodjs/api'
@@ -54,11 +54,11 @@ const ingredientCompletionToIngredientInputType = (
   }
 }
 
-const configuration = new Configuration({
+
+
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_KEY,
 })
-
-const openai = new OpenAIApi(configuration)
 
 export const parseIngredient: QueryResolvers['parseIngredient'] = async ({
   input,
@@ -94,7 +94,7 @@ export const getIngredientCompletions = async (ingredients: string[]) => {
     return `${ingredient} ->`
   })
   try {
-    return await openai.createCompletion({
+    return await openai.completions.create({
       // This model is slightly more reliable but way more expensive
       // model: 'davinci:ft-spoonjoy:ingredient-inputs-2023-02-18-16-21-57',
       model:

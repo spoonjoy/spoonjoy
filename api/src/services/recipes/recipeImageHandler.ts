@@ -2,13 +2,11 @@ import {
   UploadApiOptions as CloudinaryOptions,
   v2 as cloudinary,
 } from 'cloudinary'
-import { Configuration, OpenAIApi } from 'openai'
+import OpenAI from 'openai'
 
-const configuration = new Configuration({
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_KEY,
 })
-
-const openai = new OpenAIApi(configuration)
 
 cloudinary.config({
   secure: true,
@@ -23,11 +21,11 @@ export const createRecipeImage = async (
   const prompt = `Generate an image of ${title} professional food photography that looks as if it could be featured in a high-end cookbook. The dish should be presented on a plate with appropriate garnishes, and the overall image should have a visually pleasing composition and lighting. The dish should look delicious and appetizing.`
 
   try {
-    const imageResponse = await openai.createImage({
+    const imageResponse = await openai.images.generate({
       prompt,
     })
 
-    const openaiUrl = imageResponse.data.data[0].url
+    const openaiUrl = imageResponse.data[0].url
 
     if (openaiUrl) {
       const sjUrl = uploadFileToCloudinary(openaiUrl, recipeId)

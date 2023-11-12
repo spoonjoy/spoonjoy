@@ -1,4 +1,4 @@
-import { Configuration, OpenAIApi } from 'openai'
+import OpenAI from 'openai'
 import { CreateRecipeInput } from 'types/graphql'
 
 import { RedwoodError } from '@redwoodjs/api'
@@ -13,11 +13,9 @@ const getCurrentTimeString = () => {
   return `${hours}:${minutes}:${seconds}`
 }
 
-const configuration = new Configuration({
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_KEY,
 })
-
-const openai = new OpenAIApi(configuration)
 
 const recipeInputSchema =
   '{"$schema":"http://json-schema.org/draft-06/schema#","type":"object","title":"The CreateRecipeInput Schema","properties":{"input":{"$ref":"#/definitions/CreateRecipeInput"}},"definitions":{"CreateRecipeInput":{"type":"object","properties":{"description":{"$ref":"#/definitions/String"},"title":{"$ref":"#/definitions/String"},"servings":{"$ref":"#/definitions/Int"},"steps":{"type":"array","items":{"$ref":"#/definitions/CreateRecipeStepInput"}}},"required":["title","steps"]},"CreateStepOutputUseInput":{"type":"object","properties":{"outputOfStepNum":{"description":"If you\'re using the output of another step, include that here","$ref":"#/definitions/Int"},"inputOfStepNum":{"description":"The step in which you are using the output of another step","$ref":"#/definitions/Int"}},"required":["outputOfStepNum"]},"CreateIngredientInput":{"type":"object","properties":{"quantity":{"$ref":"#/definitions/Float"},"unitName":{"$ref":"#/definitions/String"},"ingredientName":{"$ref":"#/definitions/String"}},"required":["quantity","unitName","ingredientName"]},"Float":{"type":"number","title":"Float"},"CreateRecipeStepInput":{"type":"object","properties":{"description":{"$ref":"#/definitions/String"},"stepNum":{"$ref":"#/definitions/Int"},"stepTitle":{"$ref":"#/definitions/String"},"ingredients":{"type":"array","items":{"$ref":"#/definitions/CreateIngredientInput"}},"stepOutputUses":{"type":"array","items":{"$ref":"#/definitions/CreateStepOutputUseInput"}}},"required":["stepNum","description"]},"ID":{"type":"string","title":"ID"},"Int":{"type":"number","title":"Int"},"String":{"type":"string","title":"String"},"Boolean":{"type":"boolean","title":"Boolean"}}}'
@@ -47,8 +45,8 @@ export const convertRecipeHtmlToInputUsingOpenAi = (html: string) => {
 
   try {
     console.log('started getting completion...', getCurrentTimeString())
-    return openai
-      .createChatCompletion({
+    return openai.chat.completions
+      .create({
         model: 'gpt-4-1106-preview',
         messages: [
           {
@@ -61,7 +59,7 @@ export const convertRecipeHtmlToInputUsingOpenAi = (html: string) => {
       })
       .then((res) => {
         console.log('finished getting completion!', getCurrentTimeString())
-        const responseText = res.data.choices[0].message?.content
+        const responseText = res.choices[0].message?.content
         if (!responseText)
           throw new RedwoodError(
             `No response text for recipe html ${html}, got ${res}`
