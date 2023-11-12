@@ -17,7 +17,7 @@
     "cloudinary": "^1.33.0",
     "html-minifier": "^4.0.0",
     "jsonwebtoken": "^9.0.0",
-    "openai": "^3.2.0",
+    "openai": "^4.17.4",
     "puppeteer-core": "19.7.0",
     "redis": "^4.6.5",
     "unzipper": "^0.10.11"

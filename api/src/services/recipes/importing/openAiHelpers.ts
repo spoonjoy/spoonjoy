@@ -23,7 +23,7 @@ const recipeInputSchema =
   '{"$schema":"http://json-schema.org/draft-06/schema#","type":"object","title":"The CreateRecipeInput Schema","properties":{"input":{"$ref":"#/definitions/CreateRecipeInput"}},"definitions":{"CreateRecipeInput":{"type":"object","properties":{"description":{"$ref":"#/definitions/String"},"title":{"$ref":"#/definitions/String"},"servings":{"$ref":"#/definitions/Int"},"steps":{"type":"array","items":{"$ref":"#/definitions/CreateRecipeStepInput"}}},"required":["title","steps"]},"CreateStepOutputUseInput":{"type":"object","properties":{"outputOfStepNum":{"description":"If you\'re using the output of another step, include that here","$ref":"#/definitions/Int"},"inputOfStepNum":{"description":"The step in which you are using the output of another step","$ref":"#/definitions/Int"}},"required":["outputOfStepNum"]},"CreateIngredientInput":{"type":"object","properties":{"quantity":{"$ref":"#/definitions/Float"},"unitName":{"$ref":"#/definitions/String"},"ingredientName":{"$ref":"#/definitions/String"}},"required":["quantity","unitName","ingredientName"]},"Float":{"type":"number","title":"Float"},"CreateRecipeStepInput":{"type":"object","properties":{"description":{"$ref":"#/definitions/String"},"stepNum":{"$ref":"#/definitions/Int"},"stepTitle":{"$ref":"#/definitions/String"},"ingredients":{"type":"array","items":{"$ref":"#/definitions/CreateIngredientInput"}},"stepOutputUses":{"type":"array","items":{"$ref":"#/definitions/CreateStepOutputUseInput"}}},"required":["stepNum","description"]},"ID":{"type":"string","title":"ID"},"Int":{"type":"number","title":"Int"},"String":{"type":"string","title":"String"},"Boolean":{"type":"boolean","title":"Boolean"}}}'
 
 export const convertRecipeHtmlToInputUsingOpenAi = (html: string) => {
-  const prompt = `Given the provided HTML and JSON schema, please perform the following tasks:
+  const prompt = `Given the provided HTML, please perform the following tasks:
 
   1. Carefully analyze the HTML to identify one or more recipes.
   2. For every recipe found:
@@ -31,7 +31,6 @@ export const convertRecipeHtmlToInputUsingOpenAi = (html: string) => {
      b. Make sure no ingredient or instruction is omitted.
 
   HTML: ${html}
-  JSON Schema: ${recipeInputSchema}
 
   Now, please generate a valid JSON object containing the extracted recipe information based on these rules:
 
@@ -44,14 +43,21 @@ export const convertRecipeHtmlToInputUsingOpenAi = (html: string) => {
     b. Include at least one ingredient or reference the output of a previous step by attaching its stepNum as outputOfStepNum (where inputOfStepNum is the current step using the output of that previous step). A step can only reference a previous step, not a subsequent one.
     c. Determine appropriate step titles and step output uses.
 
-  Make sure your output is a complete, coherent, and valid JSON object that strictly follows the given JSON schema and fully incorporates all extracted recipe information without excluding any ingredient or instruction. Do not include the JSON schema in your output.`
+  Make sure your output is a complete, coherent, and valid JSON object that strictly follows the given JSON schema and fully incorporates all extracted recipe information without excluding any ingredient or instruction.`
 
   try {
     console.log('started getting completion...', getCurrentTimeString())
     return openai
       .createChatCompletion({
-        model: 'gpt-4',
-        messages: [{ role: 'user', content: prompt }],
+        model: 'gpt-4-1106-preview',
+        messages: [
+          {
+            role: 'system',
+            content:
+              'You are a recipe import bot. Your purpose is to parse the HTML of a recipe and return it in the required JSON format You must be as accurate as possible and not make up any information. You must also not leave out any information.',
+          },
+          { role: 'user', content: prompt },
+        ],
       })
       .then((res) => {
         console.log('finished getting completion!', getCurrentTimeString())
