@@ -144,7 +144,7 @@ const websiteRecipeToSJRecipeInput = async (
 
   const basicRecipeInfo: BasicRecipeInfo = {
     title: recipe.name?.toString() || 'could not find title',
-    servings: parseInt(recipe.recipeYield ? toString() : '') || undefined,
+    servings: (recipe.recipeYield ? toString() : '') || undefined,
     description: recipe.description?.toString() || undefined,
     existingImage: existingImageUrl,
     sourceUrl: websiteUrl,
@@ -199,7 +199,7 @@ const croutonRecipesToSJRecipeInputs = (
 
     const basicRecipeInfo: BasicRecipeInfo = {
       title: croutonRecipe.name,
-      servings: croutonRecipe.serves,
+      servings: croutonRecipe.serves?.toString(),
       description: croutonRecipe.notes,
       existingImage: imageBase64 && 'data:image/svg+xml;base64,' + imageBase64,
       sourceUrl: croutonRecipe.webLink,

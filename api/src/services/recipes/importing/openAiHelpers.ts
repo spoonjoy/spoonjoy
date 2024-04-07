@@ -49,7 +49,7 @@ export const convertRecipeHtmlToInputUsingOpenAi = (html: string) => {
     console.log('started getting completion...', getCurrentTimeString())
     return openai.chat.completions
       .create({
-        model: 'gpt-4-1106-preview',
+        model: 'gpt-4-0125-preview',
         messages: [
           {
             role: 'system',
@@ -81,7 +81,7 @@ export const convertRecipeHtmlToInputUsingOpenAi = (html: string) => {
                   properties: {
                     description: { $ref: '#/definitions/String' },
                     title: { $ref: '#/definitions/String' },
-                    servings: { $ref: '#/definitions/Int' },
+                    servings: { $ref: '#/definitions/String' },
                     steps: {
                       type: 'array',
                       items: { $ref: '#/definitions/CreateRecipeStepInput' },
@@ -171,7 +171,7 @@ export const convertRecipeHtmlToInputUsingOpenAi = (html: string) => {
       `Couldn't get completion for recipe html (${html.substring(
         0,
         100
-      )}...). Error: ${error.message}`
+      )}...). Error: ${(error as any).message}`
     )
   }
 }
