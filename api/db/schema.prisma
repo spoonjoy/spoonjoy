@@ -1,5 +1,5 @@
 datasource db {
-  provider     = "mysql"
+  provider     = "postgresql"
   url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
@@ -74,7 +74,7 @@ model Recipe {
   cookbooks   RecipeInCookbook[]
 
   sourceRecipeId String?
-  sourceRecipe   Recipe? @relation("SourceRecipe", fields: [sourceRecipeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  sourceRecipe   Recipe? @relation("SourceRecipe", fields: [sourceRecipeId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   sourceUrl      String?
 
   recipeForks Recipe[] @relation("SourceRecipe")
