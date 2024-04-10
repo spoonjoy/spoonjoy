@@ -22,7 +22,7 @@ export const replaceFractionsWithFloats = (str: string): string => {
   return result
 }
 
-const ingredientCompletionToIngredientInputType = (
+const _ingredientCompletionToIngredientInputType = (
   str: string
 ): IngredientInputType => {
   const MIN_INPUT_LENGTH = 4 // this is arbitrary but i figured the smallest you could have is, eg, '1g a' (where 'a' is some ingredient name - are there any 1 letter ingredient names? feh)
@@ -61,33 +61,111 @@ const openai = new OpenAI({
 export const parseIngredient: QueryResolvers['parseIngredient'] = async ({
   input,
 }) => {
-  const response = await getIngredientCompletions([input])
-
-  const jsonStr = response?.choices[0].text || '{}'
-
-  return ingredientCompletionToIngredientInputType(jsonStr)
+  /**
+   * getParsedIngredientsFromGPT returns an array of IngredientInputType,
+   * but we're only parsing one ingredient here, so we'll return the first.
+   */
+  return (await getParsedIngredientsFromGPT([input]))[0]
 }
 
 export const parseIngredients = async (
   ingredients: string[]
 ): Promise<IngredientInputType[]> => {
-  const response = await getIngredientCompletions(ingredients)
-
-  const jsonStrs =
-    response?.choices.map((choice) => {
-      return choice.text || '{}'
-    }) || []
-
-  const asJsons = jsonStrs
-    .map((jsonStr) => {
-      return ingredientCompletionToIngredientInputType(jsonStr)
-    })
-    .filter((json) => json !== undefined) as IngredientInputType[]
-
-  return asJsons
+  return await getParsedIngredientsFromGPT(ingredients)
 }
 
-export const getIngredientCompletions = async (ingredients: string[]) => {
+export const getParsedIngredientsFromGPT = async (ingredients: string[]) => {
+  const prompt = `
+  The following are human-readable ingredient strings.
+  Parse them into an array of JSON objects to be used as an input to the returnIngredients function.
+  ${ingredients.join('\n')}`
+  const response = await openai.chat.completions.create({
+    model: 'gpt-4-0125-preview',
+    messages: [
+      {
+        role: 'system',
+        content:
+          'You are an ingredient parsing bot. Your purpose is to parse human-readable ingredient strings into JSON objects. You must be as accurate as possible and not make up any information. You must also not leave out any information. If no obvious unit is provided, you may assume the ingredient is in the most common unit for that ingredient.',
+      },
+      {
+        role: 'user',
+        content: prompt,
+      },
+    ],
+    /**
+     * because we always want structured data back, we can tell GPT that we're looking
+     * to use its output to call a function
+     * https://platform.openai.com/docs/guides/gpt/function-calling
+     */
+    function_call: {
+      name: 'returnIngredients',
+    },
+    functions: [
+      {
+        name: 'returnIngredients',
+        description: 'Returns a list of ingredients',
+        parameters: {
+          type: 'object',
+          properties: {
+            ingredients: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  quantity: {
+                    type: 'number',
+                    description:
+                      'Quantity of the ingredient in the unit specified',
+                  },
+                  unitName: {
+                    type: 'string',
+                    description: 'Name of the unit specified',
+                  },
+                  ingredientName: {
+                    type: 'string',
+                    description: 'Name of the ingredient specified',
+                  },
+                },
+                required: ['quantity', 'unitName', 'ingredientName'],
+              },
+            },
+          },
+          required: ['ingredients'],
+        },
+      },
+    ],
+  })
+
+  const responseMessage = response.choices[0].message
+
+  // confirm GPT wanted to call the function
+  if (responseMessage.function_call) {
+    // confirm GPT called the right function
+    if (responseMessage.function_call.name === 'returnIngredients') {
+      // confirm GPT returned the right data type
+      const functionArgsStr = responseMessage.function_call.arguments
+      const functionArgs = JSON.parse(functionArgsStr)
+      const functionArgsArray =
+        functionArgs.ingredients as IngredientInputType[]
+
+      // return only the ingredients that have all the required fields
+      return functionArgsArray.filter(
+        (functionArg) =>
+          !!functionArg.ingredientName &&
+          !!functionArg.quantity &&
+          !!functionArg.unitName
+      )
+    } else {
+      throw new Error(
+        `GPT returned the wrong data structure for returnIngredients, response message is ${responseMessage}`
+      )
+    }
+  } else {
+    throw new Error('GPT called the wrong function')
+  }
+}
+
+export const getIngredientCompletionsOld = async (ingredients: string[]) => {
   const prompts = ingredients.map((ingredient) => {
     return `${ingredient} ->`
   })
