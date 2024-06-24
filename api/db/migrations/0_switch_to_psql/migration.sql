@@ -1,6 +1,5 @@
 
-Running Prisma CLI...
-$ yarn prisma migrate diff --from-empty --to-schema-datamodel api/db/schema.prisma --script
+-- $ yarn prisma migrate diff --from-empty --to-schema-datamodel api/db/schema.prisma --script
 
 -- CreateTable
 CREATE TABLE "User" (
