@@ -12,7 +12,7 @@ services:
   staticPublishPath: ./web/dist
   envVars:
   - key: NODE_VERSION
-    value: 18
+    value: 20
   - key: SKIP_INSTALL_DEPS
     value: true
   routes:
