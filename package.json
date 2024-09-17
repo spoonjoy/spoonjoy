@@ -28,7 +28,7 @@
     "cap": "yarn workspace web run -- cap",
     "cap:bso": "yarn rw build web && yarn cap sync && yarn cap open ios"
   },
-  "packageManager": "yarn@3.2.4",
+  "packageManager": "yarn@4.4.0",
   "resolutions": {
     "@hookform/devtools@^4.2.2": "patch:@hookform/devtools@npm%3A4.2.2#./.yarn/patches/@hookform-devtools-npm-4.2.2-aafab2382b.patch"
   },

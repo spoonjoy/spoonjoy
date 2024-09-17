@@ -10,10 +10,11 @@ import { logger } from './logger'
 /*
  * Instance of the Prisma Client
  */
-export const db = new PrismaClient({
+const prismaClient = new PrismaClient({
   log: emitLogLevels(['info', 'warn', 'error']),
 })
 .$extends({
+  name: 'cookbookImages field',
   result: {
     cookbook: {
       imageUrl: {
@@ -46,8 +47,10 @@ export const db = new PrismaClient({
   },
 })
 
-handlePrismaLogging({
-  db,
-  logger,
-  logLevels: ['info', 'warn', 'error'],
-})
+// handlePrismaLogging({
+//   db: prismaClient,
+//   logger,
+//   logLevels: ['info', 'warn', 'error'],
+// })
+
+export const db = prismaClient

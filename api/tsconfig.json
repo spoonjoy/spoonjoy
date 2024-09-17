@@ -4,9 +4,9 @@
     "allowJs": true,
     "strict": true,
     "esModuleInterop": true,
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
+    "target": "ES2023",
+    "module": "Node16",
+    "moduleResolution": "Node16",
     "baseUrl": "./",
     "rootDirs": [
       "./src",
