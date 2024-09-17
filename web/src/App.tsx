@@ -1,6 +1,6 @@
 import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
-import { RedwoodApolloProvider } from '@redwoodjs/web/dist/apollo'
-import { Toaster } from '@redwoodjs/web/dist/toast'
+import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
+import { Toaster } from '@redwoodjs/web/toast'
 
 import '@spoonjoy/redwoodjs-dbauth-oauth-web/dist/style.css'
 import { AuthProvider, useAuth, OAuthProvider } from 'src/auth'

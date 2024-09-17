@@ -8,7 +8,7 @@ import type {
 import { Control, HiddenField, RWGqlError } from '@redwoodjs/forms'
 import { Form, FormError, useForm, FormProvider } from '@redwoodjs/forms'
 import { navigate, routes } from '@redwoodjs/router'
-import { toast } from '@redwoodjs/web/dist/toast'
+import { toast } from '@redwoodjs/web/toast'
 
 import { ColumnLayoutFormSection } from 'src/components/formComponents/ColumnLayoutForm/ColumnLayoutFormSection'
 import { ColumnLayoutFormWrapper } from 'src/components/formComponents/ColumnLayoutForm/ColumnLayoutFormWrapper'

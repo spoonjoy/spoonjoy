@@ -1,7 +1,7 @@
 import { IFormSignup } from 'types/auth'
 
 import { Form, Submit } from '@redwoodjs/forms'
-import { toast } from '@redwoodjs/web/dist/toast'
+import { toast } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
 

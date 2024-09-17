@@ -10,7 +10,7 @@ import ChefRJ from 'public/images/chef-rj.png'
 import { SlotProvider, createSlot } from 'react-view-slot'
 
 import { Link, navigate, routes, useMatch } from '@redwoodjs/router'
-import { toast } from '@redwoodjs/web/dist/toast'
+import { toast } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
 import FloatingNav from 'src/components/FloatingNav/FloatingNav'

@@ -5,7 +5,7 @@ import type {
 } from 'types/graphql'
 
 import { useMutation } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/dist/toast'
+import { toast } from '@redwoodjs/web/toast'
 
 const ADD_TO_COOKBOOK_MUTATION = gql`
   mutation AddToCookbookMutation($id: String!, $recipeId: String!) {

@@ -1,5 +1,5 @@
 import { navigate, routes } from '@redwoodjs/router'
-import { toast } from '@redwoodjs/web/dist/toast'
+import { toast } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
 

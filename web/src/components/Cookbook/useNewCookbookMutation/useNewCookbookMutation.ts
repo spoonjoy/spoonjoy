@@ -3,7 +3,7 @@ import type { CreateCookbookInput, CreateCookbookMutation } from 'types/graphql'
 
 import { RWGqlError } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/dist/toast'
+import { toast } from '@redwoodjs/web/toast'
 
 const CREATE_COOKBOOK_MUTATION = gql`
   mutation CreateCookbookMutation($input: CreateCookbookInput!) {
