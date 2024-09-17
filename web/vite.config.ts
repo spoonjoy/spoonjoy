@@ -19,14 +19,14 @@ const viteConfig: UserConfig = {
     force: true,
   },
   plugins: [redwood()],
-  server: {
-    https: isProd
-      ? undefined
-      : {
-          key: '../certs/local.spoonjoy.app-key.pem',
-          cert: '../certs/local.spoonjoy.app.pem',
-        },
-  },
+  // server: {
+  //   https: isProd
+  //     ? undefined
+  //     : {
+  //         key: '../certs/local.spoonjoy.app-key.pem',
+  //         cert: '../certs/local.spoonjoy.app.pem',
+  //       },
+  // },
 }
 
 export default defineConfig(viteConfig)
