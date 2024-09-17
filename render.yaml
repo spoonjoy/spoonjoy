@@ -32,5 +32,5 @@ services:
   startCommand: yarn rw deploy render api
   envVars:
   - key: NODE_VERSION
-    value: 16
+    value: 20
 
