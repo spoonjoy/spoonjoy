@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "app": {
+    "name": "spoonjoy",
+    "bundleId": "app.spoonjoy",
+    "sku": "app-spoonjoy-ios",
+    "primaryLocale": "en-US"
+  },
+  "team": {
+    "teamId": "743GT2AJ24"
+  },
+  "channels": [
+    {
+      "id": "ios-testflight",
+      "platform": "ios",
+      "distribution": "testflight",
+      "bundleId": "app.spoonjoy",
+      "buildCommand": "yarn rw build web && yarn cap sync",
+      "packageCommand": "xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Release archive",
+      "store": {
+        "version": "1.0",
+        "copyright": "Copyright \u00a9 2026 Ari Mendelow",
+        "category": "FOOD_AND_DRINK",
+        "screenshots": [],
+        "privacy": {
+          "policyUrl": "https://spoonjoy.app/privacy",
+          "collectsData": true
+        },
+        "exportCompliance": {
+          "usesEncryption": true,
+          "exempt": true
+        }
+      }
+    }
+  ]
+}

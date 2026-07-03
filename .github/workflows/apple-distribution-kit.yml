@@ -1,0 +1,38 @@
+name: Apple distribution kit
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate Apple distribution manifest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Check out Apple distribution kit
+        uses: actions/checkout@v4
+        with:
+          repository: ourostack/apple-distribution-kit
+          path: .ci/apple-distribution-kit
+
+      - name: Build Apple distribution kit
+        working-directory: .ci/apple-distribution-kit
+        run: |
+          npm ci
+          npm run build
+
+      - name: Verify Apple distribution kit adoption
+        run: scripts/check-apple-distribution-kit.sh
