@@ -7,7 +7,8 @@
     "primaryLocale": "en-US"
   },
   "team": {
-    "teamId": "743GT2AJ24"
+    "teamId": "743GT2AJ24",
+    "providerPublicId": "9735080289"
   },
   "channels": [
     {
@@ -16,7 +17,7 @@
       "distribution": "testflight",
       "bundleId": "app.spoonjoy",
       "buildCommand": "yarn rw build web && yarn cap sync",
-      "packageCommand": "xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Release archive",
+      "packageCommand": "mkdir -p build/apple && xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Release -archivePath build/apple/Spoonjoy.xcarchive archive -allowProvisioningUpdates && xcodebuild -exportArchive -archivePath build/apple/Spoonjoy.xcarchive -exportPath build/apple/testflight -exportOptionsPlist distribution/ExportOptions.testflight.plist -allowProvisioningUpdates && test -f build/apple/testflight/App.ipa && mv -f build/apple/testflight/App.ipa build/apple/testflight/Spoonjoy.ipa",
       "store": {
         "version": "1.0",
         "copyright": "Copyright \u00a9 2026 Ari Mendelow",
@@ -29,6 +30,25 @@
         "exportCompliance": {
           "usesEncryption": true,
           "exempt": true
+        }
+      },
+      "testflight": {
+        "groups": [
+          {
+            "name": "Spoonjoy Internal",
+            "type": "internal",
+            "feedbackEnabled": true
+          }
+        ],
+        "build": {
+          "whatsNew": "First TestFlight build for dogfooding the native Spoonjoy iOS app.",
+          "autoNotifyEnabled": false,
+          "notifyTesters": false
+        },
+        "betaApp": {
+          "description": "Spoonjoy turns what you have into something worth eating.",
+          "feedbackEmail": "beta@spoonjoy.app",
+          "marketingUrl": "https://spoonjoy.app"
         }
       }
     }
