@@ -3,6 +3,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 MANIFEST="$ROOT_DIR/distribution/apple-distribution.json"
+EXPORT_OPTIONS="$ROOT_DIR/distribution/ExportOptions.testflight.plist"
 WRAPPER="$ROOT_DIR/scripts/apple-distribution-kit.sh"
 CAPACITOR_CONFIG="$ROOT_DIR/web/capacitor.config.ts"
 XCODE_PROJECT="$ROOT_DIR/ios/App/App.xcodeproj/project.pbxproj"
@@ -14,6 +15,7 @@ fail() {
 
 [[ -x "$WRAPPER" ]] || fail "missing executable wrapper: scripts/apple-distribution-kit.sh"
 [[ -f "$MANIFEST" ]] || fail "missing manifest: distribution/apple-distribution.json"
+[[ -f "$EXPORT_OPTIONS" ]] || fail "missing TestFlight export options: distribution/ExportOptions.testflight.plist"
 [[ -f "$CAPACITOR_CONFIG" ]] || fail "missing Capacitor config"
 [[ -f "$XCODE_PROJECT" ]] || fail "missing Xcode project"
 
@@ -69,6 +71,7 @@ if (manifest.app?.name !== expectedName) fail(`app.name must be ${expectedName}`
 if (manifest.app?.bundleId !== expectedBundleId) fail(`app.bundleId must be ${expectedBundleId}`);
 if (manifest.app?.sku !== "app-spoonjoy-ios") fail("app.sku must be app-spoonjoy-ios");
 if (manifest.team?.teamId !== "743GT2AJ24") fail("team.teamId must be 743GT2AJ24");
+if (manifest.team?.providerPublicId !== "9735080289") fail("team.providerPublicId must be 9735080289");
 
 const channels = new Map((manifest.channels ?? []).map((channel) => [channel.id, channel]));
 const testflight = channels.get("ios-testflight");
@@ -77,11 +80,29 @@ if (testflight.platform !== "ios") fail("ios-testflight platform must be ios");
 if (testflight.distribution !== "testflight") fail("ios-testflight distribution must be testflight");
 if (testflight.bundleId !== expectedBundleId) fail(`ios-testflight bundleId must be ${expectedBundleId}`);
 if (testflight.store?.version !== expectedVersion) fail(`testflight store.version must be ${expectedVersion}`);
+if (!testflight.packageCommand?.includes("ExportOptions.testflight.plist")) {
+  fail("ios-testflight packageCommand must export an IPA with distribution/ExportOptions.testflight.plist");
+}
+if (!testflight.packageCommand?.includes("build/apple/testflight/App.ipa") || !testflight.packageCommand?.includes("build/apple/testflight/Spoonjoy.ipa")) {
+  fail("ios-testflight packageCommand must normalize Xcode's App.ipa export to build/apple/testflight/Spoonjoy.ipa");
+}
+if (!Array.isArray(testflight.testflight?.groups) || testflight.testflight.groups.length < 1) {
+  fail("ios-testflight must declare at least one TestFlight group");
+}
+if (!testflight.testflight?.groups?.some((group) => group.name === "Spoonjoy Internal" && group.type === "internal")) {
+  fail("ios-testflight must declare the Spoonjoy Internal group");
+}
+if (!testflight.testflight?.build?.whatsNew) fail("ios-testflight must declare testflight.build.whatsNew");
+if (!testflight.testflight?.betaApp?.feedbackEmail) fail("ios-testflight must declare betaApp.feedbackEmail");
 
 console.log("Spoonjoy apple distribution manifest contract ok");
 NODE
 
 "$WRAPPER" manifest validate --manifest "$MANIFEST" >/dev/null
 "$WRAPPER" plan --manifest "$MANIFEST" --mode dry-run --json >/dev/null
+kit_help="$("$WRAPPER" --help)"
+grep -q "testflight plan" <<<"$kit_help" || fail "apple-distribution-kit must support testflight plan; update/build the shared kit first"
+grep -q "asc get" <<<"$kit_help" || fail "apple-distribution-kit must support asc get; update/build the shared kit first"
+"$WRAPPER" testflight plan --manifest "$MANIFEST" --channel ios-testflight --json >/dev/null
 
 printf 'apple distribution kit check ok\n'

@@ -4,9 +4,10 @@
 
 The canonical Apple distribution manifest lives at
 `distribution/apple-distribution.json` and is validated by
-`scripts/check-apple-distribution-kit.sh`. This branch only wires Spoonjoy into
-the shared `apple-distribution-kit` dry-run path for the `app.spoonjoy` iOS
-bundle; it does not upload or submit the app.
+`scripts/check-apple-distribution-kit.sh`. Spoonjoy uses the shared
+`apple-distribution-kit` TestFlight lane for the `app.spoonjoy` iOS bundle:
+archive/export an IPA, upload it with App Store Connect API credentials, wait
+for a `VALID` build, then publish it to the `Spoonjoy Internal` TestFlight group.
 
 Welcome to [RedwoodJS](https://redwoodjs.com)!
 

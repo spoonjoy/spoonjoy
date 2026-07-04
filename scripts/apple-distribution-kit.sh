@@ -4,6 +4,9 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 if [[ -n "${APPLE_DISTRIBUTION_KIT_BIN:-}" ]]; then
+  if [[ "$APPLE_DISTRIBUTION_KIT_BIN" == *.js ]]; then
+    exec node "$APPLE_DISTRIBUTION_KIT_BIN" "$@"
+  fi
   exec "$APPLE_DISTRIBUTION_KIT_BIN" "$@"
 fi
 
